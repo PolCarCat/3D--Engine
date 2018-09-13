@@ -39,85 +39,85 @@ bool ModuleCamera3D::CleanUp()
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
-	//Debug camera
+	////Debug camera
 
-	if(App->physics->debug)
-	{ 
-		vec3 newPos(0,0,0);
-		float speed = 100.0f * dt;
-		if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-			speed = 8.0f * dt;
+	//if(App->physics->debug)
+	//{ 
+	//	vec3 newPos(0,0,0);
+	//	float speed = 100.0f * dt;
+	//	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+	//		speed = 8.0f * dt;
 
-		if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
-		if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
+	//	if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
+	//	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
 
-		if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
-		if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
+	//	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
+	//	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
 
 
-		if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
-		if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
+	//	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
+	//	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
 
-		Position += newPos;
-		Reference += newPos;
+	//	Position += newPos;
+	//	Reference += newPos;
 
-		// Mouse motion ----------------
+	//	// Mouse motion ----------------
 
-		if(App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
-		{
-			int dx = -App->input->GetMouseXMotion();
-			int dy = -App->input->GetMouseYMotion();
+	//	if(App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	//	{
+	//		int dx = -App->input->GetMouseXMotion();
+	//		int dy = -App->input->GetMouseYMotion();
 
-			float Sensitivity = 0.25f;
+	//		float Sensitivity = 0.25f;
 
-			Position -= Reference;
+	//		Position -= Reference;
 
-			if(dx != 0)
-			{
-				float DeltaX = (float)dx * Sensitivity;
+	//		if(dx != 0)
+	//		{
+	//			float DeltaX = (float)dx * Sensitivity;
 
-				X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-				Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-				Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-			}
+	//			X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+	//			Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+	//			Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+	//		}
 
-			if(dy != 0)
-			{
-				float DeltaY = (float)dy * Sensitivity;
+	//		if(dy != 0)
+	//		{
+	//			float DeltaY = (float)dy * Sensitivity;
 
-				Y = rotate(Y, DeltaY, X);
-				Z = rotate(Z, DeltaY, X);
+	//			Y = rotate(Y, DeltaY, X);
+	//			Z = rotate(Z, DeltaY, X);
 
-				if(Y.y < 0.0f)
-				{
-					Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
-					Y = cross(Z, X);
-				}
-			}
+	//			if(Y.y < 0.0f)
+	//			{
+	//				Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
+	//				Y = cross(Z, X);
+	//			}
+	//		}
 
-			Position = Reference + Z * length(Position);
-		}
+	//		Position = Reference + Z * length(Position);
+	//	}
 
-		// Recalculate matrix -------------
-		CalculateViewMatrix();
-	}
+	//	// Recalculate matrix -------------
+	//	CalculateViewMatrix();
+	//}
 
-	////Make camera follow player
-	else
-	{ 
+	//////Make camera follow player
+	//else
+	//{ 
 
-		//Position of camera from player frame
-		vec3 p_camera_pos(0, 10, -20);
-		//Position of player
-		vec3 player_pos = App->player->vehicle->GetPos();
-		//Position of camera from world coordinates
-		vec3 camera_pos = App->player->Player_to_World(p_camera_pos);
-		//Adjustment so camera feels better
-		camera_pos.z = player_pos.z - 20;
-		//Make camera look at player from its position
-		Look(camera_pos, player_pos);
-	}
-	
+	//	//Position of camera from player frame
+	//	vec3 p_camera_pos(0, 10, -20);
+	//	//Position of player
+	//	vec3 player_pos = App->player->vehicle->GetPos();
+	//	//Position of camera from world coordinates
+	//	vec3 camera_pos = App->player->Player_to_World(p_camera_pos);
+	//	//Adjustment so camera feels better
+	//	camera_pos.z = player_pos.z - 20;
+	//	//Make camera look at player from its position
+	//	Look(camera_pos, player_pos);
+	//}
+	//
 	return UPDATE_CONTINUE;
 }
 

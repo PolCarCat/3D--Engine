@@ -41,12 +41,6 @@ bool ModuleAudio::Init()
 		ret = true;
 	}
 
-	
-	LoadFx("Audio/Starting.wav");
-	LoadFx("Audio/Motor.wav");
-	LoadFx("Audio/Breaks.wav");
-	LoadFx("Audio/Crash.wav");
-
 	return ret;
 }
 
