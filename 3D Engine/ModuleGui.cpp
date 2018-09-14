@@ -1,6 +1,9 @@
 #include "ModuleGui.h"
 #include "Application.h"
 
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_sdl.h"
+
 
 ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -14,8 +17,10 @@ ModuleGui::~ModuleGui()
 
 bool ModuleGui::Start()
 {
+	ImGui::CreateContext();
+	
+	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
 
-	//ImGui_ImplSdl_Init(App->window->window);
 
 
 	// Setup ImGui binding
