@@ -23,20 +23,23 @@ bool ModuleGui::Start()
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
 	ImGui_ImplOpenGL2_Init();
 
-
-
 	return true;
 }
 
 update_status ModuleGui::PreUpdate(float dt)
 {
+	update_status status = UPDATE_CONTINUE;
+
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 
 	ImGui::ShowDemoWindow();
 
-	return UPDATE_CONTINUE;
+	//if (ImGui::Button("close"))
+	//	status = UPDATE_STOP;
+
+	return status;
 }
 
 
