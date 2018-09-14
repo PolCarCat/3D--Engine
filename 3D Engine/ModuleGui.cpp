@@ -1,8 +1,6 @@
 #include "ModuleGui.h"
 #include "Application.h"
-#include "ImGui/imgui.h"
-#include "ImGui/imgui_impl_sdl.h"
-#include <stdio.h>
+
 
 ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -30,9 +28,9 @@ bool ModuleGui::Start()
 update_status ModuleGui::Update(float dt)
 {
 
-	bool b = true;
-	ImGui::ShowDemoWindow(&b);
-	ImGui::Render();
+	//bool b = true;
+	//ImGui::ShowDemoWindow(&b);
+	//ImGui::Render();
 	return UPDATE_CONTINUE;
 }
 
