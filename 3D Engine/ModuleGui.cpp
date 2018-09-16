@@ -28,18 +28,16 @@ bool ModuleGui::Start()
 
 update_status ModuleGui::PreUpdate(float dt)
 {
-	update_status status = UPDATE_CONTINUE;
-
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 
 	ImGui::ShowDemoWindow();
 
-	//if (ImGui::Button("close"))
-	//	status = UPDATE_STOP;
+	if (ImGui::Button("close"))
+		quit = true;
 
-	return status;
+	return UPDATE_CONTINUE;
 }
 
 
@@ -53,10 +51,15 @@ update_status ModuleGui::Update(float dt)
 
 update_status ModuleGui::PostUpdate(float dt)
 {
+	update_status status = UPDATE_CONTINUE;
+
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
-	return UPDATE_CONTINUE;
+	if (quit)
+		status = UPDATE_STOP;
+
+	return status;
 }
 
 bool ModuleGui::CleanUp()
