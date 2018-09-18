@@ -2,8 +2,6 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "PhysBody3D.h"
-#include "ModulePlayer.h"
-#include "ModulePlayer.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
