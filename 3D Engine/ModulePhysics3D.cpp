@@ -1,7 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModulePhysics3D.h"
-#include "PhysBody3D.h"
 
 #ifdef _DEBUG
 	#pragma comment (lib, "Bullet/libx86/BulletDynamics_debug.lib")
@@ -69,37 +68,36 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 {
 	//world->stepSimulation(dt, 15);
 
-	int numManifolds = world->getDispatcher()->getNumManifolds();
-	for(int i = 0; i<numManifolds; i++)
-	{
-		btPersistentManifold* contactManifold = world->getDispatcher()->getManifoldByIndexInternal(i);
-		btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
-		btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
+	//int numManifolds = world->getDispatcher()->getNumManifolds();
+	//for(int i = 0; i<numManifolds; i++)
+	//{
+	//	btPersistentManifold* contactManifold = world->getDispatcher()->getManifoldByIndexInternal(i);
+	//	btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
+	//	btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
 
-		int numContacts = contactManifold->getNumContacts();
-		if(numContacts > 0)
-		{
-			PhysBody3D* pbodyA = (PhysBody3D*)obA->getUserPointer();
-			PhysBody3D* pbodyB = (PhysBody3D*)obB->getUserPointer();
+	//	int numContacts = contactManifold->getNumContacts();
+	//	if(numContacts > 0)
+	//	{
+	//		PhysBody3D* pbodyA = (PhysBody3D*)obA->getUserPointer();
+	//		PhysBody3D* pbodyB = (PhysBody3D*)obB->getUserPointer();
+	//	
+	//		if(pbodyA && pbodyB)
+	//		{
+	//			while(item)
+	//			{
+	//				item->data->OnCollision(pbodyA, pbodyB);
+	//				item = item->next;
+	//			}
 
-			if(pbodyA && pbodyB)
-			{
-				p2List_item<Module*>* item = pbodyA->collision_listeners.getFirst();
-				while(item)
-				{
-					item->data->OnCollision(pbodyA, pbodyB);
-					item = item->next;
-				}
-
-				item = pbodyB->collision_listeners.getFirst();
-				while(item)
-				{
-					item->data->OnCollision(pbodyB, pbodyA);
-					item = item->next;
-				}
-			}
-		}
-	}
+	//			item = pbodyB->collision_listeners.getFirst();
+	//			while(item)
+	//			{
+	//				item->data->OnCollision(pbodyB, pbodyA);
+	//				item = item->next;
+	//			}
+	//		}
+	//	}
+	//}
 
 	return UPDATE_CONTINUE;
 }
@@ -131,26 +129,26 @@ bool ModulePhysics3D::CleanUp()
 		world->removeCollisionObject(obj);
 	}
 
-	for(p2List_item<btTypedConstraint*>* item = constraints.getFirst(); item; item = item->next)
+	for(list<btTypedConstraint*>::iterator item = constraints.begin(); item != constraints.end(); ++item)
 	{
-		world->removeConstraint(item->data);
-		delete item->data;
+		world->removeConstraint(*item);
+		delete *item;
 	}
 	
 	constraints.clear();
 
-	for(p2List_item<btDefaultMotionState*>* item = motions.getFirst(); item; item = item->next)
-		delete item->data;
+	for(list<btDefaultMotionState*>::iterator item = motions.begin(); item != motions.end(); ++item)
+		delete *item;
 
 	motions.clear();
-
-	for(p2List_item<btCollisionShape*>* item = shapes.getFirst(); item; item = item->next)
-		delete item->data;
+	
+		for (list<btCollisionShape*>::iterator item = shapes.begin(); item != shapes.end(); ++item)
+			delete *item;
 
 	shapes.clear();
 
-	for(p2List_item<PhysBody3D*>* item = bodies.getFirst(); item; item = item->next)
-		delete item->data;
+		for (list<PhysBody3D*>::iterator item = bodies.begin(); item != bodies.end(); ++item)
+			delete *item;
 
 	bodies.clear();
 
@@ -163,47 +161,47 @@ bool ModulePhysics3D::CleanUp()
 // ---------------------------------------------------------
 void ModulePhysics3D::AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB)
 {
-	btTypedConstraint* p2p = new btPoint2PointConstraint(
-		*(bodyA.body), 
-		*(bodyB.body), 
-		btVector3(anchorA.x, anchorA.y, anchorA.z), 
-		btVector3(anchorB.x, anchorB.y, anchorB.z));
-	world->addConstraint(p2p);
-	constraints.add(p2p);
-	p2p->setDbgDrawSize(2.0f);
+	//btTypedConstraint* p2p = new btPoint2PointConstraint(
+	//	*(bodyA.body), 
+	//	*(bodyB.body), 
+	//	btVector3(anchorA.x, anchorA.y, anchorA.z), 
+	//	btVector3(anchorB.x, anchorB.y, anchorB.z));
+	//world->addConstraint(p2p);
+	//constraints.add(p2p);
+	//p2p->setDbgDrawSize(2.0f);
 }
 
 void ModulePhysics3D::AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisA, const vec3& axisB, bool disable_collision)
 {
-	btHingeConstraint* hinge = new btHingeConstraint(
-		*(bodyA.body), 
-		*(bodyB.body), 
-		btVector3(anchorA.x, anchorA.y, anchorA.z),
-		btVector3(anchorB.x, anchorB.y, anchorB.z),
-		btVector3(axisA.x, axisA.y, axisA.z), 
-		btVector3(axisB.x, axisB.y, axisB.z));
+	//btHingeConstraint* hinge = new btHingeConstraint(
+	//	*(bodyA.body), 
+	//	*(bodyB.body), 
+	//	btVector3(anchorA.x, anchorA.y, anchorA.z),
+	//	btVector3(anchorB.x, anchorB.y, anchorB.z),
+	//	btVector3(axisA.x, axisA.y, axisA.z), 
+	//	btVector3(axisB.x, axisB.y, axisB.z));
 
-	world->addConstraint(hinge, disable_collision);
-	constraints.add(hinge);
-	hinge->setDbgDrawSize(2.0f);
-	hinge->enableAngularMotor(true, 10, 50);
+	//world->addConstraint(hinge, disable_collision);
+	//constraints.add(hinge);
+	//hinge->setDbgDrawSize(2.0f);
+	//hinge->enableAngularMotor(true, 10, 50);
 }
-
-mat3x3 ModulePhysics3D::translate_3x3mat(mat3x3 mat_to_trans)
-{
-	mat3x3 ret;
-	ret.M[0] = mat_to_trans.M[0];
-	ret.M[1] = mat_to_trans.M[3];
-	ret.M[2] = mat_to_trans.M[6];
-	ret.M[3] = mat_to_trans.M[1];
-	ret.M[4] = mat_to_trans.M[4];
-	ret.M[5] = mat_to_trans.M[7];
-	ret.M[6] = mat_to_trans.M[2];
-	ret.M[7] = mat_to_trans.M[5];
-	ret.M[8] = mat_to_trans.M[8];
-
-	return ret;
-}
+//
+//mat3x3 ModulePhysics3D::translate_3x3mat(mat3x3 mat_to_trans)
+//{
+//	mat3x3 ret;
+//	ret.M[0] = mat_to_trans.M[0];
+//	ret.M[1] = mat_to_trans.M[3];
+//	ret.M[2] = mat_to_trans.M[6];
+//	ret.M[3] = mat_to_trans.M[1];
+//	ret.M[4] = mat_to_trans.M[4];
+//	ret.M[5] = mat_to_trans.M[7];
+//	ret.M[6] = mat_to_trans.M[2];
+//	ret.M[7] = mat_to_trans.M[5];
+//	ret.M[8] = mat_to_trans.M[8];
+//
+//	return ret;
+//}
 
 void DebugDrawer::reportErrorWarning(const char* warningString)
 {

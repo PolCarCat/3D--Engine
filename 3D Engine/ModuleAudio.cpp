@@ -130,25 +130,20 @@ unsigned int ModuleAudio::LoadFx(const char* path)
 	}
 	else
 	{
-		fx.add(chunk);
-		ret = fx.count();
+		fx.push_back(chunk);
+		ret = fx.size();
 	}
 
 	return ret;
 }
 
-// Play WAV
-bool ModuleAudio::PlayFx(unsigned int id, int repeat, int channel)
+void ModuleAudio::PlayFx(Mix_Chunk* sfx) const
 {
-	bool ret = false;
-
-	Mix_Chunk* chunk = NULL;
-	
-	if(fx.at(id-1, chunk) == true)
-	{
-		Mix_PlayChannel(channel, chunk, repeat);
-		ret = true;
+	//More channels could be reserved during playtime if not enough
+	if (sfx != nullptr) {
+		if (Mix_PlayChannel(-1, sfx, 0) == -1)
+			LOG("mdAudio : Could not play sfx: %s", Mix_GetError());
 	}
-
-	return ret;
+	else
+		LOG("mdAudio : Could not play sfx, sfx was null");
 }
