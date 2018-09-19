@@ -34,6 +34,8 @@ update_status ModuleGui::PreUpdate(float dt)
 
 	ImGui::ShowDemoWindow();
 
+	ShowMenuBar();
+
 	if (ImGui::Button("close"))
 		quit = true;
 
@@ -66,7 +68,7 @@ bool ModuleGui::CleanUp()
 {
 	//ImGui_ImplSdl_Shutdown();
 
-	LOG("Cleaning UP IMGUI Module")
+	VSLOG("Cleaning UP IMGUI Module")
 		bool ret = true;
 
 	ImGui_ImplOpenGL2_Shutdown();
@@ -75,3 +77,27 @@ bool ModuleGui::CleanUp()
 
 	return true;
 }
+
+void ModuleGui::ShowMenuBar()
+{
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			ImGui::Text("Hello");
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Edit"))
+		{
+			if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
+			if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
+			ImGui::Separator();
+			if (ImGui::MenuItem("Cut", "CTRL+X")) {}
+			if (ImGui::MenuItem("Copy", "CTRL+C")) {}
+			if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+			ImGui::EndMenu();
+		}
+		ImGui::EndMainMenuBar();
+	}
+}
+
