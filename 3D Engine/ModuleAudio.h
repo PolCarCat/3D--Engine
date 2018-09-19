@@ -26,7 +26,7 @@ public:
 	unsigned int LoadFx(const char* path);
 
 	// Play a previously loaded WAV
-	void PlayFx(Mix_Chunk* sfx) const;
+	bool PlayFx(unsigned int fx, int repeat = 0, int channel = -1);
 
 private:
 

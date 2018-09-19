@@ -50,14 +50,12 @@ bool ModuleAudio::CleanUp()
 	LOG("Freeing sound FX, closing Mixer and Audio subsystem");
 
 	if(music != NULL)
+	{
 		Mix_FreeMusic(music);
+	}
 
-	Mix_AllocateChannels(0);
-
-	list<Mix_Chunk*>::iterator item;
-
-	for (item = fx.begin(); item != fx.end(); ++item)
-		Mix_FreeChunk(*item);
+	for (list<Mix_Chunk*>::iterator it = fx.begin(); it != fx.end(); ++it)
+		Mix_FreeChunk(*it);
 
 	fx.clear();
 	Mix_CloseAudio();
@@ -137,13 +135,18 @@ unsigned int ModuleAudio::LoadFx(const char* path)
 	return ret;
 }
 
-void ModuleAudio::PlayFx(Mix_Chunk* sfx) const
+// Play WAV
+bool ModuleAudio::PlayFx(unsigned int id, int repeat, int channel)
 {
-	//More channels could be reserved during playtime if not enough
-	if (sfx != nullptr) {
-		if (Mix_PlayChannel(-1, sfx, 0) == -1)
-			LOG("mdAudio : Could not play sfx: %s", Mix_GetError());
+	bool ret = false;
+
+	list<Mix_Chunk*>::iterator it = fx.begin();
+
+	if (*it + id != nullptr)
+	{
+		Mix_PlayChannel(channel, (*it), repeat);
+		ret = true;
 	}
-	else
-		LOG("mdAudio : Could not play sfx, sfx was null");
+
+	return ret;
 }

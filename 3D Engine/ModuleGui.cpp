@@ -8,7 +8,6 @@
 
 ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	//ImGui::CreateContext();
 }
 
 
@@ -19,7 +18,7 @@ ModuleGui::~ModuleGui()
 
 bool ModuleGui::Start()
 {
-
+	ImGui::CreateContext();
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
 	ImGui_ImplOpenGL2_Init();
@@ -45,7 +44,6 @@ update_status ModuleGui::PreUpdate(float dt)
 
 update_status ModuleGui::Update(float dt)
 {
-
 	return UPDATE_CONTINUE;
 }
 
