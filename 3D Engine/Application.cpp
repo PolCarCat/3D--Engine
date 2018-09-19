@@ -32,13 +32,10 @@ Application::Application()
 
 Application::~Application()
 {
-	p2List_item<Module*>* item = list_modules.getLast();
+	list<Module*>::iterator item;
 
-	while(item != NULL)
-	{
-		delete item->data;
-		item = item->prev;
-	}
+	for (item = list_modules.end(); item != list_modules.begin(); --item)
+		delete *item;
 }
 
 bool Application::Init()
@@ -46,13 +43,10 @@ bool Application::Init()
 	bool ret = true;
 
 	// Call Init() in all modules
-	p2List_item<Module*>* item = list_modules.getFirst();
+	list<Module*>::iterator item;
 
-	while(item != NULL && ret == true)
-	{
-		ret = item->data->Init();
-		item = item->next;
-	}
+	for (item = list_modules.begin(); item != list_modules.end() && ret; ++item)
+		ret = (*iterator)->
 
 	// After all Init calls we call Start() in all modules
 	LOG("Application Start --------------");

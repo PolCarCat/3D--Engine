@@ -50,16 +50,14 @@ bool ModuleAudio::CleanUp()
 	LOG("Freeing sound FX, closing Mixer and Audio subsystem");
 
 	if(music != NULL)
-	{
 		Mix_FreeMusic(music);
-	}
 
-	p2List_item<Mix_Chunk*>* item;
+	Mix_AllocateChannels(0);
 
-	for(item = fx.getFirst(); item != NULL; item = item->next)
-	{
-		Mix_FreeChunk(item->data);
-	}
+	list<Mix_Chunk*>::iterator item;
+
+	for (item = fx.begin(); item != fx.end(); ++item)
+		Mix_FreeChunk(*item);
 
 	fx.clear();
 	Mix_CloseAudio();
