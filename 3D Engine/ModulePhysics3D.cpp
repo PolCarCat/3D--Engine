@@ -153,49 +153,49 @@ bool ModulePhysics3D::CleanUp()
 }
 
 // ---------------------------------------------------------
-void ModulePhysics3D::AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB)
-{
-	btTypedConstraint* p2p = new btPoint2PointConstraint(
-		*(bodyA.body), 
-		*(bodyB.body), 
-		btVector3(anchorA.x, anchorA.y, anchorA.z), 
-		btVector3(anchorB.x, anchorB.y, anchorB.z));
-	world->addConstraint(p2p);
-	constraints.push_back(p2p);
-	p2p->setDbgDrawSize(2.0f);
-}
-
-void ModulePhysics3D::AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisA, const vec3& axisB, bool disable_collision)
-{
-	btHingeConstraint* hinge = new btHingeConstraint(
-		*(bodyA.body), 
-		*(bodyB.body), 
-		btVector3(anchorA.x, anchorA.y, anchorA.z),
-		btVector3(anchorB.x, anchorB.y, anchorB.z),
-		btVector3(axisA.x, axisA.y, axisA.z), 
-		btVector3(axisB.x, axisB.y, axisB.z));
-
-	world->addConstraint(hinge, disable_collision);
-	constraints.push_back(hinge);
-	hinge->setDbgDrawSize(2.0f);
-	hinge->enableAngularMotor(true, 10, 50);
-}
-
-mat3x3 ModulePhysics3D::translate_3x3mat(mat3x3 mat_to_trans)
-{
-	mat3x3 ret;
-	ret.M[0] = mat_to_trans.M[0];
-	ret.M[1] = mat_to_trans.M[3];
-	ret.M[2] = mat_to_trans.M[6];
-	ret.M[3] = mat_to_trans.M[1];
-	ret.M[4] = mat_to_trans.M[4];
-	ret.M[5] = mat_to_trans.M[7];
-	ret.M[6] = mat_to_trans.M[2];
-	ret.M[7] = mat_to_trans.M[5];
-	ret.M[8] = mat_to_trans.M[8];
-
-	return ret;
-}
+//void ModulePhysics3D::AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB)
+//{
+//	btTypedConstraint* p2p = new btPoint2PointConstraint(
+//		*(bodyA.body), 
+//		*(bodyB.body), 
+//		btVector3(anchorA.x, anchorA.y, anchorA.z), 
+//		btVector3(anchorB.x, anchorB.y, anchorB.z));
+//	world->addConstraint(p2p);
+//	constraints.push_back(p2p);
+//	p2p->setDbgDrawSize(2.0f);
+//}
+//
+//void ModulePhysics3D::AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisA, const vec3& axisB, bool disable_collision)
+//{
+//	btHingeConstraint* hinge = new btHingeConstraint(
+//		*(bodyA.body), 
+//		*(bodyB.body), 
+//		btVector3(anchorA.x, anchorA.y, anchorA.z),
+//		btVector3(anchorB.x, anchorB.y, anchorB.z),
+//		btVector3(axisA.x, axisA.y, axisA.z), 
+//		btVector3(axisB.x, axisB.y, axisB.z));
+//
+//	world->addConstraint(hinge, disable_collision);
+//	constraints.push_back(hinge);
+//	hinge->setDbgDrawSize(2.0f);
+//	hinge->enableAngularMotor(true, 10, 50);
+//}
+//
+//mat3x3 ModulePhysics3D::translate_3x3mat(mat3x3 mat_to_trans)
+//{
+//	mat3x3 ret;
+//	ret.M[0] = mat_to_trans.M[0];
+//	ret.M[1] = mat_to_trans.M[3];
+//	ret.M[2] = mat_to_trans.M[6];
+//	ret.M[3] = mat_to_trans.M[1];
+//	ret.M[4] = mat_to_trans.M[4];
+//	ret.M[5] = mat_to_trans.M[7];
+//	ret.M[6] = mat_to_trans.M[2];
+//	ret.M[7] = mat_to_trans.M[5];
+//	ret.M[8] = mat_to_trans.M[8];
+//
+//	return ret;
+//}
 
 void DebugDrawer::reportErrorWarning(const char* warningString)
 {
