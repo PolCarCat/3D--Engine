@@ -47,6 +47,10 @@ update_status ModuleGui::PreUpdate(float dt)
 
 	ImGui::InputInt("Min", &min);
 	ImGui::InputInt("Max", &max);
+	
+	if (max < min)
+		max = min;
+
 	if (ImGui::Button("random number between two numbers"))
 	{
 		if (max - min > 0)

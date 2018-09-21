@@ -47,21 +47,11 @@ bool Application::Init()
 		ret = (*it)->Init();
 
 	// After all Init calls we call Start() in all modules
-<<<<<<< HEAD
-	LOG("Application Start --------------");
+
+	VSLOG("Application Start --------------");
 	
 	for (list<Module*>::iterator it = list_modules.begin(); it != list_modules.end() && ret; ++it)
 		ret = (*it)->Start();
-=======
-	VSLOG("Application Start --------------");
-	item = list_modules.getFirst();
-
-	while(item != NULL && ret == true)
-	{
-		ret = item->data->Start();
-		item = item->next;
-	}
->>>>>>> master
 	
 	ms_timer.Start();
 	return ret;
