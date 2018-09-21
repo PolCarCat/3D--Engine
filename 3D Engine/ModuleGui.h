@@ -21,6 +21,8 @@ public:
 	update_status PostUpdate(float dt);
 
 	bool CleanUp();
+	void ShowMenuBar();
+	void AddLogWindow();
 
 private:
 	bool quit = false;
