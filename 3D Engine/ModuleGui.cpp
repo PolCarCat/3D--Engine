@@ -39,6 +39,22 @@ update_status ModuleGui::PreUpdate(float dt)
 	if (ImGui::Button("close"))
 		quit = true;
 
+	if (ImGui::Button("random float"))
+	{
+		random_f = ldexp(pcg32_random_r(&rng), -32);
+	}
+	ImGui::Text("%.2f", random_f);
+
+	ImGui::InputInt("Min", &min);
+	ImGui::InputInt("Max", &max);
+	if (ImGui::Button("random number between two numbers"))
+	{
+		if (max - min > 0)
+			random_bounded = (int)pcg32_boundedrand_r(&rng, max - min + 1) + min;
+		else
+			random_bounded = 0;
+	}
+	ImGui::Text("%d", random_bounded);
 	return UPDATE_CONTINUE;
 }
 
@@ -46,7 +62,6 @@ update_status ModuleGui::PreUpdate(float dt)
 
 update_status ModuleGui::Update(float dt)
 {
-
 	return UPDATE_CONTINUE;
 }
 

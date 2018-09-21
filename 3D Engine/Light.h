@@ -1,7 +1,6 @@
 
 #pragma once
 #include "Color.h"
-#include "glmath.h"
 
 struct Light
 {
@@ -14,7 +13,6 @@ struct Light
 
 	Color ambient;
 	Color diffuse;
-	vec3 position;
 
 	int ref;
 	bool on;
