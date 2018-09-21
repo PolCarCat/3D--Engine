@@ -1,0 +1,23 @@
+version: 1.0.{build}
+branches:
+  only:
+  - develop
+  - master
+image: Visual Studio 2017
+configuration:
+- Debug
+- Release
+build:
+  verbosity: minimal
+before_package:
+- ps: Copy-Item C:\projects\3D--Engine\$env:CONFIGURATION\3D--Engine.exe C:\projects\3D--Engine\Game\.
+artifacts:
+- path: 3D Engine\Game
+  name: game_files
+  type: WebDeployPackage
+deploy:
+- provider: GitHub
+  auth_token:
+    secure: Rz1LCoPhCzLLNr4ndqTt3LmP5uMiqE3G4v+9AJmJiwiGlOmCvN0jhavjKFCDJ737
+  artifact: game-files
+  draft: true
