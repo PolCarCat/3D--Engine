@@ -84,19 +84,11 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 
 			if(pbodyA && pbodyB)
 			{
-				p2List_item<Module*>* item = pbodyA->collision_listeners.getFirst();
-				while(item)
-				{
-					item->data->OnCollision(pbodyA, pbodyB);
-					item = item->next;
-				}
+				for (list<Module*>::iterator it = pbodyA->collision_listeners.begin(); it != pbodyA->collision_listeners.end(); ++it)
+					(*it)->OnCollision(pbodyA, pbodyB);
 
-				item = pbodyB->collision_listeners.getFirst();
-				while(item)
-				{
-					item->data->OnCollision(pbodyB, pbodyA);
-					item = item->next;
-				}
+				for (list<Module*>::iterator it = pbodyB->collision_listeners.begin(); it != pbodyB->collision_listeners.end(); ++it)
+					(*it)->OnCollision(pbodyB, pbodyA);
 			}
 		}
 	}
@@ -131,26 +123,26 @@ bool ModulePhysics3D::CleanUp()
 		world->removeCollisionObject(obj);
 	}
 
-	for(p2List_item<btTypedConstraint*>* item = constraints.getFirst(); item; item = item->next)
+	for(list<btTypedConstraint*>::iterator it = constraints.begin(); it != constraints.end(); ++it)
 	{
-		world->removeConstraint(item->data);
-		delete item->data;
+		world->removeConstraint((*it));
+		delete (*it);
 	}
 	
 	constraints.clear();
 
-	for(p2List_item<btDefaultMotionState*>* item = motions.getFirst(); item; item = item->next)
-		delete item->data;
+	for (list<btDefaultMotionState*>::iterator it = motions.begin(); it != motions.end(); ++it)
+		delete (*it);
 
 	motions.clear();
 
-	for(p2List_item<btCollisionShape*>* item = shapes.getFirst(); item; item = item->next)
-		delete item->data;
+	for (list<btCollisionShape*>::iterator it = shapes.begin(); it != shapes.end(); ++it)
+		delete (*it);
 
 	shapes.clear();
 
-	for(p2List_item<PhysBody3D*>* item = bodies.getFirst(); item; item = item->next)
-		delete item->data;
+	for (list<PhysBody3D*>::iterator it = bodies.begin(); it != bodies.end(); ++it)
+		delete (*it);
 
 	bodies.clear();
 
@@ -161,49 +153,49 @@ bool ModulePhysics3D::CleanUp()
 }
 
 // ---------------------------------------------------------
-void ModulePhysics3D::AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB)
-{
-	btTypedConstraint* p2p = new btPoint2PointConstraint(
-		*(bodyA.body), 
-		*(bodyB.body), 
-		btVector3(anchorA.x, anchorA.y, anchorA.z), 
-		btVector3(anchorB.x, anchorB.y, anchorB.z));
-	world->addConstraint(p2p);
-	constraints.add(p2p);
-	p2p->setDbgDrawSize(2.0f);
-}
-
-void ModulePhysics3D::AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisA, const vec3& axisB, bool disable_collision)
-{
-	btHingeConstraint* hinge = new btHingeConstraint(
-		*(bodyA.body), 
-		*(bodyB.body), 
-		btVector3(anchorA.x, anchorA.y, anchorA.z),
-		btVector3(anchorB.x, anchorB.y, anchorB.z),
-		btVector3(axisA.x, axisA.y, axisA.z), 
-		btVector3(axisB.x, axisB.y, axisB.z));
-
-	world->addConstraint(hinge, disable_collision);
-	constraints.add(hinge);
-	hinge->setDbgDrawSize(2.0f);
-	hinge->enableAngularMotor(true, 10, 50);
-}
-
-mat3x3 ModulePhysics3D::translate_3x3mat(mat3x3 mat_to_trans)
-{
-	mat3x3 ret;
-	ret.M[0] = mat_to_trans.M[0];
-	ret.M[1] = mat_to_trans.M[3];
-	ret.M[2] = mat_to_trans.M[6];
-	ret.M[3] = mat_to_trans.M[1];
-	ret.M[4] = mat_to_trans.M[4];
-	ret.M[5] = mat_to_trans.M[7];
-	ret.M[6] = mat_to_trans.M[2];
-	ret.M[7] = mat_to_trans.M[5];
-	ret.M[8] = mat_to_trans.M[8];
-
-	return ret;
-}
+//void ModulePhysics3D::AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB)
+//{
+//	btTypedConstraint* p2p = new btPoint2PointConstraint(
+//		*(bodyA.body), 
+//		*(bodyB.body), 
+//		btVector3(anchorA.x, anchorA.y, anchorA.z), 
+//		btVector3(anchorB.x, anchorB.y, anchorB.z));
+//	world->addConstraint(p2p);
+//	constraints.push_back(p2p);
+//	p2p->setDbgDrawSize(2.0f);
+//}
+//
+//void ModulePhysics3D::AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisA, const vec3& axisB, bool disable_collision)
+//{
+//	btHingeConstraint* hinge = new btHingeConstraint(
+//		*(bodyA.body), 
+//		*(bodyB.body), 
+//		btVector3(anchorA.x, anchorA.y, anchorA.z),
+//		btVector3(anchorB.x, anchorB.y, anchorB.z),
+//		btVector3(axisA.x, axisA.y, axisA.z), 
+//		btVector3(axisB.x, axisB.y, axisB.z));
+//
+//	world->addConstraint(hinge, disable_collision);
+//	constraints.push_back(hinge);
+//	hinge->setDbgDrawSize(2.0f);
+//	hinge->enableAngularMotor(true, 10, 50);
+//}
+//
+//mat3x3 ModulePhysics3D::translate_3x3mat(mat3x3 mat_to_trans)
+//{
+//	mat3x3 ret;
+//	ret.M[0] = mat_to_trans.M[0];
+//	ret.M[1] = mat_to_trans.M[3];
+//	ret.M[2] = mat_to_trans.M[6];
+//	ret.M[3] = mat_to_trans.M[1];
+//	ret.M[4] = mat_to_trans.M[4];
+//	ret.M[5] = mat_to_trans.M[7];
+//	ret.M[6] = mat_to_trans.M[2];
+//	ret.M[7] = mat_to_trans.M[5];
+//	ret.M[8] = mat_to_trans.M[8];
+//
+//	return ret;
+//}
 
 void DebugDrawer::reportErrorWarning(const char* warningString)
 {

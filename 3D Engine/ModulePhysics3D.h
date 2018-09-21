@@ -1,8 +1,6 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
-#include "p2List.h"
-#include "glmath.h"
 
 #include "Bullet/include/btBulletDynamicsCommon.h"
 
@@ -27,10 +25,10 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	void AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB);
-	void AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisS, const vec3& axisB, bool disable_collision = false);
+	//void AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB);
+	//void AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisS, const vec3& axisB, bool disable_collision = false);
 	//Usefull functions
-	mat3x3 translate_3x3mat(mat3x3 mat_to_trans);
+	//mat3x3 translate_3x3mat(mat3x3 mat_to_trans);
 	bool debug;
 private:
 
@@ -43,10 +41,10 @@ private:
 	btDiscreteDynamicsWorld*			world;
 	btDefaultVehicleRaycaster*			vehicle_raycaster;
 
-	p2List<btCollisionShape*> shapes;
-	p2List<PhysBody3D*> bodies;
-	p2List<btDefaultMotionState*> motions;
-	p2List<btTypedConstraint*> constraints;
+	list<btCollisionShape*> shapes;
+	list<PhysBody3D*> bodies;
+	list<btDefaultMotionState*> motions;
+	list<btTypedConstraint*> constraints;
 };
 
 class DebugDrawer : public btIDebugDraw
