@@ -13,11 +13,11 @@ before_package:
 - ps: Copy-Item C:\projects\3D--Engine\3DEngine\$env:CONFIGURATION\3DEngine.exe C:\projects\3D--Engine\3DEngine\Game\.
 artifacts:
 - path: 3D Engine\Game
-  name: game_files
+  name: 3DEngine
   type: WebDeployPackage
 deploy:
 - provider: GitHub
   auth_token:
     secure: Rz1LCoPhCzLLNr4ndqTt3LmP5uMiqE3G4v+9AJmJiwiGlOmCvN0jhavjKFCDJ737
-  artifact: game-files
+  artifact: 3DEngine
   draft: true
