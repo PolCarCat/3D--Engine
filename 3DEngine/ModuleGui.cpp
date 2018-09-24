@@ -38,6 +38,14 @@ update_status ModuleGui::PreUpdate(float dt)
 
 	if (ImGui::BeginMainMenuBar())
 	{
+		if (ImGui::BeginMenu("File"))
+		{
+			if (ImGui::MenuItem("Quit"))
+				quit = true;
+
+			ImGui::EndMenu();
+		}
+
 		if (ImGui::BeginMenu("Help"))
 		{
 			if (ImGui::MenuItem("Show/Hide Gui Demo"))
@@ -48,6 +56,8 @@ update_status ModuleGui::PreUpdate(float dt)
 				ShellExecute(NULL, "open", release_link, NULL, NULL, SW_SHOWNORMAL);
 			if (ImGui::MenuItem("Report a bug"))
 				ShellExecute(NULL, "open", issues_link, NULL, NULL, SW_SHOWNORMAL);
+			if (ImGui::MenuItem("About"))
+				about = !about;
 
 			ImGui::EndMenu();
 		}
@@ -55,8 +65,19 @@ update_status ModuleGui::PreUpdate(float dt)
 		ImGui::EndMainMenuBar();
 	}
 
+	if (about)
+	{
+		ImGui::Begin("About");
+
+		ImGui::Text("-NAME OF ENGINE- 0.1\n\n\nEngine made for 3rd year University subject.\n\nBy Pol Carrera and Genis Bayo.\n\nUsing -LIBRARIES AND VERIONS-.\n\nMIT License (See 'LICENSE' for more information).");
+
+		ImGui::End();
+	}
+
 	if (showdemo)
 		ImGui::ShowDemoWindow();
+
+	ImGui::Begin("Random Number Generator");
 
 	ImGui::Text("%.2f", random_f);
 
@@ -65,6 +86,13 @@ update_status ModuleGui::PreUpdate(float dt)
 		random_f = ldexp(pcg32_random_r(&rng), -32);
 	}
 
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
 	ImGui::Spacing();
 
 	ImGui::SliderInt("Min", &min, 0, 100);
@@ -83,10 +111,7 @@ update_status ModuleGui::PreUpdate(float dt)
 			random_bounded = 0;
 	}
 
-	ImGui::Spacing();
-
-	if (ImGui::Button("close"))
-		quit = true;
+	ImGui::End();
 
 	return UPDATE_CONTINUE;
 }

@@ -35,4 +35,5 @@ private:
 	char* issues_link;
 	char* wiki_link;
 	bool showdemo = false;
+	bool about = false;
 };
