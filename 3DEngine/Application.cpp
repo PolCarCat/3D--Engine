@@ -52,14 +52,19 @@ bool Application::Init()
 	
 	for (list<Module*>::iterator it = list_modules.begin(); it != list_modules.end() && ret; ++it)
 		ret = (*it)->Start();
-	
+
+	sec_timer.Start();
 	ms_timer.Start();
+
 	return ret;
 }
 
 // ---------------------------------------------
 void Application::PrepareUpdate()
 {
+	ReadFps();
+	ReadMs();
+
 	dt = (float)ms_timer.Read() / 1000.0f;
 	ms_timer.Start();
 }
@@ -101,4 +106,31 @@ bool Application::CleanUp()
 void Application::AddModule(Module* mod)
 {
 	list_modules.push_back(mod);
+}
+
+void Application::ReadFps()
+{
+	if (sec_timer.Read() < 1000)
+		last_sec_frames++;
+	else
+	{
+		fps[fps_counter] = last_sec_frames;
+		last_sec_frames = 0;
+		fps_counter++;
+
+		if (fps_counter >= 100)
+			fps_counter = 0;
+
+		sec_timer.Start();
+	}
+}
+
+void Application::ReadMs()
+{
+	ms[ms_counter] = (float)ms_timer.Read();
+
+	ms_counter++;
+
+	if (ms_counter >= 100)
+		ms_counter = 0;
 }

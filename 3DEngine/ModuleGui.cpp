@@ -74,6 +74,18 @@ update_status ModuleGui::PreUpdate(float dt)
 		ImGui::End();
 	}
 
+	ImGui::Begin("Configuration");
+
+		char plot[50];
+
+		sprintf_s(plot, 50, "Framerate %.1f", App->fps[App->fps_counter - 1]);
+		ImGui::PlotHistogram("Framerate", &App->fps[0], 50, 0, plot, 0.0f, 100.0f, ImVec2(310, 100));
+		ImGui::Spacing();
+		sprintf_s(plot, 50, "Milliseconds %.1f", App->ms[App->ms_counter - 1]);
+		ImGui::PlotHistogram("Milliseconds", &App->ms[0], 50, 0, plot, 0.0f, 100.0f, ImVec2(310, 100));
+
+	ImGui::End();
+
 	if (showdemo)
 		ImGui::ShowDemoWindow();
 
