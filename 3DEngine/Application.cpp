@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Parson/parson.h"
 
 Application::Application()
 {
@@ -28,6 +29,11 @@ Application::Application()
 
 	// Renderer last!
 	AddModule(renderer3D);
+
+	//JsonDoc
+	jsondoc.Init("config.json");
+	LoadGame();
+
 }
 
 Application::~Application()
@@ -72,6 +78,11 @@ void Application::PrepareUpdate()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+	if (want_to_save == true)
+		SaveNow();
+
+	if (want_to_load == true)
+		LoadNow();
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
@@ -133,4 +144,47 @@ void Application::ReadMs()
 
 	if (ms_counter >= 100)
 		ms_counter = 0;
+}
+
+// Load / Save
+void Application::LoadGame()
+{
+
+
+	want_to_load = true;
+}
+
+// ---------------------------------------
+void Application::SaveGame() const
+{
+	
+	want_to_save = true;
+}
+
+// ---------------------------------------
+
+
+bool Application::LoadNow()
+{
+	bool ret = false;
+
+
+
+	for (list<Module*>::iterator it = list_modules.begin(); it != list_modules.end(); ++it)
+		(*it)->Load(jsondoc);
+
+	want_to_load = false;
+	return ret;
+}
+
+bool Application::SaveNow() const
+{
+	bool ret = true;
+
+	for (list<Module*>::const_iterator it = list_modules.begin(); it != list_modules.end(); ++it)
+		(*it)->Save(jsondoc);
+
+
+	want_to_save = false;
+	return ret;
 }
