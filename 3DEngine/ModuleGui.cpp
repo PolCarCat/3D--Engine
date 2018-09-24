@@ -84,6 +84,15 @@ update_status ModuleGui::PreUpdate(float dt)
 		sprintf_s(plot, 50, "Milliseconds %.1f", App->ms[App->ms_counter - 1]);
 		ImGui::PlotHistogram("Milliseconds", &App->ms[0], 50, 0, plot, 0.0f, 100.0f, ImVec2(310, 100));
 
+		ImGui::Spacing();
+
+		ImGui::SliderInt("Width", &App->window->w, 50, 4000);
+		ImGui::SliderInt("Height", &App->window->h, 50, 4000);
+
+		ImGui::Checkbox("FullScreen", &App->window->FS);
+		ImGui::Checkbox("Resizable", &App->window->res);
+		ImGui::Checkbox("Bordered", &App->window->bord);
+
 	ImGui::End();
 
 	if (showdemo)

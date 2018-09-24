@@ -29,6 +29,8 @@ bool ModuleWindow::Init()
 		//Create window
 		int width = SCREEN_WIDTH * SCREEN_SIZE;
 		int height = SCREEN_HEIGHT * SCREEN_SIZE;
+		w = width;
+		h = height;
 		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 		//Use OpenGL 2.1
@@ -70,6 +72,30 @@ bool ModuleWindow::Init()
 	}
 
 	return ret;
+}
+
+update_status ModuleWindow::Update(float dt)
+{
+	if (res)
+		resizable = SDL_TRUE;
+	else
+		resizable = SDL_FALSE;
+	if (FS)
+		fullscreen = SDL_TRUE;
+	else
+		fullscreen = SDL_FALSE;
+	if (bord)
+		bordered = SDL_TRUE;
+	else
+		bordered = SDL_FALSE;
+
+	SDL_SetWindowBrightness(window, brightness);
+	SDL_SetWindowSize(window, w * SCREEN_SIZE, h * SCREEN_SIZE);
+	SDL_SetWindowResizable(window, resizable);
+	SDL_SetWindowBordered(window, bordered);
+	SDL_SetWindowFullscreen(window, fullscreen);
+
+	return UPDATE_CONTINUE;
 }
 
 // Called before quitting

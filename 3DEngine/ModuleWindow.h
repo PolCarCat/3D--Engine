@@ -15,6 +15,8 @@ public:
 	// Destructor
 	virtual ~ModuleWindow();
 
+	update_status Update(float dt);
+
 	bool Init();
 	bool CleanUp();
 
@@ -26,6 +28,17 @@ public:
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface;
+
+	int w;
+	int h;
+	int brightness = 50;
+	bool res = true;
+	bool bord = true;
+	bool FS = false;
+	SDL_bool resizable = SDL_TRUE;
+	//SDL_bool full_desktop = SDL_FALSE;
+	SDL_bool bordered = SDL_TRUE;
+	SDL_bool fullscreen = SDL_FALSE;
 };
 
 #endif // __ModuleWindow_H__
