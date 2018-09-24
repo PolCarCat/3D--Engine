@@ -93,6 +93,33 @@ update_status ModuleGui::PreUpdate(float dt)
 		ImGui::Checkbox("Resizable", &App->window->res);
 		ImGui::Checkbox("Bordered", &App->window->bord);
 
+		ImGui::Spacing();
+
+		ImGui::Text("%d CPU's (%dkb Cache)\nSystem RAM: %.0fGb\nCaps:", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize(), (float)SDL_GetSystemRAM() / 1000);
+
+		if (SDL_Has3DNow())
+			ImGui::Text("3DNow");
+		if (SDL_HasAVX())
+			ImGui::Text("AVX");
+		if (SDL_HasAVX2())
+			ImGui::Text("AVX2");
+		if (SDL_HasAltiVec())
+			ImGui::Text("AltiVec");
+		if (SDL_HasMMX())
+			ImGui::Text("MMX");
+		if (SDL_HasRDTSC())
+			ImGui::Text("RDTSC");
+		if (SDL_HasSSE())
+			ImGui::Text("SSE");
+		if (SDL_HasSSE2())
+			ImGui::Text("SSE2");
+		if (SDL_HasSSE3())
+			ImGui::Text("SSE3");
+		if (SDL_HasSSE41())
+			ImGui::Text("SSE41");
+		if (SDL_HasSSE42())
+			ImGui::Text("SSE42");
+
 	ImGui::End();
 
 	if (showdemo)
