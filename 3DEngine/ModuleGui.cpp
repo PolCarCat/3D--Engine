@@ -23,6 +23,10 @@ bool ModuleGui::Start()
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
 	ImGui_ImplOpenGL2_Init();
 
+	release_link = "https://github.com/PolCarCat/3D--Engine/releases";
+	wiki_link = "https://github.com/PolCarCat/3D--Engine/wiki";
+	issues_link = "https://github.com/PolCarCat/3D--Engine/issues";
+
 	return true;
 }
 
@@ -32,33 +36,58 @@ update_status ModuleGui::PreUpdate(float dt)
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 
-	ImGui::ShowDemoWindow();
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("Help"))
+		{
+			if (ImGui::MenuItem("Show/Hide Gui Demo"))
+				showdemo = !showdemo;
+			if (ImGui::MenuItem("Go to our Wiki"))
+				ShellExecute(NULL, "open", wiki_link, NULL, NULL, SW_SHOWNORMAL);
+			if (ImGui::MenuItem("Download our latest release"))
+				ShellExecute(NULL, "open", release_link, NULL, NULL, SW_SHOWNORMAL);
+			if (ImGui::MenuItem("Report a bug"))
+				ShellExecute(NULL, "open", issues_link, NULL, NULL, SW_SHOWNORMAL);
 
-	ShowMenuBar();
+			ImGui::EndMenu();
+		}
+		
+		ImGui::EndMainMenuBar();
+	}
 
-	if (ImGui::Button("close"))
-		quit = true;
+	if (showdemo)
+		ImGui::ShowDemoWindow();
 
-	if (ImGui::Button("random float"))
+	ImGui::Text("%.2f", random_f);
+
+	if (ImGui::Button("Generate random float between 0 and 1"))
 	{
 		random_f = ldexp(pcg32_random_r(&rng), -32);
 	}
-	ImGui::Text("%.2f", random_f);
 
-	ImGui::InputInt("Min", &min);
-	ImGui::InputInt("Max", &max);
-	
+	ImGui::Spacing();
+
+	ImGui::SliderInt("Min", &min, 0, 100);
+	ImGui::SliderInt("Max", &max, 0, 100);
+
 	if (max < min)
 		max = min;
 
-	if (ImGui::Button("random number between two numbers"))
+	ImGui::Text("%d", random_bounded);
+
+	if (ImGui::Button("Generate random integer between two numbers"))
 	{
 		if (max - min > 0)
 			random_bounded = (int)pcg32_boundedrand_r(&rng, max - min + 1) + min;
 		else
 			random_bounded = 0;
 	}
-	ImGui::Text("%d", random_bounded);
+
+	ImGui::Spacing();
+
+	if (ImGui::Button("close"))
+		quit = true;
+
 	return UPDATE_CONTINUE;
 }
 

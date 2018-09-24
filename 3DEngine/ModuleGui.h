@@ -31,4 +31,8 @@ private:
 	int max = 0;
 	int min = 0;
 	float random_f = 0;
+	char* release_link;
+	char* issues_link;
+	char* wiki_link;
+	bool showdemo = false;
 };
