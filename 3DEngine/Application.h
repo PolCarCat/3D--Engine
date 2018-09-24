@@ -27,10 +27,19 @@ public:
 	ModuleCamera3D* camera;
 	ModulePhysics3D* physics;
 	ModuleGui* imgui;
+
 	JsonDoc jsondoc;
+
+	int fps_counter = 0;
+	int ms_counter = 0;
+	float last_sec_frames = 0;
+	float fps[100];
+	float ms[100];
+
 
 private:
 
+	Timer	sec_timer;
 	Timer	ms_timer;
 	float	dt;
 	list<Module*> list_modules;
@@ -49,4 +58,6 @@ private:
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
+	void ReadFps();
+	void ReadMs();
 };

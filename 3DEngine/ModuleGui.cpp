@@ -74,6 +74,54 @@ update_status ModuleGui::PreUpdate(float dt)
 		ImGui::End();
 	}
 
+	ImGui::Begin("Configuration");
+
+		char plot[50];
+
+		sprintf_s(plot, 50, "Framerate %.1f", App->fps[App->fps_counter - 1]);
+		ImGui::PlotHistogram("Framerate", &App->fps[0], 50, 0, plot, 0.0f, 100.0f, ImVec2(310, 100));
+		ImGui::Spacing();
+		sprintf_s(plot, 50, "Milliseconds %.1f", App->ms[App->ms_counter - 1]);
+		ImGui::PlotHistogram("Milliseconds", &App->ms[0], 50, 0, plot, 0.0f, 100.0f, ImVec2(310, 100));
+
+		ImGui::Spacing();
+
+		ImGui::SliderInt("Width", &App->window->w, 50, 4000);
+		ImGui::SliderInt("Height", &App->window->h, 50, 4000);
+
+		ImGui::Checkbox("FullScreen", &App->window->FS);
+		ImGui::Checkbox("Resizable", &App->window->res);
+		ImGui::Checkbox("Bordered", &App->window->bord);
+
+		ImGui::Spacing();
+
+		ImGui::Text("%d CPU's (%dkb Cache)\nSystem RAM: %.0fGb\nCaps:", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize(), (float)SDL_GetSystemRAM() / 1000);
+
+		if (SDL_Has3DNow())
+			ImGui::Text("3DNow");
+		if (SDL_HasAVX())
+			ImGui::Text("AVX");
+		if (SDL_HasAVX2())
+			ImGui::Text("AVX2");
+		if (SDL_HasAltiVec())
+			ImGui::Text("AltiVec");
+		if (SDL_HasMMX())
+			ImGui::Text("MMX");
+		if (SDL_HasRDTSC())
+			ImGui::Text("RDTSC");
+		if (SDL_HasSSE())
+			ImGui::Text("SSE");
+		if (SDL_HasSSE2())
+			ImGui::Text("SSE2");
+		if (SDL_HasSSE3())
+			ImGui::Text("SSE3");
+		if (SDL_HasSSE41())
+			ImGui::Text("SSE41");
+		if (SDL_HasSSE42())
+			ImGui::Text("SSE42");
+
+	ImGui::End();
+
 	if (showdemo)
 		ImGui::ShowDemoWindow();
 
