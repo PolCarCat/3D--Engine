@@ -85,6 +85,7 @@
     <ClInclude Include="ImGui\imstb_rectpack.h" />
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
+    <ClInclude Include="JsonDoc.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="MathGeoLib\Algorithm\Random\LCG.h" />
     <ClInclude Include="MathGeoLib\Geometry\AABB.h" />
@@ -153,6 +154,7 @@
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="Parson\parson.h" />
     <ClInclude Include="pcg-c-basic-0.9\pcg_basic.h" />
     <ClInclude Include="PhysBody3D.h" />
     <ClInclude Include="Timer.h" />
@@ -166,6 +168,7 @@
     <ClCompile Include="ImGui\imgui_impl_opengl2.cpp" />
     <ClCompile Include="ImGui\imgui_impl_sdl.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="JsonDoc.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -207,6 +210,7 @@
     <ClCompile Include="ModuleRenderer3D.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="Parson\parson.c" />
     <ClCompile Include="pcg-c-basic-0.9\pcg_basic.c" />
     <ClCompile Include="PhysBody3D.cpp" />
     <ClCompile Include="Timer.cpp" />

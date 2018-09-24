@@ -28,6 +28,10 @@ Application::Application()
 
 	// Renderer last!
 	AddModule(renderer3D);
+
+	//JsonDoc
+	jsondoc.Init("test_5.txt");
+
 }
 
 Application::~Application()
