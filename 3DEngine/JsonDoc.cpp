@@ -26,6 +26,8 @@ bool JsonDoc::Init(const char* _path)
 
 	jObject = json_value_get_object(root);
 
+	//Test
+	json_object_t* obj2 = json_object_get_object(jObject, "Window");
 
 	return ret;
 }
@@ -36,83 +38,53 @@ void JsonDoc::CleanUp()
 }
 
 
-json_object_t* JsonDoc::GetObject(const char* _name)
+json_object_t* JsonDoc::GetObj(const char* _name)
 {
 	json_object_t* obj = nullptr;
-	//obj = json_object_get_object(jObject, _name);
+	obj = json_object_get_object(jObject, _name);
 
-	bool end = false;
-	int i = 0;
-	while (!end)
-	{
-		
-	}
-	
 	return obj;
+}
+
+json_object_t* GetObjObj(json_object_t* _obj, const char* _name)
+{
+	return json_object_get_object(_obj, _name);
 }
 
 int	JsonDoc::GetIntFromObj(const char* _obj, const char* _name)
 {
-	json_object_t* obj = GetObject(_obj);
+	json_object_t* obj = GetObj(_obj);
 	return (int)json_object_get_number(obj, _name);
 }
 
 const char* JsonDoc::GetCharFromObj(const char* _obj, const char* _name)
 {
-	json_object_t* obj = GetObject(_obj);
+	json_object_t* obj = GetObj(_obj);
 	return json_object_dotget_string(obj, _name);
 }
 
-
-void print_commits_info(const char *username, const char *repo) {
-	JSON_Value *root_value;
-	JSON_Array *commits;
-	JSON_Object *commit;
-	size_t i;
-
-	char curl_command[512];
-	char cleanup_command[256];
-	char output_filename[] = "commits.json";
-
-	/* it ain't pretty, but it's not a libcurl tutorial */
-	sprintf(curl_command,
-		"curl -s \"https://api.github.com/repos/%s/%s/commits\" > %s",
-		username, repo, output_filename);
-	sprintf(cleanup_command, "rm -f %s", output_filename);
-	system(curl_command);
-
-	/* parsing json and validating output */
-	root_value = json_parse_file(output_filename);
-	if (json_value_get_type(root_value) != JSONArray) {
-		system(cleanup_command);
-		return;
-	}
-
-	/* getting array from root value and printing commit info */
-	commits = json_value_get_array(root_value);
-	printf("%-10.10s %-10.10s %s\n", "Date", "SHA", "Author");
-
-
-	/* cleanup code */
-	json_value_free(root_value);
-	system(cleanup_command);
+int	GetIntFromObj(json_object_t* _obj, const char* _name)
+{
+	return (int)json_object_get_number(_obj, _name);
 }
 
-void persistence_example(void) {
-	JSON_Value *schema = json_parse_string("{\"name\":\"\"}");
-	JSON_Value *user_data = json_parse_file("user_data.json");
-	char buf[256];
-	const char *name = NULL;
-	if (user_data == NULL || json_validate(schema, user_data) != JSONSuccess) {
-		puts("Enter your name:");
-		scanf("%s", buf);
-		user_data = json_value_init_object();
-		json_object_set_string(json_object(user_data), "name", buf);
-		json_serialize_to_file(user_data, "user_data.json");
+const char* GetCharFromObj(json_object_t* _obj, const char* _name)
+{
+	return json_object_dotget_string(_obj, _name);
+}
+
+
+int GetObjIntValue(json_object_t* _obj, const char* _name)
+{
+	//Returns -1 if not correcty
+
+	JSON_Value* v = json_object_get_value(_obj, _name);
+	int i = -1;
+
+	if (json_value_get_type(v) == JSONNumber)
+	{
+		i = json_value_get_number(v);
 	}
-	name = json_object_get_string(json_object(user_data), "name");
-	printf("Hello, %s.", name);
-	json_value_free(schema);
-	json_value_free(user_data);
-	return;
+
+	return i;
 }

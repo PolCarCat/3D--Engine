@@ -19,6 +19,8 @@ public:
 
 	bool Init();
 	bool CleanUp();
+	bool Load(JsonDoc doc);
+	bool Save(JsonDoc doc) const;
 
 	void SetTitle(const char* title);
 

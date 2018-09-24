@@ -37,13 +37,6 @@ public:
 	float ms[100];
 
 
-private:
-
-	Timer	sec_timer;
-	Timer	ms_timer;
-	float	dt;
-	list<Module*> list_modules;
-
 public:
 
 	Application();
@@ -52,6 +45,19 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
+	void LoadGame();
+	void SaveGame() const;
+
+private:
+
+	Timer	sec_timer;
+	Timer	ms_timer;
+	float	dt;
+	list<Module*> list_modules;
+
+	mutable bool		want_to_save = false;
+	bool				want_to_load = false;
+	bool				want_to_reload = false;
 
 private:
 
@@ -60,4 +66,7 @@ private:
 	void FinishUpdate();
 	void ReadFps();
 	void ReadMs();
+	bool LoadNow();
+	bool SaveNow() const;
+
 };

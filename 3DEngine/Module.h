@@ -1,5 +1,7 @@
 #pragma once
 #include "Globals.h"
+#include "Parson/parson.h"
+#include "JsonDoc.h"
 
 class Application;
 struct PhysBody3D;
@@ -47,6 +49,17 @@ public:
 	{ 
 		return true; 
 	}
+
+	virtual bool Load(JsonDoc doc)
+	{
+		return true;
+	}
+
+	virtual bool Save(JsonDoc doc) const
+	{
+		return true;
+	}
+
 
 	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	{}
