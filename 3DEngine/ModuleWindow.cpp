@@ -93,9 +93,23 @@ update_status ModuleWindow::Update(float dt)
 		bordered = SDL_FALSE;
 
 	SDL_SetWindowBrightness(window, brightness);
-	SDL_SetWindowSize(window, w * SCREEN_SIZE, h * SCREEN_SIZE);
 	SDL_SetWindowResizable(window, resizable);
 	SDL_SetWindowBordered(window, bordered);
+
+	if (!fullscreen)
+	{
+		SDL_SetWindowSize(window, w * SCREEN_SIZE, h * SCREEN_SIZE);
+		resized = false;
+	}
+
+	if (fullscreen && !resized)
+	{
+		SDL_GetDisplayMode(0, 0, &DM);
+		SDL_SetWindowSize(window, DM.w * SCREEN_SIZE, DM.h * SCREEN_SIZE);
+
+		resized = true;
+	}
+
 	SDL_SetWindowFullscreen(window, fullscreen);
 
 	return UPDATE_CONTINUE;
