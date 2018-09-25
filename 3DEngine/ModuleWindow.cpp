@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "JsonDoc.h"
-
+#include "Parson\parson.h"
 
 ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -127,10 +127,15 @@ bool ModuleWindow::Load(JsonDoc doc)
 {
 	json_object_t* winObj = App->jsondoc.GetObj("Window");
 	
-	//json_object_t* widthobj = App->jsondoc.GetObjObj(winObj, "Width");
+	JSON_Value* v = json_object_get_value(winObj, "Width");
+	int i = -1;
 
-	//int w = App->jsondoc.GetIntFromObj(winObj, "Width");
+	if (json_value_get_type(v) == JSONNumber)
+	{
+		i = json_value_get_number(v);
+	}
 
+	
 
 	return true;
 }
