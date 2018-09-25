@@ -86,8 +86,9 @@ update_status ModuleGui::PreUpdate(float dt)
 
 		ImGui::Spacing();
 
-		ImGui::SliderInt("Width", &App->window->w, 50, 4000);
-		ImGui::SliderInt("Height", &App->window->h, 50, 4000);
+		ImGui::SliderFloat("Brightness", &App->window->brightness, 0, 1);
+		ImGui::SliderInt("Width", &App->window->w, 100, 4000);
+		ImGui::SliderInt("Height", &App->window->h, 100, 4000);
 
 		ImGui::Checkbox("FullScreen", &App->window->FS);
 		ImGui::Checkbox("Resizable", &App->window->res);
