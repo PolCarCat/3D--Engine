@@ -11,8 +11,12 @@ class Module
 private :
 	bool enabled;
 
+protected:
+	std::string name;
 public:
 	Application* App;
+	void SetName(const char* _name) { name = _name; };
+	const char* GetName() { return name.c_str(); };
 
 	Module(Application* parent, bool start_enabled = true) : App(parent)
 	{}
@@ -50,12 +54,12 @@ public:
 		return true; 
 	}
 
-	virtual bool Load(JsonDoc doc)
+	virtual bool Load(json_object_t* doc)
 	{
 		return true;
 	}
 
-	virtual bool Save(JsonDoc doc) const
+	virtual bool Save(json_object_t* doc) const
 	{
 		return true;
 	}

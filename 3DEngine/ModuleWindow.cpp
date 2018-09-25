@@ -2,12 +2,13 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "JsonDoc.h"
-
+#include "Parson\parson.h"
 
 ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	window = NULL;
 	screen_surface = NULL;
+	name = "Window";
 }
 
 // Destructor
@@ -92,9 +93,23 @@ update_status ModuleWindow::Update(float dt)
 		bordered = SDL_FALSE;
 
 	SDL_SetWindowBrightness(window, brightness);
-	SDL_SetWindowSize(window, w * SCREEN_SIZE, h * SCREEN_SIZE);
 	SDL_SetWindowResizable(window, resizable);
 	SDL_SetWindowBordered(window, bordered);
+
+	if (!fullscreen)
+	{
+		SDL_SetWindowSize(window, w * SCREEN_SIZE, h * SCREEN_SIZE);
+		resized = false;
+	}
+
+	if (fullscreen && !resized)
+	{
+		SDL_GetDisplayMode(0, 0, &DM);
+		SDL_SetWindowSize(window, DM.w * SCREEN_SIZE, DM.h * SCREEN_SIZE);
+
+		resized = true;
+	}
+
 	SDL_SetWindowFullscreen(window, fullscreen);
 
 	return UPDATE_CONTINUE;
@@ -123,19 +138,30 @@ void ModuleWindow::SetTitle(const char* title)
 
 
 
-bool ModuleWindow::Load(JsonDoc doc)
+bool ModuleWindow::Load(json_object_t* doc)
 {
-	json_object_t* winObj = App->jsondoc.GetObj("Window");
 	
-	//json_object_t* widthobj = App->jsondoc.GetObjObj(winObj, "Width");
+	JSON_Value* v = json_object_get_value(doc, "Width");
+	int i = -1;
 
-	//int w = App->jsondoc.GetIntFromObj(winObj, "Width");
+	if (json_value_get_type(v) == JSONNumber)
+	{
+		w = json_value_get_number(v);
+	}
 
+	JSON_Value* q = json_object_get_value(doc, "Height");
+
+	if (json_value_get_type(q) == JSONNumber)
+	{
+		h = json_value_get_number(q);
+	}
+	
+	
 
 	return true;
 }
 
-bool ModuleWindow::Save(JsonDoc doc) const
+bool ModuleWindow::Save(json_object_t* doc) const
 {
 
 	return true;

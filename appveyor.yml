@@ -12,7 +12,7 @@ build:
 before_package:
 - ps: Copy-Item C:\projects\3D--Engine\3DEngine\$env:CONFIGURATION\3DEngine.exe C:\projects\3D--Engine\3DEngine\Game\.
 artifacts:
-- path: 3D Engine\Game
+- path: 3DEngine\Game
   name: 3DEngine
   type: WebDeployPackage
 deploy:

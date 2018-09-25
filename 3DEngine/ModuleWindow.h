@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "SDL/include/SDL.h"
 
+
 class Application;
 
 class ModuleWindow : public Module
@@ -19,8 +20,8 @@ public:
 
 	bool Init();
 	bool CleanUp();
-	bool Load(JsonDoc doc);
-	bool Save(JsonDoc doc) const;
+	bool Load(json_object_t* doc);
+	bool Save(json_object_t* doc) const;
 
 	void SetTitle(const char* title);
 
@@ -33,14 +34,18 @@ public:
 
 	int w;
 	int h;
-	int brightness = 50;
+	int last_w;
+	int last_h;
+	float brightness = 1.0f;
 	bool res = true;
 	bool bord = true;
 	bool FS = false;
+	bool resized = false;
 	SDL_bool resizable = SDL_TRUE;
 	//SDL_bool full_desktop = SDL_FALSE;
 	SDL_bool bordered = SDL_TRUE;
 	SDL_bool fullscreen = SDL_FALSE;
+	SDL_DisplayMode DM;
 };
 
 #endif // __ModuleWindow_H__

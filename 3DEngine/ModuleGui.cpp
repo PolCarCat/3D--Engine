@@ -76,6 +76,8 @@ update_status ModuleGui::PreUpdate(float dt)
 
 	ImGui::Begin("Configuration");
 
+	if (ImGui::CollapsingHeader("Frame management"))
+	{
 		char plot[50];
 
 		sprintf_s(plot, 50, "Framerate %.1f", App->fps[App->fps_counter - 1]);
@@ -83,17 +85,16 @@ update_status ModuleGui::PreUpdate(float dt)
 		ImGui::Spacing();
 		sprintf_s(plot, 50, "Milliseconds %.1f", App->ms[App->ms_counter - 1]);
 		ImGui::PlotHistogram("Milliseconds", &App->ms[0], 50, 0, plot, 0.0f, 100.0f, ImVec2(310, 100));
-
-		ImGui::Spacing();
-
-		ImGui::SliderInt("Width", &App->window->w, 50, 4000);
-		ImGui::SliderInt("Height", &App->window->h, 50, 4000);
+	}
+	if (ImGui::CollapsingHeader("Window"))
+	{
+		ImGui::SliderFloat("Brightness", &App->window->brightness, 0, 1);
+		ImGui::SliderInt("Width", &App->window->w, 100, 4000);
+		ImGui::SliderInt("Height", &App->window->h, 100, 4000);
 
 		ImGui::Checkbox("FullScreen", &App->window->FS);
 		ImGui::Checkbox("Resizable", &App->window->res);
 		ImGui::Checkbox("Bordered", &App->window->bord);
-
-		ImGui::Spacing();
 
 		ImGui::Text("%d CPU's (%dkb Cache)\nSystem RAM: %.0fGb\nCaps:", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize(), (float)SDL_GetSystemRAM() / 1000);
 
@@ -119,6 +120,7 @@ update_status ModuleGui::PreUpdate(float dt)
 			ImGui::Text("SSE41");
 		if (SDL_HasSSE42())
 			ImGui::Text("SSE42");
+	}
 
 	ImGui::End();
 
