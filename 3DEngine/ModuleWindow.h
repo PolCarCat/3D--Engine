@@ -34,7 +34,7 @@ public:
 
 	int w;
 	int h;
-	int brightness = 50;
+	float brightness = 1.0f;
 	bool res = true;
 	bool bord = true;
 	bool FS = false;
