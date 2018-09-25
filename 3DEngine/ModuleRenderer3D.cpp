@@ -161,6 +161,8 @@ bool ModuleRenderer3D::Load(json_object_t* doc)
 	return true;
 }
 
+bool ModuleRenderer3D::Save(json_object_t* doc)
 {
+	json_object_set_boolean(doc, "Renderer.Vsync", vsync);
 	return true;
 }
