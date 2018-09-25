@@ -20,8 +20,8 @@ public:
 
 	bool Init();
 	bool CleanUp();
-	bool Load(JsonDoc doc);
-	bool Save(JsonDoc doc) const;
+	bool Load(json_object_t* doc);
+	bool Save(json_object_t* doc) const;
 
 	void SetTitle(const char* title);
 

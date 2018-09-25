@@ -8,6 +8,7 @@ ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, s
 {
 	window = NULL;
 	screen_surface = NULL;
+	name = "Window";
 }
 
 // Destructor
@@ -123,11 +124,10 @@ void ModuleWindow::SetTitle(const char* title)
 
 
 
-bool ModuleWindow::Load(JsonDoc doc)
+bool ModuleWindow::Load(json_object_t* doc)
 {
-	json_object_t* winObj = App->jsondoc.GetObj("Window");
 	
-	JSON_Value* v = json_object_get_value(winObj, "Width");
+	JSON_Value* v = json_object_get_value(doc, "Width");
 	int i = -1;
 
 	if (json_value_get_type(v) == JSONNumber)
@@ -140,7 +140,7 @@ bool ModuleWindow::Load(JsonDoc doc)
 	return true;
 }
 
-bool ModuleWindow::Save(JsonDoc doc) const
+bool ModuleWindow::Save(json_object_t* doc) const
 {
 
 	return true;
