@@ -172,7 +172,7 @@ bool Application::LoadNow()
 	json_object_t* Obj = nullptr;
 
 	for (list<Module*>::iterator it = list_modules.begin(); it != list_modules.end(); ++it)
-		(*it)->Load(jsondoc.GetObj((*it)->GetName));
+		(*it)->Load(jsondoc.GetObj((*it)->GetName()));
 
 	want_to_load = false;
 	return ret;

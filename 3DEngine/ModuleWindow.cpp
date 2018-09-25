@@ -132,9 +132,16 @@ bool ModuleWindow::Load(json_object_t* doc)
 
 	if (json_value_get_type(v) == JSONNumber)
 	{
-		i = json_value_get_number(v);
+		w = json_value_get_number(v);
 	}
 
+	JSON_Value* q = json_object_get_value(doc, "Height");
+
+	if (json_value_get_type(q) == JSONNumber)
+	{
+		h = json_value_get_number(q);
+	}
+	
 	
 
 	return true;
