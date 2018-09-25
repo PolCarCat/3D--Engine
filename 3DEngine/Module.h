@@ -59,7 +59,7 @@ public:
 		return true;
 	}
 
-	virtual bool Save(json_object_t* doc) const
+	virtual bool Save(json_object_t* doc)
 	{
 		return true;
 	}

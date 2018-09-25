@@ -30,37 +30,34 @@ bool ModuleWindow::Init()
 	else
 	{
 		//Create window
-		int width = SCREEN_WIDTH * SCREEN_SIZE;
-		int height = SCREEN_HEIGHT * SCREEN_SIZE;
-		w = width;
-		h = height;
+		Load(App->jsondoc.GetObj(name.c_str()));
 		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 		//Use OpenGL 2.1
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
-		if(WIN_FULLSCREEN == true)
+		if(FS == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN;
 		}
 
-		if(WIN_RESIZABLE == true)
+		if(res == true)
 		{
 			flags |= SDL_WINDOW_RESIZABLE;
 		}
 
-		if(WIN_BORDERLESS == true)
+		if(bord == true)
 		{
 			flags |= SDL_WINDOW_BORDERLESS;
 		}
 
-		if(WIN_FULLSCREEN_DESKTOP == true)
+		if(FSWin == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, flags);
 
 		if(window == NULL)
 		{
@@ -140,29 +137,26 @@ void ModuleWindow::SetTitle(const char* title)
 
 bool ModuleWindow::Load(json_object_t* doc)
 {
-	
-	JSON_Value* v = json_object_get_value(doc, "Width");
-	int i = -1;
 
-	if (json_value_get_type(v) == JSONNumber)
-	{
-		w = json_value_get_number(v);
-	}
-
-	JSON_Value* q = json_object_get_value(doc, "Height");
-
-	if (json_value_get_type(q) == JSONNumber)
-	{
-		h = json_value_get_number(q);
-	}
-	
-	
+	w = App->jsondoc.GetObjValueInt(doc, "Width");
+	h = App->jsondoc.GetObjValueInt(doc, "Height");
+	brightness = App->jsondoc.GetObjValueFloat(doc, "Brightness");
+	res = App->jsondoc.GetObjValueBool(doc, "Resizable");
+	bord = App->jsondoc.GetObjValueBool(doc, "Borderless");
+	FS = App->jsondoc.GetObjValueBool(doc, "Fullscreen");
+	FSWin = App->jsondoc.GetObjValueBool(doc, "Fullscreen Window");
 
 	return true;
 }
 
-bool ModuleWindow::Save(json_object_t* doc) const
+bool ModuleWindow::Save(json_object_t* doc)
 {
-
+	json_object_set_number(doc, "Window.Width", w);
+	json_object_set_number(doc, "Window.Height", h);
+	json_object_set_number(doc, "Window.Brightness", brightness);
+	json_object_set_boolean(doc, "Window.Resizable", res);
+	json_object_set_boolean(doc, "Window.Borderless", bord);
+	json_object_set_boolean(doc, "Window.Fullscreen", FS);
+	json_object_set_boolean(doc, "Window.Fullscreen Window", FSWin);
 	return true;
 }

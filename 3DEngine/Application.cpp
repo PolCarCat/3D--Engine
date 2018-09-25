@@ -169,8 +169,6 @@ bool Application::LoadNow()
 	bool ret = false;
 
 
-	json_object_t* Obj = nullptr;
-
 	for (list<Module*>::iterator it = list_modules.begin(); it != list_modules.end(); ++it)
 		(*it)->Load(jsondoc.GetObj((*it)->GetName()));
 
@@ -178,13 +176,17 @@ bool Application::LoadNow()
 	return ret;
 }
 
-bool Application::SaveNow() const
+bool Application::SaveNow()
 {
 	bool ret = true;
 
-	//for (list<Module*>::const_iterator it = list_modules.begin(); it != list_modules.end(); ++it)
-	//	(*it)->Save(jsondoc.GetObj((*it)->GetName));
+	for (list<Module*>::const_iterator it = list_modules.begin(); it != list_modules.end(); ++it)
+	{
+		(*it)->Save(jsondoc.GetObj((*it)->GetName()));
+	}
 
+
+	jsondoc.Save();
 
 	want_to_save = false;
 	return ret;

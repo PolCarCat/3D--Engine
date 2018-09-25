@@ -40,6 +40,12 @@ update_status ModuleGui::PreUpdate(float dt)
 	{
 		if (ImGui::BeginMenu("File"))
 		{
+			if (ImGui::MenuItem("Save"))
+				App->SaveGame();
+
+			if (ImGui::MenuItem("Load"))
+				App->LoadGame();
+
 			if (ImGui::MenuItem("Quit"))
 				quit = true;
 

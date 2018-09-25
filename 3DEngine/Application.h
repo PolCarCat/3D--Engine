@@ -67,6 +67,6 @@ private:
 	void ReadFps();
 	void ReadMs();
 	bool LoadNow();
-	bool SaveNow() const;
+	bool SaveNow();
 
 };
