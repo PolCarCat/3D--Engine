@@ -5,7 +5,6 @@
 #include "ImGui/imgui_impl_sdl.h"
 #include "ImGui/imgui_impl_opengl2.h"
 
-
 ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }
@@ -67,9 +66,12 @@ update_status ModuleGui::PreUpdate(float dt)
 
 	if (about)
 	{
+		SDL_version version;
+		SDL_GetVersion(&version);
+	
 		ImGui::Begin("About");
 
-		ImGui::Text("-NAME OF ENGINE- 0.1\n\n\nEngine made for 3rd year University subject.\n\nBy Pol Carrera and Genis Bayo.\n\nUsing -LIBRARIES AND VERIONS-.\n\nMIT License (See 'LICENSE' for more information).");
+		ImGui::Text("-NAME OF ENGINE- 0.1\n\n\nEngine made for 3rd year University subject.\n\nBy Pol Carrera and Genis Bayo.\n\nUsing:\nSDL %d.%d.%d\nImGUI %s\n\nMIT License (See 'LICENSE' for more information).", version.major, version.minor, version.patch, ImGui::GetVersion());
 
 		ImGui::End();
 	}
