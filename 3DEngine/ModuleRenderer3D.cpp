@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
@@ -24,7 +25,24 @@ bool ModuleRenderer3D::Init()
 	VSLOG("Creating 3D Renderer context");
 	bool ret = true;
 	
-	Load(App->jsondoc.GetObj(name.c_str()));
+	//Load from config
+	Load(App->config.GetObj(name.c_str()));
+
+
+	//GLenum err = glewInit();
+	//// ... check for errors
+	//VSLOG("Using Glew %s", glewGetString(GLEW_VERSION));
+	//// Should be 2.0
+
+
+	//Setting attributes
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+
+
 	//Create context
 	context = SDL_GL_CreateContext(App->window->window);
 	if(context == NULL)
@@ -127,6 +145,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	SDL_GL_SwapWindow(App->window->window);
+	
 	return UPDATE_CONTINUE;
 }
 
@@ -157,7 +176,7 @@ void ModuleRenderer3D::OnResize(int width, int height)
 bool ModuleRenderer3D::Load(json_object_t* doc)
 {
 
-	vsync = App->jsondoc.GetObjValueInt(doc, "Vsync");
+	vsync = App->config.GetObjValueInt(doc, "Vsync");
 	return true;
 }
 

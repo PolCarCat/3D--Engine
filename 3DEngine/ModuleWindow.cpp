@@ -30,7 +30,7 @@ bool ModuleWindow::Init()
 	else
 	{
 		//Create window
-		Load(App->jsondoc.GetObj(name.c_str()));
+		Load(App->config.GetObj(name.c_str()));
 		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 		//Use OpenGL 2.1
@@ -138,13 +138,13 @@ void ModuleWindow::SetTitle(const char* title)
 bool ModuleWindow::Load(json_object_t* doc)
 {
 
-	w = App->jsondoc.GetObjValueInt(doc, "Width");
-	h = App->jsondoc.GetObjValueInt(doc, "Height");
-	brightness = App->jsondoc.GetObjValueFloat(doc, "Brightness");
-	res = App->jsondoc.GetObjValueBool(doc, "Resizable");
-	bord = App->jsondoc.GetObjValueBool(doc, "Borderless");
-	FS = App->jsondoc.GetObjValueBool(doc, "Fullscreen");
-	FSWin = App->jsondoc.GetObjValueBool(doc, "Fullscreen Window");
+	w = App->config.GetObjValueInt(doc, "Width");
+	h = App->config.GetObjValueInt(doc, "Height");
+	brightness = App->config.GetObjValueFloat(doc, "Brightness");
+	res = App->config.GetObjValueBool(doc, "Resizable");
+	bord = App->config.GetObjValueBool(doc, "Borderless");
+	FS = App->config.GetObjValueBool(doc, "Fullscreen");
+	FSWin = App->config.GetObjValueBool(doc, "Fullscreen Window");
 
 	return true;
 }

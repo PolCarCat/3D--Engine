@@ -46,6 +46,7 @@ update_status ModuleScene::Update(float dt)
 		VSLOG("Intersection aabb Sphere");
 	}
 
+	
 	return UPDATE_CONTINUE;
 }
 
