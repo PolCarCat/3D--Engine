@@ -1,1 +1,18 @@
-{"App":{"Name":"3DEngine","Organization":"UPC CITM"},"Renderer":{"Vsync":"true","Renderer":{"Vsync":true},"Renderer.Vsync":true},"Window":{"Brightness":1,"Width":1280,"Height":1024,"Fullscreen":false,"Borderless":true,"Resizable":true,"Fullscreen Window":false,"Window":{"Width":778,"Height":1024,"Brightness":1,"Resizable":true,"Borderless":true,"Fullscreen":false,"Fullscreen Window":false},"Window.Width":693,"Window.Height":1024,"Window.Brightness":1,"Window.Resizable":true,"Window.Borderless":true,"Window.Fullscreen":false,"Window.Fullscreen Window":false}}
+{
+    "App": {
+        "Name": "3DEngine",
+        "Organization": "UPC CITM"
+    },
+    "Renderer": {
+        "Vsync": true
+    },
+    "Window": {
+        "Brightness": 1,
+        "Width": 1280,
+        "Height": 1024,
+        "Fullscreen": false,
+        "Borderless": true,
+        "Resizable": true,
+        "Fullscreen Window": false
+    }
+}

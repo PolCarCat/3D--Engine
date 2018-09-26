@@ -149,15 +149,12 @@ void Application::ReadMs()
 // Load / Save
 void Application::LoadGame()
 {
-
-
 	want_to_load = true;
 }
 
 // ---------------------------------------
 void Application::SaveGame() const
 {
-	
 	want_to_save = true;
 }
 
@@ -182,7 +179,7 @@ bool Application::SaveNow()
 
 	for (list<Module*>::const_iterator it = list_modules.begin(); it != list_modules.end(); ++it)
 	{
-		(*it)->Save(jsondoc.GetObj((*it)->GetName()));
+		(*it)->Save(jsondoc.GetRootObj());
 	}
 
 

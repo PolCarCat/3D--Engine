@@ -25,7 +25,7 @@ bool JsonDoc::Init(const char* _path)
 		ret = false;
 
 	
-	jObject = json_value_get_object(root);
+	rootObj = json_value_get_object(root);
 
 
 	return ret;
@@ -34,22 +34,22 @@ bool JsonDoc::Init(const char* _path)
 void JsonDoc::CleanUp()
 {
 	json_value_free(root);
+	json_object_clear(rootObj);
 }
 
 void JsonDoc::Save()
 {
+
+	json_serialize_to_file_pretty(root, path.c_str());
+	//json_value_free(root);
 	
-	size_t written = json_serialization_size(root);
-	char* text = new char[written];
-	json_serialize_to_buffer(root, text, written);
-	
-	delete text;
+
 }
 
 json_object_t* JsonDoc::GetObj(const char* _name)
 {
 	json_object_t* obj = nullptr;
-	obj = json_object_get_object(jObject, _name);
+	obj = json_object_get_object(rootObj, _name);
 
 	return obj;
 }
@@ -116,4 +116,10 @@ bool JsonDoc::GetObjValueBool(json_object_t* _obj, const char* _name)
 	}
 
 	return i;
+}
+
+
+json_object_t* JsonDoc::GetRootObj()
+{
+	return rootObj;
 }
