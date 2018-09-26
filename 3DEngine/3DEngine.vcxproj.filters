@@ -291,6 +291,9 @@
     <ClInclude Include="JsonDoc.h">
       <Filter>Sources\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="Primitive.h">
+      <Filter>Sources\Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -454,6 +457,9 @@
     </ClCompile>
     <ClCompile Include="JsonDoc.cpp">
       <Filter>Sources\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Primitive.cpp">
+      <Filter>Sources\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
