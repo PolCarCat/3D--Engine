@@ -1,5 +1,6 @@
 #include "ModuleGui.h"
 #include "Application.h"
+#include <gl/GL.h>
 
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
@@ -128,6 +129,16 @@ update_status ModuleGui::PreUpdate(float dt)
 			ImGui::Text("SSE41");
 		if (SDL_HasSSE42())
 			ImGui::Text("SSE42");
+	}
+	if (ImGui::CollapsingHeader("Renderer"))
+	{
+		if (ImGui::Checkbox("WireFrame Mode", &wireframeMode))
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glPolygonMode(GL_BACK, GL_LINE);
+		}
+	
+			
 	}
 
 	ImGui::End();

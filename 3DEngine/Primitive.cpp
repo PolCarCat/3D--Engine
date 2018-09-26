@@ -1,10 +1,11 @@
+
 #include "Globals.h"
+#include "Primitive.h"
+
+#include "Glew/include/glew.h" 
+#include "SDL/include/SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
-#include "Primitive.h"
-#include "glut/glut.h"
-
-#pragma comment (lib, "glut/glut32.lib")
 // ------------------------------------------------------------
 Primitive::Primitive() : transform(IdentityMatrix), color(White), wire(false), axis(false), type(PrimitiveTypes::Primitive_Point)
 {}
@@ -157,17 +158,17 @@ void PrimitiveCube::InnerRender() const
 }
 
 // SPHERE ============================================
-PrimitiveSphere::PrimitiveSphere() : Primitive(), radius(1.0f)
+Sphere::Sphere() : Primitive(), radius(1.0f)
 {
 	type = PrimitiveTypes::Primitive_Sphere;
 }
 
-PrimitiveSphere::PrimitiveSphere(float radius) : Primitive(), radius(radius)
+Sphere::Sphere(float radius) : Primitive(), radius(radius)
 {
 	type = PrimitiveTypes::Primitive_Sphere;
 }
 
-void PrimitiveSphere::InnerRender() const
+void Sphere::InnerRender() const
 {
 	//glutSolidSphere(radius, 25, 25);
 }

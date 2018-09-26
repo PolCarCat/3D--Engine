@@ -1,17 +1,20 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleCamera3D.h"
+#include "../3DEngine/glmath.cpp"
 
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	CalculateViewMatrix();
+
 
 	X = vec3(1.0f, 0.0f, 0.0f);
 	Y = vec3(0.0f, 1.0f, 0.0f);
 	Z = vec3(0.0f, 0.0f, 1.0f);
 
-	Position = vec3(0.0f, 0.0f, 5.0f);
+	CalculateViewMatrix();
+
+	Position = vec3(0.0f, 0.0f, 0.0f);
 	Reference = vec3(0.0f, 0.0f, 0.0f);
 }
 
@@ -40,8 +43,6 @@ update_status ModuleCamera3D::Update(float dt)
 {
 	////Debug camera
 
-	if(App->physics->debug)
-	{ 
 		vec3 newPos(0,0,0);
 		float speed = 100.0f * dt;
 		if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
@@ -99,7 +100,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 		// Recalculate matrix -------------
 		CalculateViewMatrix();
-	}
+	
 
 	
 	return UPDATE_CONTINUE;
