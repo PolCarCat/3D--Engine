@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Light.h"
+#include "glmath.h"
 
 #define MAX_LIGHTS 8
 
@@ -25,6 +26,6 @@ public:
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	bool vsync = false;
-	//mat3x3 NormalMatrix;
-	//mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+	mat3x3 NormalMatrix;
+	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 };

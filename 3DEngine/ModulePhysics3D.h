@@ -10,7 +10,7 @@
 class DebugDrawer;
 struct PhysBody3D;
 struct VehicleInfo;
-class vec3;
+
 
 class ModulePhysics3D : public Module
 {

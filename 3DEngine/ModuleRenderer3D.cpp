@@ -1,14 +1,18 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleWindow.h"
+
 #include "Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
+
 #include "JsonDoc.h"
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
+#pragma comment (lib, "Glew/libx86/glew32.lib")  
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -29,10 +33,6 @@ bool ModuleRenderer3D::Init()
 	Load(App->config.GetObj(name.c_str()));
 
 
-	//GLenum err = glewInit();
-	//// ... check for errors
-	//VSLOG("Using Glew %s", glewGetString(GLEW_VERSION));
-	//// Should be 2.0
 
 
 	//Setting attributes
@@ -45,6 +45,19 @@ bool ModuleRenderer3D::Init()
 
 	//Create context
 	context = SDL_GL_CreateContext(App->window->window);
+
+
+	GLenum err = glewInit();
+	// ... check for errors
+	VSLOG("Using Glew %s", glewGetString(GLEW_VERSION));
+
+
+	//DETECT HARDWARE
+	VSLOG("Vendor: %s", glGetString(GL_VENDOR));
+	VSLOG("Renderer: %s", glGetString(GL_RENDERER));
+	VSLOG("OpenGL version supported %s", glGetString(GL_VERSION));
+	VSLOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+
 	if(context == NULL)
 	{
 		VSLOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -115,10 +128,11 @@ bool ModuleRenderer3D::Init()
 		lights[0].Active(true);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
+		glEnable(GL_TEXTURE);
 	}
 
 	// Projection matrix for
-	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
+	OnResize(App->window->w, App->window->h);
 
 	return ret;
 }
@@ -129,11 +143,19 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	//glMatrixMode(GL_MODELVIEW);
-	//glLoadMatrixf(App->camera->GetViewMatrix());
+	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixf(App->camera->GetViewMatrix());
 
 	// light 0 on cam pos
-	//lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+	
+	//Color c = App->camera->background;
+	//glClearColor(c.r, c.g, c.b, c.a);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glMatrixMode(GL_MODELVIEW);
+	//glLoadMatrixf(cam->GetOpenGLViewMatrix());
+	
+
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
