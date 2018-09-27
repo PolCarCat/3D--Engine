@@ -71,116 +71,12 @@ update_status ModuleGui::PreUpdate(float dt)
 		ImGui::EndMainMenuBar();
 	}
 
-	if (about)
-	{
-		SDL_version version;
-		SDL_GetVersion(&version);
-	
-		ImGui::Begin("About");
-
-		ImGui::Text("-NAME OF ENGINE- 0.1\n\n\nEngine made for 3rd year University subject.\n\nBy Pol Carrera and Genis Bayo.\n\nUsing:\nSDL %d.%d.%d\nImGUI %s\n\nMIT License (See 'LICENSE' for more information).", version.major, version.minor, version.patch, ImGui::GetVersion());
-
-		ImGui::End();
-	}
-
-	ImGui::Begin("Configuration");
-
-	if (ImGui::CollapsingHeader("Frame management"))
-	{
-		char plot[50];
-
-		sprintf_s(plot, 50, "Framerate %.1f", App->fps[App->fps_counter - 1]);
-		ImGui::PlotHistogram("Framerate", &App->fps[0], 50, 0, plot, 0.0f, 100.0f, ImVec2(310, 100));
-		ImGui::Spacing();
-		sprintf_s(plot, 50, "Milliseconds %.1f", App->ms[App->ms_counter - 1]);
-		ImGui::PlotHistogram("Milliseconds", &App->ms[0], 50, 0, plot, 0.0f, 100.0f, ImVec2(310, 100));
-	}
-	if (ImGui::CollapsingHeader("Window"))
-	{
-		ImGui::SliderFloat("Brightness", &App->window->brightness, 0, 1);
-		ImGui::SliderInt("Width", &App->window->w, 100, 4000);
-		ImGui::SliderInt("Height", &App->window->h, 100, 4000);
-
-		ImGui::Checkbox("FullScreen", &App->window->FS);
-		ImGui::Checkbox("Resizable", &App->window->res);
-		ImGui::Checkbox("Bordered", &App->window->bord);
-
-		ImGui::Text("%d CPU's (%dkb Cache)\nSystem RAM: %.0fGb\nCaps:", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize(), (float)SDL_GetSystemRAM() / 1000);
-
-		if (SDL_Has3DNow())
-			ImGui::Text("3DNow");
-		if (SDL_HasAVX())
-			ImGui::Text("AVX");
-		if (SDL_HasAVX2())
-			ImGui::Text("AVX2");
-		if (SDL_HasAltiVec())
-			ImGui::Text("AltiVec");
-		if (SDL_HasMMX())
-			ImGui::Text("MMX");
-		if (SDL_HasRDTSC())
-			ImGui::Text("RDTSC");
-		if (SDL_HasSSE())
-			ImGui::Text("SSE");
-		if (SDL_HasSSE2())
-			ImGui::Text("SSE2");
-		if (SDL_HasSSE3())
-			ImGui::Text("SSE3");
-		if (SDL_HasSSE41())
-			ImGui::Text("SSE41");
-		if (SDL_HasSSE42())
-			ImGui::Text("SSE42");
-	}
-	if (ImGui::CollapsingHeader("Renderer"))
-	{
-		if (ImGui::Checkbox("WireFrame Mode", &wireframeMode))
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			glPolygonMode(GL_BACK, GL_LINE);
-		}
-	
-			
-	}
-
-	ImGui::End();
+	AboutWindow();
 
 	if (showdemo)
 		ImGui::ShowDemoWindow();
-
-	ImGui::Begin("Random Number Generator");
-
-	ImGui::Text("%.2f", random_f);
-
-	if (ImGui::Button("Generate random float between 0 and 1"))
-	{
-		random_f = ldexp(pcg32_random_r(&rng), -32);
-	}
-
-	ImGui::Spacing();
-	ImGui::Spacing();
-	ImGui::Spacing();
-	ImGui::Spacing();
-	ImGui::Spacing();
-	ImGui::Spacing();
-	ImGui::Spacing();
-	ImGui::Spacing();
-
-	ImGui::SliderInt("Min", &min, 0, 100);
-	ImGui::SliderInt("Max", &max, 0, 100);
-
-	if (max < min)
-		max = min;
-
-	ImGui::Text("%d", random_bounded);
-
-	if (ImGui::Button("Generate random integer between two numbers"))
-	{
-		if (max - min > 0)
-			random_bounded = (int)pcg32_boundedrand_r(&rng, max - min + 1) + min;
-		else
-			random_bounded = 0;
-	}
-
-	ImGui::End();
+	ConfigWindow();
+	RngWindow();
 
 	return UPDATE_CONTINUE;
 }
@@ -242,4 +138,112 @@ void ModuleGui::ShowMenuBar()
 		ImGui::EndMainMenuBar();
 	}
 }
+void ModuleGui::RngWindow()
+{
+	ImGui::Begin("Random Number Generator");
 
+	ImGui::Text("%.2f", random_f);
+
+	if (ImGui::Button("Generate random float between 0 and 1"))
+	{
+		random_f = ldexp(pcg32_random_r(&rng), -32);
+	}
+
+	ImGui::Separator();
+
+	ImGui::SliderInt("Min", &min, 0, 100);
+	ImGui::SliderInt("Max", &max, 0, 100);
+
+	if (max < min)
+		max = min;
+
+	ImGui::Text("%d", random_bounded);
+
+	if (ImGui::Button("Generate random integer between two numbers"))
+	{
+		if (max - min > 0)
+			random_bounded = (int)pcg32_boundedrand_r(&rng, max - min + 1) + min;
+		else
+			random_bounded = 0;
+	}
+
+	ImGui::End();
+}
+void ModuleGui::AboutWindow()
+{
+	SDL_version version;
+	SDL_GetVersion(&version);
+
+	ImGui::Begin("About");
+
+	ImGui::Text("-NAME OF ENGINE- 0.1\n\n\nEngine made for 3rd year University subject.\n\nBy Pol Carrera and Genis Bayo.\n\nUsing:\nSDL %d.%d.%d\nImGUI %s\n\nMIT License (See 'LICENSE' for more information).", version.major, version.minor, version.patch, ImGui::GetVersion());
+
+	ImGui::End();
+}
+
+void ModuleGui::ConfigWindow()
+{
+	ImGui::Begin("Configuration");
+
+	if (ImGui::CollapsingHeader("Frame management"))
+	{
+		ImGui::SliderInt("FPS Cap", &App->framerate_cap, 1, 120);
+
+		char plot[50];
+		sprintf_s(plot, 50, "Framerate %.1f", App->fps[App->fps_counter - 1]);
+		ImGui::PlotHistogram("Framerate", &App->fps[0], 50, 0, plot, 0.0f, 100.0f, ImVec2(310, 100));
+		ImGui::Spacing();
+		sprintf_s(plot, 50, "Milliseconds %.1f", App->ms[App->ms_counter - 1]);
+		ImGui::PlotHistogram("Milliseconds", &App->ms[0], 50, 0, plot, 0.0f, 100.0f, ImVec2(310, 100));
+	}
+	if (ImGui::CollapsingHeader("Window"))
+	{
+		ImGui::SliderFloat("Brightness", &App->window->brightness, 0, 1);
+		ImGui::SliderInt("Width", &App->window->w, 100, 4000);
+		ImGui::SliderInt("Height", &App->window->h, 100, 4000);
+		ImGui::Text("Refresh rate: %d", App->window->refresh_rate);
+
+		ImGui::Checkbox("FullScreen", &App->window->FS);
+		ImGui::Checkbox("Full Desktop", &App->window->FSD);
+		ImGui::Checkbox("Resizable", &App->window->res);
+		ImGui::Checkbox("Bordered", &App->window->bord);
+	}
+	if (ImGui::CollapsingHeader("Hardware"))
+	{
+		ImGui::Text("%d CPU's (%dkb Cache)\nSystem RAM: %.0fGb\nCaps:", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize(), (float)SDL_GetSystemRAM() / 1000);
+
+		if (SDL_Has3DNow())
+			ImGui::Text("3DNow");
+		if (SDL_HasAVX())
+			ImGui::Text("AVX");
+		if (SDL_HasAVX2())
+			ImGui::Text("AVX2");
+		if (SDL_HasAltiVec())
+			ImGui::Text("AltiVec");
+		if (SDL_HasMMX())
+			ImGui::Text("MMX");
+		if (SDL_HasRDTSC())
+			ImGui::Text("RDTSC");
+		if (SDL_HasSSE())
+			ImGui::Text("SSE");
+		if (SDL_HasSSE2())
+			ImGui::Text("SSE2");
+		if (SDL_HasSSE3())
+			ImGui::Text("SSE3");
+		if (SDL_HasSSE41())
+			ImGui::Text("SSE41");
+		if (SDL_HasSSE42())
+			ImGui::Text("SSE42");
+	}
+	if (ImGui::CollapsingHeader("Renderer"))
+	{
+		if (ImGui::Checkbox("WireFrame Mode", &wireframeMode))
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glPolygonMode(GL_BACK, GL_LINE);
+		}
+
+
+	}
+	ImGui::End();
+}

@@ -37,16 +37,22 @@ public:
 	int last_w;
 	int last_h;
 	float brightness = 1.0f;
+	int refresh_rate;
 	bool res = true;
 	bool bord = true;
 	bool FS = false;
+	bool FSD = false;
 	bool resized = false;
 	bool FSWin = false;
 	SDL_bool resizable = SDL_TRUE;
-	//SDL_bool full_desktop = SDL_FALSE;
+	SDL_bool full_desktop = SDL_FALSE;
 	SDL_bool bordered = SDL_TRUE;
 	SDL_bool fullscreen = SDL_FALSE;
 	SDL_DisplayMode DM;
+
+private:
+
+	void SetBools();
 };
 
 #endif // __ModuleWindow_H__

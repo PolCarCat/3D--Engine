@@ -25,6 +25,11 @@ public:
 	void AddLogWindow();
 
 private:
+	void RngWindow();
+	void AboutWindow();
+	void ConfigWindow();
+
+private:
 	bool quit = false;
 	pcg32_random_t rng;
 	int random_bounded = 0;

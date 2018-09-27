@@ -59,7 +59,6 @@ bool Application::Init()
 	for (list<Module*>::iterator it = list_modules.begin(); it != list_modules.end() && ret; ++it)
 		ret = (*it)->Start();
 
-	sec_timer.Start();
 	ms_timer.Start();
 
 	return ret;
@@ -83,6 +82,15 @@ void Application::FinishUpdate()
 
 	if (want_to_load == true)
 		LoadNow();
+
+	if (framerate_cap > 0)
+		expected_delay = 1000 / (float)framerate_cap - (float)ms_timer.Read() / 1000.0f;
+	else
+		expected_delay = 0;
+
+
+	if (expected_delay > 0)
+		SDL_Delay(expected_delay);
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
@@ -121,19 +129,12 @@ void Application::AddModule(Module* mod)
 
 void Application::ReadFps()
 {
-	if (sec_timer.Read() < 1000)
-		last_sec_frames++;
-	else
-	{
-		fps[fps_counter] = last_sec_frames;
-		last_sec_frames = 0;
+		fps[fps_counter] = 1 / ((float)ms_timer.Read() / 1000);
+
 		fps_counter++;
 
 		if (fps_counter >= 100)
 			fps_counter = 0;
-
-		sec_timer.Start();
-	}
 }
 
 void Application::ReadMs()

@@ -69,6 +69,9 @@ bool ModuleWindow::Init()
 			//Get window surface
 			screen_surface = SDL_GetWindowSurface(window);
 		}
+
+		SDL_GetDisplayMode(0, 0, &DM);
+		refresh_rate = DM.refresh_rate;
 	}
 
 	return ret;
@@ -76,38 +79,34 @@ bool ModuleWindow::Init()
 
 update_status ModuleWindow::Update(float dt)
 {
-	if (res)
-		resizable = SDL_TRUE;
-	else
-		resizable = SDL_FALSE;
-	if (FS)
-		fullscreen = SDL_TRUE;
-	else
-		fullscreen = SDL_FALSE;
-	if (bord)
-		bordered = SDL_TRUE;
-	else
-		bordered = SDL_FALSE;
+	SetBools();
 
 	SDL_SetWindowBrightness(window, brightness);
 	SDL_SetWindowResizable(window, resizable);
 	SDL_SetWindowBordered(window, bordered);
 
-	if (!fullscreen)
+	if (!fullscreen && !full_desktop)
 	{
+		SDL_SetWindowFullscreen(window, 0);
 		SDL_SetWindowSize(window, w * SCREEN_SIZE, h * SCREEN_SIZE);
 		resized = false;
 	}
 
-	if (fullscreen && !resized)
+	if (!resized && fullscreen)
 	{
-		SDL_GetDisplayMode(0, 0, &DM);
+		App->renderer3D->OnResize(DM.w, DM.h);
 		SDL_SetWindowSize(window, DM.w * SCREEN_SIZE, DM.h * SCREEN_SIZE);
-
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 		resized = true;
 	}
 
-	SDL_SetWindowFullscreen(window, fullscreen);
+	if (!resized && full_desktop)
+	{
+		App->renderer3D->OnResize(DM.w, DM.h);
+		SDL_SetWindowSize(window, DM.w * SCREEN_SIZE, DM.h * SCREEN_SIZE);
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		resized = true;
+	}
 
 	return UPDATE_CONTINUE;
 }
@@ -162,4 +161,33 @@ bool ModuleWindow::Save(json_object_t* doc)
 	error = json_object_dotset_boolean(doc, "Window.Fullscreen Window", FSWin);
 
 	return !error;
+}
+
+void ModuleWindow::SetBools()
+{
+	if (FS && FSD)
+	{
+		if (full_desktop = SDL_TRUE)
+			FSD = false;
+		if (fullscreen = SDL_TRUE)
+			FS = false;
+	}
+
+	if (res)
+		resizable = SDL_TRUE;
+	else
+		resizable = SDL_FALSE;
+	if (FS)
+		fullscreen = SDL_TRUE;
+	else
+		fullscreen = SDL_FALSE;
+	if (FSD)
+		full_desktop = SDL_TRUE;
+	else
+		full_desktop = SDL_FALSE;
+	if (bord)
+		bordered = SDL_TRUE;
+	else
+		bordered = SDL_FALSE;
+
 }
