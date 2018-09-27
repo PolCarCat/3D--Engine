@@ -30,37 +30,34 @@ bool ModuleWindow::Init()
 	else
 	{
 		//Create window
-		int width = SCREEN_WIDTH * SCREEN_SIZE;
-		int height = SCREEN_HEIGHT * SCREEN_SIZE;
-		w = width;
-		h = height;
+		Load(App->config.GetObj(name.c_str()));
 		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 		//Use OpenGL 2.1
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
-		if(WIN_FULLSCREEN == true)
+		if(FS == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN;
 		}
 
-		if(WIN_RESIZABLE == true)
+		if(res == true)
 		{
 			flags |= SDL_WINDOW_RESIZABLE;
 		}
 
-		if(WIN_BORDERLESS == true)
+		if(bord == true)
 		{
 			flags |= SDL_WINDOW_BORDERLESS;
 		}
 
-		if(WIN_FULLSCREEN_DESKTOP == true)
+		if(FSWin == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, flags);
 
 		if(window == NULL)
 		{
@@ -139,31 +136,31 @@ void ModuleWindow::SetTitle(const char* title)
 
 bool ModuleWindow::Load(json_object_t* doc)
 {
-	
-	JSON_Value* v = json_object_get_value(doc, "Width");
-	int i = -1;
 
-	if (json_value_get_type(v) == JSONNumber)
-	{
-		w = json_value_get_number(v);
-	}
-
-	JSON_Value* q = json_object_get_value(doc, "Height");
-
-	if (json_value_get_type(q) == JSONNumber)
-	{
-		h = json_value_get_number(q);
-	}
-	
-	
+	w = App->config.GetObjValueInt(doc, "Width");
+	h = App->config.GetObjValueInt(doc, "Height");
+	brightness = App->config.GetObjValueFloat(doc, "Brightness");
+	res = App->config.GetObjValueBool(doc, "Resizable");
+	bord = App->config.GetObjValueBool(doc, "Borderless");
+	FS = App->config.GetObjValueBool(doc, "Fullscreen");
+	FSWin = App->config.GetObjValueBool(doc, "Fullscreen Window");
 
 	return true;
 }
 
-bool ModuleWindow::Save(json_object_t* doc) const
+bool ModuleWindow::Save(json_object_t* doc)
 {
+	JSON_Status error; 
 
-	return true;
+	error = json_object_dotset_number(doc, "Window.Width", w);
+	error = json_object_dotset_number(doc, "Window.Height", h);
+	error = json_object_dotset_number(doc, "Window.Brightness", brightness);
+	error = json_object_dotset_boolean(doc, "Window.Resizable", res);
+	error = json_object_dotset_boolean(doc, "Window.Borderless", bord);
+	error = json_object_dotset_boolean(doc, "Window.Fullscreen", FS);
+	error = json_object_dotset_boolean(doc, "Window.Fullscreen Window", FSWin);
+
+	return !error;
 }
 
 void ModuleWindow::SetBools()
@@ -192,4 +189,5 @@ void ModuleWindow::SetBools()
 		bordered = SDL_TRUE;
 	else
 		bordered = SDL_FALSE;
+
 }

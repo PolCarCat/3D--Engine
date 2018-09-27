@@ -2,8 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 
-class vec3;
-class btVector3;
+
 
 class ModuleCamera3D : public Module
 {
@@ -23,12 +22,13 @@ public:
 private:
 
 	void CalculateViewMatrix();
-//
-//public:
-//	
-//	vec3 X, Y, Z, Position, Reference;
-//
-//private:
-//
-//	mat4x4 ViewMatrix, ViewMatrixInverse;
+
+public:
+	
+	vec3 X, Y, Z, Position, Reference;
+
+
+private:
+
+	mat4x4 ViewMatrix, ViewMatrixInverse;
 };

@@ -28,7 +28,7 @@ public:
 	ModulePhysics3D* physics;
 	ModuleGui* imgui;
 
-	JsonDoc jsondoc;
+	JsonDoc config;
 
 	int fps_counter = 0;
 	int ms_counter = 0;
@@ -66,5 +66,7 @@ private:
 	void ReadFps();
 	void ReadMs();
 	bool LoadNow();
-	bool SaveNow() const;
+	bool SaveNow();
+
+
 };

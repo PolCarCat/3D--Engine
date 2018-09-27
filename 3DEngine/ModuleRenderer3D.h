@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Light.h"
+#include "glmath.h"
 
 #define MAX_LIGHTS 8
 
@@ -15,6 +16,8 @@ public:
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();
+	bool Load(json_object_t* doc);
+	bool Save(json_object_t* doc);
 
 	void OnResize(int width, int height);
 
@@ -22,6 +25,7 @@ public:
 
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
-	//mat3x3 NormalMatrix;
-	//mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+	bool vsync = false;
+	mat3x3 NormalMatrix;
+	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 };

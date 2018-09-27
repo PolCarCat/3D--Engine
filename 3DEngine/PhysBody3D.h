@@ -7,7 +7,7 @@ using namespace std;
 
 class btRigidBody;
 class Module;
-class mat3x3;
+
 // =================================================
 struct PhysBody3D
 {

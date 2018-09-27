@@ -31,7 +31,7 @@ Application::Application()
 	AddModule(renderer3D);
 
 	//JsonDoc
-	jsondoc.Init("config.json");
+	config.Init("config.json");
 	LoadGame();
 
 }
@@ -150,15 +150,12 @@ void Application::ReadMs()
 // Load / Save
 void Application::LoadGame()
 {
-
-
 	want_to_load = true;
 }
 
 // ---------------------------------------
 void Application::SaveGame() const
 {
-	
 	want_to_save = true;
 }
 
@@ -170,22 +167,24 @@ bool Application::LoadNow()
 	bool ret = false;
 
 
-	json_object_t* Obj = nullptr;
-
 	for (list<Module*>::iterator it = list_modules.begin(); it != list_modules.end(); ++it)
-		(*it)->Load(jsondoc.GetObj((*it)->GetName()));
+		(*it)->Load(config.GetObj((*it)->GetName()));
 
 	want_to_load = false;
 	return ret;
 }
 
-bool Application::SaveNow() const
+bool Application::SaveNow()
 {
 	bool ret = true;
 
-	//for (list<Module*>::const_iterator it = list_modules.begin(); it != list_modules.end(); ++it)
-	//	(*it)->Save(jsondoc.GetObj((*it)->GetName));
+	for (list<Module*>::const_iterator it = list_modules.begin(); it != list_modules.end(); ++it)
+	{
+		(*it)->Save(config.GetRootObj());
+	}
 
+
+	config.Save();
 
 	want_to_save = false;
 	return ret;

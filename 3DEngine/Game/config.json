@@ -1,18 +1,18 @@
 {
-  "App": {
-    "Name": "3DEngine",
-    "Organization": "UPC CITM"
-  },
-  "Renderer": {
-    "vsync": "true"
-  },
-  "Window": {
-    "Brightness": 1,
-    "Width": 1280,
-    "Height": 1024,
-    "Fullscreen": false,
-    "Borderless": false,
-    "Resizable": true,
-    "Fullscreen Window": false
-  }
+    "App": {
+        "Name": "3DEngine",
+        "Organization": "UPC CITM"
+    },
+    "Renderer": {
+        "Vsync": true
+    },
+    "Window": {
+        "Brightness": 1,
+        "Width": 1280,
+        "Height": 1024,
+        "Fullscreen": false,
+        "Borderless": true,
+        "Resizable": true,
+        "Fullscreen Window": false
+    }
 }

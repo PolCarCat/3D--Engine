@@ -21,7 +21,7 @@ public:
 	bool Init();
 	bool CleanUp();
 	bool Load(json_object_t* doc);
-	bool Save(json_object_t* doc) const;
+	bool Save(json_object_t* doc);
 
 	void SetTitle(const char* title);
 
@@ -43,6 +43,7 @@ public:
 	bool FS = false;
 	bool FSD = false;
 	bool resized = false;
+	bool FSWin = false;
 	SDL_bool resizable = SDL_TRUE;
 	SDL_bool full_desktop = SDL_FALSE;
 	SDL_bool bordered = SDL_TRUE;

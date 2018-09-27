@@ -1,15 +1,23 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleWindow.h"
+#include "JsonDoc.h"
+
+#include "Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+
+
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
+#pragma comment (lib, "Glew/libx86/glew32.lib")  
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	name = "Renderer";
 }
 
 // Destructor
@@ -22,8 +30,27 @@ bool ModuleRenderer3D::Init()
 	VSLOG("Creating 3D Renderer context");
 	bool ret = true;
 	
+	//Load from config
+	Load(App->config.GetObj(name.c_str()));
+
+
+	//Setting attributes
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+
+
 	//Create context
 	context = SDL_GL_CreateContext(App->window->window);
+
+
+	GLenum err = glewInit();
+	// ... check for errors
+	VSLOG("Using Glew %s", glewGetString(GLEW_VERSION));
+
+
 	if(context == NULL)
 	{
 		VSLOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -33,7 +60,7 @@ bool ModuleRenderer3D::Init()
 	if(ret == true)
 	{
 		//Use Vsync
-		if(VSYNC && SDL_GL_SetSwapInterval(1) < 0)
+		if(vsync && SDL_GL_SetSwapInterval(1) < 0)
 			VSLOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 
 		//Initialize Projection Matrix
@@ -49,8 +76,8 @@ bool ModuleRenderer3D::Init()
 		}
 
 		//Initialize Modelview Matrix
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
+		//glMatrixMode(GL_MODELVIEW);
+		//glLoadIdentity();
 
 		//Check for error
 		error = glGetError();
@@ -94,10 +121,11 @@ bool ModuleRenderer3D::Init()
 		lights[0].Active(true);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
+		glEnable(GL_TEXTURE);
 	}
 
 	// Projection matrix for
-	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
+	OnResize(App->window->w, App->window->h);
 
 	return ret;
 }
@@ -108,11 +136,19 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	//glMatrixMode(GL_MODELVIEW);
-	//glLoadMatrixf(App->camera->GetViewMatrix());
+	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixf(App->camera->GetViewMatrix());
 
 	// light 0 on cam pos
-	//lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+	
+	//Color c = App->camera->background;
+	//glClearColor(c.r, c.g, c.b, c.a);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glMatrixMode(GL_MODELVIEW);
+	//glLoadMatrixf(cam->GetOpenGLViewMatrix());
+	
+
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -124,6 +160,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	SDL_GL_SwapWindow(App->window->window);
+	
 	return UPDATE_CONTINUE;
 }
 
@@ -149,4 +186,17 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+}
+
+bool ModuleRenderer3D::Load(json_object_t* doc)
+{
+
+	vsync = App->config.GetObjValueInt(doc, "Vsync");
+	return true;
+}
+
+bool ModuleRenderer3D::Save(json_object_t* doc)
+{
+	json_object_dotset_boolean(doc, "Renderer.Vsync", vsync);
+	return true;
 }

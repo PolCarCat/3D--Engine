@@ -3,6 +3,7 @@
 #include "ModuleScene.h"
 #include "PhysBody3D.h"
 #include "MathGeoLib/MathGeoLib.h"
+#include "Primitive.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -17,6 +18,9 @@ bool ModuleScene::Start()
 	//VLOG("Loading scene assets");
 	bool ret = true;
 	
+	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
+	App->camera->LookAt(vec3(0, 0, 0));
+
 	return ret;
 }
 
@@ -32,20 +36,11 @@ bool ModuleScene::CleanUp()
 // Update
 update_status ModuleScene::Update(float dt)
 {
-	Plane p;
-	Sphere spehere1({ 0,0,0 }, 5);
-	Triangle triangle1({ 3,4,4 }, { 1,1,1 }, { 5,2,3 });
-	AABB aabb1({ -5,-5,-5 }, { 10,10,10 });
 
-	if (spehere1.Intersects(triangle1))
-	{
-		VSLOG("Intersection triangle Sphere");
-	}
-	if (spehere1.Intersects(aabb1))
-	{
-		VSLOG("Intersection aabb Sphere");
-	}
-
+	PrimitivePlane p(0, 0, 0, 0);
+	p.axis = true;
+	p.Render();
+	
 	return UPDATE_CONTINUE;
 }
 

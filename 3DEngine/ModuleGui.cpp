@@ -1,5 +1,6 @@
 #include "ModuleGui.h"
 #include "Application.h"
+#include <gl/GL.h>
 
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
@@ -39,6 +40,12 @@ update_status ModuleGui::PreUpdate(float dt)
 	{
 		if (ImGui::BeginMenu("File"))
 		{
+			if (ImGui::MenuItem("Save"))
+				App->SaveGame();
+
+			if (ImGui::MenuItem("Load"))
+				App->LoadGame();
+
 			if (ImGui::MenuItem("Quit"))
 				quit = true;
 
@@ -64,8 +71,8 @@ update_status ModuleGui::PreUpdate(float dt)
 		ImGui::EndMainMenuBar();
 	}
 
-	if (about)
-		AboutWindow();
+	AboutWindow();
+
 	if (showdemo)
 		ImGui::ShowDemoWindow();
 	ConfigWindow();
@@ -228,6 +235,15 @@ void ModuleGui::ConfigWindow()
 		if (SDL_HasSSE42())
 			ImGui::Text("SSE42");
 	}
+	if (ImGui::CollapsingHeader("Renderer"))
+	{
+		if (ImGui::Checkbox("WireFrame Mode", &wireframeMode))
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glPolygonMode(GL_BACK, GL_LINE);
+		}
 
+
+	}
 	ImGui::End();
 }
