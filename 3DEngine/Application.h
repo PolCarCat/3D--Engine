@@ -32,10 +32,10 @@ public:
 
 	int fps_counter = 0;
 	int ms_counter = 0;
-	float last_sec_frames = 0;
 	float fps[100];
 	float ms[100];
-
+	float expected_delay;
+	int framerate_cap = 60;
 
 public:
 
@@ -50,7 +50,6 @@ public:
 
 private:
 
-	Timer	sec_timer;
 	Timer	ms_timer;
 	float	dt;
 	list<Module*> list_modules;
@@ -68,5 +67,4 @@ private:
 	void ReadMs();
 	bool LoadNow();
 	bool SaveNow() const;
-
 };
