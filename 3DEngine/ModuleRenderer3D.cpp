@@ -34,8 +34,6 @@ bool ModuleRenderer3D::Init()
 	Load(App->config.GetObj(name.c_str()));
 
 
-
-
 	//Setting attributes
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
@@ -52,12 +50,6 @@ bool ModuleRenderer3D::Init()
 	// ... check for errors
 	VSLOG("Using Glew %s", glewGetString(GLEW_VERSION));
 
-
-	//DETECT HARDWARE
-	VSLOG("Vendor: %s", glGetString(GL_VENDOR));
-	VSLOG("Renderer: %s", glGetString(GL_RENDERER));
-	VSLOG("OpenGL version supported %s", glGetString(GL_VERSION));
-	VSLOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 	if(context == NULL)
 	{
@@ -84,8 +76,8 @@ bool ModuleRenderer3D::Init()
 		}
 
 		//Initialize Modelview Matrix
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
+		//glMatrixMode(GL_MODELVIEW);
+		//glLoadIdentity();
 
 		//Check for error
 		error = glGetError();
