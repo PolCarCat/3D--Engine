@@ -41,5 +41,5 @@ private:
 	char* wiki_link;
 	bool showdemo = false;
 	bool about = false;
-	bool wireframeMode = false;
+
 };

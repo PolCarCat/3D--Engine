@@ -237,11 +237,28 @@ void ModuleGui::ConfigWindow()
 	}
 	if (ImGui::CollapsingHeader("Renderer"))
 	{
-		if (ImGui::Checkbox("WireFrame Mode", &wireframeMode))
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			glPolygonMode(GL_BACK, GL_LINE);
-		}
+
+		if (ImGui::Button((App->renderer3D->GetVsync() != true ? "Disable Vsync" : "Enable Vsync")))
+			App->renderer3D->EnableVsync();
+
+		if (ImGui::Button((App->renderer3D->GetDepthTest() != true ? "Disable Depth Test" : "Enable Depth Test")))
+			App->renderer3D->EnableDepthTest();
+
+		if (ImGui::Button((App->renderer3D->GetCullFace() != true ? "Disable CullFace" : "Enable CullFace")))
+			App->renderer3D->EnableCullFace();
+
+		if (ImGui::Button((App->renderer3D->GetLighting() != true ? "Disable Lighting" : "Enable Lighting")))
+			App->renderer3D->EnableLighting();
+
+		if (ImGui::Button((App->renderer3D->GetColorMat() != true ? "Disable Color Material" : "Enable Color Material")))
+			App->renderer3D->EnableColorMaterial();
+
+		if (ImGui::Button((App->renderer3D->GetTexture2D() != true ? "Disable Texture 2D" : "Enable Texture 2D")))
+			App->renderer3D->EnableTexture2D();
+
+		if (ImGui::Button((App->renderer3D->GetWireFrame() != true ? "Disable WireFrame" : "Enable WireFrame")))
+			App->renderer3D->EnableWireframe();
+		
 
 
 	}

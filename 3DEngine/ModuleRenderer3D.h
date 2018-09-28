@@ -20,12 +20,37 @@ public:
 	bool Save(json_object_t* doc);
 
 	void OnResize(int width, int height);
+	void EnableVsync();
+	void EnableDepthTest();
+	void EnableCullFace();
+	void EnableLighting();
+	void EnableColorMaterial();
+	void EnableTexture2D();
+	void EnableWireframe();
+	bool GetVsync() { return vsync; };
+	bool GetDepthTest() { return depthTest; };
+	bool GetCullFace() { return cullface; };
+	bool GetLighting() { return lightning; };
+	bool GetColorMat() { return colorMaterial; };
+	bool GetTexture2D() { return texture2D; };
+	bool GetWireFrame() { return wireframe; };
 
 public:
 
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
-	bool vsync = false;
+
+
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+
+private:
+	bool vsync = false;
+	bool depthTest = true;
+	bool cullface = true;
+	bool lightning = true;
+	bool colorMaterial = true;
+	bool texture2D = true;
+	bool wireframe = false;
+
 };

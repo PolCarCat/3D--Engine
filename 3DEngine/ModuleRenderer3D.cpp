@@ -200,3 +200,47 @@ bool ModuleRenderer3D::Save(json_object_t* doc)
 	json_object_dotset_boolean(doc, "Renderer.Vsync", vsync);
 	return true;
 }
+
+
+void ModuleRenderer3D::EnableVsync()
+{
+	vsync = !vsync;
+	vsync == true ? (SDL_GL_SetSwapInterval(1) < 0) : (SDL_GL_SetSwapInterval(0) < 0);
+}
+
+void ModuleRenderer3D::EnableDepthTest()
+{
+	depthTest = !depthTest;
+	depthTest == true ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+}
+
+void ModuleRenderer3D::EnableCullFace() 
+{
+	cullface = !cullface;
+	cullface == true ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
+}
+
+void ModuleRenderer3D::EnableLighting()
+{
+	lightning = !lightning;
+	lightning == true ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
+}
+
+
+void ModuleRenderer3D::EnableColorMaterial()
+{
+	colorMaterial = !colorMaterial;
+	colorMaterial == true ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
+}
+
+void ModuleRenderer3D::EnableTexture2D()
+{
+	texture2D = !texture2D;
+	texture2D == true ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
+}
+
+void ModuleRenderer3D::EnableWireframe()
+{
+	wireframe = !wireframe;
+	wireframe == true ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
