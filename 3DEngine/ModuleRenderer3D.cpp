@@ -306,231 +306,230 @@ void ModuleRenderer3D::VertexArraysCube(float origin, float size)
 {
 	if (!BufferInit)
 	{
+		int i = 0;
+
+		vertices[i] = origin;		//A
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin + size;		//B
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin;		//C
+		i++;
+		vertices[i] = origin + size;
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin + size;		//B
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin + size;		//D
+		i++;
+		vertices[i] = origin + size;
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin;		//C
+		i++;
+		vertices[i] = origin + size;
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin + size;		//D
+		i++;
+		vertices[i] = origin + size;
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin + size;		//E
+		i++;
+		vertices[i] = origin + size;
+		i++;
+		vertices[i] = origin - size;
+		i++;
+		vertices[i] = origin;		//C
+		i++;
+		vertices[i] = origin + size;
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin + size;		//E
+		i++;
+		vertices[i] = origin + size;
+		i++;
+		vertices[i] = origin - size;
+		i++;
+		vertices[i] = origin;		//F
+		i++;
+		vertices[i] = origin + size;
+		i++;
+		vertices[i] = origin - size;
+		i++;
+		vertices[i] = origin;		//C
+		i++;
+		vertices[i] = origin + size;
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin;		//C
+		i++;
+		vertices[i] = origin + size;
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin;		//F
+		i++;
+		vertices[i] = origin + size;
+		i++;
+		vertices[i] = origin - size;
+		i++;
+		vertices[i] = origin;		//G
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin - size;
+		i++;
+		vertices[i] = origin;		//A
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin;		//C
+		i++;
+		vertices[i] = origin + size;
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin;		//G
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin - size;
+		i++;
+		vertices[i] = origin;		//G
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin - size;
+		i++;
+		vertices[i] = origin;		//F
+		i++;
+		vertices[i] = origin + size;
+		i++;
+		vertices[i] = origin - size;
+		i++;
+		vertices[i] = origin + size;		//E
+		i++;
+		vertices[i] = origin + size;
+		i++;
+		vertices[i] = origin - size;
+		i++;
+		vertices[i] = origin + size;		//E
+		i++;
+		vertices[i] = origin + size;
+		i++;
+		vertices[i] = origin - size;
+		i++;
+		vertices[i] = origin + size;		//H
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin - size;
+		i++;
+		vertices[i] = origin;		//G
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin - size;
+		i++;
+		vertices[i] = origin + size;		//H
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin - size;
+		i++;
+		vertices[i] = origin + size;		//E
+		i++;
+		vertices[i] = origin + size;
+		i++;
+		vertices[i] = origin - size;
+		i++;
+		vertices[i] = origin + size;		//D
+		i++;
+		vertices[i] = origin + size;
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin + size;		//D
+		i++;
+		vertices[i] = origin + size;
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin + size;		//B
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin + size;		//H
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin - size;
+		i++;
+		vertices[i] = origin;		//G
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin - size;
+		i++;
+		vertices[i] = origin + size;		//H
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin - size;
+		i++;
+		vertices[i] = origin + size;		//B
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin + size;		//B
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin;		//A
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin;		//G
+		i++;
+		vertices[i] = origin;
+		i++;
+		vertices[i] = origin - size;
+
 		glGenBuffers(1, (GLuint*) &(my_id));
 		glBindBuffer(GL_ARRAY_BUFFER, my_id);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 36 * 3, vertices, GL_STATIC_DRAW);
 
 		BufferInit = true;
 	}
-
-	int i = 0;
-
-	vertices[i] = origin;		//A
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin + size;		//B
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin;		//C
-	i++;
-	vertices[i] = origin + size;
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin + size;		//B
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin + size;		//D
-	i++;
-	vertices[i] = origin + size;
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin;		//C
-	i++;
-	vertices[i] = origin + size;
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin + size;		//D
-	i++;
-	vertices[i] = origin + size;
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin + size;		//E
-	i++;
-	vertices[i] = origin + size;
-	i++;
-	vertices[i] = origin - size;
-	i++;
-	vertices[i] = origin;		//C
-	i++;
-	vertices[i] = origin + size;
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin + size;		//E
-	i++;
-	vertices[i] = origin + size;
-	i++;
-	vertices[i] = origin - size;
-	i++;
-	vertices[i] = origin;		//F
-	i++;
-	vertices[i] = origin + size;
-	i++;
-	vertices[i] = origin - size;
-	i++;
-	vertices[i] = origin;		//C
-	i++;
-	vertices[i] = origin + size;
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin;		//C
-	i++;
-	vertices[i] = origin + size;
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin;		//F
-	i++;
-	vertices[i] = origin + size;
-	i++;
-	vertices[i] = origin - size;
-	i++;
-	vertices[i] = origin;		//G
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin - size;
-	i++;
-	vertices[i] = origin;		//A
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin;		//C
-	i++;
-	vertices[i] = origin + size;
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin;		//G
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin - size;
-	i++;
-	vertices[i] = origin;		//G
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin - size;
-	i++;
-	vertices[i] = origin;		//F
-	i++;
-	vertices[i] = origin + size;
-	i++;
-	vertices[i] = origin - size;
-	i++;
-	vertices[i] = origin + size;		//E
-	i++;
-	vertices[i] = origin + size;
-	i++;
-	vertices[i] = origin - size;
-	i++;
-	vertices[i] = origin + size;		//E
-	i++;
-	vertices[i] = origin + size;
-	i++;
-	vertices[i] = origin - size;
-	i++;
-	vertices[i] = origin + size;		//H
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin - size;
-	i++;
-	vertices[i] = origin;		//G
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin - size;
-	i++;
-	vertices[i] = origin + size;		//H
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin - size;
-	i++;
-	vertices[i] = origin + size;		//E
-	i++;
-	vertices[i] = origin + size;
-	i++;
-	vertices[i] = origin - size;
-	i++;
-	vertices[i] = origin + size;		//D
-	i++;
-	vertices[i] = origin + size;
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin + size;		//D
-	i++;
-	vertices[i] = origin + size;
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin + size;		//B
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin + size;		//H
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin - size;
-	i++;
-	vertices[i] = origin;		//G
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin - size;
-	i++;
-	vertices[i] = origin + size;		//H
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin - size;
-	i++;
-	vertices[i] = origin + size;		//B
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin + size;		//B
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin;		//A
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin;		//G
-	i++;
-	vertices[i] = origin;
-	i++;
-	vertices[i] = origin - size;
-
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
