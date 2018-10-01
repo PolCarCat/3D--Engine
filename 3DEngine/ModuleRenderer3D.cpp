@@ -147,8 +147,10 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glMatrixMode(GL_MODELVIEW);
 	//glLoadMatrixf(cam->GetOpenGLViewMatrix());
-	
-
+	if (directCube)
+		DirectCube(0, 0.1);
+	if (varrCube)
+		VertexArraysCube(0, 0.1);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -243,4 +245,296 @@ void ModuleRenderer3D::EnableWireframe()
 {
 	wireframe = !wireframe;
 	wireframe == true ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+void ModuleRenderer3D::DirectCube(float origin, float size)
+{
+	glBegin(GL_TRIANGLES);
+
+	glVertex3f(origin, origin, origin);							//A
+	glVertex3f(origin + size, origin, origin);					//B
+	glVertex3f(origin, origin + size, origin);					//C
+
+	glVertex3f(origin + size, origin, origin);					//B
+	glVertex3f(origin + size, origin + size, origin);			//D
+	glVertex3f(origin, origin + size, origin);					//C
+
+	glVertex3f(origin + size, origin + size, origin);			//D
+	glVertex3f(origin + size, origin + size, origin - size);	//E
+	glVertex3f(origin, origin + size, origin);					//C
+	
+	glVertex3f(origin + size, origin + size, origin - size);	//E
+	glVertex3f(origin, origin + size, origin - size);			//F
+	glVertex3f(origin, origin + size, origin);					//C
+
+	glVertex3f(origin, origin + size, origin);					//C
+	glVertex3f(origin, origin + size, origin - size);			//F
+	glVertex3f(origin, origin, origin - size);					//G
+
+	glVertex3f(origin, origin, origin);							//A
+	glVertex3f(origin, origin + size, origin);					//C
+	glVertex3f(origin, origin, origin - size);					//G
+
+	glVertex3f(origin, origin, origin - size);					//G
+	glVertex3f(origin, origin + size, origin - size);			//F
+	glVertex3f(origin + size, origin + size, origin - size);	//E
+
+	glVertex3f(origin + size, origin + size, origin - size);	//E
+	glVertex3f(origin + size, origin, origin - size);			//H
+	glVertex3f(origin, origin, origin - size);					//G
+
+	glVertex3f(origin + size, origin, origin - size);			//H
+	glVertex3f(origin + size, origin + size, origin - size);	//E
+	glVertex3f(origin + size, origin + size, origin);			//D
+
+	glVertex3f(origin + size, origin + size, origin);			//D
+	glVertex3f(origin + size, origin, origin);					//B
+	glVertex3f(origin + size, origin, origin - size);			//H
+
+	glVertex3f(origin, origin, origin - size);					//G
+	glVertex3f(origin + size, origin, origin - size);			//H
+	glVertex3f(origin + size, origin, origin);					//B
+
+	glVertex3f(origin + size, origin, origin);					//B
+	glVertex3f(origin, origin, origin);							//A
+	glVertex3f(origin, origin, origin - size);					//G
+
+	glEnd();
+}
+
+void ModuleRenderer3D::VertexArraysCube(float origin, float size)
+{
+	if (!BufferInit)
+	{
+		glGenBuffers(1, (GLuint*) &(my_id));
+		glBindBuffer(GL_ARRAY_BUFFER, my_id);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 36 * 3, vertices, GL_STATIC_DRAW);
+
+		BufferInit = true;
+	}
+
+	int i = 0;
+
+	vertices[i] = origin;		//A
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin + size;		//B
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin;		//C
+	i++;
+	vertices[i] = origin + size;
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin + size;		//B
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin + size;		//D
+	i++;
+	vertices[i] = origin + size;
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin;		//C
+	i++;
+	vertices[i] = origin + size;
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin + size;		//D
+	i++;
+	vertices[i] = origin + size;
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin + size;		//E
+	i++;
+	vertices[i] = origin + size;
+	i++;
+	vertices[i] = origin - size;
+	i++;
+	vertices[i] = origin;		//C
+	i++;
+	vertices[i] = origin + size;
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin + size;		//E
+	i++;
+	vertices[i] = origin + size;
+	i++;
+	vertices[i] = origin - size;
+	i++;
+	vertices[i] = origin;		//F
+	i++;
+	vertices[i] = origin + size;
+	i++;
+	vertices[i] = origin - size;
+	i++;
+	vertices[i] = origin;		//C
+	i++;
+	vertices[i] = origin + size;
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin;		//C
+	i++;
+	vertices[i] = origin + size;
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin;		//F
+	i++;
+	vertices[i] = origin + size;
+	i++;
+	vertices[i] = origin - size;
+	i++;
+	vertices[i] = origin;		//G
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin - size;
+	i++;
+	vertices[i] = origin;		//A
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin;		//C
+	i++;
+	vertices[i] = origin + size;
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin;		//G
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin - size;
+	i++;
+	vertices[i] = origin;		//G
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin - size;
+	i++;
+	vertices[i] = origin;		//F
+	i++;
+	vertices[i] = origin + size;
+	i++;
+	vertices[i] = origin - size;
+	i++;
+	vertices[i] = origin + size;		//E
+	i++;
+	vertices[i] = origin + size;
+	i++;
+	vertices[i] = origin - size;
+	i++;
+	vertices[i] = origin + size;		//E
+	i++;
+	vertices[i] = origin + size;
+	i++;
+	vertices[i] = origin - size;
+	i++;
+	vertices[i] = origin + size;		//H
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin - size;
+	i++;
+	vertices[i] = origin;		//G
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin - size;
+	i++;
+	vertices[i] = origin + size;		//H
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin - size;
+	i++;
+	vertices[i] = origin + size;		//E
+	i++;
+	vertices[i] = origin + size;
+	i++;
+	vertices[i] = origin - size;
+	i++;
+	vertices[i] = origin + size;		//D
+	i++;
+	vertices[i] = origin + size;
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin + size;		//D
+	i++;
+	vertices[i] = origin + size;
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin + size;		//B
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin + size;		//H
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin - size;
+	i++;
+	vertices[i] = origin;		//G
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin - size;
+	i++;
+	vertices[i] = origin + size;		//H
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin - size;
+	i++;
+	vertices[i] = origin + size;		//B
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin + size;		//B
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin;		//A
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin;		//G
+	i++;
+	vertices[i] = origin;
+	i++;
+	vertices[i] = origin - size;
+
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, my_id);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glDisableClientState(GL_VERTEX_ARRAY);
 }

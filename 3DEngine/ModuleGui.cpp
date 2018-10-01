@@ -77,6 +77,7 @@ update_status ModuleGui::PreUpdate(float dt)
 		ImGui::ShowDemoWindow();
 	ConfigWindow();
 	RngWindow();
+	PrimitivesWindow();
 
 	return UPDATE_CONTINUE;
 }
@@ -262,5 +263,15 @@ void ModuleGui::ConfigWindow()
 
 
 	}
+	ImGui::End();
+}
+
+void ModuleGui::PrimitivesWindow()
+{
+	ImGui::Begin("Primitives");
+	
+	ImGui::Checkbox("Direct Cube", &App->renderer3D->directCube);
+	ImGui::Checkbox("Vertex arrays Cube", &App->renderer3D->varrCube);
+	
 	ImGui::End();
 }

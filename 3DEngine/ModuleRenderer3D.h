@@ -44,6 +44,14 @@ public:
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
+public:
+	bool directCube = false;
+	bool varrCube = false;
+
+private:
+	void DirectCube(float origin, float size);
+	void VertexArraysCube(float origin, float size);
+
 private:
 	bool vsync = false;
 	bool depthTest = true;
@@ -52,5 +60,7 @@ private:
 	bool colorMaterial = true;
 	bool texture2D = true;
 	bool wireframe = false;
-
+	float vertices[107];
+	bool BufferInit = false;
+	uint my_id = 0;
 };

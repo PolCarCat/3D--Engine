@@ -28,6 +28,7 @@ private:
 	void RngWindow();
 	void AboutWindow();
 	void ConfigWindow();
+	void PrimitivesWindow();
 
 private:
 	bool quit = false;
