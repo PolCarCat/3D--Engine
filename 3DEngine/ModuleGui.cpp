@@ -257,7 +257,7 @@ void ModuleGui::ConfigWindow()
 		if (ImGui::Button((App->renderer3D->GetTexture2D() != true ? "Disable Texture 2D" : "Enable Texture 2D")))
 			App->renderer3D->EnableTexture2D();
 
-		if (ImGui::Button((App->renderer3D->GetWireFrame() != true ? "Disable WireFrame" : "Enable WireFrame")))
+		if (ImGui::Button((App->renderer3D->GetWireFrame() != true ? "Enable WireFrame" : "Disable WireFrame")))
 			App->renderer3D->EnableWireframe();
 		
 
