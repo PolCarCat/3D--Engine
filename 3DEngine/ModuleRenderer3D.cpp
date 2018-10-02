@@ -153,6 +153,12 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 		VertexArraysCube(0, 0.1);
 	if (indCube)
 		IndicesCube(0, 0.1);
+	if (ray)
+		Ray(0, 0, 0, 0.1, 0.5, 0.2);
+	if (arrow)
+		Arrow(0, 0, 0, 0, 0.1, 0);
+	if (plane)
+		Plane(100);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -607,4 +613,40 @@ void ModuleRenderer3D::IndicesCube(float origin, float size)
 	//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	//glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+void ModuleRenderer3D::Ray(float ox, float oy, float oz, float ex, float ey, float ez)
+{
+	glLineWidth(3);
+	glBegin(GL_LINES);
+	glVertex3f(ox, oy, oz);
+	glVertex3f(ex, ey, ez);
+	glEnd();
+	glLineWidth(1);
+}
+
+void ModuleRenderer3D::Arrow(float ox, float oy, float oz, float ex, float ey, float ez)
+{
+	glLineWidth(3);
+	glBegin(GL_LINES);
+	glVertex3f(ox, oy, oz);
+	glVertex3f(ex, ey, ez);
+	glVertex3f(ex, ey, ez);
+	glVertex3f(ex + 0.01, ey - 0.01 , ez);
+	glVertex3f(ex, ey, ez);
+	glVertex3f(ex - 0.01, ey - 0.01, ez);
+	glEnd();
+	glLineWidth(1);
+}
+
+void ModuleRenderer3D::Plane(float size)
+{
+	glBegin(GL_LINES);
+	for (float i = 0; i <= size; i += 0.001)
+	{
+		glVertex3f(size, i, 0);
+		glVertex3f(-size, i, 0);
+	}
+	glEnd();
+	glLineWidth(1);
 }

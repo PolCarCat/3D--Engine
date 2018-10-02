@@ -48,11 +48,17 @@ public:
 	bool directCube = false;
 	bool varrCube = false;
 	bool indCube = false;
+	bool ray = false;
+	bool arrow = false;
+	bool plane = false;
 
 private:
 	void DirectCube(float origin, float size);
 	void VertexArraysCube(float origin, float size);
 	void IndicesCube(float origin, float size);
+	void Ray(float ox, float oy, float oz, float ex, float ey, float ez);
+	void Arrow(float ox, float oy, float oz, float ex, float ey, float ez);
+	void Plane(float size);
 
 private:
 	bool vsync = false;

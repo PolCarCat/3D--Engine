@@ -285,6 +285,9 @@ void ModuleGui::PrimitivesWindow()
 	ImGui::Checkbox("Direct Cube", &App->renderer3D->directCube);
 	ImGui::Checkbox("Vertex arrays Cube", &App->renderer3D->varrCube);
 	ImGui::Checkbox("Indices Cube", &App->renderer3D->indCube);
+	ImGui::Checkbox("Ray", &App->renderer3D->ray);
+	ImGui::Checkbox("Arrow", &App->renderer3D->arrow);
+	ImGui::Checkbox("Plane", &App->renderer3D->plane);
 	
 	ImGui::End();
 }
