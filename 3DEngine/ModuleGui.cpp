@@ -67,16 +67,28 @@ update_status ModuleGui::PreUpdate(float dt)
 
 			ImGui::EndMenu();
 		}
-		
+
+		if (ImGui::BeginMenu("Tools"))
+		{
+			if (ImGui::MenuItem("Configuration"))
+				config = !config;
+			if (ImGui::MenuItem("Random Number Generator"))
+				rngwindow = !rngwindow;
+
+			ImGui::EndMenu();
+		}
+
 		ImGui::EndMainMenuBar();
 	}
 
-	AboutWindow();
-
+	if (about)
+		AboutWindow();
 	if (showdemo)
 		ImGui::ShowDemoWindow();
-	ConfigWindow();
-	RngWindow();
+	if (config)
+		ConfigWindow();
+	if (rngwindow)
+		RngWindow();
 	PrimitivesWindow();
 
 	return UPDATE_CONTINUE;
@@ -272,6 +284,7 @@ void ModuleGui::PrimitivesWindow()
 	
 	ImGui::Checkbox("Direct Cube", &App->renderer3D->directCube);
 	ImGui::Checkbox("Vertex arrays Cube", &App->renderer3D->varrCube);
+	ImGui::Checkbox("Indices Cube", &App->renderer3D->indCube);
 	
 	ImGui::End();
 }

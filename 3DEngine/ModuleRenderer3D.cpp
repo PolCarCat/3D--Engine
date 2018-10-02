@@ -151,6 +151,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 		DirectCube(0, 0.1);
 	if (varrCube)
 		VertexArraysCube(0, 0.1);
+	if (indCube)
+		IndicesCube(0, 0.1);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -304,7 +306,7 @@ void ModuleRenderer3D::DirectCube(float origin, float size)
 
 void ModuleRenderer3D::VertexArraysCube(float origin, float size)
 {
-	if (!BufferInit)
+	if (!VBufferInit)
 	{
 		int i = 0;
 
@@ -528,12 +530,81 @@ void ModuleRenderer3D::VertexArraysCube(float origin, float size)
 		glBindBuffer(GL_ARRAY_BUFFER, my_id);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 36 * 3, vertices, GL_STATIC_DRAW);
 
-		BufferInit = true;
+		VBufferInit = true;
 	}
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+void ModuleRenderer3D::IndicesCube(float origin, float size)
+{
+	//if (!IBufferInit)
+	//{
+	//	int i = 0;
+
+	//	vertices2[i] = origin;				//A
+	//	i++;
+	//	vertices2[i] = origin;
+	//	i++;
+	//	vertices2[i] = origin;
+	//	i++;
+	//	vertices2[i] = origin + size;		//B
+	//	i++;
+	//	vertices2[i] = origin;
+	//	i++;
+	//	vertices2[i] = origin;
+	//	i++;
+	//	vertices2[i] = origin;				//C
+	//	i++;
+	//	vertices2[i] = origin + size;
+	//	i++;
+	//	vertices2[i] = origin;
+	//	i++;
+	//	vertices2[i] = origin + size;		//D
+	//	i++;
+	//	vertices2[i] = origin + size;
+	//	i++;
+	//	vertices2[i] = origin;
+	//	i++;
+	//	vertices2[i] = origin + size;		//E
+	//	i++;
+	//	vertices2[i] = origin + size;
+	//	i++;
+	//	vertices2[i] = origin - size;
+	//	i++;
+	//	vertices2[i] = origin;				//F
+	//	i++;
+	//	vertices2[i] = origin + size;
+	//	i++;
+	//	vertices2[i] = origin - size;
+	//	i++;
+	//	vertices2[i] = origin;				//G
+	//	i++;
+	//	vertices2[i] = origin;
+	//	i++;
+	//	vertices2[i] = origin - size;
+	//	i++;
+	//	vertices2[i] = origin + size;		//H
+	//	i++;
+	//	vertices2[i] = origin;
+	//	i++;
+	//	vertices2[i] = origin - size;
+
+	//	glGenBuffers(1, (GLuint*) &(my_indices));
+	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
+	//	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)*36, indices, GL_STATIC_DRAW);
+
+	//	IBufferInit = true;
+	//}
+
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
+	//glVertexPointer(3, GL_FLOAT, 0, &vertices2[0]);
+	//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	//glDisableClientState(GL_VERTEX_ARRAY);
 }

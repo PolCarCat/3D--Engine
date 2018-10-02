@@ -47,10 +47,12 @@ public:
 public:
 	bool directCube = false;
 	bool varrCube = false;
+	bool indCube = false;
 
 private:
 	void DirectCube(float origin, float size);
 	void VertexArraysCube(float origin, float size);
+	void IndicesCube(float origin, float size);
 
 private:
 	bool vsync = false;
@@ -60,7 +62,16 @@ private:
 	bool colorMaterial = true;
 	bool texture2D = true;
 	bool wireframe = false;
-	float vertices[107];
-	bool BufferInit = false;
+	float vertices[108];
+	float vertices2[24];
+	bool VBufferInit = false;
+	bool IBufferInit = false;
 	uint my_id = 0;
+	uint my_indices = 0;
+	float indices[36] = { 0,1,2,	1,3,2,
+		3,4,2,	4,5,2,
+		2,5,6,	0,2,6,
+		6,5,4,	4,7,6,
+		7,4,3,	3,1,7,
+		6,7,1,	1,0,6 };
 };

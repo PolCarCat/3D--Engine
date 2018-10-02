@@ -42,5 +42,7 @@ private:
 	char* wiki_link;
 	bool showdemo = false;
 	bool about = false;
+	bool config = false;
+	bool rngwindow = false;
 
 };
