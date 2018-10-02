@@ -3,6 +3,8 @@
 #include "Globals.h"
 #include "Light.h"
 #include "glmath.h"
+#include <vector>
+#include "MathGeoLib/MathGeoLib.h"
 
 #define MAX_LIGHTS 8
 
@@ -51,6 +53,7 @@ public:
 	bool ray = false;
 	bool arrow = false;
 	bool plane = false;
+	bool sphere = false;
 
 private:
 	void DirectCube(float origin, float size);
@@ -59,6 +62,7 @@ private:
 	void Ray(float ox, float oy, float oz, float ex, float ey, float ez);
 	void Arrow(float ox, float oy, float oz, float ex, float ey, float ez);
 	void Plane(float size);
+	void Sphere(float radius, int stacks, int sectors, vector<float> origin = { 0, 0, 0 });
 
 private:
 	bool vsync = false;
@@ -68,13 +72,17 @@ private:
 	bool colorMaterial = true;
 	bool texture2D = true;
 	bool wireframe = false;
-	float vertices[108];
-	float vertices2[24];
+	float vertices[107];
+	float vertices2[23];
 	bool VBufferInit = false;
 	bool IBufferInit = false;
+	bool SBufferInit = false;
 	uint my_id = 0;
+	uint my_Sid = 0;
 	uint my_indices = 0;
-	float indices[36] = { 0,1,2,	1,3,2,
+	vector<float> Svertices;
+	vector<int> Sindices;
+	vector<int> Cindices = { 0,1,2,	1,3,2,
 		3,4,2,	4,5,2,
 		2,5,6,	0,2,6,
 		6,5,4,	4,7,6,
