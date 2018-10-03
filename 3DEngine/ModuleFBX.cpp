@@ -2,10 +2,10 @@
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Application.h"
-#include "ModuleWindow.h"
+#include "ModuleRenderer3D.h"
 
 #include "SDL/include/SDL.h"
-//#include "Assimp/include/postprocess.h"
+#include "Assimp/include/postprocess.h"
 //#include "Assimp/include/cfileio.h"
 
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
@@ -30,6 +30,9 @@ bool ModuleFBX::Start()
 
 	SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
 
+	
+	LoadScene("Assets/BakerHouse.fbx");
+
 	return true;
 }
 
@@ -42,7 +45,7 @@ update_status ModuleFBX::PreUpdate(float dt)
 update_status ModuleFBX::Update(float dt)
 {
 
-	CheckDropEvent();
+
 
 	return UPDATE_CONTINUE;
 }
@@ -55,7 +58,7 @@ update_status ModuleFBX::PostUpdate(float dt)
 
 bool ModuleFBX::CleanUp()
 {
-
+	if (droppedFile != nullptr)
 	SDL_free(droppedFile);
 
 	// detach log stream
@@ -64,15 +67,77 @@ bool ModuleFBX::CleanUp()
 	return true;
 }
 
-void ModuleFBX::CheckDropEvent()
+bool ModuleFBX::CheckDropEvent()
 {
+	bool ret = false;
+
 	SDL_Event dropEvent;
 	while (SDL_PollEvent(&dropEvent))
 	{
 		if (dropEvent.type == SDL_DROPFILE)
 		{
 			droppedFile = dropEvent.drop.file;
-			// Shows directory of dropped file
+			ret = true;
+
+			SDL_ShowSimpleMessageBox(
+				SDL_MESSAGEBOX_INFORMATION,
+				"File dropped on window",
+				droppedFile,
+				App->window->window);
 		}
 	}
+
+	return ret;
+}
+
+
+void ModuleFBX::LoadScene(const char* path)
+{
+	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
+
+
+
+	if (scene != nullptr && scene->HasMeshes())
+	{		
+		// Use scene->mNumMeshes to iterate on scene->mMeshes array
+		
+		for (int nm = 0; nm < scene->mNumMeshes; nm++)
+		{
+			Mesh* mesh = new Mesh;
+			aiMesh* m = scene->mMeshes[nm];
+			mesh->num_vertex = m->mNumVertices;
+			mesh->vertex = new float[mesh->num_vertex * 3];
+			memcpy(mesh->vertex, m->mVertices, sizeof(float) * mesh->num_vertex * 3);
+			//VSLOG("New mesh with %d vertices", m.num_vertices);
+
+			if (m->HasFaces())
+			{
+				mesh->num_indice = m->mNumFaces * 3;
+				mesh->indice = new uint[mesh->num_indice]; // assume each face is a triangle
+				for (uint i = 0; i < m->mNumFaces; ++i)
+				{
+					if (m->mFaces[i].mNumIndices != 3)
+					{
+						VSLOG("WARNING, geometry face with != 3 indices!");
+					}						
+					else
+						memcpy(&mesh->indice[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
+				
+				}
+			}
+
+			mesh->GenerateBuffer();
+			App->renderer3D->meshes.push_back(mesh);
+			
+		}	
+
+		aiReleaseImport(scene);
+		
+	}
+	else
+	{
+		VSLOG("Error loading scene %s", path);
+	}
+		
+		
 }
