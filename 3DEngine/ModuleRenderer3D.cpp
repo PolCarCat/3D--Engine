@@ -1,4 +1,4 @@
-#include "Globals.h"
+
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleWindow.h"
@@ -160,6 +160,9 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	if (plane)
 		Plane(100);
 
+
+	DrawMeshes();
+
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
 
@@ -253,6 +256,46 @@ void ModuleRenderer3D::EnableWireframe()
 {
 	wireframe = !wireframe;
 	wireframe == true ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+void ModuleRenderer3D::DrawMeshes()
+{
+	for (std::list<Mesh*>::iterator item = meshes.begin(); item != meshes.end(); item++) {
+		(*item)->Draw();
+	}
+}
+
+
+
+void Mesh::GenerateBuffer()
+{
+
+	//glGenBuffers(1, (GLuint*) &(id_index));
+	//glBindBuffer(GL_ARRAY_BUFFER, id_index);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_index, &index[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, (GLuint*) &(id_vertex));
+	glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_vertex, vertex, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+
+
+}
+
+void Mesh::Draw()
+{
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, id_indice);
+	glVertexPointer(3, GL_FLOAT, 0, vertex);
+	glDrawElements(GL_TRIANGLES, num_indice, GL_UNSIGNED_INT, indice);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glDisableClientState(GL_VERTEX_ARRAY);
+
+
+
+
 }
 
 void ModuleRenderer3D::DirectCube(float origin, float size)

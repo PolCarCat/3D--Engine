@@ -1,5 +1,9 @@
 #pragma once
 #include "Module.h"
+
+class aiScene;
+class Mesh;
+
 class ModuleFBX : public Module
 {
 public:
@@ -17,11 +21,14 @@ public:
 
 	bool CleanUp();
 
-	void CheckDropEvent();
-
+	bool CheckDropEvent();
+	
+	void LoadScene(const char* path);
 private:
-	char* droppedFile;
+	char* droppedFile = nullptr;
 
+	Mesh* testScene = nullptr;
+	bool test = false;
 
 
 };
