@@ -658,68 +658,71 @@ void ModuleRenderer3D::Plane(float size)
 
 void ModuleRenderer3D::Sphere(float radius, int stacks, int sectors, vector<float> origin)
 {
-	//if (!SBufferInit)
-	//{
-	//	float x;
-	//	float y;
-	//	float z;
-	//	float xy;
-	//	float an1; //for stacks
-	//	float an2; //for sectors
-	//	float currstack = pi / stacks;
-	//	float currsector = 2 * pi / sectors;
+	if (!SBufferInit)
+	{
+		float x;
+		float y;
+		float z;
+		float xy;
+		float an1; //for stacks
+		float an2; //for sectors
+		float currstack = pi / stacks;
+		float currsector = 2 * pi / sectors;
 
-	//	for (int i = 0; i <= stacks; ++i)
-	//	{
-	//		an1 = pi / 2 - i * currstack;
-	//		xy = radius * cosf(an1);
-	//		z = radius * sinf(an1);
+		for (int i = 0; i <= stacks; ++i)
+		{
+			an1 = pi / 2 - i * currstack;
+			xy = radius * cosf(an1);
+			z = radius * sinf(an1);
 
-	//		for (int c = 0; c <= sectors; ++c)
-	//		{
-	//			an2 = c * currsector;
+			for (int c = 0; c <= sectors; ++c)
+			{
+				an2 = c * currsector;
 
-	//			x = xy * cosf(an2);
-	//			y = xy * sinf(an2);
-	//			Svertices.push_back(x);
-	//			Svertices.push_back(y);
-	//			Svertices.push_back(z);
-	//		}
-	//	}
+				x = xy * cosf(an2);
+				y = xy * sinf(an2);
+				Svertices.push_back(x);
+				Svertices.push_back(y);
+				Svertices.push_back(z);
+			}
+		}
 
-	//	int k1, k2;
-	//	for (int i = 0; i < stacks; ++i)
-	//	{
-	//		k1 = i * (sectors + 1);
-	//		k2 = k1 + sectors + 1;
+		int k1, k2;
+		for (int i = 0; i < stacks; ++i)
+		{
+			k1 = i * (sectors + 1);
+			k2 = k1 + sectors + 1;
 
-	//		for (int c = 0; c < sectors; ++c, ++k1, ++k2)
-	//		{
-	//			if (i != 0)
-	//			{
-	//				Sindices.push_back(k1);
-	//				Sindices.push_back(k2);
-	//				Sindices.push_back(k1 + 1);
-	//			}
+			for (int c = 0; c < sectors; ++c, ++k1, ++k2)
+			{
+				if (i != 0)
+				{
+					Sindices.push_back(k1);
+					Sindices.push_back(k2);
+					Sindices.push_back(k1 + 1);
+				}
 
-	//			if (i != (stacks - 1))
-	//			{
-	//				Sindices.push_back(k1 + 1);
-	//				Sindices.push_back(k2);
-	//				Sindices.push_back(k2 + 1);
-	//			}
-	//		}
-	//	}
+				if (i != (stacks - 1))
+				{
+					Sindices.push_back(k1 + 1);
+					Sindices.push_back(k2);
+					Sindices.push_back(k2 + 1);
+				}
+			}
+		}
 
-	//	glGenBuffers(1, (GLuint*)&(my_Sid));
-	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_Sid);
-	//	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * Sindices.size(), &Sindices[0], GL_STATIC_DRAW);
-	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glGenBuffers(1, (GLuint*)&(my_Sid));
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_Sid);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * Sindices.size(), &Sindices[0], GL_STATIC_DRAW);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	//	SBufferInit = true;
-	//}
+		IBufferInit = true;
+	}
 
-	//glDrawElements(GL_TRIANGLES, Sindices.size(), GL_UNSIGNED_INT, NULL);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	//glDisableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_Sid);
+	glVertexPointer(3, GL_FLOAT, 0, &Svertices[0]);
+	glDrawElements(GL_TRIANGLES, Sindices.size(), GL_UNSIGNED_INT, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glDisableClientState(GL_VERTEX_ARRAY);
 }
