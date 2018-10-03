@@ -3,6 +3,7 @@
 #include "Assimp/include/scene.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "MathGeoLib/MathGeoLib.h"
 
 #include "SDL/include/SDL.h"
 #include "Assimp/include/postprocess.h"
@@ -124,6 +125,13 @@ void ModuleFBX::LoadScene(const char* path)
 						memcpy(&mesh->indice[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
 				
 				}
+			}
+
+			if (m->HasNormals())
+			{
+				mesh->num_normals = m->mNumVertices * 3;
+				mesh->normals = new float[mesh->num_normals * 3];
+				memcpy(mesh->normals, m->mNormals, sizeof(float) * 3 * mesh->num_normals);
 			}
 
 			mesh->GenerateBuffer();

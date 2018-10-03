@@ -275,6 +275,10 @@ void ModuleGui::ConfigWindow()
 
 
 	}
+	if (ImGui::CollapsingHeader("Mesh"))
+	{
+		if (ImGui::Checkbox("Draw Normals", &App->renderer3D->drawNormals));
+	}
 	ImGui::End();
 }
 

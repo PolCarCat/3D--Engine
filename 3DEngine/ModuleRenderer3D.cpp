@@ -3,6 +3,7 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleWindow.h"
 #include "JsonDoc.h"
+#include "MathGeoLib/MathGeoLib.h"
 
 #include "Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
@@ -260,8 +261,11 @@ void ModuleRenderer3D::EnableWireframe()
 
 void ModuleRenderer3D::DrawMeshes()
 {
-	for (std::list<Mesh*>::iterator item = meshes.begin(); item != meshes.end(); item++) {
+	for (std::list<Mesh*>::iterator item = meshes.begin(); item != meshes.end(); item++) 
+	{
 		(*item)->Draw();
+		if (drawNormals)
+			(*item)->DrawNormals();
 	}
 }
 
@@ -294,8 +298,28 @@ void Mesh::Draw()
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 
+}
+
+void Mesh::DrawNormals()
+{
+	if (normals == nullptr)
+		return;
 
 
+	for (int i = 0; i < num_normals; i += 3)
+	{
+
+		glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+		glLineWidth(2);
+
+		glBegin(GL_LINES);
+		glVertex3f(vertex[i], vertex[i + 1], vertex[i + 2]);
+		glVertex3f((vertex[i] + normals[i]), vertex[i + 1] + normals[i + 1], vertex[i + 2] + normals[i + 2]);
+		glEnd();
+		glLineWidth(1);
+
+	}
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 void ModuleRenderer3D::DirectCube(float origin, float size)

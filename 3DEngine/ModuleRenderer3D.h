@@ -7,6 +7,8 @@
 
 #define MAX_LIGHTS 8
 
+
+
 struct Mesh
 {
 
@@ -18,8 +20,13 @@ struct Mesh
 	uint num_vertex = 0;
 	float* vertex = nullptr;
 
+	uint id_normals = 0; // unique normal in VRAM
+	uint num_normals = 0;
+	float* normals = nullptr;
+
 	void GenerateBuffer();
 	void Draw();
+	void DrawNormals();
 
 };
 
@@ -71,6 +78,7 @@ public:
 	bool ray = false;
 	bool arrow = false;
 	bool plane = false;
+	bool drawNormals = false;
 
 private:
 	void DirectCube(float origin, float size);
