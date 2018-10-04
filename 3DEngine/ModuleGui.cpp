@@ -23,6 +23,11 @@ bool ModuleGui::Start()
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
 	ImGui_ImplOpenGL2_Init();
 
+
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	
+
 	release_link = "https://github.com/PolCarCat/3D--Engine/releases";
 	wiki_link = "https://github.com/PolCarCat/3D--Engine/wiki";
 	issues_link = "https://github.com/PolCarCat/3D--Engine/issues";
