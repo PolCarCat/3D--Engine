@@ -28,6 +28,10 @@ struct Mesh
 	uint num_normals = 0;
 	float* normals = nullptr;
 
+	uint id_colors = 0; // unique normal in VRAM
+	uint num_colors = 0;
+	float* colors = nullptr;
+
 	void GenerateBuffer();
 	void Draw();
 	void DrawNormals();

@@ -134,6 +134,7 @@ void ModuleFBX::LoadScene(const char* path)
 				memcpy(mesh->normals, m->mNormals, sizeof(float) * 3 * mesh->num_normals);
 			}
 
+	
 			mesh->GenerateBuffer();
 			App->renderer3D->meshes.push_back(mesh);
 			
