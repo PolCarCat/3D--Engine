@@ -310,9 +310,14 @@ void Mesh::DrawNormals()
 
 	for (int i = 0; i < num_normals; i += 3)
 	{
+		glColor4f(0.2f, 0.2f, 1.0f, 1.0f);
+		glPointSize(5);
+		glBegin(GL_POINTS);
+		glVertex3f(vertex[i], vertex[i + 1], vertex[i + 2]);
+		glEnd();
 
-		glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
-		glLineWidth(2);
+		glColor4f(0.2f, 1.0f, 0.2f, 1.0f);
+		glLineWidth(1);
 
 		glBegin(GL_LINES);
 		glVertex3f(vertex[i], vertex[i + 1], vertex[i + 2]);

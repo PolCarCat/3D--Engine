@@ -96,12 +96,8 @@ void ModuleFBX::LoadScene(const char* path)
 {
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 
-
-
 	if (scene != nullptr && scene->HasMeshes())
-	{		
-		// Use scene->mNumMeshes to iterate on scene->mMeshes array
-		
+	{				
 		for (int nm = 0; nm < scene->mNumMeshes; nm++)
 		{
 			Mesh* mesh = new Mesh;
@@ -134,7 +130,20 @@ void ModuleFBX::LoadScene(const char* path)
 				memcpy(mesh->normals, m->mNormals, sizeof(float) * 3 * mesh->num_normals);
 			}
 
-	
+			if (m->GetNumColorChannels() != 0)
+			{
+				mesh->num_colors = m->mNumVertices;
+				mesh->colors = new float[mesh->num_colors];
+				memcpy(mesh->colors, m->mColors, sizeof(float) * mesh->num_colors);
+			}
+			
+			if (m->HasTextureCoords(AI_MAX_NUMBER_OF_TEXTURECOORDS))
+			{
+				mesh->num_textC = m->mNumVertices * 2;
+				mesh->textC = new float[mesh->num_textC];
+				memcpy(mesh->textC, m->mTextureCoords, sizeof(float) * mesh->num_textC);
+			}
+
 			mesh->GenerateBuffer();
 			App->renderer3D->meshes.push_back(mesh);
 			
