@@ -32,6 +32,10 @@ struct Mesh
 	uint num_colors = 0;
 	float* colors = nullptr;
 
+	uint id_textC = 0; // unique normal in VRAM
+	uint num_textC = 0;
+	float* textC = nullptr;
+
 	void GenerateBuffer();
 	void Draw();
 	void DrawNormals();
