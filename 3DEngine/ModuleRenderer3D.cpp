@@ -32,9 +32,9 @@ bool ModuleRenderer3D::Init()
 	bool ret = true;
 	
 	//Load from config
-	Load(App->config.GetObj(name.c_str()));
+	Load(App->config.GetObj(name));
 
-
+	
 	//Setting attributes
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);

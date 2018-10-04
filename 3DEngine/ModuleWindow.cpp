@@ -30,7 +30,7 @@ bool ModuleWindow::Init()
 	else
 	{
 		//Create window
-		Load(App->config.GetObj(name.c_str()));
+		Load(App->config.GetObj(name));
 		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 		//Use OpenGL 2.1
