@@ -292,6 +292,7 @@ void ModuleGui::PrimitivesWindow()
 	ImGui::Checkbox("Ray", &App->renderer3D->ray);
 	ImGui::Checkbox("Arrow", &App->renderer3D->arrow);
 	ImGui::Checkbox("Plane", &App->renderer3D->plane);
+	ImGui::Checkbox("Sphere", &App->renderer3D->sphere);
 	
 	ImGui::End();
 }
