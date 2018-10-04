@@ -1,8 +1,9 @@
-#include "Globals.h"
+
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleWindow.h"
 #include "JsonDoc.h"
+#include "MathGeoLib/MathGeoLib.h"
 
 #include "Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
@@ -162,6 +163,9 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	if (sphere)
 		Sphere(0.1, 30, 30);
 
+
+	DrawMeshes();
+
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
 
@@ -255,6 +259,69 @@ void ModuleRenderer3D::EnableWireframe()
 {
 	wireframe = !wireframe;
 	wireframe == true ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+void ModuleRenderer3D::DrawMeshes()
+{
+	for (std::list<Mesh*>::iterator item = meshes.begin(); item != meshes.end(); item++) 
+	{
+		(*item)->Draw();
+		if (drawNormals)
+			(*item)->DrawNormals();
+	}
+}
+
+
+
+void Mesh::GenerateBuffer()
+{
+
+	//glGenBuffers(1, (GLuint*) &(id_index));
+	//glBindBuffer(GL_ARRAY_BUFFER, id_index);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_index, &index[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, (GLuint*) &(id_vertex));
+	glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_vertex, vertex, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+
+
+}
+
+void Mesh::Draw()
+{
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, id_indice);
+	glVertexPointer(3, GL_FLOAT, 0, vertex);
+	glDrawElements(GL_TRIANGLES, num_indice, GL_UNSIGNED_INT, indice);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glDisableClientState(GL_VERTEX_ARRAY);
+
+
+}
+
+void Mesh::DrawNormals()
+{
+	if (normals == nullptr)
+		return;
+
+
+	for (int i = 0; i < num_normals; i += 3)
+	{
+
+		glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+		glLineWidth(2);
+
+		glBegin(GL_LINES);
+		glVertex3f(vertex[i], vertex[i + 1], vertex[i + 2]);
+		glVertex3f((vertex[i] + normals[i]), vertex[i + 1] + normals[i + 1], vertex[i + 2] + normals[i + 2]);
+		glEnd();
+		glLineWidth(1);
+
+	}
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 void ModuleRenderer3D::DirectCube(float origin, float size)

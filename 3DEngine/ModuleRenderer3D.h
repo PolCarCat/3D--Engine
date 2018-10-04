@@ -3,10 +3,40 @@
 #include "Globals.h"
 #include "Light.h"
 #include "glmath.h"
+
+#include <list>
 #include <vector>
-#include "MathGeoLib/MathGeoLib.h"
+
+
 
 #define MAX_LIGHTS 8
+
+
+
+struct Mesh
+{
+
+	uint id_indice = 0; // index in VRAM
+	uint num_indice = 0;
+	uint* indice = nullptr;
+
+	uint id_vertex = 0; // unique vertex in VRAM
+	uint num_vertex = 0;
+	float* vertex = nullptr;
+
+	uint id_normals = 0; // unique normal in VRAM
+	uint num_normals = 0;
+	float* normals = nullptr;
+
+	uint id_colors = 0; // unique normal in VRAM
+	uint num_colors = 0;
+	float* colors = nullptr;
+
+	void GenerateBuffer();
+	void Draw();
+	void DrawNormals();
+
+};
 
 class ModuleRenderer3D : public Module
 {
@@ -20,6 +50,8 @@ public:
 	bool CleanUp();
 	bool Load(json_object_t* doc);
 	bool Save(json_object_t* doc);
+
+	void DrawMeshes();
 
 	void OnResize(int width, int height);
 	void EnableVsync();
@@ -45,6 +77,7 @@ public:
 
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+	std::list<Mesh*> meshes;
 
 public:
 	bool directCube = false;
@@ -53,7 +86,9 @@ public:
 	bool ray = false;
 	bool arrow = false;
 	bool plane = false;
+	bool drawNormals = false;
 	bool sphere = false;
+
 
 private:
 	void DirectCube(float origin, float size);
@@ -63,6 +98,8 @@ private:
 	void Arrow(float ox, float oy, float oz, float ex, float ey, float ez);
 	void Plane(float size);
 	void Sphere(float radius, int stacks, int sectors, vector<float> origin = { 0, 0, 0 });
+
+
 
 private:
 	bool vsync = false;
@@ -88,4 +125,7 @@ private:
 		6,5,4,	4,7,6,
 		7,4,3,	3,1,7,
 		6,7,1,	1,0,6 };
+
+
+
 };
