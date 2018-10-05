@@ -14,7 +14,8 @@ enum PrimitiveTypes
 	Plane,
 	Cube,
 	Sphere,
-	Cylinder
+	Cylinder,
+	Axis
 };
 
 class Primitive
@@ -24,6 +25,7 @@ public:
 	Primitive();
 
 	virtual void	Render() const;
+	virtual void	Create();
 	void			SetPos(float x, float y, float z);
 	void			SetRotation(float angle, const float3 &u);
 	void			Scale(float x, float y, float z);
@@ -33,7 +35,6 @@ public:
 	
 	Color color;
 	float4x4 transform;
-	bool axis;
 	bool wire;
 	uint my_id;
 	vector<float> vertices;
@@ -51,17 +52,37 @@ class PCube : public Primitive
 {
 public :
 	PCube();
-void Create(float sx = 1, float sy = 1, float sz = 1, float ox = 0, float oy = 0, float oz = 0); // s = size, o = origin
+	void Create(float sx = 1, float sy = 1, float sz = 1, float ox = 0, float oy = 0, float oz = 0); // s = size, o = origin
 };
 
 class PPlane : public Primitive
 {
 public:
 	PPlane();
-	PPlane(float x = 0, float y = 0, float z = 0, float d = 200);
+	void Create(float x = 0, float y = 0, float z = 0, float d = 200);
 	void Render() const;
 public:
 	float depth;
+};
+
+class PAxis : public Primitive
+{
+public:
+	PAxis();
+	void Create(float thickness = 2.0f);
+	void Render() const;
+public:
+	float thickness;
+};
+
+class PLine : public Primitive
+{
+public:
+	PLine();
+	void Create(float thickness = 2.0f, float ox = 0.0f, float oy = 0.0f, float oz = 0.0f, float ex = 0.0f, float ey = 1.0f, float ez = 0.0f);
+	void Render() const;
+public:
+	float thickness, ox, oy, oz, ex, ey, ez;
 };
 
 #endif

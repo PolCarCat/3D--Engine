@@ -130,6 +130,9 @@ bool ModuleRenderer3D::Init()
 	// Create Primitives
 
 	cube.Create();
+	plane.Create();
+	axis.Create();
+	line.Create(3.0f);
 
 	return ret;
 }
@@ -153,12 +156,14 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	//glLoadMatrixf(cam->GetOpenGLViewMatrix());
 	if (drawCube)
 		cube.Render();
-	if (drawRay)
-		Ray(0, 0, 0, 0.1, 0.5, 0.2);
+	if (drawLine)
+		line.Render();
 	if (drawArrow)
 		Arrow(0, 0, 0, 0, 0.1, 0);
+	if (drawAxis)
+		axis.Render();
 	if (drawPlane)
-		Plane(100);
+		plane.Render();
 	if (drawSphere)
 		Sphere(0.1, 30, 30);
 
@@ -328,60 +333,6 @@ void Mesh::DrawNormals()
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-void ModuleRenderer3D::DirectCube(float origin, float size)
-{
-	glBegin(GL_TRIANGLES);
-
-	glVertex3f(origin, origin, origin);							//A
-	glVertex3f(origin + size, origin, origin);					//B
-	glVertex3f(origin, origin + size, origin);					//C
-
-	glVertex3f(origin + size, origin, origin);					//B
-	glVertex3f(origin + size, origin + size, origin);			//D
-	glVertex3f(origin, origin + size, origin);					//C
-
-	glVertex3f(origin + size, origin + size, origin);			//D
-	glVertex3f(origin + size, origin + size, origin - size);	//E
-	glVertex3f(origin, origin + size, origin);					//C
-	
-	glVertex3f(origin + size, origin + size, origin - size);	//E
-	glVertex3f(origin, origin + size, origin - size);			//F
-	glVertex3f(origin, origin + size, origin);					//C
-
-	glVertex3f(origin, origin + size, origin);					//C
-	glVertex3f(origin, origin + size, origin - size);			//F
-	glVertex3f(origin, origin, origin - size);					//G
-
-	glVertex3f(origin, origin, origin);							//A
-	glVertex3f(origin, origin + size, origin);					//C
-	glVertex3f(origin, origin, origin - size);					//G
-
-	glVertex3f(origin, origin, origin - size);					//G
-	glVertex3f(origin, origin + size, origin - size);			//F
-	glVertex3f(origin + size, origin + size, origin - size);	//E
-
-	glVertex3f(origin + size, origin + size, origin - size);	//E
-	glVertex3f(origin + size, origin, origin - size);			//H
-	glVertex3f(origin, origin, origin - size);					//G
-
-	glVertex3f(origin + size, origin, origin - size);			//H
-	glVertex3f(origin + size, origin + size, origin - size);	//E
-	glVertex3f(origin + size, origin + size, origin);			//D
-
-	glVertex3f(origin + size, origin + size, origin);			//D
-	glVertex3f(origin + size, origin, origin);					//B
-	glVertex3f(origin + size, origin, origin - size);			//H
-
-	glVertex3f(origin, origin, origin - size);					//G
-	glVertex3f(origin + size, origin, origin - size);			//H
-	glVertex3f(origin + size, origin, origin);					//B
-
-	glVertex3f(origin + size, origin, origin);					//B
-	glVertex3f(origin, origin, origin);							//A
-	glVertex3f(origin, origin, origin - size);					//G
-
-	glEnd();
-}
 
 void ModuleRenderer3D::VertexArraysCube(float origin, float size)
 {
@@ -691,16 +642,6 @@ void ModuleRenderer3D::IndicesCube(float origin, float size)
 
 }
 
-void ModuleRenderer3D::Ray(float ox, float oy, float oz, float ex, float ey, float ez)
-{
-	glLineWidth(3);
-	glBegin(GL_LINES);
-	glVertex3f(ox, oy, oz);
-	glVertex3f(ex, ey, ez);
-	glEnd();
-	glLineWidth(1);
-}
-
 void ModuleRenderer3D::Arrow(float ox, float oy, float oz, float ex, float ey, float ez)
 {
 	glLineWidth(3);
@@ -711,18 +652,6 @@ void ModuleRenderer3D::Arrow(float ox, float oy, float oz, float ex, float ey, f
 	glVertex3f(ex + 0.01, ey - 0.01 , ez);
 	glVertex3f(ex, ey, ez);
 	glVertex3f(ex - 0.01, ey - 0.01, ez);
-	glEnd();
-	glLineWidth(1);
-}
-
-void ModuleRenderer3D::Plane(float size)
-{
-	glBegin(GL_LINES);
-	for (float i = 0; i <= size; i += 0.001)
-	{
-		glVertex3f(size, i, 0);
-		glVertex3f(-size, i, 0);
-	}
 	glEnd();
 	glLineWidth(1);
 }

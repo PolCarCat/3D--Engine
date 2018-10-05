@@ -36,11 +36,6 @@ bool ModuleScene::CleanUp()
 // Update
 update_status ModuleScene::Update(float dt)
 {
-
-	PPlane p(0, 0, 0, 200);
-	p.axis = true;
-	p.Render();
-	
 	return UPDATE_CONTINUE;
 }
 

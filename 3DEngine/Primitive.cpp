@@ -7,7 +7,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 // ------------------------------------------------------------
-Primitive::Primitive() : transform(transform.identity), color(White), wire(false), axis(false), type(PrimitiveTypes::Point)
+Primitive::Primitive() : transform(transform.identity), color(White), wire(false), type(PrimitiveTypes::Point)
 {}
 
 // ------------------------------------------------------------
@@ -19,41 +19,6 @@ PrimitiveTypes Primitive::GetType() const
 // ------------------------------------------------------------
 void Primitive::Render() const
 {
-	if (axis == true)
-	{
-		// Draw Axis Grid
-		glLineWidth(2.0f);
-
-		glBegin(GL_LINES);
-
-		glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-
-		glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
-		glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
-
-		glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
-
-		glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
-		glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-		glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-		glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
-
-		glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
-
-		glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
-		glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
-		glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
-		glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
-
-		glEnd();
-
-		glLineWidth(1.0f);
-	}
-
-	//glColor3f(color.r, color.g, color.b);
-	glColor4f(color.r, color.g, color.b, color.a);
-
 	//if(wire)
 	//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	//else
@@ -66,6 +31,11 @@ void Primitive::Render() const
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+void Primitive::Create()
+{
+
 }
 
 // ------------------------------------------------------------
@@ -184,7 +154,7 @@ PPlane::PPlane() : Primitive()
 	type = PrimitiveTypes::Plane;
 }
 
-PPlane::PPlane(float x, float y, float z, float d) : Primitive()
+void PPlane::Create(float x, float y, float z, float d)
 {
 	type = PrimitiveTypes::Plane;
 	depth = d;
@@ -192,39 +162,6 @@ PPlane::PPlane(float x, float y, float z, float d) : Primitive()
 
 void PPlane::Render() const
 {
-	if (axis == true)
-	{
-		// Draw Axis Grid
-		glLineWidth(2.0f);
-
-		glBegin(GL_LINES);
-
-		glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-
-		glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
-		glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
-
-		glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
-
-		glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
-		glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-		glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-		glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
-
-		glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
-
-		glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
-		glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
-		glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
-		glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
-
-		glEnd();
-
-		glLineWidth(1.0f);
-		glColor4f(color.r, color.g, color.b, color.a);
-	}
-
 	glLineWidth(1.0f);
 	glBegin(GL_LINES);
 
@@ -237,4 +174,74 @@ void PPlane::Render() const
 	}
 
 	glEnd();
+}
+
+PAxis::PAxis() : Primitive()
+{
+	type = PrimitiveTypes::Axis;
+}
+
+void PAxis::Create(float thickness)
+{
+	type = PrimitiveTypes::Axis;
+	this->thickness = thickness;
+}
+
+void PAxis::Render() const
+{
+	glLineWidth(thickness);
+
+	glBegin(GL_LINES);
+
+	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
+	glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
+
+	glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
+	glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
+	glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
+
+	glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
+
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
+	glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
+	glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
+
+	glEnd();
+
+	glLineWidth(1.0f);
+	glColor4f(color.r, color.g, color.b, color.a);
+}
+
+PLine::PLine() : Primitive()
+{
+	type = PrimitiveTypes::Line;
+}
+
+void PLine::Create(float thickness, float ox, float oy, float oz, float ex, float ey, float ez)
+{
+	type = PrimitiveTypes::Line;
+	this->thickness = thickness;
+	this->ox = ox;
+	this->oy = oy;
+	this->oz = oz;
+	this->ex = ex;
+	this->ey = ey;
+	this->ez = ez;
+}
+
+void PLine::Render() const
+{
+	glLineWidth(thickness);
+	glBegin(GL_LINES);
+	glVertex3f(ox, oy, oz);
+	glVertex3f(ex, ey, ez);
+	glEnd();
+	glLineWidth(1);
 }

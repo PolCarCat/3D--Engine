@@ -85,19 +85,18 @@ public:
 
 public:
 	bool drawCube = false;
-	bool drawRay = false;
+	bool drawLine = false;
 	bool drawArrow = false;
-	bool drawPlane = false;
+	bool drawPlane = true;
 	bool drawSphere = false;
 	bool drawNormals = false;
+	bool drawAxis = true;
 
 private:
-	void DirectCube(float origin, float size);
 	void VertexArraysCube(float origin, float size);
 	void IndicesCube(float origin, float size);
 	void Ray(float ox, float oy, float oz, float ex, float ey, float ez);
 	void Arrow(float ox, float oy, float oz, float ex, float ey, float ez);
-	void Plane(float size);
 	void Sphere(float radius, int stacks, int sectors, vector<float> origin = { 0, 0, 0 });
 
 private:
@@ -124,5 +123,8 @@ private:
 		6,5,4,	4,7,6,
 		7,4,3,	3,1,7,
 		6,7,1,	1,0,6 };
-	PCube cube;
+	PCube	cube;
+	PPlane	plane;
+	PAxis	axis;
+	PLine	line;
 };
