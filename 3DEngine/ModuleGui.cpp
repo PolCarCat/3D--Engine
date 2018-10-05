@@ -291,13 +291,11 @@ void ModuleGui::PrimitivesWindow()
 {
 	ImGui::Begin("Primitives");
 	
-	ImGui::Checkbox("Direct Cube", &App->renderer3D->directCube);
-	ImGui::Checkbox("Vertex arrays Cube", &App->renderer3D->varrCube);
-	ImGui::Checkbox("Indices Cube", &App->renderer3D->indCube);
-	ImGui::Checkbox("Ray", &App->renderer3D->ray);
-	ImGui::Checkbox("Arrow", &App->renderer3D->arrow);
-	ImGui::Checkbox("Plane", &App->renderer3D->plane);
-	ImGui::Checkbox("Sphere", &App->renderer3D->sphere);
+	ImGui::Checkbox("Cube", &App->renderer3D->drawCube);
+	ImGui::Checkbox("Ray", &App->renderer3D->drawRay);
+	ImGui::Checkbox("Arrow", &App->renderer3D->drawArrow);
+	ImGui::Checkbox("Plane", &App->renderer3D->drawPlane);
+	ImGui::Checkbox("Sphere", &App->renderer3D->drawSphere);
 	
 	ImGui::End();
 }

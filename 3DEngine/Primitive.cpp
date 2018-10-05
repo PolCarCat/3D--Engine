@@ -7,7 +7,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 // ------------------------------------------------------------
-Primitive::Primitive() : transform(IdentityMatrix), color(White), wire(false), axis(false), type(PrimitiveTypes::Primitive_Point)
+Primitive::Primitive() : transform(transform.identity), color(White), wire(false), axis(false), type(PrimitiveTypes::Point)
 {}
 
 // ------------------------------------------------------------
@@ -19,9 +19,6 @@ PrimitiveTypes Primitive::GetType() const
 // ------------------------------------------------------------
 void Primitive::Render() const
 {
-	glPushMatrix();
-	glMultMatrixf(transform.M);
-
 	if(axis == true)
 	{
 		// Draw Axis Grid
@@ -62,215 +59,152 @@ void Primitive::Render() const
 	//else
 	//	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	InnerRender();
+	if (type != PrimitiveTypes::Plane)
+	{
+		glEnableClientState(GL_VERTEX_ARRAY);
 
-	glPopMatrix();
-}
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_id);
+		glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, NULL);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-// ------------------------------------------------------------
-void Primitive::InnerRender() const
-{
-	glPointSize(5.0f);
-
-	glBegin(GL_POINTS);
-
-	glVertex3f(0.0f, 0.0f, 0.0f);
-
-	glEnd();
-
-	glPointSize(1.0f);
+		glDisableClientState(GL_VERTEX_ARRAY);
+	}
 }
 
 // ------------------------------------------------------------
 void Primitive::SetPos(float x, float y, float z)
 {
-	transform.translate(x, y, z);
+	transform.Translate(x, y, z);
 }
 
 // ------------------------------------------------------------
-void Primitive::SetRotation(float angle, const vec3 &u)
+void Primitive::SetRotation(float angle, const float3 &u)
 {
-	transform.rotate(angle, u);
+	transform.RotateAxisAngle(u, angle);
 }
 
 // ------------------------------------------------------------
 void Primitive::Scale(float x, float y, float z)
 {
-	transform.scale(x, y, z);
+	transform.Scale(x, y, z);
 }
 
-// CUBE ============================================
-PrimitiveCube::PrimitiveCube() : Primitive(), size(1.0f, 1.0f, 1.0f)
+void Primitive::CreateBuffer()
 {
-	type = PrimitiveTypes::Primitive_Cube;
+	glGenBuffers(1, (GLuint*)&(my_id));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_id);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * indices.size(), &indices[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-PrimitiveCube::PrimitiveCube(float sizeX, float sizeY, float sizeZ) : Primitive(), size(sizeX, sizeY, sizeZ)
+PCube::PCube() : Primitive()
 {
-	type = PrimitiveTypes::Primitive_Cube;
+	type = PrimitiveTypes::Cube;
 }
 
-void PrimitiveCube::InnerRender() const
-{	
-	float sx = size.x * 0.5f;
-	float sy = size.y * 0.5f;
-	float sz = size.z * 0.5f;
-
-	glBegin(GL_QUADS);
-
-	glNormal3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(-sx, -sy, sz);
-	glVertex3f( sx, -sy, sz);
-	glVertex3f( sx,  sy, sz);
-	glVertex3f(-sx,  sy, sz);
-
-	glNormal3f(0.0f, 0.0f, -1.0f);
-	glVertex3f( sx, -sy, -sz);
-	glVertex3f(-sx, -sy, -sz);
-	glVertex3f(-sx,  sy, -sz);
-	glVertex3f( sx,  sy, -sz);
-
-	glNormal3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(sx, -sy,  sz);
-	glVertex3f(sx, -sy, -sz);
-	glVertex3f(sx,  sy, -sz);
-	glVertex3f(sx,  sy,  sz);
-
-	glNormal3f(-1.0f, 0.0f, 0.0f);
-	glVertex3f(-sx, -sy, -sz);
-	glVertex3f(-sx, -sy,  sz);
-	glVertex3f(-sx,  sy,  sz);
-	glVertex3f(-sx,  sy, -sz);
-
-	glNormal3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(-sx, sy,  sz);
-	glVertex3f( sx, sy,  sz);
-	glVertex3f( sx, sy, -sz);
-	glVertex3f(-sx, sy, -sz);
-
-	glNormal3f(0.0f, -1.0f, 0.0f);
-	glVertex3f(-sx, -sy, -sz);
-	glVertex3f( sx, -sy, -sz);
-	glVertex3f( sx, -sy,  sz);
-	glVertex3f(-sx, -sy,  sz);
-
-	glEnd();
-}
-
-// SPHERE ============================================
-Sphere::Sphere() : Primitive(), radius(1.0f)
+void PCube::Create(float sx, float sy, float sz, float ox, float oy, float oz)
 {
-	type = PrimitiveTypes::Primitive_Sphere;
+	type = PrimitiveTypes::Cube;
+
+	float hx = sx / 2.0f;
+	float hy = sy / 2.0f;
+	float hz = sz / 2.0f;
+
+	vertices.push_back(ox - hx);	//A
+	vertices.push_back(oy - hy);
+	vertices.push_back(oz + hz);
+
+	vertices.push_back(ox + hx);	//B
+	vertices.push_back(oy - hy);
+	vertices.push_back(oz + hz);
+
+	vertices.push_back(ox - hx);	//C
+	vertices.push_back(oy + hy);
+	vertices.push_back(oz + hz);
+
+	vertices.push_back(ox + hx);	//D
+	vertices.push_back(oy + hy);
+	vertices.push_back(oz + hz);
+
+	vertices.push_back(ox - hx);	//E
+	vertices.push_back(oy - hy);
+	vertices.push_back(oz - hz);
+
+	vertices.push_back(ox + hx);	//F
+	vertices.push_back(oy - hy);
+	vertices.push_back(oz - hz);
+
+	vertices.push_back(ox - hx);	//G
+	vertices.push_back(oy + hy);
+	vertices.push_back(oz - hz);
+
+	vertices.push_back(ox + hx);	//H
+	vertices.push_back(oy + hy);
+	vertices.push_back(oz - hz);
+
+	indices.push_back(0);
+	indices.push_back(1);
+	indices.push_back(2);
+	indices.push_back(1);
+	indices.push_back(3);
+	indices.push_back(2);
+	indices.push_back(3);
+	indices.push_back(1);
+	indices.push_back(5);
+	indices.push_back(5);
+	indices.push_back(7); 
+	indices.push_back(3);
+	indices.push_back(7);
+	indices.push_back(5);
+	indices.push_back(4);
+	indices.push_back(6);
+	indices.push_back(7); 
+	indices.push_back(4);
+	indices.push_back(6);
+	indices.push_back(4);
+	indices.push_back(0);
+	indices.push_back(0);
+	indices.push_back(2);
+	indices.push_back(6);
+	indices.push_back(6); 
+	indices.push_back(2);
+	indices.push_back(3);
+	indices.push_back(6);
+	indices.push_back(3);
+	indices.push_back(7);
+	indices.push_back(0);
+	indices.push_back(4);
+	indices.push_back(5);
+	indices.push_back(0);
+	indices.push_back(5);
+	indices.push_back(1);
+
+	CreateBuffer();
 }
 
-Sphere::Sphere(float radius) : Primitive(), radius(radius)
+PPlane::PPlane() : Primitive()
 {
-	type = PrimitiveTypes::Primitive_Sphere;
+	type = PrimitiveTypes::Plane;
 }
 
-void Sphere::InnerRender() const
+PPlane::PPlane(float x, float y, float z, float d) : Primitive()
 {
-	//glutSolidSphere(radius, 25, 25);
+	type = PrimitiveTypes::Plane;
+	depth = d;
 }
 
-
-// CYLINDER ============================================
-PrimitiveCylinder::PrimitiveCylinder() : Primitive(), radius(1.0f), height(1.0f)
-{
-	type = PrimitiveTypes::Primitive_Cylinder;
-}
-
-PrimitiveCylinder::PrimitiveCylinder(float radius, float height) : Primitive(), radius(radius), height(height)
-{
-	type = PrimitiveTypes::Primitive_Cylinder;
-}
-
-void PrimitiveCylinder::InnerRender() const
-{
-	int n = 30;
-
-	// Cylinder Bottom
-	glBegin(GL_POLYGON);
-	
-	for(int i = 360; i >= 0; i -= (360 / n))
-	{
-		float a = i * M_PI / 180; // degrees to radians
-		glVertex3f(-height*0.5f, radius * cos(a), radius * sin(a));
-	}
-	glEnd();
-
-	// Cylinder Top
-	glBegin(GL_POLYGON);
-	glNormal3f(0.0f, 0.0f, 1.0f);
-	for(int i = 0; i <= 360; i += (360 / n))
-	{
-		float a = i * M_PI / 180; // degrees to radians
-		glVertex3f(height * 0.5f, radius * cos(a), radius * sin(a));
-	}
-	glEnd();
-
-	// Cylinder "Cover"
-	glBegin(GL_QUAD_STRIP);
-	for(int i = 0; i < 480; i += (360 / n))
-	{
-		float a = i * M_PI / 180; // degrees to radians
-
-		glVertex3f(height*0.5f,  radius * cos(a), radius * sin(a) );
-		glVertex3f(-height*0.5f, radius * cos(a), radius * sin(a) );
-	}
-	glEnd();
-}
-
-// LINE ==================================================
-PrimitiveLine::PrimitiveLine() : Primitive(), origin(0, 0, 0), destination(1, 1, 1)
-{
-	type = PrimitiveTypes::Primitive_Line;
-}
-
-PrimitiveLine::PrimitiveLine(float x, float y, float z) : Primitive(), origin(0, 0, 0), destination(x, y, z)
-{
-	type = PrimitiveTypes::Primitive_Line;
-}
-
-void PrimitiveLine::InnerRender() const
-{
-	glLineWidth(2.0f);
-
-	glBegin(GL_LINES);
-
-	glVertex3f(origin.x, origin.y, origin.z);
-	glVertex3f(destination.x, destination.y, destination.z);
-
-	glEnd();
-
-	glLineWidth(1.0f);
-}
-
-// PLANE ==================================================
-PrimitivePlane::PrimitivePlane() : Primitive(), normal(0, 1, 0), constant(1)
-{
-	type = PrimitiveTypes::Primitive_Plane;
-}
-
-PrimitivePlane::PrimitivePlane(float x, float y, float z, float d) : Primitive(), normal(x, y, z), constant(d)
-{
-	type = PrimitiveTypes::Primitive_Plane;
-}
-
-void PrimitivePlane::InnerRender() const
+void PPlane::Render() const
 {
 	glLineWidth(1.0f);
-
 	glBegin(GL_LINES);
 
-	float d = 200.0f;
-
-	for(float i = -d; i <= d; i += 1.0f)
+	for (float i = -depth; i <= depth; i += 1.0f)
 	{
-		glVertex3f(i, 0.0f, -d);
-		glVertex3f(i, 0.0f, d);
-		glVertex3f(-d, 0.0f, i);
-		glVertex3f(d, 0.0f, i);
+		glVertex3f(i, 0.0f, -depth);
+		glVertex3f(i, 0.0f, depth);
+		glVertex3f(-depth, 0.0f, i);
+		glVertex3f(depth, 0.0f, i);
 	}
 
 	glEnd();

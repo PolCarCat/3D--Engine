@@ -34,7 +34,6 @@ bool ModuleRenderer3D::Init()
 	//Load from config
 	Load(App->config.GetObj(name.c_str()));
 
-
 	//Setting attributes
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
@@ -128,6 +127,10 @@ bool ModuleRenderer3D::Init()
 	// Projection matrix for
 	OnResize(App->window->w, App->window->h);
 
+	// Create Primitives
+
+	cube.Create();
+
 	return ret;
 }
 
@@ -148,19 +151,15 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glMatrixMode(GL_MODELVIEW);
 	//glLoadMatrixf(cam->GetOpenGLViewMatrix());
-	if (directCube)
-		DirectCube(0, 0.1);
-	if (varrCube)
-		VertexArraysCube(0, 0.1);
-	if (indCube)
-		IndicesCube(0, 0.1);
-	if (ray)
+	if (drawCube)
+		cube.Render();
+	if (drawRay)
 		Ray(0, 0, 0, 0.1, 0.5, 0.2);
-	if (arrow)
+	if (drawArrow)
 		Arrow(0, 0, 0, 0, 0.1, 0);
-	if (plane)
+	if (drawPlane)
 		Plane(100);
-	if (sphere)
+	if (drawSphere)
 		Sphere(0.1, 30, 30);
 
 

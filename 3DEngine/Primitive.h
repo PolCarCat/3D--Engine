@@ -1,17 +1,20 @@
 #ifndef __PRIMITIVE_H__
 #define __PRIMITIVE_H__
 
-#include "glmath.h"
 #include "Color.h"
+#include <vector>
+#include "MathGeoLib/MathGeoLib.h"
+
+using namespace std;
 
 enum PrimitiveTypes
 {
-	Primitive_Point,
-	Primitive_Line,
-	Primitive_Plane,
-	Primitive_Cube,
-	Primitive_Sphere,
-	Primitive_Cylinder
+	Point,
+	Line,
+	Plane,
+	Cube,
+	Sphere,
+	Cylinder
 };
 
 class Primitive
@@ -21,78 +24,44 @@ public:
 	Primitive();
 
 	virtual void	Render() const;
-	virtual void	InnerRender() const;
 	void			SetPos(float x, float y, float z);
-	void			SetRotation(float angle, const vec3 &u);
+	void			SetRotation(float angle, const float3 &u);
 	void			Scale(float x, float y, float z);
 	PrimitiveTypes	GetType() const;
 
 public:
 	
 	Color color;
-	mat4x4 transform;
-	bool axis,wire;
+	float4x4 transform;
+	bool axis;
+	bool wire;
+	uint my_id;
+	vector<float> vertices;
+	vector<uint> indices;
 
 protected:
 	PrimitiveTypes type;
+
+protected:
+	void CreateBuffer();
 };
 
 // ============================================
-class PrimitiveCube : public Primitive
+class PCube : public Primitive
 {
 public :
-	PrimitiveCube();
-	PrimitiveCube(float sizeX, float sizeY, float sizeZ);
-	void InnerRender() const;
-public:
-	vec3 size;
+	PCube();
+void Create(float sx = 1, float sy = 1, float sz = 1, float ox = 0, float oy = 0, float oz = 0); // s = size, o = origin
 };
 
-// ============================================
-class Sphere : public Primitive
+class PPlane : public Primitive
 {
 public:
-	Sphere();
-	Sphere(float radius);
-	void InnerRender() const;
+	PPlane();
+	PPlane(float x = 0, float y = 0, float z = 0, float d = 200);
+	void Render() const;
 public:
-	float radius;
-};
-
-// ============================================
-class PrimitiveCylinder : public Primitive
-{
-public:
-	PrimitiveCylinder();
-	PrimitiveCylinder(float radius, float height);
-	void InnerRender() const;
-public:
-	float radius;
-	float height;
-};
-
-// ============================================
-class PrimitiveLine : public Primitive
-{
-public:
-	PrimitiveLine();
-	PrimitiveLine(float x, float y, float z);
-	void InnerRender() const;
-public:
-	vec3 origin;
-	vec3 destination;
-};
-
-// ============================================
-class PrimitivePlane : public Primitive
-{
-public:
-	PrimitivePlane();
-	PrimitivePlane(float x, float y, float z, float d);
-	void InnerRender() const;
-public:
-	vec3 normal;
-	float constant;
+	float depth;
 };
 
 #endif

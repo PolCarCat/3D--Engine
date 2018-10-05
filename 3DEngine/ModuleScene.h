@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "Primitive.h"
 
 class ModuleScene : public Module
 {
@@ -13,8 +14,5 @@ public:
 	bool CleanUp();
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
-
-public:
-	
 
 };

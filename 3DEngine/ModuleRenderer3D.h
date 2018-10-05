@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "Light.h"
 #include "glmath.h"
+#include "Primitive.h"
 
 #include <list>
 #include <vector>
@@ -74,7 +75,6 @@ public:
 	bool GetWireFrame() { return wireframe; };
 
 public:
-
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 
@@ -84,15 +84,12 @@ public:
 	std::list<Mesh*> meshes;
 
 public:
-	bool directCube = false;
-	bool varrCube = false;
-	bool indCube = false;
-	bool ray = false;
-	bool arrow = false;
-	bool plane = false;
+	bool drawCube = false;
+	bool drawRay = false;
+	bool drawArrow = false;
+	bool drawPlane = false;
+	bool drawSphere = false;
 	bool drawNormals = false;
-	bool sphere = false;
-
 
 private:
 	void DirectCube(float origin, float size);
@@ -102,8 +99,6 @@ private:
 	void Arrow(float ox, float oy, float oz, float ex, float ey, float ez);
 	void Plane(float size);
 	void Sphere(float radius, int stacks, int sectors, vector<float> origin = { 0, 0, 0 });
-
-
 
 private:
 	bool vsync = false;
@@ -129,7 +124,5 @@ private:
 		6,5,4,	4,7,6,
 		7,4,3,	3,1,7,
 		6,7,1,	1,0,6 };
-
-
-
+	PCube cube;
 };
