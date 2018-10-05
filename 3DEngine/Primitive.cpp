@@ -19,7 +19,7 @@ PrimitiveTypes Primitive::GetType() const
 // ------------------------------------------------------------
 void Primitive::Render() const
 {
-	if(axis == true)
+	if (axis == true)
 	{
 		// Draw Axis Grid
 		glLineWidth(2.0f);
@@ -59,17 +59,13 @@ void Primitive::Render() const
 	//else
 	//	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	if (type != PrimitiveTypes::Plane)
-	{
-		glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_id);
+	glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_id);
-		glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
-		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, NULL);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-		glDisableClientState(GL_VERTEX_ARRAY);
-	}
+	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 // ------------------------------------------------------------
@@ -196,6 +192,39 @@ PPlane::PPlane(float x, float y, float z, float d) : Primitive()
 
 void PPlane::Render() const
 {
+	if (axis == true)
+	{
+		// Draw Axis Grid
+		glLineWidth(2.0f);
+
+		glBegin(GL_LINES);
+
+		glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+
+		glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
+		glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
+
+		glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+
+		glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
+		glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
+		glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
+		glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
+
+		glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
+
+		glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
+		glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
+		glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
+		glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
+
+		glEnd();
+
+		glLineWidth(1.0f);
+		glColor4f(color.r, color.g, color.b, color.a);
+	}
+
 	glLineWidth(1.0f);
 	glBegin(GL_LINES);
 
