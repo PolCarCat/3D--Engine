@@ -306,6 +306,15 @@
     <ClInclude Include="WinConfig.h">
       <Filter>Sources\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="WinElem.h">
+      <Filter>Sources\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="WinConsole.h">
+      <Filter>Sources\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="WinTest.h">
+      <Filter>Sources\Windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -477,6 +486,15 @@
       <Filter>Sources\Modules</Filter>
     </ClCompile>
     <ClCompile Include="WinConfig.cpp">
+      <Filter>Sources\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="WinElem.cpp">
+      <Filter>Sources\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="WinConsole.cpp">
+      <Filter>Sources\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="WinTest.cpp">
       <Filter>Sources\Windows</Filter>
     </ClCompile>
   </ItemGroup>

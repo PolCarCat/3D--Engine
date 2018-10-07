@@ -34,7 +34,14 @@ bool ModuleGui::Start()
 
 
 	config = new WinConfig(App, true);
+	element = new WinElem(App, true);
+	console = new WinConsole(App, true);
+	test = new WinTest(App, true);
+
 	AddWindow(config);
+	AddWindow(element);
+	AddWindow(console);
+	AddWindow(test);
 
 
 	for (std::list<WinBase*>::iterator item = windows.begin(); item != windows.end(); item++) {
@@ -52,19 +59,12 @@ update_status ModuleGui::PreUpdate(float dt)
 
 
 
-	ImGuiID dockspace_id = ImGui::GetID("MyDockspace");
-	ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f));
-
-	ImGui::End;
-
-	ImGui::Separator();
-
 	for (std::list<WinBase*>::iterator item = windows.begin(); item != windows.end(); item++) {
 		if ((*item)->GetEnable())
 		(*item)->Update();
 	}
 
-	/*if (ImGui::BeginMainMenuBar())
+	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))
 		{
@@ -96,28 +96,13 @@ update_status ModuleGui::PreUpdate(float dt)
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Tools"))
-		{
-			if (ImGui::MenuItem("Configuration"))
-				config_b = !config_b;
-			if (ImGui::MenuItem("Random Number Generator"))
-				rngwindow = !rngwindow;
-
-			ImGui::EndMenu();
-		}
 
 		ImGui::EndMainMenuBar();
-	}*/
+	}
 
-	if (about)
-		AboutWindow();
-
+	if (showdemo)
 		ImGui::ShowDemoWindow();
-	if (config_b)
-		ConfigWindow();
-	if (rngwindow)
-		RngWindow();
-	PrimitivesWindow();
+
 
 	return UPDATE_CONTINUE;
 }
@@ -184,37 +169,7 @@ void ModuleGui::ShowMenuBar()
 		ImGui::EndMainMenuBar();
 	}
 }
-void ModuleGui::RngWindow()
-{
-	ImGui::Begin("Random Number Generator");
 
-	ImGui::Text("%.2f", random_f);
-
-	if (ImGui::Button("Generate random float between 0 and 1"))
-	{
-		random_f = ldexp(pcg32_random_r(&rng), -32);
-	}
-
-	ImGui::Separator();
-
-	ImGui::SliderInt("Min", &min, 0, 100);
-	ImGui::SliderInt("Max", &max, 0, 100);
-
-	if (max < min)
-		max = min;
-
-	ImGui::Text("%d", random_bounded);
-
-	if (ImGui::Button("Generate random integer between two numbers"))
-	{
-		if (max - min > 0)
-			random_bounded = (int)pcg32_boundedrand_r(&rng, max - min + 1) + min;
-		else
-			random_bounded = 0;
-	}
-
-	ImGui::End();
-}
 void ModuleGui::AboutWindow()
 {
 	SDL_version version;
@@ -227,22 +182,3 @@ void ModuleGui::AboutWindow()
 	ImGui::End();
 }
 
-void ModuleGui::ConfigWindow()
-{
-	
-}
-
-void ModuleGui::PrimitivesWindow()
-{
-	ImGui::Begin("Primitives");
-
-	ImGui::Checkbox("Direct Cube", &App->renderer3D->directCube);
-	ImGui::Checkbox("Vertex arrays Cube", &App->renderer3D->varrCube);
-	ImGui::Checkbox("Indices Cube", &App->renderer3D->indCube);
-	ImGui::Checkbox("Ray", &App->renderer3D->ray);
-	ImGui::Checkbox("Arrow", &App->renderer3D->arrow);
-	ImGui::Checkbox("Plane", &App->renderer3D->plane);
-	ImGui::Checkbox("Sphere", &App->renderer3D->sphere);
-
-	ImGui::End();
-}

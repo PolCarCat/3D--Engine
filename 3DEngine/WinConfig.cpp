@@ -91,10 +91,7 @@ bool WinConfig::Update()
 
 
 	}
-	if (ImGui::CollapsingHeader("Mesh"))
-	{
-		if (ImGui::Checkbox("Draw Normals", &App->renderer3D->drawNormals));
-	}
+
 	ImGui::End();
 
 	return true;
