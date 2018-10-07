@@ -46,13 +46,12 @@ bool WinTest::Update()
 
 	if (ImGui::CollapsingHeader("Primitives"))
 	{
-		ImGui::Checkbox("Direct Cube", &App->renderer3D->directCube);
-		ImGui::Checkbox("Vertex arrays Cube", &App->renderer3D->varrCube);
-		ImGui::Checkbox("Indices Cube", &App->renderer3D->indCube);
-		ImGui::Checkbox("Ray", &App->renderer3D->ray);
-		ImGui::Checkbox("Arrow", &App->renderer3D->arrow);
-		ImGui::Checkbox("Plane", &App->renderer3D->plane);
-		ImGui::Checkbox("Sphere", &App->renderer3D->sphere);
+		ImGui::Checkbox("Grid", &App->renderer3D->drawPlane);
+		ImGui::Checkbox("Axis", &App->renderer3D->drawAxis);
+		ImGui::Checkbox("Cube", &App->renderer3D->drawCube);
+		ImGui::Checkbox("Line", &App->renderer3D->drawLine);
+		ImGui::Checkbox("Arrow", &App->renderer3D->drawArrow);
+		ImGui::Checkbox("Sphere", &App->renderer3D->drawSphere);
 	}
 
 

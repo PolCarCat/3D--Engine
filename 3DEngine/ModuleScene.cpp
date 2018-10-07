@@ -36,11 +36,6 @@ bool ModuleScene::CleanUp()
 // Update
 update_status ModuleScene::Update(float dt)
 {
-
-	PrimitivePlane p(0, 0, 0, 0);
-	p.axis = true;
-	p.Render();
-	
 	return UPDATE_CONTINUE;
 }
 

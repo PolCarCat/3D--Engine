@@ -147,28 +147,7 @@ void ModuleGui::AddWindow(WinBase* win)
 	windows.push_back(win);
 }
 
-void ModuleGui::ShowMenuBar()
-{
-	if (ImGui::BeginMainMenuBar())
-	{
-		if (ImGui::BeginMenu("File"))
-		{
-			ImGui::Text("Hello");
-			ImGui::EndMenu();
-		}
-		if (ImGui::BeginMenu("Edit"))
-		{
-			if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
-			if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
-			ImGui::Separator();
-			if (ImGui::MenuItem("Cut", "CTRL+X")) {}
-			if (ImGui::MenuItem("Copy", "CTRL+C")) {}
-			if (ImGui::MenuItem("Paste", "CTRL+V")) {}
-			ImGui::EndMenu();
-		}
-		ImGui::EndMainMenuBar();
-	}
-}
+
 
 void ModuleGui::AboutWindow()
 {
@@ -181,4 +160,5 @@ void ModuleGui::AboutWindow()
 
 	ImGui::End();
 }
+
 

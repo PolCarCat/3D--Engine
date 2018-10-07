@@ -27,8 +27,6 @@ public:
 	update_status PostUpdate(float dt);
 
 	bool CleanUp();
-	void ShowMenuBar();
-	void AddLogWindow();
 	void AddWindow(WinBase* win);
 
 public:
