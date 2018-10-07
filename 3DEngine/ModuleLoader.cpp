@@ -52,9 +52,9 @@ bool ModuleLoader::Start()
 	ilutRenderer(ILUT_OPENGL);
 
 
-	
-	LoadScene("Assets/BakerHouse.fbx");
 	Lenna = LoadTex("Assets/Lenna.png");
+	LoadScene("Assets/BakerHouse.fbx");
+	
 
 	return true;
 }

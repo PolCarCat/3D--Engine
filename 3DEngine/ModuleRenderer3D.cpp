@@ -131,12 +131,7 @@ bool ModuleRenderer3D::Init()
 	OnResize(App->window->w, App->window->h);
 
 	// TEXTURE TEST
-	for (std::list<Mesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
-	{
-		(*item)->Draw();
-		if (drawNormals)
-			(*item)->SetText(App->loader->Lenna);
-	}
+
 
 	cube.Create();
 	plane.Create();
@@ -176,6 +171,10 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	if (drawSphere)
 		Sphere(0.1, 30, 30);
 
+	for (std::list<Mesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
+	{
+		(*item)->SetText(App->loader->Lenna);
+	}
 
 	DrawMeshes();
 
@@ -295,6 +294,8 @@ void Mesh::GenerateBuffer()
 
 	glGenBuffers(1, (GLuint*) &(id_vertex));
 	glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
+	glBindBuffer(GL_ARRAY_BUFFER, id_indice);
+
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_vertex, vertex, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -305,16 +306,14 @@ void Mesh::GenerateBuffer()
 void Mesh::Draw()
 {
 
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, id_indice);
-	if (tex != 0)
 	glBindTexture(GL_TEXTURE_2D, tex);
+	glEnable(GL_TEXTURE_2D);
+	glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(3, GL_FLOAT, 0, vertex);
 	glDrawElements(GL_TRIANGLES, num_indice, GL_UNSIGNED_INT, indice);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);
-	if (tex != 0)
-		glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 }
 
