@@ -37,9 +37,12 @@ struct Mesh
 	uint num_textC = 0;
 	float* textC = nullptr;
 
+	uint tex = 0;
+
 	void GenerateBuffer();
 	void Draw();
 	void DrawNormals();
+	void SetText(const uint i) { tex = i; };
 
 };
 

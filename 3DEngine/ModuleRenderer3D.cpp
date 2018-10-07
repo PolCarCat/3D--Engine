@@ -130,7 +130,13 @@ bool ModuleRenderer3D::Init()
 	// Projection matrix for
 	OnResize(App->window->w, App->window->h);
 
-	// Create Primitives
+	// TEXTURE TEST
+	for (std::list<Mesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
+	{
+		(*item)->Draw();
+		if (drawNormals)
+			(*item)->SetText(App->loader->Lenna);
+	}
 
 	cube.Create();
 	plane.Create();
@@ -301,11 +307,14 @@ void Mesh::Draw()
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, id_indice);
+	if (tex != 0)
+	glBindTexture(GL_TEXTURE_2D, tex);
 	glVertexPointer(3, GL_FLOAT, 0, vertex);
 	glDrawElements(GL_TRIANGLES, num_indice, GL_UNSIGNED_INT, indice);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);
-
+	if (tex != 0)
+		glBindTexture(GL_TEXTURE_2D, 0);
 
 }
 
