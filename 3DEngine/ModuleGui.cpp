@@ -297,6 +297,7 @@ void ModuleGui::PrimitivesWindow()
 	ImGui::Checkbox("Line", &App->renderer3D->drawLine);
 	ImGui::Checkbox("Arrow", &App->renderer3D->drawArrow);
 	ImGui::Checkbox("Sphere", &App->renderer3D->drawSphere);
-	
+	ImGui::Checkbox("Cylinder", &App->renderer3D->drawCylinder);
+
 	ImGui::End();
 }
