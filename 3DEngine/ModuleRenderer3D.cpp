@@ -135,6 +135,7 @@ bool ModuleRenderer3D::Init()
 	line.Create(3.0f);
 	arrow.Create(3.0f);
 	sphere.Create();
+	cylinder.Create(0, 0, 0, 0.1, 0.2, 30);
 
 	return ret;
 }
