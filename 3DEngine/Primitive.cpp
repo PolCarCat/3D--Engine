@@ -370,7 +370,7 @@ void PCylinder::Create(float ox, float oy, float oz, float radius, float lenght,
 	float sector = 2 * pi / sectors;
 	float an;
 
-	y = oy + lenght / 2;
+	y = oy - lenght / 2;
 												
 	for (int j = 0; j <= sectors; ++j)
 	{
@@ -382,7 +382,7 @@ void PCylinder::Create(float ox, float oy, float oz, float radius, float lenght,
 		vertices.push_back(z);
 	}
 
-	y = oy - lenght / 2;
+	y = oy + lenght / 2;
 
 	for (int j = 0; j <= sectors; ++j)
 	{
@@ -395,11 +395,11 @@ void PCylinder::Create(float ox, float oy, float oz, float radius, float lenght,
 	}
 
 	vertices.push_back(ox);
-	vertices.push_back(oy + lenght / 2);
+	vertices.push_back(oy - lenght / 2);
 	vertices.push_back(oz);
 
 	vertices.push_back(ox);
-	vertices.push_back(oy - lenght / 2);
+	vertices.push_back(oy + lenght / 2);
 	vertices.push_back(oz);
 
 
