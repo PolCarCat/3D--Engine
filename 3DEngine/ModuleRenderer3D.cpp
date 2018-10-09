@@ -289,9 +289,9 @@ void Mesh::GenerateBuffer()
 	//glBindBuffer(GL_ARRAY_BUFFER, id_index);
 	//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_index, &index[0], GL_STATIC_DRAW);
 
-	glGenBuffers(1, (GLuint*) &(id_vertex));
-	glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_vertex, vertex, GL_STATIC_DRAW);
+	glGenBuffers(1, (GLuint*) &(id_indice));
+	glBindBuffer(GL_ARRAY_BUFFER, id_indice);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * num_indice, indice, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 
@@ -302,9 +302,25 @@ void Mesh::Draw()
 {
 
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, id_indice);
-	glVertexPointer(3, GL_FLOAT, 0, vertex);
-	glDrawElements(GL_TRIANGLES, num_indice, GL_UNSIGNED_INT, indice);
+
+
+	//glBindBuffer(GL_ARRAY_BUFFER, id_indice);
+	//glVertexPointer(3, GL_FLOAT, 0, vertex);
+	////glDrawArrays(GL_TRIANGLES, 0, num_vertex);
+	//glDrawElements(GL_TRIANGLES, num_indice, GL_UNSIGNED_INT, indice);
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indice);
+	//Draw
+	glVertexPointer(3, GL_FLOAT, 0, &vertex[0]);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glTexCoordPointer(2, GL_FLOAT, 0, &textC[0]);
+	glDrawElements(GL_TRIANGLES, num_indice, GL_UNSIGNED_INT, NULL);
+	//Disable
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);
 
