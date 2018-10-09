@@ -315,6 +315,9 @@
     <ClInclude Include="ModuleLoader.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="WinObjects.h">
+      <Filter>Sources\Windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -496,6 +499,9 @@
     </ClCompile>
     <ClCompile Include="ModuleLoader.cpp">
       <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="WinObjects.cpp">
+      <Filter>Sources\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

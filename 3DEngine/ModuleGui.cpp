@@ -37,11 +37,13 @@ bool ModuleGui::Start()
 	element = new WinElem(App, true);
 	console = new WinConsole(App, true);
 	test = new WinTest(App, true);
+	objects = new WinObjects(App, true);
 
 	AddWindow(config);
 	AddWindow(element);
 	AddWindow(console);
 	AddWindow(test);
+	AddWindow(objects);
 
 
 	for (std::list<WinBase*>::iterator item = windows.begin(); item != windows.end(); item++) {
@@ -57,7 +59,7 @@ update_status ModuleGui::PreUpdate(float dt)
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 
-
+	UpdateDockSpace();
 
 	for (std::list<WinBase*>::iterator item = windows.begin(); item != windows.end(); item++) {
 		if ((*item)->GetEnable())
@@ -162,3 +164,43 @@ void ModuleGui::AboutWindow()
 }
 
 
+void ModuleGui::UpdateDockSpace()
+{
+	static ImGuiDockNodeFlags opt_flags = ImGuiDockNodeFlags_None;
+	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+
+	ImGuiViewport* viewport = ImGui::GetMainViewport();
+	ImGui::SetNextWindowPos(viewport->Pos);
+	ImGui::SetNextWindowSize(viewport->Size);
+	ImGui::SetNextWindowViewport(viewport->ID);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+	window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+	window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+
+
+
+	if (opt_flags & ImGuiDockNodeFlags_RenderWindowBg)
+		ImGui::SetNextWindowBgAlpha(0.0f);
+
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+	bool b = true;
+	ImGui::Begin("DockSpace Demo", &b, window_flags);
+	ImGui::PopStyleVar();
+	ImGui::PopStyleVar(2);
+
+
+	ImGuiIO& io = ImGui::GetIO();
+	if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+	{
+		ImGuiID dockspace_id = ImGui::GetID("MyDockspace");
+		ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), opt_flags);
+	}
+
+	opt_flags |= ImGuiDockNodeFlags_PassthruInEmptyNodes;
+	opt_flags |= ImGuiDockNodeFlags_RenderWindowBg;
+
+
+
+	ImGui::End();
+}

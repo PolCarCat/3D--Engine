@@ -36,6 +36,7 @@ struct Mesh
 	float* textC = nullptr;
 
 	uint tex = 0;
+	char* name;
 
 	void GenerateBuffer();
 	void Draw();

@@ -170,6 +170,14 @@ void ModuleLoader::LoadScene(const char* path)
 				}
 			}
 
+			mesh->name = nullptr;
+			if (m->mName.length > 0)
+			{
+				mesh->name = new char[m->mName.length];
+				strcpy(mesh->name, m->mName.C_Str());
+			}
+
+
 			mesh->GenerateBuffer();
 			App->renderer3D->meshes.push_back(mesh);
 			

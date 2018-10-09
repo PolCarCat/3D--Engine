@@ -12,6 +12,7 @@ WinConfig::~WinConfig()
 
 bool WinConfig::Update()
 {
+
 	ImGui::Begin("Configuration");
 
 	if (ImGui::CollapsingHeader("Frame management"))

@@ -6,6 +6,7 @@
 #include "WinConsole.h"
 #include "WinElem.h"
 #include "WinTest.h"
+#include "WinObjects.h"
 #include <list>
 
 
@@ -34,9 +35,11 @@ public:
 	WinConsole* console = nullptr;
 	WinElem*	element = nullptr;
 	WinTest*	test = nullptr;
+	WinObjects* objects = nullptr;
 
 private:
 	void AboutWindow();
+	void UpdateDockSpace();
 
 private:
 	bool quit = false;

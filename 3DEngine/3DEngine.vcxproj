@@ -164,6 +164,7 @@
     <ClInclude Include="WinConfig.h" />
     <ClInclude Include="WinConsole.h" />
     <ClInclude Include="WinElem.h" />
+    <ClInclude Include="WinObjects.h" />
     <ClInclude Include="WinTest.h" />
   </ItemGroup>
   <ItemGroup>
@@ -226,6 +227,7 @@
     <ClCompile Include="WinConfig.cpp" />
     <ClCompile Include="WinConsole.cpp" />
     <ClCompile Include="WinElem.cpp" />
+    <ClCompile Include="WinObjects.cpp" />
     <ClCompile Include="WinTest.cpp" />
   </ItemGroup>
   <ItemGroup>
