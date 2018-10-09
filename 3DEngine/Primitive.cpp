@@ -447,3 +447,98 @@ void PCylinder::Create(float ox, float oy, float oz, float radius, float lenght,
 
 	CreateBuffer();
 }
+
+PFrustum::PFrustum() : Primitive()
+{
+	type = PrimitiveTypes::Frustum;
+}
+
+void PFrustum::Create(float ox, float oy, float oz, float radius, float radius2, float lenght, uint sectors)
+{
+	type = PrimitiveTypes::Frustum;
+
+	float x;
+	float y;
+	float z;
+	float xy;
+	float height = sqrt(lenght*lenght - (radius2 - radius)*(radius2 - radius));
+	float sector = 2 * pi / sectors;
+	float an;
+
+	y = oy - height / 2;
+
+	for (int j = 0; j <= sectors; ++j)
+	{
+		an = j * sector;
+		z = oz + radius2 * cosf(an);
+		x = ox + radius2 * sinf(an);
+		vertices.push_back(x);
+		vertices.push_back(y);
+		vertices.push_back(z);
+	}
+
+	y = oy + height / 2;
+
+	for (int j = 0; j <= sectors; ++j)
+	{
+		an = j * sector;
+		z = oz + radius * cosf(an);
+		x = ox + radius * sinf(an);
+		vertices.push_back(x);
+		vertices.push_back(y);
+		vertices.push_back(z);
+	}
+
+	vertices.push_back(ox);
+	vertices.push_back(oy - height / 2);
+	vertices.push_back(oz);
+
+	vertices.push_back(ox);
+	vertices.push_back(oy + height / 2);
+	vertices.push_back(oz);
+
+
+	int k1, k2;
+
+	for (int i = 0; i < sectors; i++)
+	{
+		indices.push_back(i);
+		indices.push_back(((int)vertices.size() / 3) - 2);
+		indices.push_back(i + 1);
+	}
+
+	for (int i = 0; i < 1; ++i)
+	{
+		k1 = i * (sectors + 1);
+		k2 = k1 + sectors + 1;
+
+		for (int j = 0; j < sectors; ++j, ++k1, ++k2)
+		{
+			if (i >= 0)
+			{
+				indices.push_back(k1 + 1);
+				indices.push_back(k2);
+				indices.push_back(k1);
+
+			}
+
+			if (i != 1)
+			{
+				indices.push_back(k2 + 1);
+				indices.push_back(k2);
+				indices.push_back(k1 + 1);
+			}
+		}
+	}
+
+	int last_vertex = (vertices.size() / 3) - sectors - 3;
+	for (int i = 0; i < sectors; i++)
+	{
+		indices.push_back(((int)vertices.size() / 3) - 1);
+		indices.push_back(i + last_vertex);
+		indices.push_back(i + last_vertex + 1);
+	}
+
+
+	CreateBuffer();
+}
