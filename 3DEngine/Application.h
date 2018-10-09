@@ -11,7 +11,7 @@
 #include "ModuleCamera3D.h"
 #include "ModulePhysics3D.h"
 #include "ModuleGui.h"
-#include "ModuleFBX.h"
+#include "ModuleLoader.h"
 #include "JsonDoc.h"
 #include <list>
 
@@ -28,7 +28,7 @@ public:
 	ModuleCamera3D* camera;
 	ModulePhysics3D* physics;
 	ModuleGui* imgui;
-	ModuleFBX* fbx;
+	ModuleLoader* loader;
 
 	JsonDoc config;
 

@@ -32,6 +32,22 @@ bool ModuleGui::Start()
 	wiki_link = "https://github.com/PolCarCat/3D--Engine/wiki";
 	issues_link = "https://github.com/PolCarCat/3D--Engine/issues";
 
+
+	config = new WinConfig(App, true);
+	element = new WinElem(App, true);
+	console = new WinConsole(App, true);
+	test = new WinTest(App, true);
+
+	AddWindow(config);
+	AddWindow(element);
+	AddWindow(console);
+	AddWindow(test);
+
+
+	for (std::list<WinBase*>::iterator item = windows.begin(); item != windows.end(); item++) {
+		(*item)->Start();
+	}
+
 	return true;
 }
 
@@ -40,6 +56,13 @@ update_status ModuleGui::PreUpdate(float dt)
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
+
+
+
+	for (std::list<WinBase*>::iterator item = windows.begin(); item != windows.end(); item++) {
+		if ((*item)->GetEnable())
+		(*item)->Update();
+	}
 
 	if (ImGui::BeginMainMenuBar())
 	{
@@ -73,28 +96,13 @@ update_status ModuleGui::PreUpdate(float dt)
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Tools"))
-		{
-			if (ImGui::MenuItem("Configuration"))
-				config = !config;
-			if (ImGui::MenuItem("Random Number Generator"))
-				rngwindow = !rngwindow;
-
-			ImGui::EndMenu();
-		}
 
 		ImGui::EndMainMenuBar();
 	}
 
-	if (about)
-		AboutWindow();
 	if (showdemo)
 		ImGui::ShowDemoWindow();
-	if (config)
-		ConfigWindow();
-	if (rngwindow)
-		RngWindow();
-	PrimitivesWindow();
+
 
 	return UPDATE_CONTINUE;
 }
@@ -134,59 +142,13 @@ bool ModuleGui::CleanUp()
 	return true;
 }
 
-void ModuleGui::ShowMenuBar()
+void ModuleGui::AddWindow(WinBase* win)
 {
-	if (ImGui::BeginMainMenuBar())
-	{
-		if (ImGui::BeginMenu("File"))
-		{
-			ImGui::Text("Hello");
-			ImGui::EndMenu();
-		}
-		if (ImGui::BeginMenu("Edit"))
-		{
-			if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
-			if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
-			ImGui::Separator();
-			if (ImGui::MenuItem("Cut", "CTRL+X")) {}
-			if (ImGui::MenuItem("Copy", "CTRL+C")) {}
-			if (ImGui::MenuItem("Paste", "CTRL+V")) {}
-			ImGui::EndMenu();
-		}
-		ImGui::EndMainMenuBar();
-	}
+	windows.push_back(win);
 }
-void ModuleGui::RngWindow()
-{
-	ImGui::Begin("Random Number Generator");
 
-	ImGui::Text("%.2f", random_f);
 
-	if (ImGui::Button("Generate random float between 0 and 1"))
-	{
-		random_f = ldexp(pcg32_random_r(&rng), -32);
-	}
 
-	ImGui::Separator();
-
-	ImGui::SliderInt("Min", &min, 0, 100);
-	ImGui::SliderInt("Max", &max, 0, 100);
-
-	if (max < min)
-		max = min;
-
-	ImGui::Text("%d", random_bounded);
-
-	if (ImGui::Button("Generate random integer between two numbers"))
-	{
-		if (max - min > 0)
-			random_bounded = (int)pcg32_boundedrand_r(&rng, max - min + 1) + min;
-		else
-			random_bounded = 0;
-	}
-
-	ImGui::End();
-}
 void ModuleGui::AboutWindow()
 {
 	SDL_version version;
@@ -199,105 +161,4 @@ void ModuleGui::AboutWindow()
 	ImGui::End();
 }
 
-void ModuleGui::ConfigWindow()
-{
-	ImGui::Begin("Configuration");
 
-	if (ImGui::CollapsingHeader("Frame management"))
-	{
-		ImGui::SliderInt("FPS Cap", &App->framerate_cap, 1, 120);
-
-		char plot[50];
-		sprintf_s(plot, 50, "Framerate %.1f", App->fps[App->fps_counter - 1]);
-		ImGui::PlotHistogram("Framerate", &App->fps[0], 50, 0, plot, 0.0f, 100.0f, ImVec2(310, 100));
-		ImGui::Spacing();
-		sprintf_s(plot, 50, "Milliseconds %.1f", App->ms[App->ms_counter - 1]);
-		ImGui::PlotHistogram("Milliseconds", &App->ms[0], 50, 0, plot, 0.0f, 100.0f, ImVec2(310, 100));
-	}
-	if (ImGui::CollapsingHeader("Window"))
-	{
-		ImGui::SliderFloat("Brightness", &App->window->brightness, 0, 1);
-		ImGui::SliderInt("Width", &App->window->w, 100, 4000);
-		ImGui::SliderInt("Height", &App->window->h, 100, 4000);
-		ImGui::Text("Refresh rate: %d", App->window->refresh_rate);
-
-		ImGui::Checkbox("FullScreen", &App->window->FS);
-		ImGui::Checkbox("Full Desktop", &App->window->FSD);
-		ImGui::Checkbox("Resizable", &App->window->res);
-		ImGui::Checkbox("Bordered", &App->window->bord);
-	}
-	if (ImGui::CollapsingHeader("Hardware"))
-	{
-		ImGui::Text("%d CPU's (%dkb Cache)\nSystem RAM: %.0fGb\nCaps:", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize(), (float)SDL_GetSystemRAM() / 1000);
-
-		if (SDL_Has3DNow())
-			ImGui::Text("3DNow");
-		if (SDL_HasAVX())
-			ImGui::Text("AVX");
-		if (SDL_HasAVX2())
-			ImGui::Text("AVX2");
-		if (SDL_HasAltiVec())
-			ImGui::Text("AltiVec");
-		if (SDL_HasMMX())
-			ImGui::Text("MMX");
-		if (SDL_HasRDTSC())
-			ImGui::Text("RDTSC");
-		if (SDL_HasSSE())
-			ImGui::Text("SSE");
-		if (SDL_HasSSE2())
-			ImGui::Text("SSE2");
-		if (SDL_HasSSE3())
-			ImGui::Text("SSE3");
-		if (SDL_HasSSE41())
-			ImGui::Text("SSE41");
-		if (SDL_HasSSE42())
-			ImGui::Text("SSE42");
-	}
-	if (ImGui::CollapsingHeader("Renderer"))
-	{
-
-		if (ImGui::Button((App->renderer3D->GetVsync() != true ? "Disable Vsync" : "Enable Vsync")))
-			App->renderer3D->EnableVsync();
-
-		if (ImGui::Button((App->renderer3D->GetDepthTest() != true ? "Disable Depth Test" : "Enable Depth Test")))
-			App->renderer3D->EnableDepthTest();
-
-		if (ImGui::Button((App->renderer3D->GetCullFace() != true ? "Disable CullFace" : "Enable CullFace")))
-			App->renderer3D->EnableCullFace();
-
-		if (ImGui::Button((App->renderer3D->GetLighting() != true ? "Disable Lighting" : "Enable Lighting")))
-			App->renderer3D->EnableLighting();
-
-		if (ImGui::Button((App->renderer3D->GetColorMat() != true ? "Disable Color Material" : "Enable Color Material")))
-			App->renderer3D->EnableColorMaterial();
-
-		if (ImGui::Button((App->renderer3D->GetTexture2D() != true ? "Disable Texture 2D" : "Enable Texture 2D")))
-			App->renderer3D->EnableTexture2D();
-
-		if (ImGui::Button((App->renderer3D->GetWireFrame() != true ? "Enable WireFrame" : "Disable WireFrame")))
-			App->renderer3D->EnableWireframe();
-		
-
-
-	}
-	if (ImGui::CollapsingHeader("Mesh"))
-	{
-		if (ImGui::Checkbox("Draw Normals", &App->renderer3D->drawNormals));
-	}
-	ImGui::End();
-}
-
-void ModuleGui::PrimitivesWindow()
-{
-	ImGui::Begin("Primitives");
-	
-	ImGui::Checkbox("Grid", &App->renderer3D->drawPlane);
-	ImGui::Checkbox("Axis", &App->renderer3D->drawAxis);
-	ImGui::Checkbox("Cube", &App->renderer3D->drawCube);
-	ImGui::Checkbox("Line", &App->renderer3D->drawLine);
-	ImGui::Checkbox("Arrow", &App->renderer3D->drawArrow);
-	ImGui::Checkbox("Sphere", &App->renderer3D->drawSphere);
-	ImGui::Checkbox("Cylinder", &App->renderer3D->drawCylinder);
-
-	ImGui::End();
-}

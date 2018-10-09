@@ -1,15 +1,16 @@
 #pragma once
 #include "Module.h"
 
-class aiScene;
-class Mesh;
+#define CHECKERS_SIZE 20
 
-class ModuleFBX : public Module
+
+
+class ModuleLoader : public Module
 {
 public:
-	ModuleFBX(Application* app, bool start_enabled = true);
+	ModuleLoader(Application* app, bool start_enabled = true);
 
-	~ModuleFBX();
+	~ModuleLoader();
 
 	bool Start();
 
@@ -24,10 +25,15 @@ public:
 	bool CheckDropEvent();
 	
 	void LoadScene(const char* path);
+
+	uint LoadChekerTex();
+	uint LoadTex(const char* path);
+
+	uint Lenna;
 private:
 	char* droppedFile = nullptr;
 
-	Mesh* testScene = nullptr;
+
 	bool test = false;
 
 

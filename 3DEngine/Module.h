@@ -12,11 +12,11 @@ private :
 	bool enabled;
 
 protected:
-	std::string name;
+	char* name = nullptr;
 public:
 	Application* App;
-	void SetName(const char* _name) { name = _name; };
-	const char* GetName() { return name.c_str(); };
+	void SetName(const char* _name) { *name = *_name; };
+	const char* GetName() { return name; };
 
 	Module(Application* parent, bool start_enabled = true) : App(parent)
 	{}

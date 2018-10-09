@@ -1,8 +1,14 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "WinBase.h"
+#include "WinConfig.h"
+#include "WinConsole.h"
+#include "WinElem.h"
+#include "WinTest.h"
+#include <list>
 
-#include "pcg-c-basic-0.9/pcg_basic.h"
+
 
 
 class ModuleGui :
@@ -21,28 +27,26 @@ public:
 	update_status PostUpdate(float dt);
 
 	bool CleanUp();
-	void ShowMenuBar();
-	void AddLogWindow();
+	void AddWindow(WinBase* win);
+
+public:
+	WinConfig * config = nullptr;
+	WinConsole* console = nullptr;
+	WinElem*	element = nullptr;
+	WinTest*	test = nullptr;
 
 private:
-	void RngWindow();
 	void AboutWindow();
-	void ConfigWindow();
-	void PrimitivesWindow();
 
 private:
 	bool quit = false;
-	pcg32_random_t rng;
-	int random_bounded = 0;
-	int max = 0;
-	int min = 0;
-	float random_f = 0;
-	char* release_link;
-	char* issues_link;
-	char* wiki_link;
+	std::list<WinBase*> windows;
+
+	
+	char* release_link = nullptr;
+	char* issues_link = nullptr;
+	char* wiki_link = nullptr;
 	bool showdemo = false;
 	bool about = false;
-	bool config = false;
-	bool rngwindow = false;
 
 };

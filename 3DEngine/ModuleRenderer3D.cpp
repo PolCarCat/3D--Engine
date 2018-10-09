@@ -32,7 +32,7 @@ bool ModuleRenderer3D::Init()
 	bool ret = true;
 	
 	//Load from config
-	Load(App->config.GetObj(name.c_str()));
+	Load(App->config.GetObj(name));
 
 	//Setting attributes
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -137,6 +137,9 @@ bool ModuleRenderer3D::Init()
 	sphere.Create();
 	cylinder.Create(0, 0, 0, 0.1, 0.2, 30);
 
+
+
+
 	return ret;
 }
 
@@ -171,6 +174,29 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 		sphere.Render();
 	if (drawCylinder)
 		cylinder.Render();
+
+
+	// TEXTURE TEST
+	for (std::list<Mesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
+	{
+		(*item)->SetText(App->loader->Lenna);
+	}
+
+
+	//glBindTexture(GL_TEXTURE_2D, 0);
+	//glBindTexture(GL_TEXTURE_2D, App->loader->Lenna);
+	//glBegin(GL_TRIANGLES);
+	//glTexCoord2f(1.0, 0.0); glVertex3f(1.0, 0.0, 0.0); 
+	//glTexCoord2f(0.0, 1.0); glVertex3f(0.0, 1.0, 0.0);
+	//glTexCoord2f(0.0, 0.0); glVertex3f(0.0, 0.0, 0.0);
+
+
+	//glTexCoord2f(1.0, 0.0); glVertex3f(1.0, 0.0, 0); 
+	//glTexCoord2f(1.0, 1.0); glVertex3f(1, 1.0, 0);
+	//glTexCoord2f(0.0, 1.0); glVertex3f(0.0, 1.0, 0.0);
+	//glBindTexture(GL_TEXTURE_2D, 0);
+
+	glEnd();
 
 
 	DrawMeshes();
@@ -301,26 +327,19 @@ void Mesh::GenerateBuffer()
 void Mesh::Draw()
 {
 
-	glEnableClientState(GL_VERTEX_ARRAY);
 
-
-	//glBindBuffer(GL_ARRAY_BUFFER, id_indice);
-	//glVertexPointer(3, GL_FLOAT, 0, vertex);
-	////glDrawArrays(GL_TRIANGLES, 0, num_vertex);
-	//glDrawElements(GL_TRIANGLES, num_indice, GL_UNSIGNED_INT, indice);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indice);
-	//Draw
-	glVertexPointer(3, GL_FLOAT, 0, &vertex[0]);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	glBindTexture(GL_TEXTURE_2D, tex);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indice);
+	glVertexPointer(3, GL_FLOAT, 0, &vertex[0]);
 	glTexCoordPointer(2, GL_FLOAT, 0, &textC[0]);
 	glDrawElements(GL_TRIANGLES, num_indice, GL_UNSIGNED_INT, NULL);
-	//Disable
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);
 
