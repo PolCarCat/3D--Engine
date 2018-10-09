@@ -1,7 +1,7 @@
 #pragma once
 #include "Module.h"
 
-#define CHECKERS_SIZE 4
+#define CHECKERS_SIZE 20
 
 
 
@@ -26,7 +26,7 @@ public:
 	
 	void LoadScene(const char* path);
 
-	void LoadChekerTex();
+	uint LoadChekerTex();
 	uint LoadTex(const char* path);
 
 	uint Lenna;

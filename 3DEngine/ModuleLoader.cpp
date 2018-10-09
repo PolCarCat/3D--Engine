@@ -9,10 +9,6 @@
 #include "Assimp/include/postprocess.h"
 //#include "Assimp/include/cfileio.h"
 
-#include "Glew/include/glew.h"
-#include "SDL\include\SDL_opengl.h"
-#include <gl/GL.h>
-#include <gl/GLU.h>
 
 
 #include "DevIL/include/il.h"
@@ -52,7 +48,8 @@ bool ModuleLoader::Start()
 	ilutRenderer(ILUT_OPENGL);
 
 
-	Lenna = LoadTex("Assets/Lenna.png");
+	//Lenna = LoadTex("Assets/Lenna.png");
+	Lenna = LoadChekerTex();
 	LoadScene("Assets/BakerHouse.fbx");
 	
 
@@ -149,7 +146,7 @@ void ModuleLoader::LoadScene(const char* path)
 			{
 				mesh->num_normals = m->mNumVertices * 3;
 				mesh->normals = new float[mesh->num_normals * 3];
-				memcpy(mesh->normals, m->mNormals, sizeof(float) * 3 * mesh->num_normals);
+				memcpy(mesh->normals, m->mNormals, sizeof(float) * mesh->num_normals);
 			}
 
 			if (m->GetNumColorChannels() != 0)
@@ -159,7 +156,7 @@ void ModuleLoader::LoadScene(const char* path)
 				memcpy(mesh->colors, m->mColors, sizeof(float) * mesh->num_colors);
 			}
 			
-			if (m->HasTextureCoords(AI_MAX_NUMBER_OF_TEXTURECOORDS))
+			if (m->GetNumUVChannels() > 0)
 			{
 				mesh->num_textC = m->mNumVertices * 2;
 				mesh->textC = new float[mesh->num_textC];
@@ -182,7 +179,7 @@ void ModuleLoader::LoadScene(const char* path)
 		
 }
 
-void ModuleLoader::LoadChekerTex()
+uint ModuleLoader::LoadChekerTex()
 {
 
 	GLubyte checkImage[CHECKERS_SIZE][CHECKERS_SIZE][4];
@@ -196,18 +193,18 @@ void ModuleLoader::LoadChekerTex()
 		}
 	}
 
+	uint id;
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &id);
+	glBindTexture(GL_TEXTURE_2D, id);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_SIZE, CHECKERS_SIZE,
+		0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
 
-	//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	//glGenTextures(1, &ImageName);
-	//glBindTexture(GL_TEXTURE_2D, ImageName);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_SIZE, CHECKERS_SIZE,
-	//	0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
-
-
+	return id;
 }
 
 uint ModuleLoader::LoadTex(const char* path)
@@ -230,8 +227,8 @@ uint ModuleLoader::LoadTex(const char* path)
 		//{
 		//	iluFlipImage();
 		//}
-
-		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
+/*
+		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);*/
 
 
 		if (!success)
@@ -241,18 +238,20 @@ uint ModuleLoader::LoadTex(const char* path)
 		}
 
 
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		glGenTextures(1, &textureID);
-
 		glBindTexture(GL_TEXTURE_2D, textureID);
-
-
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH),	ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());		
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ilGetInteger(IL_IMAGE_WIDTH),	ilGetInteger(IL_IMAGE_HEIGHT), 0, GL_RGBA, GL_UNSIGNED_BYTE, ilGetData());
 
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		VSLOG("Texture creation successful, image id %d", imageID);
+
+		ilDeleteImages(1, &imageID);
 	}
 	else 
 	{
@@ -260,7 +259,6 @@ uint ModuleLoader::LoadTex(const char* path)
 		VSLOG("Image loading eror %d", error);
 	}
 
-	ilDeleteImages(1, &imageID); 
-	VSLOG("Texture creation successful, image id %d", imageID);
+	
 	return textureID; 
 }

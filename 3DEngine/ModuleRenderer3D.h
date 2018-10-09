@@ -9,7 +9,6 @@
 #include <vector>
 
 
-
 #define MAX_LIGHTS 8
 
 
@@ -25,15 +24,14 @@ struct Mesh
 	uint num_vertex = 0;
 	float* vertex = nullptr;
 
-	uint id_normals = 0; // unique normal in VRAM
 	uint num_normals = 0;
 	float* normals = nullptr;
 
-	uint id_colors = 0; // unique normal in VRAM
+	uint id_colors = 0; 
 	uint num_colors = 0;
 	float* colors = nullptr;
 
-	uint id_textC = 0; // unique normal in VRAM
+	uint id_textC = 0; 
 	uint num_textC = 0;
 	float* textC = nullptr;
 

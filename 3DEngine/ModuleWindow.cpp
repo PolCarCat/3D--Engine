@@ -37,6 +37,8 @@ bool ModuleWindow::Init()
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
+		
+
 		if(FS == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN;

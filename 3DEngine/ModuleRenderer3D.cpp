@@ -131,6 +131,10 @@ bool ModuleRenderer3D::Init()
 	OnResize(App->window->w, App->window->h);
 
 	// TEXTURE TEST
+	for (std::list<Mesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
+	{
+		(*item)->SetText(App->loader->Lenna);
+	}
 
 
 	cube.Create();
@@ -171,15 +175,21 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	if (drawSphere)
 		Sphere(0.1, 30, 30);
 
+	// TEST
+
 	for (std::list<Mesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
 	{
 		(*item)->SetText(App->loader->Lenna);
 	}
 
+	//VertexArraysCube(0, 100);
 	DrawMeshes();
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
+
+
+
 
 	return UPDATE_CONTINUE;
 }
@@ -292,12 +302,12 @@ void Mesh::GenerateBuffer()
 	//glBindBuffer(GL_ARRAY_BUFFER, id_index);
 	//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_index, &index[0], GL_STATIC_DRAW);
 
-	glGenBuffers(1, (GLuint*) &(id_vertex));
-	glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
+	//glGenBuffers(1, (GLuint*) &(id_vertex));
+	//glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
 	glBindBuffer(GL_ARRAY_BUFFER, id_indice);
-
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_vertex, vertex, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 
 
 
@@ -305,15 +315,25 @@ void Mesh::GenerateBuffer()
 
 void Mesh::Draw()
 {
-
 	glBindTexture(GL_TEXTURE_2D, tex);
-	glEnable(GL_TEXTURE_2D);
+
+
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, vertex);
-	glDrawElements(GL_TRIANGLES, num_indice, GL_UNSIGNED_INT, indice);
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indice);
+	glVertexPointer(3, GL_FLOAT, 0, &(vertex[0]));
+	glTexCoordPointer(2, GL_FLOAT, 0, &(textC[0]));
+	glDrawElements(GL_TRIANGLES, num_vertex, GL_UNSIGNED_INT, indice);
+	
+
+
+
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glDisableClientState(GL_VERTEX_ARRAY);
+
 	glBindTexture(GL_TEXTURE_2D, 0);
+	glDisableClientState(GL_VERTEX_ARRAY);
+
 
 }
 
@@ -573,13 +593,21 @@ void ModuleRenderer3D::VertexArraysCube(float origin, float size)
 
 		VBufferInit = true;
 	}
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+	glBindTexture(GL_TEXTURE_2D, App->loader->Lenna);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glTexCoordPointer(2, GL_FLOAT, 0, &vertices[0]);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void ModuleRenderer3D::IndicesCube(float origin, float size)
@@ -644,8 +672,10 @@ void ModuleRenderer3D::IndicesCube(float origin, float size)
 		IBufferInit = true;
 	}
 
+	glBindTexture(GL_TEXTURE_2D, App->loader->Lenna);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
+	glTexCoordPointer(2, GL_FLOAT, 0, &(vertices2[0]));
 	glVertexPointer(3, GL_FLOAT, 0, &vertices2[0]);
 	glDrawElements(GL_TRIANGLES, Cindices.size(), GL_UNSIGNED_INT, NULL);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
