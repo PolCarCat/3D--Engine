@@ -48,7 +48,7 @@ bool ModuleLoader::Start()
 	ilutRenderer(ILUT_OPENGL);
 
 
-	Lenna = LoadTex("Assets/Lenna.png");
+	Lenna = LoadTex("Assets/Baker_house.png");
 	//Lenna = LoadChekerTex();
 	LoadScene("Assets/BakerHouse.fbx");
 	
@@ -228,12 +228,12 @@ uint ModuleLoader::LoadTex(const char* path)
 										
 	if (success)
 	{
-		//ILinfo ImageInfo;
-		//iluGetImageInfo(&ImageInfo);
-		//if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
-		//{
-		//	iluFlipImage();
-		//}
+		ILinfo ImageInfo;
+		iluGetImageInfo(&ImageInfo);
+		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+		{
+			iluFlipImage();
+		}
 
 		//success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
 

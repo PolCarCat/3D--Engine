@@ -183,18 +183,18 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	}
 
 
-	//glBindTexture(GL_TEXTURE_2D, 0);
-	//glBindTexture(GL_TEXTURE_2D, App->loader->Lenna);
-	//glBegin(GL_TRIANGLES);
-	//glTexCoord2f(1.0, 0.0); glVertex3f(1.0, 0.0, 0.0); 
-	//glTexCoord2f(0.0, 1.0); glVertex3f(0.0, 1.0, 0.0);
-	//glTexCoord2f(0.0, 0.0); glVertex3f(0.0, 0.0, 0.0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, App->loader->Lenna);
+	glBegin(GL_TRIANGLES);
+	glTexCoord2f(1.0, 0.0); glVertex3f(1.0, 0.0, 0.0); 
+	glTexCoord2f(0.0, 1.0); glVertex3f(0.0, 1.0, 0.0);
+	glTexCoord2f(0.0, 0.0); glVertex3f(0.0, 0.0, 0.0);
 
 
-	//glTexCoord2f(1.0, 0.0); glVertex3f(1.0, 0.0, 0); 
-	//glTexCoord2f(1.0, 1.0); glVertex3f(1, 1.0, 0);
-	//glTexCoord2f(0.0, 1.0); glVertex3f(0.0, 1.0, 0.0);
-	//glBindTexture(GL_TEXTURE_2D, 0);
+	glTexCoord2f(1.0, 0.0); glVertex3f(1.0, 0.0, 0); 
+	glTexCoord2f(1.0, 1.0); glVertex3f(1, 1.0, 0);
+	glTexCoord2f(0.0, 1.0); glVertex3f(0.0, 1.0, 0.0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 	glEnd();
 
