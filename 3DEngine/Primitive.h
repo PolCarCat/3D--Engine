@@ -15,7 +15,8 @@ enum PrimitiveTypes
 	Cube,
 	Sphere,
 	Cylinder,
-	Axis
+	Axis,
+	Arrow
 };
 
 class Primitive
@@ -83,6 +84,30 @@ public:
 	void Render() const;
 public:
 	float thickness, ox, oy, oz, ex, ey, ez;
+};
+
+class PArrow : public Primitive
+{
+public:
+	PArrow();
+	void Create(float thickness = 2.0f, float ox = 0.0f, float oy = 0.0f, float oz = 0.0f, float ex = 0.0f, float ey = 1.0f, float ez = 0.0f);
+	void Render() const;
+public:
+	float thickness, ox, oy, oz, ex, ey, ez;
+};
+
+class PSphere : public Primitive
+{
+public:
+	PSphere();
+	void Create(float ox = 0.0f, float oy = 0.0f, float oz = 0.0f, float radius = 1.0f, uint stacks = 30, uint sectors = 30);
+};
+
+class PCylinder : public Primitive
+{
+public:
+	PCylinder();
+	void Create(float ox = 0.0f, float oy = 0.0f, float oz = 0.0f, float radius = 1.0f, float lenght = 0.3f, uint sectors = 30);
 };
 
 #endif

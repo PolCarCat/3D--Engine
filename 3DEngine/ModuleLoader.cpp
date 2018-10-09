@@ -48,8 +48,8 @@ bool ModuleLoader::Start()
 	ilutRenderer(ILUT_OPENGL);
 
 
-	//Lenna = LoadTex("Assets/Lenna.png");
-	Lenna = LoadChekerTex();
+	Lenna = LoadTex("Assets/Lenna.png");
+	//Lenna = LoadChekerTex();
 	LoadScene("Assets/BakerHouse.fbx");
 	
 
@@ -160,7 +160,14 @@ void ModuleLoader::LoadScene(const char* path)
 			{
 				mesh->num_textC = m->mNumVertices * 2;
 				mesh->textC = new float[mesh->num_textC];
-				memcpy(mesh->textC, m->mTextureCoords, sizeof(float) * mesh->num_textC);
+				//memcpy(mesh->textC, m->mTextureCoords, sizeof(float) * mesh->num_textC);
+				uint j = 0;
+				for (uint i = 0; i < mesh->num_textC; i += 2)
+				{
+					mesh->textC[i] = m->mTextureCoords[0][j].x;
+					mesh->textC[i + 1] = m->mTextureCoords[0][j].y;
+					j++;
+				}
 			}
 
 			mesh->GenerateBuffer();
@@ -227,8 +234,8 @@ uint ModuleLoader::LoadTex(const char* path)
 		//{
 		//	iluFlipImage();
 		//}
-/*
-		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);*/
+
+		//success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
 
 
 		if (!success)
@@ -241,15 +248,16 @@ uint ModuleLoader::LoadTex(const char* path)
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		glGenTextures(1, &textureID);
 		glBindTexture(GL_TEXTURE_2D, textureID);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ilGetInteger(IL_IMAGE_WIDTH),	ilGetInteger(IL_IMAGE_HEIGHT), 0, GL_RGBA, GL_UNSIGNED_BYTE, ilGetData());
 
-		glBindTexture(GL_TEXTURE_2D, textureID);
-		VSLOG("Texture creation successful, image id %d", imageID);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH),	ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+
+		VSLOG("Texture creation successful, image id %d", textureID);
 
 		ilDeleteImages(1, &imageID);
 	}

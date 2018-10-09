@@ -92,14 +92,7 @@ public:
 	bool drawSphere = false;
 	bool drawNormals = false;
 	bool drawAxis = true;
-
-private:
-	void VertexArraysCube(float origin, float size);
-	void IndicesCube(float origin, float size);
-	void Ray(float ox, float oy, float oz, float ex, float ey, float ez);
-	void Arrow(float ox, float oy, float oz, float ex, float ey, float ez);
-	void Sphere(float radius, int stacks, int sectors, vector<float> origin = { 0, 0, 0 });
-
+	bool drawCylinder = false;
 private:
 	bool vsync = false;
 	bool depthTest = true;
@@ -124,8 +117,12 @@ private:
 		6,5,4,	4,7,6,
 		7,4,3,	3,1,7,
 		6,7,1,	1,0,6 };
-	PCube	cube;
-	PPlane	plane;
-	PAxis	axis;
-	PLine	line;
+
+	PLine		line;
+	PAxis		axis;
+	PCube		cube;
+	PPlane		plane;
+	PArrow		arrow;
+	PSphere		sphere;
+	PCylinder	cylinder;
 };
