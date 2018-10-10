@@ -307,6 +307,17 @@ void ModuleRenderer3D::DrawMeshes()
 }
 
 
+void ModuleRenderer3D::CleanUpMeshes()
+{
+	for (std::list<Mesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
+	{
+		(*item)->CleanUp();
+
+	}
+
+	meshes.clear();
+}
+
 
 void Mesh::GenerateBuffer()
 {
@@ -346,6 +357,8 @@ void Mesh::Draw()
 
 }
 
+
+
 void Mesh::DrawNormals()
 {
 	if (normals == nullptr)
@@ -371,4 +384,29 @@ void Mesh::DrawNormals()
 
 	}
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+}
+
+void Mesh::CleanUp()
+{
+
+	glDeleteBuffers(1, (GLuint*) &(id_indice));
+
+	delete vertex;
+	vertex = nullptr;
+	
+	delete indice;
+	indice = nullptr;
+	
+	delete normals;
+	normals = nullptr;
+
+	delete colors;
+	colors = nullptr;
+	
+	delete textC;
+	textC = nullptr;
+
+	delete name;
+	name = nullptr;
+
 }

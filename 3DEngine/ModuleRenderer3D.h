@@ -42,6 +42,7 @@ struct Mesh
 	void Draw();
 	void DrawNormals();
 	void SetText(const uint i) { tex = i; };
+	void CleanUp();
 
 };
 
@@ -59,6 +60,7 @@ public:
 	bool Save(json_object_t* doc);
 
 	void DrawMeshes();
+	void CleanUpMeshes();
 
 	void OnResize(int width, int height);
 	void EnableVsync();

@@ -13,6 +13,7 @@ public:
 	bool Start();
 	bool Update();
 	Mesh* curMesh = nullptr;
+	
 
 };
 

@@ -65,7 +65,7 @@ update_status ModuleLoader::PreUpdate(float dt)
 update_status ModuleLoader::Update(float dt)
 {
 
-
+	CheckDropEvent();
 
 	return UPDATE_CONTINUE;
 }
@@ -73,6 +73,11 @@ update_status ModuleLoader::Update(float dt)
 update_status ModuleLoader::PostUpdate(float dt)
 {
 
+	if (droppedFile != nullptr)
+	{
+		Format f = CheckFormat(droppedFile);
+
+	}
 	return UPDATE_CONTINUE;
 }
 
@@ -277,4 +282,41 @@ uint ModuleLoader::LoadTex(const char* path)
 
 	
 	return textureID; 
+}
+
+
+Format ModuleLoader::CheckFormat(const char* path)
+{
+	Format ret = FNULL;
+	char * t = new char[sizeof path];	
+	std::string format;
+	strcpy(t, path);
+
+	bool point = false;
+
+	for (t; *t != '\0'; t++) 
+	{
+		if (point)
+			format.push_back(*t);
+
+		if (*t == '.')
+			point = true;	
+	}
+
+	if (strcmp(format.c_str(), "fbx"))
+	{
+		ret = FBX;
+	}
+	else if (strcmp(format.c_str(), "png"))
+	{
+		ret = PNG;
+	}
+	else if (strcmp(format.c_str(), "dds"))
+	{
+		ret = DDS;
+	}
+
+
+	delete [] t;
+	return ret;
 }

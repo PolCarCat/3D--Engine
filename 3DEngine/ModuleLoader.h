@@ -5,9 +5,18 @@
 
 
 
+enum Format {
+	FBX,
+	PNG,
+	DDS,
+	FNULL
+};
+
 class ModuleLoader : public Module
 {
 public:
+
+
 	ModuleLoader(Application* app, bool start_enabled = true);
 
 	~ModuleLoader();
@@ -28,11 +37,12 @@ public:
 
 	uint LoadChekerTex();
 	uint LoadTex(const char* path);
+	Format CheckFormat(const char* path);
 
 	uint Lenna;
 private:
 	char* droppedFile = nullptr;
-
+	Format dFformat = FNULL;
 
 	bool test = false;
 
