@@ -176,29 +176,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 		cylinder.Render();
 
 
-	// TEXTURE TEST
-	for (std::list<Mesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
-	{
-		(*item)->SetText(App->loader->Lenna);
-	}
-
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindTexture(GL_TEXTURE_2D, App->loader->Lenna);
-	glBegin(GL_TRIANGLES);
-	glTexCoord2f(1.0, 0.0); glVertex3f(1.0, 0.0, 0.0); 
-	glTexCoord2f(0.0, 1.0); glVertex3f(0.0, 1.0, 0.0);
-	glTexCoord2f(0.0, 0.0); glVertex3f(0.0, 0.0, 0.0);
-
-
-	glTexCoord2f(1.0, 0.0); glVertex3f(1.0, 0.0, 0); 
-	glTexCoord2f(1.0, 1.0); glVertex3f(1, 1.0, 0);
-	glTexCoord2f(0.0, 1.0); glVertex3f(0.0, 1.0, 0.0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	glEnd();
-
-
 	DrawMeshes();
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
@@ -319,6 +296,15 @@ void ModuleRenderer3D::CleanUpMeshes()
 }
 
 
+void ModuleRenderer3D::SetMeshesTex(uint i)
+{
+
+	for (std::list<Mesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
+	{
+		(*item)->SetText(i);
+	}
+}
+
 void Mesh::GenerateBuffer()
 {
 
@@ -406,7 +392,7 @@ void Mesh::CleanUp()
 	delete textC;
 	textC = nullptr;
 
-	delete name;
-	name = nullptr;
+	//delete[] name;
+	//name = nullptr;
 
 }

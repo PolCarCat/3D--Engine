@@ -39,7 +39,7 @@ bool ModuleLoader::Start()
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);
 
-	SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
+
 
 	ilutRenderer(ILUT_OPENGL);
 	ilInit();
@@ -50,8 +50,9 @@ bool ModuleLoader::Start()
 
 	Lenna = LoadTex("Assets/Baker_house.png");
 	//Lenna = LoadChekerTex();
-	LoadScene("Assets/BakerHouse.fbx");
+	//LoadScene("Assets/BakerHouse.fbx");
 	
+	//App->renderer3D->SetMeshesTex(Lenna);
 
 	return true;
 }
@@ -67,6 +68,7 @@ update_status ModuleLoader::Update(float dt)
 
 	CheckDropEvent();
 
+
 	return UPDATE_CONTINUE;
 }
 
@@ -76,7 +78,23 @@ update_status ModuleLoader::PostUpdate(float dt)
 	if (droppedFile != nullptr)
 	{
 		Format f = CheckFormat(droppedFile);
-
+		switch (f)
+		{
+		case FBX:
+			App->renderer3D->CleanUpMeshes();
+			LoadScene(droppedFile);
+			break;
+		case PNG:
+		case DDS:
+			App->renderer3D->SetMeshesTex(LoadTex(droppedFile));
+			break;
+		case FNULL:
+			break;
+		default:
+			break;
+		}
+		
+		droppedFile = nullptr;
 	}
 	return UPDATE_CONTINUE;
 }
@@ -95,15 +113,16 @@ bool ModuleLoader::CleanUp()
 bool ModuleLoader::CheckDropEvent()
 {
 	bool ret = false;
+	SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
 
 	SDL_Event dropEvent;
+
 	while (SDL_PollEvent(&dropEvent))
 	{
 		if (dropEvent.type == SDL_DROPFILE)
 		{
 			droppedFile = dropEvent.drop.file;
 			ret = true;
-
 			SDL_ShowSimpleMessageBox(
 				SDL_MESSAGEBOX_INFORMATION,
 				"File dropped on window",
@@ -112,6 +131,7 @@ bool ModuleLoader::CheckDropEvent()
 		}
 	}
 
+	
 	return ret;
 }
 
@@ -175,11 +195,16 @@ void ModuleLoader::LoadScene(const char* path)
 				}
 			}
 
+			mesh->tex = 0;
 			mesh->name = nullptr;
 			if (m->mName.length > 0)
 			{
 				mesh->name = new char[m->mName.length];
 				strcpy(mesh->name, m->mName.C_Str());
+			}
+			else
+			{
+				mesh->name = "No name";
 			}
 
 
@@ -270,6 +295,7 @@ uint ModuleLoader::LoadTex(const char* path)
 
 		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH),	ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
 
+		glBindTexture(GL_TEXTURE_2D, 0);
 		VSLOG("Texture creation successful, image id %d", textureID);
 
 		ilDeleteImages(1, &imageID);
@@ -288,35 +314,32 @@ uint ModuleLoader::LoadTex(const char* path)
 Format ModuleLoader::CheckFormat(const char* path)
 {
 	Format ret = FNULL;
-	char * t = new char[sizeof path];	
+	std::string t = path;
 	std::string format;
-	strcpy(t, path);
+
 
 	bool point = false;
 
-	for (t; *t != '\0'; t++) 
-	{
-		if (point)
-			format.push_back(*t);
+	for (std::string::iterator it = t.begin(); it != t.end(); ++it) {
 
-		if (*t == '.')
+		if (point)
+			format.push_back(*it);
+
+		if (*it == '.')
 			point = true;	
 	}
 
-	if (strcmp(format.c_str(), "fbx"))
-	{
+	if (format == "FBX" || format == "fbx")
 		ret = FBX;
-	}
-	else if (strcmp(format.c_str(), "png"))
-	{
+	
+	else if (format == "PNG" || format == "png")
 		ret = PNG;
-	}
-	else if (strcmp(format.c_str(), "dds"))
-	{
+	
+	else if (format == "DDS" || format == "dds")
 		ret = DDS;
-	}
+	
 
 
-	delete [] t;
+	
 	return ret;
 }

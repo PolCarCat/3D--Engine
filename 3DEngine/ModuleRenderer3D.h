@@ -61,6 +61,7 @@ public:
 
 	void DrawMeshes();
 	void CleanUpMeshes();
+	void SetMeshesTex(uint i);
 
 	void OnResize(int width, int height);
 	void EnableVsync();
