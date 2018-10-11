@@ -50,9 +50,9 @@ bool ModuleLoader::Start()
 
 	Lenna = LoadTex("Assets/Baker_house.png");
 	//Lenna = LoadChekerTex();
-	//LoadScene("Assets/BakerHouse.fbx");
+	LoadScene("Assets/BakerHouse.fbx");
 	
-	//App->renderer3D->SetMeshesTex(Lenna);
+	App->renderer3D->SetMeshesTex(Lenna);
 
 	return true;
 }
@@ -66,7 +66,7 @@ update_status ModuleLoader::PreUpdate(float dt)
 update_status ModuleLoader::Update(float dt)
 {
 
-	CheckDropEvent();
+	//CheckDropEvent();
 
 
 	return UPDATE_CONTINUE;
@@ -110,29 +110,10 @@ bool ModuleLoader::CleanUp()
 	return true;
 }
 
-bool ModuleLoader::CheckDropEvent()
+
+void ModuleLoader::SetDropFile(char* f)
 {
-	bool ret = false;
-	SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
-
-	SDL_Event dropEvent;
-
-	while (SDL_PollEvent(&dropEvent))
-	{
-		if (dropEvent.type == SDL_DROPFILE)
-		{
-			droppedFile = dropEvent.drop.file;
-			ret = true;
-			SDL_ShowSimpleMessageBox(
-				SDL_MESSAGEBOX_INFORMATION,
-				"File dropped on window",
-				droppedFile,
-				App->window->window);
-		}
-	}
-
-	
-	return ret;
+	droppedFile = f;
 }
 
 
@@ -317,17 +298,15 @@ Format ModuleLoader::CheckFormat(const char* path)
 	std::string t = path;
 	std::string format;
 
-
 	bool point = false;
 
-	for (std::string::iterator it = t.begin(); it != t.end(); ++it) {
-
-		if (point)
-			format.push_back(*it);
-
-		if (*it == '.')
-			point = true;	
+	for (std::string::reverse_iterator rit = t.rbegin(); rit != t.rend(); ++rit)
+	{
+		format.insert(0, 1, *rit);
+		if (*rit == '.')
+			break;
 	}
+	
 
 	if (format == "FBX" || format == "fbx")
 		ret = FBX;

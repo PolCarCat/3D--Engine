@@ -31,9 +31,9 @@ public:
 
 	bool CleanUp();
 
-	bool CheckDropEvent();
 	
 	void LoadScene(const char* path);
+	void SetDropFile(char* f);
 
 	uint LoadChekerTex();
 	uint LoadTex(const char* path);
