@@ -44,9 +44,9 @@ update_status ModuleCamera3D::Update(float dt)
 	////Debug camera
 
 		vec3 newPos(0,0,0);
-		float speed = 100.0f * dt;
+		float speed = 8.0f * dt;
 		if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-			speed = 8.0f * dt;
+			speed = 50.0f * dt;
 
 		if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
 		if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
@@ -93,6 +93,11 @@ update_status ModuleCamera3D::Update(float dt)
 					Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
 					Y = cross(Z, X);
 				}
+			}
+			if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
+			{
+				this->Reference = this->Position;
+
 			}
 
 			Position = Reference + Z * length(Position);
