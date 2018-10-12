@@ -15,6 +15,12 @@ bool WinConfig::Update()
 
 	ImGui::Begin("Configuration");
 
+	if (ImGui::CollapsingHeader("Memory Management"))
+	{
+		//char plot[50];
+		//sprintf_s(plot, 50, "Memory");
+		//ImGui::PlotHistogram("Memory", &App->mem[0], 50, 0, plot, 0.0f, App->memPeak, ImVec2(310, 100));
+	}
 	if (ImGui::CollapsingHeader("Frame management"))
 	{
 		ImGui::SliderInt("FPS Cap", &App->framerate_cap, 1, 120);

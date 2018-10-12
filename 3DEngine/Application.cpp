@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "Parson/parson.h"
+//#include "mmgr/mmgr.h"
 
 Application::Application()
 {
@@ -146,6 +147,20 @@ void Application::ReadMs()
 
 	if (ms_counter >= 100)
 		ms_counter = 0;
+}
+
+void Application::ReadMem()
+{
+	//sMStats stats = m_getMemoryStatistics();
+
+	//mem[mem_counter] = (float)stats.totalReportedMemory;
+
+	//mem_counter++;
+
+	//if (mem_counter >= 100)
+	//	mem_counter = 0;
+
+	//memPeak = (float)stats.peakReportedMemory * 1.2f;
 }
 
 // Load / Save
