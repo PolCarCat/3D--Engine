@@ -17,7 +17,8 @@ enum PrimitiveTypes
 	Cylinder,
 	Axis,
 	Arrow,
-	Frustum
+	Frustum,
+	Capsule
 };
 
 class Primitive
@@ -117,5 +118,13 @@ public:
 	PFrustum();
 	void Create(float ox = 0.0f, float oy = 0.0f, float oz = 0.0f, float radius = 0.1f, float radius2 = 0.3f, float lenght = 0.5f, uint sectors = 4);
 };
+
+class PCapsule : public Primitive
+{
+public:
+	PCapsule();
+	void Create(float ox = 0.0f, float oy = 0.0f, float oz = 0.0f, float radius = 0.1f, float lenght = 0.5f, uint stacks = 30, uint sectors = 30);
+};
+
 
 #endif

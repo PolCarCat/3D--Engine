@@ -136,9 +136,7 @@ bool ModuleRenderer3D::Init()
 	arrow.Create(3.0f);
 	sphere.Create();
 	cylinder.Create();
-
-
-
+	capsule.Create();
 
 	return ret;
 }
@@ -174,7 +172,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 		sphere.Render();
 	if (drawCylinder)
 		cylinder.Render();
-
+	if (drawCapsule)
+		capsule.Render();
 
 	DrawMeshes();
 

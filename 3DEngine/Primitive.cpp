@@ -542,3 +542,71 @@ void PFrustum::Create(float ox, float oy, float oz, float radius, float radius2,
 
 	CreateBuffer();
 }
+
+PCapsule::PCapsule() : Primitive()
+{
+	type = PrimitiveTypes::Capsule;
+}
+
+void PCapsule::Create(float ox, float oy, float oz, float radius, float lenght, uint stacks, uint sectors)
+{
+	type = PrimitiveTypes::Capsule;
+
+	float x;
+	float y;
+	float z;
+	float xz;
+	float currsector = 2 * pi / sectors;
+	float currstack = pi / stacks;
+	float an1; //for stacks
+	float an2; //for sectors
+
+	for (int i = 0; i <= stacks; ++i)
+	{
+		an1 = pi / 2 - i * currstack;
+		xz = radius * cosf(an1);
+		y = oy + radius * sinf(an1);
+
+		if (an1 < 0)
+			y -= lenght / 2;
+		else
+			y += lenght / 2;
+
+		for (int j = 0; j <= sectors; ++j)
+		{
+			an2 = j * currsector;
+
+			z = oz + xz * cosf(an2);
+			x = ox + xz * sinf(an2);
+			vertices.push_back(x);
+			vertices.push_back(y);
+			vertices.push_back(z);
+		}
+	}
+
+	int k1, k2;
+	for (int i = 0; i < stacks; ++i)
+	{
+		k1 = i * (sectors + 1);
+		k2 = k1 + sectors + 1;
+
+		for (int j = 0; j < sectors; ++j, ++k1, ++k2)
+		{
+			if (i != 0)
+			{
+				indices.push_back(k1);
+				indices.push_back(k2);
+				indices.push_back(k1 + 1);
+			}
+
+			if (i != (stacks - 1))
+			{
+				indices.push_back(k1 + 1);
+				indices.push_back(k2);
+				indices.push_back(k2 + 1);
+			}
+		}
+	}
+
+	CreateBuffer();
+}

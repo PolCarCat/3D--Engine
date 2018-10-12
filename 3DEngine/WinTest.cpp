@@ -53,6 +53,7 @@ bool WinTest::Update()
 		ImGui::Checkbox("Arrow", &App->renderer3D->drawArrow);
 		ImGui::Checkbox("Sphere", &App->renderer3D->drawSphere);
 		ImGui::Checkbox("Cylinder", &App->renderer3D->drawCylinder);
+		ImGui::Checkbox("Capsule", &App->renderer3D->drawCapsule);
 	}
 
 

@@ -106,6 +106,7 @@ public:
 	bool drawNormals = false;
 	bool drawAxis = true;
 	bool drawCylinder = false;
+	bool drawCapsule = false;
 private:
 	bool vsync = false;
 	bool depthTest = true;
@@ -114,22 +115,6 @@ private:
 	bool colorMaterial = true;
 	bool texture2D = true;
 	bool wireframe = false;
-	float vertices[107];
-	float vertices2[23];
-	bool VBufferInit = false;
-	bool IBufferInit = false;
-	bool SBufferInit = false;
-	uint my_id = 0;
-	uint my_Sid = 0;
-	uint my_indices = 0;
-	vector<float> Svertices;
-	vector<int> Sindices;
-	vector<int> Cindices = { 0,1,2,	1,3,2,
-		3,4,2,	4,5,2,
-		2,5,6,	0,2,6,
-		6,5,4,	4,7,6,
-		7,4,3,	3,1,7,
-		6,7,1,	1,0,6 };
 
 	PLine		line;
 	PAxis		axis;
@@ -137,5 +122,6 @@ private:
 	PPlane		plane;
 	PArrow		arrow;
 	PSphere		sphere;
+	PCapsule	capsule;
 	PCylinder	cylinder;
 };
