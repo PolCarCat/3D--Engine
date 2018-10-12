@@ -58,6 +58,33 @@ update_status ModuleCamera3D::Update(float dt)
 		if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
 		if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
 
+
+		if (App->input->GetMouseZ() != 0)
+		{
+			float wheelspd = length(Position) / 2;
+			if (App->input->GetMouseZ() > 0)
+				newPos -= Z * speed * wheelspd;
+
+			else
+				newPos += Z * speed * wheelspd;
+		}
+
+		//Questionable
+		if (App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_REPEAT)
+		{
+			float spd = length(Position) / 100;
+			int dx = -App->input->GetMouseXMotion();
+			int dy = -App->input->GetMouseYMotion();
+
+			if (dx != 0)
+				newPos.x += dy * spd;
+
+
+			if (dy != 0)
+				newPos.z -= dx * spd;
+		}
+
+
 		Position += newPos;
 		Reference += newPos;
 
@@ -70,6 +97,9 @@ update_status ModuleCamera3D::Update(float dt)
 
 			float Sensitivity = 0.25f;
 
+			if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
+				Reference = { 0,0,0 };	
+			else
 			Position -= Reference;
 
 			if(dx != 0)
@@ -94,14 +124,12 @@ update_status ModuleCamera3D::Update(float dt)
 					Y = cross(Z, X);
 				}
 			}
-			if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
-			{
-				this->Reference = this->Position;
-
-			}
+	
 
 			Position = Reference + Z * length(Position);
 		}
+
+	
 
 		// Recalculate matrix -------------
 		CalculateViewMatrix();
