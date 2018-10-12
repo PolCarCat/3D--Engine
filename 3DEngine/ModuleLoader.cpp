@@ -48,12 +48,6 @@ bool ModuleLoader::Start()
 	ilutRenderer(ILUT_OPENGL);
 
 
-	Lenna = LoadTex("Assets/Baker_house.png");
-	//Lenna = LoadChekerTex();
-	LoadScene("Assets/BakerHouse.fbx");
-	
-	App->renderer3D->SetMeshesTex(Lenna);
-
 	return true;
 }
 
@@ -83,9 +77,11 @@ update_status ModuleLoader::PostUpdate(float dt)
 		case FBX:
 			App->renderer3D->CleanUpMeshes();
 			LoadScene(droppedFile);
+			App->imgui->element->curMesh = (*App->renderer3D->meshes.begin());
 			break;
 		case PNG:
 		case DDS:
+			App->imgui->element->curMesh->tex.CleanUp();
 			App->renderer3D->SetMeshesTex(LoadTex(droppedFile));
 			break;
 		case FNULL:
@@ -123,6 +119,7 @@ void ModuleLoader::LoadScene(const char* path)
 
 	if (scene != nullptr && scene->HasMeshes())
 	{				
+		uint i = 0;
 		for (int nm = 0; nm < scene->mNumMeshes; nm++)
 		{
 			Mesh* mesh = new Mesh;
@@ -176,7 +173,7 @@ void ModuleLoader::LoadScene(const char* path)
 				}
 			}
 
-			mesh->tex = 0;
+			mesh->tex.id = 0;
 			mesh->name = nullptr;
 			if (m->mName.length > 0)
 			{
@@ -184,8 +181,8 @@ void ModuleLoader::LoadScene(const char* path)
 				strcpy(mesh->name, m->mName.C_Str());
 			}
 			else
-			{
-				mesh->name = "No name";
+			{				
+				mesh->name = "Untitlied mesh";
 			}
 
 
@@ -233,8 +230,9 @@ uint ModuleLoader::LoadChekerTex()
 	return id;
 }
 
-uint ModuleLoader::LoadTex(const char* path)
+Texture ModuleLoader::LoadTex(const char* path)
 {
+	Texture ret;
 	ILuint imageID;				
 	GLuint textureID;	
 	ILboolean success = false;	
@@ -272,9 +270,12 @@ uint ModuleLoader::LoadTex(const char* path)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
+		ret.width = ilGetInteger(IL_IMAGE_WIDTH);
+		ret.heigth = ilGetInteger(IL_IMAGE_HEIGHT);
+		ret.id = textureID;
 
 
-		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH),	ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ret.width,	ret.heigth, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 		VSLOG("Texture creation successful, image id %d", textureID);
@@ -288,7 +289,7 @@ uint ModuleLoader::LoadTex(const char* path)
 	}
 
 	
-	return textureID; 
+	return ret; 
 }
 
 
@@ -302,9 +303,9 @@ Format ModuleLoader::CheckFormat(const char* path)
 
 	for (std::string::reverse_iterator rit = t.rbegin(); rit != t.rend(); ++rit)
 	{
-		format.insert(0, 1, *rit);
 		if (*rit == '.')
 			break;
+		format.insert(0, 1, *rit);
 	}
 	
 
@@ -316,9 +317,8 @@ Format ModuleLoader::CheckFormat(const char* path)
 	
 	else if (format == "DDS" || format == "dds")
 		ret = DDS;
-	
-
 
 	
 	return ret;
 }
+

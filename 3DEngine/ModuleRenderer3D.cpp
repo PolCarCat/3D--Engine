@@ -296,12 +296,12 @@ void ModuleRenderer3D::CleanUpMeshes()
 }
 
 
-void ModuleRenderer3D::SetMeshesTex(uint i)
+void ModuleRenderer3D::SetMeshesTex(Texture i)
 {
 
 	for (std::list<Mesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
 	{
-		(*item)->SetText(i);
+		(*item)->tex = i;
 	}
 }
 
@@ -329,7 +329,7 @@ void Mesh::Draw()
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	glBindTexture(GL_TEXTURE_2D, tex);
+	glBindTexture(GL_TEXTURE_2D, tex.id);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indice);
 	glVertexPointer(3, GL_FLOAT, 0, &vertex[0]);
 	glTexCoordPointer(2, GL_FLOAT, 0, &textC[0]);
@@ -395,4 +395,12 @@ void Mesh::CleanUp()
 	//delete[] name;
 	//name = nullptr;
 
+}
+
+void Texture::CleanUp()
+{
+	glDeleteBuffers(1, (GLuint*) &(id));
+
+	width = 0;
+	heigth = 0;
 }

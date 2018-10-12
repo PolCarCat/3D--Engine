@@ -59,19 +59,26 @@ bool WinElem::Update()
 
 		if (ImGui::CollapsingHeader("Texture"))
 		{
-			if (curMesh->tex != 0)
+			if (curMesh->tex.id != 0)
 			{
 				ImGui::Columns(2);
 				{
 
 					ImGui::Text("Texture Id:");
-
+					ImGui::Text("Width");
+					ImGui::Text("Heigth");
 					ImGui::NextColumn();
-					ImGui::Text("%d", curMesh->tex);
+					ImGui::Text("%d", curMesh->tex.id);
+					ImGui::Text("%d", curMesh->tex.width);
+					ImGui::Text("%d", curMesh->tex.heigth);
 
+
+					ImGui::Columns(1);
+					float s = ImGui::GetWindowContentRegionWidth();
+					ImGui::Image((void*)curMesh->tex.id, ImVec2(s , s),ImVec2(0,1),ImVec2(1,0));
 
 				}
-				ImGui::Columns(1);
+
 			}
 		}
 	}

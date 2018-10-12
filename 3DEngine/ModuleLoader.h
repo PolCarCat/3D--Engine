@@ -4,6 +4,7 @@
 #define CHECKERS_SIZE 20
 
 
+struct Texture;
 
 enum Format {
 	FBX,
@@ -35,11 +36,11 @@ public:
 	void LoadScene(const char* path);
 	void SetDropFile(char* f);
 
+
 	uint LoadChekerTex();
-	uint LoadTex(const char* path);
+	Texture LoadTex(const char* path);
 	Format CheckFormat(const char* path);
 
-	uint Lenna;
 private:
 	char* droppedFile = nullptr;
 	Format dFformat = FNULL;

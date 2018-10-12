@@ -1,7 +1,6 @@
 #pragma once
 #include "Module.h"
-#include "Globals.h"
-#include "Primitive.h"
+#include "ModuleRenderer3D.h"
 
 class ModuleScene : public Module
 {
@@ -13,6 +12,7 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
+
+	Texture currentTex;
 
 };

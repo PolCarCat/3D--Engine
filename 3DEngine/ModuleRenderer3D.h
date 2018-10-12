@@ -12,6 +12,14 @@
 #define MAX_LIGHTS 8
 
 
+struct Texture
+{
+	uint id = 0;
+	uint width = 0;
+	uint heigth = 0;
+
+	void CleanUp();
+};
 
 struct Mesh
 {
@@ -35,16 +43,17 @@ struct Mesh
 	uint num_textC = 0;
 	float* textC = nullptr;
 
-	uint tex = 0;
+	Texture tex;
 	char* name;
 
 	void GenerateBuffer();
 	void Draw();
 	void DrawNormals();
-	void SetText(const uint i) { tex = i; };
 	void CleanUp();
 
 };
+
+
 
 class ModuleRenderer3D : public Module
 {
@@ -61,7 +70,7 @@ public:
 
 	void DrawMeshes();
 	void CleanUpMeshes();
-	void SetMeshesTex(uint i);
+	void SetMeshesTex(Texture i);
 
 	void OnResize(int width, int height);
 	void EnableVsync();

@@ -1,9 +1,10 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include "PhysBody3D.h"
 #include "MathGeoLib/MathGeoLib.h"
 #include "Primitive.h"
+#include "ModuleLoader.h"
+
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -21,6 +22,10 @@ bool ModuleScene::Start()
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
+	currentTex = App->loader->LoadTex("Assets/Baker_house.png");
+	App->loader->LoadScene("Assets/BakerHouse.fbx");
+
+	App->renderer3D->SetMeshesTex(currentTex);
 	return ret;
 }
 
@@ -39,7 +44,3 @@ update_status ModuleScene::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void ModuleScene::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
-{
-	//LOG("Hit!");
-}
