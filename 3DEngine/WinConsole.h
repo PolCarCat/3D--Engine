@@ -18,6 +18,7 @@ public:
 
 	void Clear();
 	void AddLog(const char* entry);
+	void AddNumLog(int number);
 
 private:
 

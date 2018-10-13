@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "MathGeoLib/MathGeoLib.h"
+#include "WinConsole.h"
 
 #include "SDL/include/SDL.h"
 #include "Assimp/include/postprocess.h"
@@ -311,6 +312,8 @@ Texture ModuleLoader::LoadTex(const char* path)
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 		VSLOG("Texture creation successful, image id %d", textureID);
+		App->imgui->console->AddLog("\nTexture creation successful, image id ");
+		App->imgui->console->AddNumLog((int)textureID);
 
 		ilDeleteImages(1, &imageID);
 	}
