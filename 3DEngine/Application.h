@@ -5,11 +5,9 @@
 #include "Module.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
-#include "ModuleAudio.h"
 #include "ModuleScene.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
-#include "ModulePhysics3D.h"
 #include "ModuleGui.h"
 #include "ModuleLoader.h"
 #include "JsonDoc.h"
@@ -22,11 +20,9 @@ class Application
 public:
 	ModuleWindow* window;
 	ModuleInput* input;
-	ModuleAudio* audio;
 	ModuleScene* scene;
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
-	ModulePhysics3D* physics;
 	ModuleGui* imgui;
 	ModuleLoader* loader;
 
