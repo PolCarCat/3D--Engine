@@ -49,8 +49,7 @@ update_status ModuleCamera3D::Update(float dt)
 		if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 			speed = 50.0f * dt;
 
-		if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
-		if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
+		if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) FocusMeshes();
 
 		if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
 		if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
@@ -83,9 +82,7 @@ update_status ModuleCamera3D::Update(float dt)
 			vec3 realRef = Reference;
 			vec3 realPos = Position;
 			float Sensitivity = 0.25f;
-			float3 pos = { 0, 0, 0 };
-			if (App->imgui->element->curMesh != nullptr)
-				pos = App->imgui->element->curMesh->boundingBox.CenterPoint();
+			float3 pos = App->renderer3D->GetMeshesCenter();
 
 			if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
 				LookAt({ pos.x, pos.y, pos.z });
@@ -130,6 +127,8 @@ update_status ModuleCamera3D::Update(float dt)
 	
 	return UPDATE_CONTINUE;
 }
+
+
 
 // -----------------------------------------------------------------
 void ModuleCamera3D::Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference)
@@ -183,4 +182,20 @@ void ModuleCamera3D::CalculateViewMatrix()
 {
 	ViewMatrix = mat4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -dot(X, Position), -dot(Y, Position), -dot(Z, Position), 1.0f);
 	ViewMatrixInverse = inverse(ViewMatrix);
+}
+
+
+void ModuleCamera3D::FocusMeshes()
+{
+	float3 centerf = App->renderer3D->GetMeshesCenter();
+	AABB gAABB = App->renderer3D->GetMeshesAABB();
+	vec3 centerv = { centerf.x, centerf.y, centerf.z };
+
+	LookAt(centerv);
+	Position.z = centerv.z;
+	Position.x = gAABB.MaxX() - (gAABB.MinX()*2);
+	Position.y = gAABB.MaxY() - (gAABB.MinY() * 2);
+
+
+
 }

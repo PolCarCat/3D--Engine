@@ -81,6 +81,7 @@ public:
 	void CleanUpMeshes();
 	void SetMeshesTex(Texture i);
 	float3 GetMeshesCenter();
+	AABB GetMeshesAABB();
 
 	void OnResize(int width, int height);
 	void EnableVsync();

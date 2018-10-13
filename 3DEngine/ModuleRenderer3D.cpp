@@ -310,10 +310,39 @@ void ModuleRenderer3D::SetMeshesTex(Texture i)
 
 float3 ModuleRenderer3D::GetMeshesCenter()
 {
-	float3 a;
+	float3 a = { 0,0,0 };
+	int i = 0;
+	for (std::list<Mesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
+	{
+		a += (*item)->boundingBox.CenterPoint();
+		i++;
+	}
 
-	return a;
+	return a/i;
 }
+
+AABB ModuleRenderer3D::GetMeshesAABB()
+{
+	AABB ret;
+	float3 min = (*App->renderer3D->meshes.begin())->boundingBox.minPoint;
+	float3 max = (*App->renderer3D->meshes.begin())->boundingBox.maxPoint;
+
+	for (std::list<Mesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
+	{
+		if ((*item)->boundingBox.minPoint.x < min.x) min.x = (*item)->boundingBox.minPoint.x;
+		if ((*item)->boundingBox.minPoint.y < min.y) min.y = (*item)->boundingBox.minPoint.y;
+		if ((*item)->boundingBox.minPoint.z < min.z) min.z = (*item)->boundingBox.minPoint.z;
+
+		if ((*item)->boundingBox.maxPoint.x > max.x) max.x = (*item)->boundingBox.maxPoint.x;
+		if ((*item)->boundingBox.maxPoint.y > max.y) max.y = (*item)->boundingBox.maxPoint.y;
+		if ((*item)->boundingBox.maxPoint.z > max.z) max.z = (*item)->boundingBox.maxPoint.z;
+	
+	}
+	ret.minPoint = min;
+	ret.maxPoint = max;
+	return ret;
+}
+
 
 void Mesh::GenerateBuffer()
 {
