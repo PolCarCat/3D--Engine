@@ -170,6 +170,7 @@ void ModuleLoader::LoadScene(const char* path)
 					if (m->mFaces[i].mNumIndices != 3)
 					{
 						VSLOG("WARNING, geometry face with != 3 indices!");
+						App->imgui->console->AddLog("\nWARNING, geometry face with != 3 indices!");
 					}						
 					else
 						memcpy(&mesh->indice[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
@@ -221,11 +222,18 @@ void ModuleLoader::LoadScene(const char* path)
 
 			mesh->GenerateBuffer();
 			App->renderer3D->meshes.push_back(mesh);
+
+			App->imgui->console->AddLog("\nAdded mesh with ");
+			App->imgui->console->AddNumLog(mesh->num_vertex);
+			App->imgui->console->AddLog(" vertices, ");
+			App->imgui->console->AddNumLog(mesh->num_indice);
+			App->imgui->console->AddLog(" indices and ");
+			App->imgui->console->AddNumLog(mesh->num_normals);
+			App->imgui->console->AddLog(" normals");
 			
 		}	
 
 		aiReleaseImport(scene);
-		
 	}
 	else
 	{
