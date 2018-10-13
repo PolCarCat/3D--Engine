@@ -6,10 +6,11 @@ class Application;
 class WinBase
 {
 protected:
-	bool enabled = true;
+
 	char* name = nullptr;
 
 public:
+	bool enabled = true;
 	Application * App;
 
 	WinBase(Application* parent, bool start_enabled = true) : App(parent)

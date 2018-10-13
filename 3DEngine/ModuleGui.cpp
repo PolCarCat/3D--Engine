@@ -81,7 +81,16 @@ update_status ModuleGui::PreUpdate(float dt)
 
 			ImGui::EndMenu();
 		}
+		if (ImGui::BeginMenu("Windows"))
+		{
+			ImGui::MenuItem("Config", NULL, &config->enabled);
+			ImGui::MenuItem("Console", NULL, &console->enabled);
+			ImGui::MenuItem("Element", NULL, &element->enabled);
+			ImGui::MenuItem("Objects", NULL, &objects->enabled);
+			ImGui::MenuItem("Test", NULL, &test->enabled);
 
+			ImGui::EndMenu();
+		}
 		if (ImGui::BeginMenu("Help"))
 		{
 			if (ImGui::MenuItem("Show/Hide Gui Demo"))
