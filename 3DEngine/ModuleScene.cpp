@@ -19,13 +19,16 @@ bool ModuleScene::Start()
 	//VLOG("Loading scene assets");
 	bool ret = true;
 	
-	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
+	App->camera->Move(vec3(0.0f, 5.0f, 5.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
 	currentTex = App->loader->LoadTex("Assets/Baker_house.png");
 	App->loader->LoadScene("Assets/BakerHouse.fbx");
 
 	App->renderer3D->SetMeshesTex(currentTex);
+
+	App->imgui->element->curMesh = (*App->renderer3D->meshes.begin());
+
 	return ret;
 }
 

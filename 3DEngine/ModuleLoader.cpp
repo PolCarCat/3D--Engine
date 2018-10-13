@@ -78,6 +78,7 @@ update_status ModuleLoader::PostUpdate(float dt)
 			App->renderer3D->CleanUpMeshes();
 			LoadScene(droppedFile);
 			App->imgui->element->curMesh = (*App->renderer3D->meshes.begin());
+			App->camera->FocusMeshes();
 			break;
 		case PNG:
 		case DDS:
