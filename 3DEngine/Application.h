@@ -34,11 +34,8 @@ public:
 
 	int fps_counter = 0;
 	int ms_counter = 0;
-	int mem_counter = 0;
-	float memPeak = 0;
 	float fps[100];
 	float ms[100];
-	float mem[100];
 	float expected_delay;
 	int framerate_cap = 60;
 
@@ -70,7 +67,6 @@ private:
 	void FinishUpdate();
 	void ReadFps();
 	void ReadMs();
-	void ReadMem();
 	bool LoadNow();
 	bool SaveNow();
 

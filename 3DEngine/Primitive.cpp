@@ -560,6 +560,8 @@ void PCapsule::Create(float ox, float oy, float oz, float radius, float lenght, 
 	float currstack = pi / stacks;
 	float an1; //for stacks
 	float an2; //for sectors
+	if (lenght > radius * 2)
+		lenght -= radius * 2;
 
 	for (int i = 0; i <= stacks; ++i)
 	{

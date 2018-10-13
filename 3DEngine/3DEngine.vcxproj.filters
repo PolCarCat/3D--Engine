@@ -318,6 +318,12 @@
     <ClInclude Include="WinObjects.h">
       <Filter>Sources\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="mmgr\nommgr.h">
+      <Filter>Sources\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="mmgr\mmgr.h">
+      <Filter>Sources\Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -502,6 +508,9 @@
     </ClCompile>
     <ClCompile Include="WinObjects.cpp">
       <Filter>Sources\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="mmgr\mmgr.cpp">
+      <Filter>Sources\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,7 @@
 #include "WinConfig.h"
 #include "Application.h"
 #include "ImGui/imgui.h"
+#include "mmgr/mmgr.h"
 
 WinConfig::WinConfig(Application* parent, bool start_enabled) : WinBase(parent, start_enabled) 
 {
@@ -17,9 +18,34 @@ bool WinConfig::Update()
 
 	if (ImGui::CollapsingHeader("Memory Management"))
 	{
-		//char plot[50];
-		//sprintf_s(plot, 50, "Memory");
-		//ImGui::PlotHistogram("Memory", &App->mem[0], 50, 0, plot, 0.0f, App->memPeak, ImVec2(310, 100));
+		sMStats stats = m_getMemoryStatistics();
+		static int speed = 0;
+		static vector<float> memory(100);
+		if (++speed > 20)
+		{
+			speed = 0;
+			if (memory.size() == 100)
+			{
+				for (uint i = 0; i < 100 - 1; ++i)
+					memory[i] = memory[i + 1];
+
+				memory[100 - 1] = (float)stats.totalReportedMemory;
+			}
+			else
+				memory.push_back((float)stats.totalReportedMemory);
+		}
+
+		ImGui::PlotHistogram("Memory", &memory[0], memory.size(), 0, "Memory Consumption", 0.0f, (float)stats.peakReportedMemory * 1.2f, ImVec2(310, 100));
+
+		ImGui::Text("Total Reported: %u", stats.totalReportedMemory);
+		ImGui::Text("Total Actual: %u", stats.totalActualMemory);
+		ImGui::Text("Peak Reported: %u", stats.peakReportedMemory);
+		ImGui::Text("Peak Actual: %u", stats.peakActualMemory);
+		ImGui::Text("Accumulated Reported: %u", stats.accumulatedReportedMemory);
+		ImGui::Text("Accumulated Actual: %u", stats.accumulatedActualMemory);
+		ImGui::Text("Accumulated Alloc Unit Count: %u", stats.accumulatedAllocUnitCount);
+		ImGui::Text("Total Alloc Unit Count: %u", stats.totalAllocUnitCount);
+		ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);
 	}
 	if (ImGui::CollapsingHeader("Frame management"))
 	{
@@ -35,8 +61,8 @@ bool WinConfig::Update()
 	if (ImGui::CollapsingHeader("Window"))
 	{
 		ImGui::SliderFloat("Brightness", &App->window->brightness, 0, 1);
-		ImGui::SliderInt("Width", &App->window->w, 100, 4000);
-		ImGui::SliderInt("Height", &App->window->h, 100, 4000);
+		ImGui::SliderInt("Width", &App->window->w, 500, 2000);
+		ImGui::SliderInt("Height", &App->window->h, 350, 1000);
 		ImGui::Text("Refresh rate: %d", App->window->refresh_rate);
 
 		ImGui::Checkbox("FullScreen", &App->window->FS);
