@@ -88,6 +88,15 @@ update_status ModuleGui::PreUpdate(float dt)
 			ImGui::MenuItem("Element", NULL, &element->enabled);
 			ImGui::MenuItem("Objects", NULL, &objects->enabled);
 			ImGui::MenuItem("Test", NULL, &test->enabled);
+			if (ImGui::MenuItem("Show/Hide All"))
+			{
+				config->enabled = showAll;
+				console->enabled = showAll;
+				element->enabled = showAll;
+				objects->enabled = showAll;
+				test->enabled = showAll;
+				showAll = !showAll;
+			}
 
 			ImGui::EndMenu();
 		}

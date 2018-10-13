@@ -45,7 +45,7 @@ private:
 	bool quit = false;
 	std::list<WinBase*> windows;
 
-	
+	bool showAll = false;
 	char* release_link = nullptr;
 	char* issues_link = nullptr;
 	char* wiki_link = nullptr;
