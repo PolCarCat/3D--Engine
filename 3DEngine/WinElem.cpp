@@ -39,6 +39,7 @@ bool WinElem::Update()
 			ImGui::NewLine();
 
 			if (ImGui::Checkbox("Draw Normals", &App->renderer3D->drawNormals));
+			if (ImGui::Checkbox("Draw Bounding Box", &App->renderer3D->drawBBox));
 
 			ImGui::NewLine();
 

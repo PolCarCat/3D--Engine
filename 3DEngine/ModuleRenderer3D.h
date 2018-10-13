@@ -46,9 +46,12 @@ struct Mesh
 	Texture tex;
 	char* name;
 
+	AABB boundingBox;
+
 	void GenerateBuffer();
 	void Draw();
 	void DrawNormals();
+	void DrawBoundingBox();
 	void CleanUp();
 
 };
@@ -104,6 +107,7 @@ public:
 	bool drawPlane = true;
 	bool drawSphere = false;
 	bool drawNormals = false;
+	bool drawBBox = false;
 	bool drawAxis = true;
 	bool drawCylinder = false;
 	bool drawCapsule = false;
@@ -111,7 +115,7 @@ private:
 	bool vsync = false;
 	bool depthTest = true;
 	bool cullface = true;
-	bool lightning = true;
+	bool lightning = false;
 	bool colorMaterial = true;
 	bool texture2D = true;
 	bool wireframe = false;

@@ -127,7 +127,34 @@ void ModuleLoader::LoadScene(const char* path)
 			mesh->num_vertex = m->mNumVertices;
 			mesh->vertex = new float[mesh->num_vertex * 3];
 			memcpy(mesh->vertex, m->mVertices, sizeof(float) * mesh->num_vertex * 3);
-			//VSLOG("New mesh with %d vertices", m.num_vertices);
+
+			float minx = mesh->vertex[0];
+			float maxx = mesh->vertex[0];
+			float miny = mesh->vertex[1];
+			float maxy = mesh->vertex[1];
+			float minz = mesh->vertex[2];
+			float maxz = mesh->vertex[2];
+
+			for (uint i = 0; i < mesh->num_vertex * 3; i += 3)
+			{
+				if (mesh->vertex[i] < minx)
+					minx = mesh->vertex[i];
+				else if (mesh->vertex[i] > maxx)
+					maxx = mesh->vertex[i];
+
+				if (mesh->vertex[i + 1] < miny)
+					miny = mesh->vertex[i + 1];
+				else if (mesh->vertex[i + 1] > maxy)
+					maxy = mesh->vertex[i + 1];
+
+				if (mesh->vertex[i + 2] < minz)
+					minz = mesh->vertex[i + 2];
+				else if (mesh->vertex[i + 2] > maxz)
+					maxz = mesh->vertex[i + 2];
+			}
+
+			mesh->boundingBox.maxPoint = { maxx, maxy, maxz };
+			mesh->boundingBox.minPoint = { minx, miny, minz };
 
 			if (m->HasFaces())
 			{
@@ -142,6 +169,7 @@ void ModuleLoader::LoadScene(const char* path)
 					else
 						memcpy(&mesh->indice[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
 				
+
 				}
 			}
 

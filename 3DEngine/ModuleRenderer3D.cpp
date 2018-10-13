@@ -119,6 +119,7 @@ bool ModuleRenderer3D::Init()
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
 		lights[0].Active(true);
+		if(lightning)
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
 		glEnable(GL_TEXTURE);
@@ -279,6 +280,8 @@ void ModuleRenderer3D::DrawMeshes()
 		(*item)->Draw();
 		if (drawNormals)
 			(*item)->DrawNormals();
+		if (drawBBox)
+			(*item)->DrawBoundingBox();
 	}
 }
 
@@ -369,6 +372,57 @@ void Mesh::DrawNormals()
 
 	}
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+}
+
+void Mesh::DrawBoundingBox()
+{
+	glColor4f(0.2f, 0.2f, 1.0f, 1.0f);
+	glLineWidth(2);
+
+	float3 length = boundingBox.maxPoint - boundingBox.minPoint;
+	float3 min = boundingBox.minPoint;
+	float3 max = boundingBox.maxPoint;
+
+	glBegin(GL_LINES);
+	glVertex3f(min.x, min.y, min.z);
+	glVertex3f(min.x + length.x, min.y, min.z);
+			   
+	glVertex3f(min.x, min.y, min.z);
+	glVertex3f(min.x, min.y + length.y, min.z);
+	
+	glVertex3f(min.x, min.y, min.z);
+	glVertex3f(min.x, min.y, min.z + length.z);
+	
+	glVertex3f(min.x, min.y + length.y, min.z);
+	glVertex3f(min.x + length.x, min.y + length.y, min.z);
+
+	glVertex3f(min.x, min.y + length.y, min.z);
+	glVertex3f(min.x, min.y + length.y, min.z + length.z);
+
+	glVertex3f(min.x + length.x, min.y, min.z);
+	glVertex3f(min.x + length.x, min.y + length.y, min.z);
+
+	glVertex3f(min.x, min.y, min.z + length.z);
+	glVertex3f(min.x, min.y + length.y, min.z + length.z);
+
+	glVertex3f(max.x, max.y, max.z);
+	glVertex3f(max.x - length.x, max.y, max.z);
+
+	glVertex3f(max.x, max.y, max.z);
+	glVertex3f(max.x, max.y - length.y, max.z);
+		
+	glVertex3f(max.x, max.y, max.z);
+	glVertex3f(max.x, max.y, max.z - length.z);
+			
+	glVertex3f(max.x, max.y - length.y, max.z);
+	glVertex3f(max.x - length.x, max.y - length.y, max.z);
+
+	glVertex3f(max.x, max.y - length.y, max.z);
+	glVertex3f(max.x, max.y - length.y, max.z - length.z);
+
+	glEnd();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glLineWidth(1);
 }
 
 void Mesh::CleanUp()

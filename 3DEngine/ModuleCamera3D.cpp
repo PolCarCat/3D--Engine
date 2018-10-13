@@ -69,21 +69,6 @@ update_status ModuleCamera3D::Update(float dt)
 				newPos += Z * speed * wheelspd;
 		}
 
-		//Questionable
-		if (App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_REPEAT)
-		{
-			float spd = length(Position) / 100;
-			int dx = -App->input->GetMouseXMotion();
-			int dy = -App->input->GetMouseYMotion();
-
-			if (dx != 0)
-				newPos.x += dy * spd;
-
-
-			if (dy != 0)
-				newPos.z -= dx * spd;
-		}
-
 
 		Position += newPos;
 		Reference += newPos;
@@ -94,11 +79,11 @@ update_status ModuleCamera3D::Update(float dt)
 		{
 			int dx = -App->input->GetMouseXMotion();
 			int dy = -App->input->GetMouseYMotion();
-
+			vec3 realRef = Reference;
 			float Sensitivity = 0.25f;
 
 			if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
-				Reference = { 0,0,0 };	
+			realRef = { 0,0,0 };
 			else
 			Position -= Reference;
 
@@ -126,7 +111,7 @@ update_status ModuleCamera3D::Update(float dt)
 			}
 	
 
-			Position = Reference + Z * length(Position);
+			Position = realRef + Z * length(Position);
 		}
 
 	
