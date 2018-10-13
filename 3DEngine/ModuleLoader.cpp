@@ -300,6 +300,7 @@ Texture ModuleLoader::LoadTex(const char* path)
 		{
 			error = ilGetError();
 			VSLOG("Image fliping error %d", error);
+			App->imgui->console->AddLog("\Image fliping error");
 		}
 
 
@@ -329,6 +330,7 @@ Texture ModuleLoader::LoadTex(const char* path)
 	{
 		error = ilGetError();
 		VSLOG("Image loading eror %d", error);
+		App->imgui->console->AddLog("\nImage loading error");
 	}
 
 	
