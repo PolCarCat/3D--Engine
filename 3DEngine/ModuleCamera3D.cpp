@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "ModuleCamera3D.h"
 #include "../3DEngine/glmath.cpp"
-
+#include "ImGui/imgui.h"
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -42,6 +42,9 @@ bool ModuleCamera3D::CleanUp()
 update_status ModuleCamera3D::Update(float dt)
 {
 	////Debug camera
+
+	if (ImGui::IsMouseHoveringAnyWindow())
+		return UPDATE_CONTINUE;
 
 		vec3 newPos(0,0,0);
 		float speed = 8.0f * dt;

@@ -156,6 +156,9 @@ void ModuleLoader::LoadScene(const char* path)
 			mesh->boundingBox.maxPoint = { maxx, maxy, maxz };
 			mesh->boundingBox.minPoint = { minx, miny, minz };
 
+			mesh->position = mesh->boundingBox.CenterPoint();
+
+
 			if (m->HasFaces())
 			{
 				mesh->num_indice = m->mNumFaces * 3;

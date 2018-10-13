@@ -35,11 +35,11 @@ struct Mesh
 	uint num_normals = 0;
 	float* normals = nullptr;
 
-	uint id_colors = 0; 
+	uint id_colors = 0;
 	uint num_colors = 0;
 	float* colors = nullptr;
 
-	uint id_textC = 0; 
+	uint id_textC = 0;
 	uint num_textC = 0;
 	float* textC = nullptr;
 
@@ -47,6 +47,12 @@ struct Mesh
 	char* name;
 
 	AABB boundingBox;
+
+	float3 position = { 0,0,0 };
+	float3 scale = { 0,0,0 };
+	Quat rotation = { 0,0,0,0 };
+	
+	
 
 	void GenerateBuffer();
 	void Draw();
@@ -74,6 +80,7 @@ public:
 	void DrawMeshes();
 	void CleanUpMeshes();
 	void SetMeshesTex(Texture i);
+	float3 GetMeshesCenter();
 
 	void OnResize(int width, int height);
 	void EnableVsync();
@@ -90,6 +97,7 @@ public:
 	bool GetColorMat() { return colorMaterial; };
 	bool GetTexture2D() { return texture2D; };
 	bool GetWireFrame() { return wireframe; };
+
 
 public:
 	Light lights[MAX_LIGHTS];

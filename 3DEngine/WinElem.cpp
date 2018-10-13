@@ -57,6 +57,27 @@ bool WinElem::Update()
 			}
 			ImGui::Columns(1);
 		}
+		if (ImGui::CollapsingHeader("Transform"))
+		{
+
+			ImGui::Columns(2);
+			{
+
+				ImGui::Text("Position:");
+				ImGui::Text("Scale");
+				ImGui::Text("Rotation:");
+				float x = 0;
+				float y = 0;
+				float z = 0;
+				curMesh->rotation.FromEulerXYZ(x, y, z);
+				ImGui::NextColumn();
+				ImGui::Text("%.2f %.2f  %.2f", curMesh->position.x, curMesh->position.y, curMesh->position.z);
+				ImGui::Text("%d  %d  %d", curMesh->scale.x, curMesh->scale.y, curMesh->scale.z);
+				ImGui::Text("%d  %d  %d", x, y, z);
+
+			}
+			ImGui::Columns(1);
+		}
 
 		if (ImGui::CollapsingHeader("Texture"))
 		{
@@ -75,7 +96,7 @@ bool WinElem::Update()
 
 
 					ImGui::Columns(1);
-					float s = ImGui::GetWindowContentRegionWidth();
+					float s = ImGui::GetWindowContentRegionWidth() - 10;
 					ImGui::Image((void*)curMesh->tex.id, ImVec2(s , s),ImVec2(0,1),ImVec2(1,0));
 
 				}
