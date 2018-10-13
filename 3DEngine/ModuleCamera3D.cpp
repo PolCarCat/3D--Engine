@@ -43,8 +43,6 @@ update_status ModuleCamera3D::Update(float dt)
 {
 	////Debug camera
 
-	if (ImGui::IsMouseHoveringAnyWindow())
-		return UPDATE_CONTINUE;
 
 		vec3 newPos(0,0,0);
 		float speed = 8.0f * dt;
@@ -78,16 +76,22 @@ update_status ModuleCamera3D::Update(float dt)
 
 		// Mouse motion ----------------
 
-		if(App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+		if(App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT && !ImGui::IsMouseHoveringAnyWindow())
 		{
 			int dx = -App->input->GetMouseXMotion();
 			int dy = -App->input->GetMouseYMotion();
 			vec3 realRef = Reference;
+			vec3 realPos = Position;
 			float Sensitivity = 0.25f;
+			float3 pos = { 0, 0, 0 };
+			if (App->imgui->element->curMesh != nullptr)
+				pos = App->imgui->element->curMesh->boundingBox.CenterPoint();
 
 			if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
-			realRef = { 0,0,0 };
+				LookAt({ pos.x, pos.y, pos.z });
 			else
+				Reference = Position;
+
 			Position -= Reference;
 
 			if(dx != 0)
@@ -114,7 +118,7 @@ update_status ModuleCamera3D::Update(float dt)
 			}
 	
 
-			Position = realRef + Z * length(Position);
+			Position = Reference + Z * length(Position);
 		}
 
 	
