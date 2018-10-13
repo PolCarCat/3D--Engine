@@ -34,6 +34,13 @@ void WinConsole::AddLog(const char* entry)
 		ScrollToBottom = true;
 }
 
+void WinConsole::AddNumLog(int number)
+{
+	string s = std::to_string(number);
+	const char* pchar = s.c_str();
+	App->imgui->console->AddLog(pchar);
+}
+
 void WinConsole::Draw()
 {
 	ImGui::Begin("Console", &active, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoFocusOnAppearing);

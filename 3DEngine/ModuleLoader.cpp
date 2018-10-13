@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "MathGeoLib/MathGeoLib.h"
+#include "WinConsole.h"
 
 #include "SDL/include/SDL.h"
 #include "Assimp/include/postprocess.h"
@@ -169,6 +170,7 @@ void ModuleLoader::LoadScene(const char* path)
 					if (m->mFaces[i].mNumIndices != 3)
 					{
 						VSLOG("WARNING, geometry face with != 3 indices!");
+						App->imgui->console->AddLog("\nWARNING, geometry face with != 3 indices!");
 					}						
 					else
 						memcpy(&mesh->indice[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
@@ -220,11 +222,18 @@ void ModuleLoader::LoadScene(const char* path)
 
 			mesh->GenerateBuffer();
 			App->renderer3D->meshes.push_back(mesh);
+
+			App->imgui->console->AddLog("\nAdded mesh with ");
+			App->imgui->console->AddNumLog(mesh->num_vertex);
+			App->imgui->console->AddLog(" vertices, ");
+			App->imgui->console->AddNumLog(mesh->num_indice);
+			App->imgui->console->AddLog(" indices and ");
+			App->imgui->console->AddNumLog(mesh->num_normals);
+			App->imgui->console->AddLog(" normals");
 			
 		}	
 
 		aiReleaseImport(scene);
-		
 	}
 	else
 	{
@@ -311,6 +320,8 @@ Texture ModuleLoader::LoadTex(const char* path)
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 		VSLOG("Texture creation successful, image id %d", textureID);
+		App->imgui->console->AddLog("\nTexture creation successful, image id ");
+		App->imgui->console->AddNumLog((int)textureID);
 
 		ilDeleteImages(1, &imageID);
 	}
