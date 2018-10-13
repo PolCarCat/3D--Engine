@@ -4,6 +4,7 @@
 #include "ModuleWindow.h"
 #include "JsonDoc.h"
 #include "MathGeoLib/MathGeoLib.h"
+#include "WinConsole.h"
 
 #include "Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
