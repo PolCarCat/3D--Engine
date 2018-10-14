@@ -8,6 +8,7 @@
 
 ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	console = new WinConsole(App, true);
 }
 
 
@@ -35,7 +36,6 @@ bool ModuleGui::Start()
 
 	config = new WinConfig(App, true);
 	element = new WinElem(App, true);
-	console = new WinConsole(App, true);
 	test = new WinTest(App, true);
 	objects = new WinObjects(App, true);
 

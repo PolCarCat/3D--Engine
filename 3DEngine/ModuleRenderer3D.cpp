@@ -117,13 +117,12 @@ bool ModuleRenderer3D::Init()
 		GLfloat MaterialDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
 		
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
+		if (depthTest) glEnable(GL_DEPTH_TEST);
+		if (cullface) glEnable(GL_CULL_FACE);
 		lights[0].Active(true);
-		if(lightning)
-		glEnable(GL_LIGHTING);
-		glEnable(GL_COLOR_MATERIAL);
-		glEnable(GL_TEXTURE);
+		if(lightning) glEnable(GL_LIGHTING);
+		if (colorMaterial) glEnable(GL_COLOR_MATERIAL);
+		if(texture2D) glEnable(GL_TEXTURE);
 	}
 
 	// Projection matrix for
@@ -231,46 +230,46 @@ bool ModuleRenderer3D::Save(json_object_t* doc)
 }
 
 
-void ModuleRenderer3D::EnableVsync()
+void ModuleRenderer3D::EnableVsync(bool enable)
 {
 	vsync = !vsync;
 	vsync == true ? (SDL_GL_SetSwapInterval(1) < 0) : (SDL_GL_SetSwapInterval(0) < 0);
 }
 
-void ModuleRenderer3D::EnableDepthTest()
+void ModuleRenderer3D::EnableDepthTest(bool enable)
 {
-	depthTest = !depthTest;
+	depthTest = enable;
 	depthTest == true ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
 }
 
-void ModuleRenderer3D::EnableCullFace() 
+void ModuleRenderer3D::EnableCullFace(bool enable)
 {
-	cullface = !cullface;
+	cullface = enable;
 	cullface == true ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
 }
 
-void ModuleRenderer3D::EnableLighting()
+void ModuleRenderer3D::EnableLighting(bool enable)
 {
-	lightning = !lightning;
+	lightning = enable;
 	lightning == true ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
 }
 
 
-void ModuleRenderer3D::EnableColorMaterial()
+void ModuleRenderer3D::EnableColorMaterial(bool enable)
 {
-	colorMaterial = !colorMaterial;
+	colorMaterial = enable;
 	colorMaterial == true ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
 }
 
-void ModuleRenderer3D::EnableTexture2D()
+void ModuleRenderer3D::EnableTexture2D(bool enable)
 {
-	texture2D = !texture2D;
+	texture2D = enable;
 	texture2D == true ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
 }
 
-void ModuleRenderer3D::EnableWireframe()
+void ModuleRenderer3D::EnableWireframe(bool enable)
 {
-	wireframe = !wireframe;
+	wireframe = enable;
 	wireframe == true ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 

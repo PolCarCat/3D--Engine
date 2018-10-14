@@ -88,13 +88,13 @@ public:
 	AABB GetMeshesAABB();
 
 	void OnResize(int width, int height);
-	void EnableVsync();
-	void EnableDepthTest();
-	void EnableCullFace();
-	void EnableLighting();
-	void EnableColorMaterial();
-	void EnableTexture2D();
-	void EnableWireframe();
+	void EnableVsync(bool enable);
+	void EnableDepthTest(bool enable);
+	void EnableCullFace(bool enable);
+	void EnableLighting(bool enable);
+	void EnableColorMaterial(bool enable);
+	void EnableTexture2D(bool enable);
+	void EnableWireframe(bool enable);
 	bool GetVsync() { return vsync; };
 	bool GetDepthTest() { return depthTest; };
 	bool GetCullFace() { return cullface; };

@@ -100,26 +100,34 @@ bool WinConfig::Update()
 	if (ImGui::CollapsingHeader("Renderer"))
 	{
 
-		if (ImGui::Button((App->renderer3D->GetVsync() != true ? "Disable Vsync" : "Enable Vsync")))
-			App->renderer3D->EnableVsync();
+		bool vsync = App->renderer3D->GetVsync();
+		ImGui::Checkbox("Vsync", &vsync);
+		if (vsync != App->renderer3D->GetVsync()) App->renderer3D->EnableVsync(vsync);
 
-		if (ImGui::Button((App->renderer3D->GetDepthTest() != true ? "Disable Depth Test" : "Enable Depth Test")))
-			App->renderer3D->EnableDepthTest();
+		bool depthT = App->renderer3D->GetDepthTest();
+		ImGui::Checkbox("Depth Test", &depthT);
+		if (depthT != App->renderer3D->GetDepthTest()) App->renderer3D->EnableDepthTest(depthT);
 
-		if (ImGui::Button((App->renderer3D->GetCullFace() != true ? "Disable CullFace" : "Enable CullFace")))
-			App->renderer3D->EnableCullFace();
+		bool cull = App->renderer3D->GetCullFace();
+		ImGui::Checkbox("Cull Face", &cull);
+		if (cull != App->renderer3D->GetCullFace()) App->renderer3D->EnableCullFace(cull);
 
-		if (ImGui::Button((App->renderer3D->GetLighting() != true ? "Disable Lighting" : "Enable Lighting")))
-			App->renderer3D->EnableLighting();
+		bool light = App->renderer3D->GetLighting();
+		ImGui::Checkbox("Lighting", &light);
+		if (light != App->renderer3D->GetLighting()) App->renderer3D->EnableCullFace(light);
 
-		if (ImGui::Button((App->renderer3D->GetColorMat() != true ? "Disable Color Material" : "Enable Color Material")))
-			App->renderer3D->EnableColorMaterial();
+		bool color = App->renderer3D->GetColorMat();
+		ImGui::Checkbox("Color Material", &color);
+		if (color != App->renderer3D->GetColorMat()) App->renderer3D->EnableColorMaterial(color);
+		
+		bool tex2 = App->renderer3D->GetTexture2D();
+		ImGui::Checkbox("Texture 2D", &tex2);
+		if (tex2 != App->renderer3D->GetTexture2D()) App->renderer3D->EnableTexture2D(tex2);
 
-		if (ImGui::Button((App->renderer3D->GetTexture2D() != true ? "Disable Texture 2D" : "Enable Texture 2D")))
-			App->renderer3D->EnableTexture2D();
+		bool wire = App->renderer3D->GetWireFrame();
+		ImGui::Checkbox("Wireframe", &wire);
+		if (wire != App->renderer3D->GetWireFrame()) App->renderer3D->EnableWireframe(wire);
 
-		if (ImGui::Button((App->renderer3D->GetWireFrame() != true ? "Enable WireFrame" : "Disable WireFrame")))
-			App->renderer3D->EnableWireframe();
 
 
 

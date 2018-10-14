@@ -67,3 +67,5 @@ private:
 	bool SaveNow();
 
 };
+
+extern Application* App;

@@ -15,13 +15,15 @@ enum main_states
 	MAIN_EXIT
 };
 
+Application* App = NULL;
+
 int main(int argc, char ** argv)
 {
 	VSLOG("Starting game '%s'...", TITLE);
 
 	int main_return = EXIT_FAILURE;
 	main_states state = MAIN_CREATION;
-	Application* App = NULL;
+
 
 	while (state != MAIN_EXIT)
 	{
@@ -36,7 +38,7 @@ int main(int argc, char ** argv)
 
 		case MAIN_START:
 
-			VSLOG("-------------- Application Init --------------");
+			VSLOG("-------------- Application Init --------------\n");
 			if (App->Init() == false)
 			{
 				VSLOG("Application Init exits with ERROR");
@@ -45,7 +47,7 @@ int main(int argc, char ** argv)
 			else
 			{
 				state = MAIN_UPDATE;
-				VSLOG("-------------- Application Update --------------");
+				VSLOG("\n-------------- Application Update --------------\n");
 			}
 
 			break;

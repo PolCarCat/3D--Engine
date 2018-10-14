@@ -362,7 +362,8 @@ Format ModuleLoader::CheckFormat(const char* path)
 	
 	else if (format == "DDS" || format == "dds")
 		ret = DDS;
-
+	else
+		VSLOG("Unkown format file\n");
 	
 	return ret;
 }
