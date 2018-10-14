@@ -33,7 +33,7 @@ bool ModuleRenderer3D::Init()
 	bool ret = true;
 	
 	//Load from config
-	Load(App->config.GetObj(name));
+	Load(App->config.GetObj(name.c_str()));
 
 	//Setting attributes
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -502,9 +502,8 @@ void Mesh::CleanUp()
 	
 	delete[] textC;
 	textC = nullptr;
-
-	//delete[] name;
-	//name = nullptr;
+	
+	name.clear();
 
 }
 

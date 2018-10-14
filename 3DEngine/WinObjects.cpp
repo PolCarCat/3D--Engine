@@ -41,7 +41,7 @@ bool WinObjects::Update()
 			ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 					
 			node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; 
-			ImGui::TreeNodeEx((*item)->name, node_flags);
+			ImGui::TreeNodeEx((*item)->name.c_str(), node_flags);
 			if (ImGui::IsItemClicked())
 			{
 				App->imgui->element->curMesh = (*item);

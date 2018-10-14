@@ -48,7 +48,7 @@ struct Mesh
 	float* textC = nullptr;
 
 	Texture tex;
-	char* name;
+	std::string name;
 
 	AABB boundingBox;
 

@@ -2,7 +2,7 @@
 #include "Globals.h"
 #include "Parson/parson.h"
 #include "JsonDoc.h"
-
+#include <array>
 class Application;
 
 class Module
@@ -11,11 +11,11 @@ private :
 	bool enabled;
 
 protected:
-	char* name = nullptr;
+	std::string name;
 public:
 	Application* App;
-	void SetName(const char* _name) { *name = *_name; };
-	const char* GetName() { return name; };
+	void SetName(const char* _name) { name = *_name; };
+	const char* GetName() { return name.c_str(); };
 
 
 	Module(Application* parent, bool start_enabled = true) : App(parent)

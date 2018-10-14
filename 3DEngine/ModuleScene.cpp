@@ -22,15 +22,18 @@ bool ModuleScene::Start()
 	App->camera->Move(vec3(0.0f, 5.0f, 5.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
-	currentTex = App->loader->LoadTex("Assets/Baker_house.png");
-	App->loader->LoadScene("Assets/BakerHouse.fbx");
+	currentTex = App->loader->LoadTex("Assets/BakerHouse/Baker_house.png");
+	App->loader->LoadScene("Assets/BakerHouse/BakerHouse.fbx");
 
-	App->renderer3D->SetMeshesTex(currentTex);
 
-	App->imgui->element->curMesh = (*App->renderer3D->meshes.begin());
 
 	if (App->renderer3D->meshes.size() != 0)
-	App->camera->FocusMeshes();
+	{
+		App->renderer3D->SetMeshesTex(currentTex);
+		App->imgui->element->curMesh = (*App->renderer3D->meshes.begin());
+		App->camera->FocusMeshes();
+	}
+
 	return ret;
 }
 

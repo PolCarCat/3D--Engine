@@ -227,11 +227,11 @@ bool ModuleLoader::LoadScene(const char* path)
 			}
 
 			mesh->tex.id = 0;
-			mesh->name = nullptr;
+
 			if (m->mName.length > 0)
 			{
-				mesh->name = new char[m->mName.length];
-				strcpy(mesh->name, m->mName.C_Str());
+				
+				mesh->name =  m->mName.C_Str();
 			}
 			else
 			{				

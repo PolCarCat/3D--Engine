@@ -29,7 +29,7 @@ Application::Application()
 
 	//JsonDoc
 	config.Init("config.json");
-	LoadGame();
+
 
 }
 
