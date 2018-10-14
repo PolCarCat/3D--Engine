@@ -61,8 +61,12 @@ bool WinConfig::Update()
 	if (ImGui::CollapsingHeader("Window"))
 	{
 		ImGui::SliderFloat("Brightness", &App->window->brightness, 0, 1);
-		ImGui::SliderInt("Width", &App->window->w, 500, 2000);
-		ImGui::SliderInt("Height", &App->window->h, 350, 1000);
+		ImGui::InputInt("Width", &App->window->w, 150);
+		ImGui::InputInt("Height", &App->window->h, 150);
+		if (App->window->w < 500)
+			App->window->w = 500;
+		if (App->window->h < 350)
+			App->window->h = 350;
 		ImGui::Text("Refresh rate: %d", App->window->refresh_rate);
 
 		ImGui::Checkbox("FullScreen", &App->window->FS);

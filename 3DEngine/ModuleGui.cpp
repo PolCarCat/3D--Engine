@@ -2,10 +2,6 @@
 #include "Application.h"
 #include <gl/GL.h>
 
-#include "ImGui/imgui.h"
-#include "ImGui/imgui_impl_sdl.h"
-#include "ImGui/imgui_impl_opengl2.h"
-
 ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	console = new WinConsole(App, true);
@@ -533,3 +529,8 @@ struct ExampleAppConsole
 		return 0;
 	}
 };
+
+void ModuleGui::ReadInput(SDL_Event * e) const
+{
+	ImGui_ImplSDL2_ProcessEvent(e);
+}

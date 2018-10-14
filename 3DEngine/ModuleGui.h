@@ -8,6 +8,10 @@
 #include "WinTest.h"
 #include "WinObjects.h"
 #include <list>
+#include "ModuleInput.h"
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_sdl.h"
+#include "ImGui/imgui_impl_opengl2.h"
 
 
 
@@ -29,6 +33,7 @@ public:
 
 	bool CleanUp();
 	void AddWindow(WinBase* win);
+	void ReadInput(SDL_Event * e) const;
 
 public:
 	WinConfig * config = nullptr;
