@@ -191,10 +191,13 @@ void ModuleCamera3D::FocusMeshes()
 	AABB gAABB = App->renderer3D->GetMeshesAABB();
 	vec3 centerv = { centerf.x, centerf.y, centerf.z };
 
-	LookAt(centerv);
+
 	Position.z = centerv.z;
-	Position.x = gAABB.MaxX() - (gAABB.MinX()*2);
+	Position.x = gAABB.MaxX() - (gAABB.MinX() * 2);
 	Position.y = gAABB.MaxY() - (gAABB.MinY() * 2);
+
+	LookAt(centerv);
+
 
 
 

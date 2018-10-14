@@ -29,6 +29,7 @@ bool ModuleScene::Start()
 
 	App->imgui->element->curMesh = (*App->renderer3D->meshes.begin());
 
+	App->camera->FocusMeshes();
 	return ret;
 }
 

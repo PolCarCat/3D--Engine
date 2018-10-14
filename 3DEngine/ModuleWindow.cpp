@@ -59,6 +59,25 @@ bool ModuleWindow::Init()
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
+		if (w == 0 & h == 0)
+		{
+			SDL_DisplayMode dm;
+
+			if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
+			{
+				SDL_Log("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());
+				w = 1000;
+				h = 700;
+			}
+			else
+			{
+				w = dm.w - dm.w / 5;
+				h = dm.h - dm.h / 5;
+			}
+
+		}
+
+
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, flags);
 
 		if(window == NULL)
