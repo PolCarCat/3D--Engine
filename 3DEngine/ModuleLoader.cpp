@@ -78,9 +78,11 @@ update_status ModuleLoader::PostUpdate(float dt)
 		{
 		case FBX:
 			App->renderer3D->CleanUpMeshes();
-			LoadScene(droppedFile);
-			App->imgui->element->curMesh = (*App->renderer3D->meshes.begin());
-			App->camera->FocusMeshes();
+			if (LoadScene(droppedFile))
+			{
+				App->imgui->element->curMesh = (*App->renderer3D->meshes.begin());
+				App->camera->FocusMeshes();
+			}
 			break;
 		case PNG:
 		case DDS:
@@ -116,9 +118,13 @@ void ModuleLoader::SetDropFile(char* f)
 }
 
 
-void ModuleLoader::LoadScene(const char* path)
+bool ModuleLoader::LoadScene(const char* path)
 {
+	bool ret = true;
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
+
+	if (scene == nullptr)
+		scene = aiImportFile(path, aiProcessPreset_TargetRealtime_Quality);
 
 	if (scene != nullptr && scene->HasMeshes())
 	{				
@@ -239,9 +245,10 @@ void ModuleLoader::LoadScene(const char* path)
 	else
 	{
 		VSLOG("Error loading scene %s", path);
+		ret = false;
 	}
 		
-		
+	return ret;
 }
 
 uint ModuleLoader::LoadChekerTex()

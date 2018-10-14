@@ -33,7 +33,7 @@ public:
 	bool CleanUp();
 
 	
-	void LoadScene(const char* path);
+	bool LoadScene(const char* path);
 	void SetDropFile(char* f);
 
 
