@@ -122,7 +122,8 @@ update_status ModuleGui::PreUpdate(float dt)
 
 	if (showdemo)
 		ImGui::ShowDemoWindow();
-
+	if (about)
+		AboutWindow();
 
 	return UPDATE_CONTINUE;
 }
@@ -176,7 +177,7 @@ void ModuleGui::AboutWindow()
 
 	ImGui::Begin("About");
 
-	ImGui::Text("-NAME OF ENGINE- 0.1\n\n\nEngine made for 3rd year University subject.\n\nBy Pol Carrera and Genis Bayo.\n\nUsing:\nSDL %d.%d.%d\nImGUI %s\n\nMIT License (See 'LICENSE' for more information).", version.major, version.minor, version.patch, ImGui::GetVersion());
+	ImGui::Text("Mehgine 0.1\n\n\nEngine made for 3rd year University subject.\n\nBy Pol Carrera and Genis Bayo.\n\nUsing:\nSDL %d.%d.%d\nImGUI %s\npcg-c-basic-0.9\nDevIL 1.8\nParson\nMathGeoLib 1.5\nmmgr\nOpenGL %s\nAssimp 3.1.1\nMIT License (See 'LICENSE' for more information).", version.major, version.minor, version.patch, ImGui::GetVersion(), glGetString(GL_VERSION));
 
 	ImGui::End();
 }
