@@ -3,6 +3,8 @@
 3D Engine made by Pol Carrera and Genís Bayó
  for the 3D engines subject during the 3rd year of Game Design and Game Development degree at CITM.
 
+Project: https://github.com/PolCarCat/3D--Engine/
+
 Pol Carrera: https://github.com/PolCarCat/
 Genís Bayó: https://github.com/retsnom9/
 
