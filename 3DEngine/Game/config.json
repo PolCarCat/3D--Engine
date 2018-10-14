@@ -8,8 +8,8 @@
     },
     "Window": {
         "Brightness": 1,
-        "Width": 1440,
-        "Height": 900,
+        "Width": 0,
+        "Height": 0,
         "Fullscreen": false,
         "Borderless": true,
         "Resizable": true,
