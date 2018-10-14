@@ -6,6 +6,11 @@
 #include "MathGeoLib/MathGeoLib.h"
 #include "WinConsole.h"
 
+#include "Glew/include/glew.h"
+#include "SDL\include\SDL_opengl.h"
+#include <gl/GL.h>
+#include <gl/GLU.h>
+
 #include "SDL/include/SDL.h"
 #include "Assimp/include/postprocess.h"
 //#include "Assimp/include/cfileio.h"
@@ -167,7 +172,6 @@ bool ModuleLoader::LoadScene(const char* path)
 
 			mesh->position = mesh->boundingBox.CenterPoint();
 
-
 			if (m->HasFaces())
 			{
 				mesh->num_indice = m->mNumFaces * 3;
@@ -227,8 +231,16 @@ bool ModuleLoader::LoadScene(const char* path)
 			}
 
 
-			mesh->GenerateBuffer();
-			App->renderer3D->meshes.push_back(mesh);
+			if (mesh->num_indice > GL_MAX_ELEMENTS_INDICES)
+			{
+				VSLOG("\nWARNING can not load a mesh with %d indices", mesh->num_indice);
+			}
+			else
+			{
+				mesh->GenerateBuffer();
+				App->renderer3D->meshes.push_back(mesh);
+			}
+
 
 			App->imgui->console->AddLog("\nAdded mesh with ");
 			App->imgui->console->AddNumLog(mesh->num_vertex);
