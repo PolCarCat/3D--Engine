@@ -86,7 +86,7 @@ update_status ModuleLoader::PostUpdate(float dt)
 			if (LoadScene(droppedFile))
 			{
 				App->imgui->element->curMesh = (*App->renderer3D->meshes.begin());
-				App->camera->FocusMeshes();
+				//App->camera->FocusMeshes();
 			}
 			break;
 		case PNG:
