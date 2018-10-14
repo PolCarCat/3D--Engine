@@ -29,6 +29,12 @@ Instructions:
 		·Report a but.
 		·About:		Information about version, team, license and libraries used.
 
+	-Controls:
+		·WASD:		Move around (Hold SHIFT to double speed).
+		·Mouse wheel:	Zoom in/out.
+		·F:		Focus camera on geometry.
+		·Right click:	Orbitate camera (Hold Alt to orbitate around object).
+
 ----------------------------
 Innovation:
 
