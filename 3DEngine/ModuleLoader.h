@@ -50,3 +50,5 @@ private:
 
 };
 
+
+void LogAssimp(const char* c1, char* c2);

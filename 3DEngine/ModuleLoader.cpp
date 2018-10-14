@@ -38,6 +38,7 @@ bool ModuleLoader::Start()
 	// Stream log messages to Debug window
 	struct aiLogStream stream;
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
+	stream.callback = LogAssimp;
 	aiAttachLogStream(&stream);
 
 
@@ -368,3 +369,7 @@ Format ModuleLoader::CheckFormat(const char* path)
 	return ret;
 }
 
+void LogAssimp(const char* c1, char* c2)
+{
+	VSLOG("%s", c1);
+}

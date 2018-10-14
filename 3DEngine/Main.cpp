@@ -85,6 +85,7 @@ int main(int argc, char ** argv)
 	}
 
 	delete App;
+	App = nullptr;
 	VSLOG("Exiting game '%s'...\n", TITLE);
 	return main_return;
 }

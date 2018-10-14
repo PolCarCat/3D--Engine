@@ -9,6 +9,7 @@
 ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	console = new WinConsole(App, true);
+	App->logAvaliable = true;
 }
 
 
@@ -154,11 +155,19 @@ bool ModuleGui::CleanUp()
 	//ImGui_ImplSdl_Shutdown();
 
 	VSLOG("Cleaning UP IMGUI Module")
-		bool ret = true;
 
+	App->logAvaliable = false;
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
+
+
+	for (std::list<WinBase*>::iterator item = windows.begin(); item != windows.end(); item++) {
+		delete *item;
+		*item = nullptr;
+	}
+
+	windows.clear();
 
 	return true;
 }

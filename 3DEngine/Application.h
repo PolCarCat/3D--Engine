@@ -34,7 +34,7 @@ public:
 	float ms[100];
 	float expected_delay;
 	int framerate_cap = 60;
-
+	bool logAvaliable = false;
 public:
 
 	Application();

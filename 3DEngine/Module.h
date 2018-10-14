@@ -17,6 +17,7 @@ public:
 	void SetName(const char* _name) { *name = *_name; };
 	const char* GetName() { return name; };
 
+
 	Module(Application* parent, bool start_enabled = true) : App(parent)
 	{}
 
