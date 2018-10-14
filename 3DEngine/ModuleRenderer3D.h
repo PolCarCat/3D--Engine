@@ -18,6 +18,10 @@ struct Texture
 	uint width = 0;
 	uint heigth = 0;
 
+	float2 position = { 0,0 };
+	float2 scale = { 1,1};
+	float angle = 0;
+
 	void CleanUp();
 };
 

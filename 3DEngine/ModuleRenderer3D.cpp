@@ -363,15 +363,36 @@ void Mesh::GenerateBuffer()
 void Mesh::Draw()
 {
 
+	float* transC = new float[num_textC];
+	memcpy(transC, textC, sizeof(float) * num_textC);
 
 
+	for (uint i = 0; i < num_textC; i += 2)
+	{
+		transC[i] += tex.position.x;
+		transC[i + 1] += tex.position.y;
+
+		transC[i] /= tex.scale.x;
+		transC[i + 1] /= tex.scale.y;
+
+		vec2 vec = { transC[i], transC[i + 1] };
+		float angle = tex.angle * (pi / 180);
+		mat2x2 rotmat = { cos(angle), -sin(angle), sin(angle), cos(angle) };
+
+		vec2 result = vec;
+		result.x = (vec.x * rotmat.M[0]) + (vec.y * rotmat.M[2]);
+		result.y = (vec.x * rotmat.M[1]) + (vec.y * rotmat.M[3]);
+
+		transC[i] = result.x;
+		transC[i + 1] = result.y;
+	}
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glBindTexture(GL_TEXTURE_2D, tex.id);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indice);
 	glVertexPointer(3, GL_FLOAT, 0, &vertex[0]);
-	glTexCoordPointer(2, GL_FLOAT, 0, &textC[0]);
+	glTexCoordPointer(2, GL_FLOAT, 0, &transC[0]);
 	glDrawElements(GL_TRIANGLES, num_indice, GL_UNSIGNED_INT, NULL);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
@@ -379,8 +400,9 @@ void Mesh::Draw()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);
 
-
-}
+	delete[] transC;
+	transC = nullptr;
+} 
 
 
 

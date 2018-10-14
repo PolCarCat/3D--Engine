@@ -96,7 +96,16 @@ bool WinElem::Update()
 
 
 					ImGui::Columns(1);
-					float s = ImGui::GetWindowContentRegionWidth() - 10;
+					ImGui::NewLine();
+					ImGui::Text("Transformation");
+					ImGui::Separator();
+					ImGui::SliderFloat("Position X", &curMesh->tex.position.x, 0, 1);
+					ImGui::SliderFloat("Position Y", &curMesh->tex.position.y, 0, 1);
+					ImGui::SliderFloat("Scale X", &curMesh->tex.scale.x, 0, 10);
+					ImGui::SliderFloat("Scale Y", &curMesh->tex.scale.y, 0, 10);
+					ImGui::SliderFloat("Angle", &curMesh->tex.angle, 0, 360);
+
+					float s = ImGui::GetWindowContentRegionWidth() - (ImGui::GetWindowContentRegionWidth()/6);
 					ImGui::Image((void*)curMesh->tex.id, ImVec2(s , s),ImVec2(0,1),ImVec2(1,0));
 
 				}
