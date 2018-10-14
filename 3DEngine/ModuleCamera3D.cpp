@@ -187,6 +187,9 @@ void ModuleCamera3D::CalculateViewMatrix()
 
 void ModuleCamera3D::FocusMeshes()
 {
+	if (App->renderer3D->meshes.size() == 0)
+		return;
+	
 	float3 centerf = App->renderer3D->GetMeshesCenter();
 	AABB gAABB = App->renderer3D->GetMeshesAABB();
 	vec3 centerv = { centerf.x, centerf.y, centerf.z };

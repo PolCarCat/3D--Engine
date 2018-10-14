@@ -135,7 +135,8 @@ bool ModuleLoader::LoadScene(const char* path)
 	{				
 		uint i = 0;
 		for (int nm = 0; nm < scene->mNumMeshes; nm++)
-		{
+		{	
+			bool error = false;
 			Mesh* mesh = new Mesh;
 			aiMesh* m = scene->mMeshes[nm];
 			mesh->num_vertex = m->mNumVertices;
@@ -176,12 +177,19 @@ bool ModuleLoader::LoadScene(const char* path)
 			{
 				mesh->num_indice = m->mNumFaces * 3;
 				mesh->indice = new uint[mesh->num_indice]; // assume each face is a triangle
+
+				if (mesh->num_indice > GL_MAX_ELEMENTS_INDICES)
+				{
+					VSLOG("\nWARNING can not load a mesh with %d indices", mesh->num_indice);
+					error = true;
+				}
+
 				for (uint i = 0; i < m->mNumFaces; ++i)
 				{
 					if (m->mFaces[i].mNumIndices != 3)
 					{
-						VSLOG("WARNING, geometry face with != 3 indices!");
-						App->imgui->console->AddLog("\nWARNING, geometry face with != 3 indices!");
+						VSLOG("\nWARNING, geometry face with != 3 indices!");
+						error = true;
 					}						
 					else
 						memcpy(&mesh->indice[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
@@ -231,11 +239,8 @@ bool ModuleLoader::LoadScene(const char* path)
 			}
 
 
-			if (mesh->num_indice > GL_MAX_ELEMENTS_INDICES)
-			{
-				VSLOG("\nWARNING can not load a mesh with %d indices", mesh->num_indice);
-			}
-			else
+		
+			if (!error)
 			{
 				mesh->GenerateBuffer();
 				App->renderer3D->meshes.push_back(mesh);
