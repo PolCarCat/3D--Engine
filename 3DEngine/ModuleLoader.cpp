@@ -178,7 +178,7 @@ bool ModuleLoader::LoadScene(const char* path)
 				mesh->num_indice = m->mNumFaces * 3;
 				mesh->indice = new uint[mesh->num_indice]; // assume each face is a triangle
 
-				if (mesh->num_indice > GL_MAX_ELEMENTS_INDICES)
+				if (mesh->num_indice > INDICES_CAP)
 				{
 					VSLOG("\nWARNING can not load a mesh with %d indices", mesh->num_indice);
 					error = true;

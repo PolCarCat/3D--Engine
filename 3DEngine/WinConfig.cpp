@@ -118,7 +118,7 @@ bool WinConfig::Update()
 
 		bool light = App->renderer3D->GetLighting();
 		ImGui::Checkbox("Lighting", &light);
-		if (light != App->renderer3D->GetLighting()) App->renderer3D->EnableCullFace(light);
+		if (light != App->renderer3D->GetLighting()) App->renderer3D->EnableLighting(light);
 
 		bool color = App->renderer3D->GetColorMat();
 		ImGui::Checkbox("Color Material", &color);

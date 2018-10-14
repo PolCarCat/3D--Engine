@@ -2,7 +2,7 @@
 #include "Module.h"
 
 #define CHECKERS_SIZE 20
-
+#define INDICES_CAP 200000
 
 struct Texture;
 
