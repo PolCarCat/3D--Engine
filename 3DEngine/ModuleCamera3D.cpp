@@ -75,7 +75,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 		// Mouse motion ----------------
 
-		if(App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && !ImGui::IsMouseHoveringAnyWindow())
+		if(App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT && !ImGui::IsMouseHoveringAnyWindow() && !ImGui::IsMouseDragging())
 		{
 			int dx = -App->input->GetMouseXMotion();
 			int dy = -App->input->GetMouseYMotion();
