@@ -22,7 +22,7 @@ bool ModuleScene::Start()
 	App->camera->Move(vec3(0.0f, 5.0f, 5.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
-	currentTex = App->loader->LoadTex("Assets/Baker_house.png");
+	//currentTex = App->loader->LoadTex("Assets/Baker_house.png");
 	App->loader->LoadScene("Assets/BakerHouse.fbx");
 
 

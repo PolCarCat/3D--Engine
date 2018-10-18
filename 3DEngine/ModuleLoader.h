@@ -1,10 +1,10 @@
 #pragma once
 #include "Module.h"
+#include "ImporterTexture.h"
 
-#define CHECKERS_SIZE 20
 #define INDICES_CAP 200000
 
-struct Texture;
+
 
 enum Format {
 	FBX,
@@ -37,15 +37,13 @@ public:
 	void SetDropFile(char* f);
 
 
-	uint LoadChekerTex();
-	Texture LoadTex(const char* path);
 	Format CheckFormat(const char* path);
 
 private:
 	char* droppedFile = nullptr;
 	Format dFformat = FNULL;
 
-	bool test = false;
+	ImporterTexture texImporter;
 
 
 };

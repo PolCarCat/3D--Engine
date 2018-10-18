@@ -40,6 +40,12 @@
     <Filter Include="Sources\Windows">
       <UniqueIdentifier>{3b11863a-3d95-4a44-9040-a4174f3f3860}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Importers">
+      <UniqueIdentifier>{8f3964a7-5392-4744-a056-03020cdc1d9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Components">
+      <UniqueIdentifier>{d4ef50d2-4f4f-4c7c-91fb-b890936a3324}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -315,8 +321,24 @@
     <ClInclude Include="mmgr\mmgr.h">
       <Filter>Sources\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="Component.h" />
+    <ClInclude Include="Importer.h">
+      <Filter>Sources\Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="ImporterTexture.h">
+      <Filter>Sources\Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Sources\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentMaterial.h">
+      <Filter>Sources\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentTransform.h">
+      <Filter>Sources\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Sources\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -496,7 +518,21 @@
     <ClCompile Include="mmgr\mmgr.cpp">
       <Filter>Sources\Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="ImporterTexture.cpp">
+      <Filter>Sources\Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentMaterial.cpp">
+      <Filter>Sources\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentTransform.cpp">
+      <Filter>Sources\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Sources\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Sources\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\Matrix.inl">

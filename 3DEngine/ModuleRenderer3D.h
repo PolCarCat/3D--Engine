@@ -4,6 +4,7 @@
 #include "Light.h"
 #include "glmath.h"
 #include "Primitive.h"
+#include "SDL/include/SDL.h"
 
 #include <list>
 #include <vector>
