@@ -5,6 +5,8 @@
 #include "ModuleRenderer3D.h"
 #include "MathGeoLib/MathGeoLib.h"
 #include "WinConsole.h"
+#include "ResMesh.h"
+#include "ResTexture.h"
 
 #include "Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
@@ -124,7 +126,7 @@ bool ModuleLoader::LoadScene(const char* path)
 		for (int nm = 0; nm < scene->mNumMeshes; nm++)
 		{	
 			bool error = false;
-			Mesh* mesh = new Mesh;
+			ResMesh* mesh = new ResMesh;
 			aiMesh* m = scene->mMeshes[nm];
 			mesh->num_vertex = m->mNumVertices;
 			mesh->vertex = new float[mesh->num_vertex * 3];

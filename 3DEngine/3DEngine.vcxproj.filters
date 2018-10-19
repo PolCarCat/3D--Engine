@@ -46,6 +46,9 @@
     <Filter Include="Sources\Components">
       <UniqueIdentifier>{d4ef50d2-4f4f-4c7c-91fb-b890936a3324}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Resources">
+      <UniqueIdentifier>{07db71a8-8e9d-4822-867a-740437c01386}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -339,6 +342,15 @@
     <ClInclude Include="GameObject.h">
       <Filter>Sources\Components</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentMesh.h">
+      <Filter>Sources\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ResMesh.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ResTexture.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -532,6 +544,15 @@
     </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>Sources\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentMesh.cpp">
+      <Filter>Sources\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ResMesh.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ResTexture.cpp">
+      <Filter>Sources\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

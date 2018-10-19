@@ -1,7 +1,7 @@
 #include "WinObjects.h"
 #include "Application.h"
 #include "ImGui/imgui.h"
-#include "ModuleRenderer3D.h"
+#include "ResMesh.h"
 #include "WinElem.h"
 
 WinObjects::WinObjects(Application* parent, bool start_enabled) : WinBase(parent, start_enabled)
@@ -35,7 +35,7 @@ bool WinObjects::Update()
 		
 		int node_clicked = -1;      
 		int i = 1;
-		for (std::list<Mesh*>::iterator item = App->renderer3D->meshes.begin(); item != App->renderer3D->meshes.end(); item++)
+		for (std::list<ResMesh*>::iterator item = App->renderer3D->meshes.begin(); item != App->renderer3D->meshes.end(); item++)
 		{
 			
 			ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;

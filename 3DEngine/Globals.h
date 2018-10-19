@@ -6,6 +6,8 @@
 
 #include <windows.h>
 #include <stdio.h>
+#include <list>
+#include <vector>
 
 #define VSLOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
 
@@ -36,4 +38,84 @@ enum update_status
 #define WIN_BORDERLESS false
 #define WIN_FULLSCREEN_DESKTOP false
 #define VSYNC true
-#define TITLE "3D Engine"
+#define TITLE "Mehgine"
+
+
+
+//namespace Utils 
+//{
+//	template<typename TYPE>
+//	void ClearList(typename std::list<TYPE>& list) 
+//	{
+//		typename std::list<TYPE>::iterator it;
+//		for (it = list.begin(); it != list.end(); it++) {
+//			delete *it;
+//		}
+//		list.clear();
+//	}
+//
+//	template<typename TYPE>
+//	void ClearVector(typename std::vector<TYPE>& vector) 
+//	{
+//		typename std::vector<TYPE>::iterator it;
+//		for (it = vector.begin(); it != vector.end(); it++) {
+//			delete *it;
+//		}
+//		vector.clear();
+//	}
+//
+//	template<typename TYPE>
+//	size_t FindInList(TYPE ptr, typename std::list<TYPE>& list) 
+//	{
+//		size_t pos = 0;
+//		typename std::list<TYPE>::iterator it;
+//		for (it = list.begin(); it != list.end(); pos++, it++) {
+//			if (*it == ptr) break;
+//		}
+//
+//		if (it != list.end()) {
+//			return pos;
+//		}
+//		return -1;
+//	}
+//
+//	template<typename TYPE>
+//	size_t FindInVector(TYPE ptr, typename std::vector<TYPE>& vector) 
+//	{
+//		size_t pos = 0;
+//		for (pos = 0; pos < vector.size(); pos++) {
+//			if (vector[pos] == ptr) return pos;
+//		}
+//		return -1;
+//	}
+//
+//	template<typename TYPE>
+//	bool RemoveFromList(TYPE ptr, typename std::list<TYPE>& list)
+//	{
+//		typename std::list<TYPE>::iterator it;
+//		for (it = list.begin(); it != list.end(); it++) {
+//			if (*it == ptr) break;
+//		}
+//
+//		if (it != list.end()) {
+//			list.remove(*it);
+//			return true;
+//		}
+//		return false;
+//	}
+//
+//	template<typename TYPE>
+//	bool RemoveFromVector(TYPE ptr, typename std::vector<TYPE>& vector)
+//	{
+//		typename std::vector<TYPE>::iterator it;
+//		for (it = vector.begin(); it != vector.end(); it++) {
+//			if (*it == ptr) break;
+//		}
+//
+//		if (it != vector.end()) {
+//			vector.erase(it);
+//			return true;
+//		}
+//		return false;
+//	}
+//};

@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ImGui/imgui.h"
 #include "ModuleRenderer3D.h"
+#include "ResMesh.h"
 #include <list>
 
 WinElem::WinElem(Application* parent, bool start_enabled) : WinBase(parent, start_enabled)

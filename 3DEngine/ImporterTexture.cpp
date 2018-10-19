@@ -76,9 +76,9 @@ uint ImporterTexture::LoadChekerTex()
 	return id;
 }
 
-Texture ImporterTexture::LoadTex(const char* path)
+ResTexture ImporterTexture::LoadTex(const char* path)
 {
-	Texture ret;
+	ResTexture ret;
 	ILuint imageID;
 	GLuint textureID;
 	ILboolean success = false;

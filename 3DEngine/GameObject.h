@@ -14,10 +14,14 @@ public:
 	void UpdateUI();
 	bool CleanUp();
 	void AddComponent(Component* comp);
+	void AddGameObject(GameObject* obj);
 	bool GetActive();
 	void SetActive(bool b);
 	const char* GetName();
 	void SetName(const char*);
+
+	GameObject* GetParent();
+	void SetParent(GameObject* p);
 private:
 
 	std::vector<Component*> compChilds;

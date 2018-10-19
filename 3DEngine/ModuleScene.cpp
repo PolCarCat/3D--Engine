@@ -41,7 +41,7 @@ bool ModuleScene::Start()
 bool ModuleScene::CleanUp()
 {
 	//LOG("Unloading scene");
-
+	root.CleanUp();
 
 	return true;
 }
@@ -49,6 +49,14 @@ bool ModuleScene::CleanUp()
 // Update
 update_status ModuleScene::Update(float dt)
 {
+
+	root.Update();
 	return UPDATE_CONTINUE;
 }
 
+
+void ModuleScene::AddGameObject(GameObject* obj)
+{
+	obj->SetParent(&root);
+	
+}

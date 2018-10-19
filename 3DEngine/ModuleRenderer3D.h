@@ -5,6 +5,8 @@
 #include "glmath.h"
 #include "Primitive.h"
 #include "SDL/include/SDL.h"
+#include "ResTexture.h"
+
 
 #include <list>
 #include <vector>
@@ -12,61 +14,7 @@
 
 #define MAX_LIGHTS 8
 
-
-struct Texture
-{
-	uint id = 0;
-	uint width = 0;
-	uint heigth = 0;
-
-	float2 position = { 0,0 };
-	float2 scale = { 1,1};
-	float angle = 0;
-
-	void CleanUp();
-};
-
-struct Mesh
-{
-
-	uint id_indice = 0; // index in VRAM
-	uint num_indice = 0;
-	uint* indice = nullptr;
-
-	uint id_vertex = 0; // unique vertex in VRAM
-	uint num_vertex = 0;
-	float* vertex = nullptr;
-
-	uint num_normals = 0;
-	float* normals = nullptr;
-
-	uint id_colors = 0;
-	uint num_colors = 0;
-	float* colors = nullptr;
-
-	uint id_textC = 0;
-	uint num_textC = 0;
-	float* textC = nullptr;
-
-	Texture tex;
-	std::string name;
-
-	AABB boundingBox;
-
-	float3 position = { 0,0,0 };
-	float3 scale = { 0,0,0 };
-	Quat rotation = { 0,0,0,0 };
-	
-	
-
-	void GenerateBuffer();
-	void Draw();
-	void DrawNormals();
-	void DrawBoundingBox();
-	void CleanUp();
-
-};
-
+class ResMesh;
 
 
 class ModuleRenderer3D : public Module
@@ -84,7 +32,7 @@ public:
 
 	void DrawMeshes();
 	void CleanUpMeshes();
-	void SetMeshesTex(Texture i);
+	void SetMeshesTex(ResTexture i);
 	float3 GetMeshesCenter();
 	AABB GetMeshesAABB();
 
@@ -112,7 +60,7 @@ public:
 
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
-	std::list<Mesh*> meshes;
+	std::list<ResMesh*> meshes;
 
 public:
 	bool drawCube = false;

@@ -4,7 +4,7 @@
 
 #define CHECKERS_SIZE 20
 
-struct Texture;
+struct ResTexture;
 
 class ImporterTexture :
 	public Importer
@@ -19,6 +19,6 @@ public:
 	bool CleanUp();
 
 	uint LoadChekerTex();
-	Texture LoadTex(const char* path);
+	ResTexture LoadTex(const char* path);
 };
 

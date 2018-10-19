@@ -1,5 +1,7 @@
 #include "GameObject.h"
 #include "Component.h"
+#include "Globals.h"
+
 
 
 GameObject::GameObject()
@@ -94,10 +96,48 @@ void GameObject::SetName(const char* n)
 
 void GameObject::AddComponent(Component* comp)
 {
-	if (comp->GetParent() != this)
+	GameObject* prevparent = comp->GetParent();
+	if (prevparent != this)
 	{
+		if (prevparent != nullptr)
+		{
+			//Utils::RemoveFromVector(comp, prevparent->compChilds);		
+		}
+
 		compChilds.push_back(comp);
 		comp->SetParent(this);
 	}
+
+}
+
+void GameObject::AddGameObject(GameObject* obj)
+{
+	GameObject* prevparent = obj->GetParent();
+	if (prevparent != this)
+	{
+		if (prevparent != nullptr)
+		{
+			//Utils::RemoveFromVector(obj, prevparent->objChilds);
+		}
+		objChilds.push_back(obj);
+		obj->SetParent(this);
+	}
+}
+
+GameObject* GameObject::GetParent()
+{
+	return parent;
+}
+
+
+void GameObject::SetParent(GameObject* p)
+{
+	parent = p;
+	//GameObject* aux;
+	////aux = std::find(*parent->objChilds.begin(), *parent->objChilds.end(), this);
+	//
+	//if (aux != *parent->objChilds.end())
+	//	parent->objChilds.push_back(this);
+
 
 }

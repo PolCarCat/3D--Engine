@@ -78,6 +78,7 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentMaterial.h" />
+    <ClInclude Include="ComponentMesh.h" />
     <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
@@ -164,6 +165,8 @@
     <ClInclude Include="Parson\parson.h" />
     <ClInclude Include="pcg-c-basic-0.9\pcg_basic.h" />
     <ClInclude Include="Primitive.h" />
+    <ClInclude Include="ResMesh.h" />
+    <ClInclude Include="ResTexture.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="WinBase.h" />
     <ClInclude Include="WinConfig.h" />
@@ -177,6 +180,7 @@
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentMaterial.cpp" />
+    <ClCompile Include="ComponentMesh.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
@@ -231,6 +235,8 @@
     <ClCompile Include="Parson\parson.c" />
     <ClCompile Include="pcg-c-basic-0.9\pcg_basic.c" />
     <ClCompile Include="Primitive.cpp" />
+    <ClCompile Include="ResMesh.cpp" />
+    <ClCompile Include="ResTexture.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="WinConfig.cpp" />
     <ClCompile Include="WinConsole.cpp" />

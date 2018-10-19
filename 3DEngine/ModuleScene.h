@@ -1,6 +1,8 @@
 #pragma once
 #include "Module.h"
-#include "ModuleRenderer3D.h"
+#include "ResTexture.h"
+#include "GameObject.h"
+#include <list>
 
 class ModuleScene : public Module
 {
@@ -11,8 +13,10 @@ public:
 	bool Start();
 	update_status Update(float dt);
 	bool CleanUp();
+	void AddGameObject(GameObject* obj);
 
-
-	Texture currentTex;
+private:
+	GameObject root;
+	ResTexture currentTex;
 
 };

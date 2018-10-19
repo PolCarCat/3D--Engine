@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "ModuleRenderer3D.h"
+#include "ResTexture.h"
 
 
 class ComponentMaterial :
@@ -19,6 +19,6 @@ public:
 
 	bool CleanUp();
 
-	Texture tex;
+	ResTexture tex;
 };
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "WinBase.h"
 
-class Mesh;
+class ResMesh;
 
 class WinElem :
 	public WinBase
@@ -12,7 +12,7 @@ public:
 
 	bool Start();
 	bool Update();
-	Mesh* curMesh = nullptr;
+	ResMesh* curMesh = nullptr;
 	
 
 };
