@@ -17,10 +17,13 @@ public:
 	bool CleanUp();
 	void AddGameObject(GameObject* obj);
 	void MoveCurCam();
+	ComponentCamera* GetCurCam();
 
 private:
 	GameObject root;
 	ResTexture currentTex;
+
+	ComponentCamera* ghostcam;
 	ComponentCamera* currentCam = nullptr;
 
 };

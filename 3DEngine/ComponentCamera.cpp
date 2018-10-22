@@ -27,7 +27,6 @@ ComponentCamera::ComponentCamera(float _near, float _far, float _fov)
 	RecalculateFrustrum(App->window->w, App->window->h);
 
 
-
 	frustum.type = FrustumType::PerspectiveFrustum;
 	frustum.up = float3(0, 1, 0);
 	frustum.pos = Position;

@@ -6,6 +6,7 @@
 #include "WinConsole.h"
 #include "ResMesh.h"
 #include "ResTexture.h"
+#include "ComponentCamera.h"
 
 
 #include "Glew/include/glew.h"
@@ -128,7 +129,7 @@ bool ModuleRenderer3D::Init()
 	}
 
 	// Projection matrix for
-	OnResize(App->window->w, App->window->h);
+	//OnResize(App->window->w, App->window->h);
 
 	// Create Primitives
 
@@ -147,14 +148,15 @@ bool ModuleRenderer3D::Init()
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
+	ComponentCamera* cam = App->scene->GetCurCam();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
 	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(App->camera->GetViewMatrix());
+	glLoadMatrixf(cam->GetViewMatrix());
 
 	// light 0 on cam pos
-	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+	lights[0].SetPos(cam->Position.x,cam->Position.y, cam->Position.z);
 	
 	//Color c = App->camera->background;
 	//glClearColor(c.r, c.g, c.b, c.a);
@@ -207,13 +209,14 @@ bool ModuleRenderer3D::CleanUp()
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
+	ComponentCamera* cam = App->scene->GetCurCam();
 	glViewport(0, 0, width, height);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	App->window->w = width;
 	App->window->h = height;
-	ProjectionMatrix = App->camera->ResizePerspMatrix(width, height);
+	ProjectionMatrix = cam->ResizePerspMatrix(width, height);
 	glLoadMatrixf(&ProjectionMatrix[0][0]);
 
 	glMatrixMode(GL_MODELVIEW);
