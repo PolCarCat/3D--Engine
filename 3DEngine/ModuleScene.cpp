@@ -19,8 +19,8 @@ bool ModuleScene::Start()
 	//VLOG("Loading scene assets");
 	bool ret = true;
 	
-	App->camera->Move(vec3(0.0f, 5.0f, 5.0f));
-	App->camera->LookAt(vec3(0, 0, 0));
+	App->camera->Move(float3(0.0f, 5.0f, 5.0f));
+	App->camera->LookAt(float3(0, 0, 0));
 
 	//currentTex = App->loader->LoadTex("Assets/Baker_house.png");
 	App->loader->LoadScene("Assets/BakerHouse.fbx");
@@ -59,4 +59,9 @@ void ModuleScene::AddGameObject(GameObject* obj)
 {
 	obj->SetParent(&root);
 	
+}
+
+void ModuleScene::MoveCurCam()
+{
+
 }

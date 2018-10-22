@@ -101,7 +101,7 @@ void GameObject::AddComponent(Component* comp)
 	{
 		if (prevparent != nullptr)
 		{
-			//Utils::RemoveFromVector(comp, prevparent->compChilds);		
+			Utils::RemoveFromVector(comp, prevparent->compChilds);		
 		}
 
 		compChilds.push_back(comp);
@@ -117,7 +117,7 @@ void GameObject::AddGameObject(GameObject* obj)
 	{
 		if (prevparent != nullptr)
 		{
-			//Utils::RemoveFromVector(obj, prevparent->objChilds);
+			Utils::RemoveFromVector(obj, prevparent->objChilds);
 		}
 		objChilds.push_back(obj);
 		obj->SetParent(this);
@@ -132,12 +132,14 @@ GameObject* GameObject::GetParent()
 
 void GameObject::SetParent(GameObject* p)
 {
+
+	if (parent != nullptr)
+	{
+		Utils::RemoveFromVector(p, parent->objChilds);
+	}
+
 	parent = p;
-	//GameObject* aux;
-	////aux = std::find(*parent->objChilds.begin(), *parent->objChilds.end(), this);
-	//
-	//if (aux != *parent->objChilds.end())
-	//	parent->objChilds.push_back(this);
+	parent->objChilds.push_back(this);
 
 
 }

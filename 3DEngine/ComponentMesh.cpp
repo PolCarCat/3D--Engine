@@ -11,3 +11,15 @@ ComponentMesh::ComponentMesh()
 ComponentMesh::~ComponentMesh()
 {
 }
+
+
+bool ComponentMesh::Start()
+{
+	return true;
+}
+
+bool ComponentMesh::Update()
+{
+	mesh.Draw();
+	return true;
+}

@@ -1,6 +1,6 @@
 #include "ResMesh.h"
 #include "MathGeoLib/MathGeoLib.h"
-#include "glmath.h"
+
 
 #include "Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
@@ -52,13 +52,13 @@ void ResMesh::Draw()
 		transC[i] /= tex.scale.x;
 		transC[i + 1] /= tex.scale.y;
 
-		vec2 vec = { transC[i], transC[i + 1] };
+		float2 vec = { transC[i], transC[i + 1] };
 		float angle = tex.angle * (pi / 180);
-		mat2x2 rotmat = { cos(angle), -sin(angle), sin(angle), cos(angle) };
-		
-		vec2 result = vec;
-		result.x = (vec.x * rotmat.M[0]) + (vec.y * rotmat.M[2]);
-		result.y = (vec.x * rotmat.M[1]) + (vec.y * rotmat.M[3]);
+
+	
+		float2 result = vec;
+		result.x = (vec.x *  cos(angle)) + (vec.y * sin(angle));
+		result.y = (vec.x * -sin(angle)) + (vec.y * cos(angle));
 
 		transC[i] = result.x;
 		transC[i + 1] = result.y;

@@ -1,17 +1,17 @@
 #pragma once
-#include "Module.h"
-#include "Globals.h"
+#include "Component.h"
+#include "ComponentTransform.h"
+#include "MathGeoLib/MathGeoLib.h"
 
-
-
-class ModuleCamera3D : public Module
+class ComponentCamera :
+	public Component
 {
 public:
-	ModuleCamera3D(Application* app, bool start_enabled = true);
-	~ModuleCamera3D();
+	ComponentCamera(float _near = 0.5f, float _far = 512.0f, float fov = 60.0f);
+	~ComponentCamera();
 
 	bool Start();
-	update_status Update(float dt);
+	bool Update();
 	bool CleanUp();
 
 	void Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference = false);
@@ -29,14 +29,14 @@ private:
 	float fovy = 60.0f;
 
 public:
-	
-	float3 X, Y, Z, Position, Reference;
 
+	float3 X, Y, Z, Position, Reference;
+	ComponentTransform transform;
 
 private:
 
 	float4x4 ViewMatrix, ViewMatrixInverse;
 	math::Frustum frustum;
 	float aspectRatio = 0;
-
 };
+

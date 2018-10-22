@@ -1,13 +1,16 @@
+#include "ComponentCamera.h"
+#include "VectorialFunctions.h"
 #include "Globals.h"
 #include "Application.h"
-#include "ModuleCamera3D.h"
-#include "VectorialFunctions.h"
+
 
 namespace VectF = VectorialFunctions;
 
-ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
+ComponentCamera::ComponentCamera(float _near, float _far, float _fov)
 {
-
+	nearDistance = _near;
+	farDistance = _far;
+	fovy = _fov;
 
 	X = float3(1.0f, 0.0f, 0.0f);
 	Y = float3(0.0f, 1.0f, 0.0f);
@@ -35,11 +38,11 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 
 }
 
-ModuleCamera3D::~ModuleCamera3D()
+ComponentCamera::~ComponentCamera()
 {}
 
 // -----------------------------------------------------------------
-bool ModuleCamera3D::Start()
+bool ComponentCamera::Start()
 {
 	VSLOG("Setting up the camera");
 	bool ret = true;
@@ -50,7 +53,7 @@ bool ModuleCamera3D::Start()
 }
 
 // -----------------------------------------------------------------
-bool ModuleCamera3D::CleanUp()
+bool ComponentCamera::CleanUp()
 {
 	VSLOG("Cleaning camera");
 
@@ -58,101 +61,101 @@ bool ModuleCamera3D::CleanUp()
 }
 
 // -----------------------------------------------------------------
-update_status ModuleCamera3D::Update(float dt)
+bool ComponentCamera::Update()
 {
 	////Debug camera
 
 
-		float3 newPos(0,0,0);
-		float speed = 8.0f * dt;
-		if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-			speed = 50.0f * dt;
+	float3 newPos(0, 0, 0);
+	float speed = 8.0f;
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		speed = 50.0f;
 
-		if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) FocusMeshes();
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) FocusMeshes();
 
-		if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
-		if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
-
-
-		if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
-		if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
 
 
-		if (App->input->GetMouseZ() != 0 && !ImGui::IsMouseHoveringAnyWindow())
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
+
+
+	if (App->input->GetMouseZ() != 0 && !ImGui::IsMouseHoveringAnyWindow())
+	{
+		float wheelspd = Position.Length() / 2;
+		if (App->input->GetMouseZ() > 0)
+			newPos -= Z * speed * wheelspd;
+
+		else
+			newPos += Z * speed * wheelspd;
+	}
+
+
+	Position += newPos;
+	Reference += newPos;
+
+
+	// Mouse motion ----------------
+
+	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT && !ImGui::IsMouseHoveringAnyWindow() && !ImGui::IsMouseDragging())
+	{
+		int dx = -App->input->GetMouseXMotion();
+		int dy = -App->input->GetMouseYMotion();
+		float3 realRef = Reference;
+		float3 realPos = Position;
+		float Sensitivity = 0.25f;
+		float3 pos = App->renderer3D->GetMeshesCenter();
+
+		if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
+			LookAt({ pos.x, pos.y, pos.z });
+		else
+			Reference = Position;
+
+		Position -= Reference;
+
+		if (dx != 0)
 		{
-			float wheelspd = Position.Length() / 2;
-			if (App->input->GetMouseZ() > 0)
-				newPos -= Z * speed * wheelspd;
+			float DeltaX = (float)dx * Sensitivity;
 
-			else
-				newPos += Z * speed * wheelspd;
+			X = VectF::rotatef3(X, DeltaX, float3(0.0f, 1.0f, 0.0f));
+			Y = VectF::rotatef3(Y, DeltaX, float3(0.0f, 1.0f, 0.0f));
+			Z = VectF::rotatef3(Z, DeltaX, float3(0.0f, 1.0f, 0.0f));
+		}
+
+		if (dy != 0)
+		{
+			float DeltaY = (float)dy * Sensitivity;
+
+			Y = VectF::rotatef3(Y, DeltaY, X);
+			Z = VectF::rotatef3(Z, DeltaY, X);
+
+			if (Y.y < 0.0f)
+			{
+				Z = float3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
+				Y = Z.Cross(X);
+			}
 		}
 
 
-		Position += newPos;
-		Reference += newPos;
-		
+		Position = Reference + Z * Position.Length();
+	}
 
-		// Mouse motion ----------------
+	frustum.pos = Position;
 
-		if(App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT && !ImGui::IsMouseHoveringAnyWindow() && !ImGui::IsMouseDragging())
-		{
-			int dx = -App->input->GetMouseXMotion();
-			int dy = -App->input->GetMouseYMotion();
-			float3 realRef = Reference;
-			float3 realPos = Position;
-			float Sensitivity = 0.25f;
-			float3 pos = App->renderer3D->GetMeshesCenter();
 
-			if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
-				LookAt({ pos.x, pos.y, pos.z });
-			else
-				Reference = Position;
+	// Recalculate matrix -------------
+	CalculateViewMatrix();
 
-			Position -= Reference;
 
-			if(dx != 0)
-			{
-				float DeltaX = (float)dx * Sensitivity;
 
-				X = VectF::rotatef3(X, DeltaX, float3(0.0f, 1.0f, 0.0f));
-				Y = VectF::rotatef3(Y, DeltaX, float3(0.0f, 1.0f, 0.0f));
-				Z = VectF::rotatef3(Z, DeltaX, float3(0.0f, 1.0f, 0.0f));
-			}
-
-			if(dy != 0)
-			{
-				float DeltaY = (float)dy * Sensitivity;
-
-				Y = VectF::rotatef3(Y, DeltaY, X);
-				Z = VectF::rotatef3(Z, DeltaY, X);
-
-				if(Y.y < 0.0f)
-				{
-					Z = float3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
-					Y = Z.Cross(X);
-				}
-			}
-	
-
-			Position = Reference + Z * Position.Length();
-		}
-
-		frustum.pos = Position;
-		
-
-		// Recalculate matrix -------------
-		CalculateViewMatrix();
-	
-
-	
 	return UPDATE_CONTINUE;
 }
 
 
 
 // -----------------------------------------------------------------
-void ModuleCamera3D::Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference)
+void ComponentCamera::Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference)
 {
 	this->Position = Position;
 	this->Reference = Reference;
@@ -163,7 +166,7 @@ void ModuleCamera3D::Look(const float3 &Position, const float3 &Reference, bool 
 	X = float3(float3(0.0f, 1.0f, 0.0f).Cross(Z)).Normalized();
 	Y = Z.Cross(X);
 
-	if(!RotateAroundReference)
+	if (!RotateAroundReference)
 	{
 		this->Reference = this->Position;
 		this->Position += Z * 0.05f;
@@ -173,7 +176,7 @@ void ModuleCamera3D::Look(const float3 &Position, const float3 &Reference, bool 
 }
 
 // -----------------------------------------------------------------
-void ModuleCamera3D::LookAt( const float3 &Spot)
+void ComponentCamera::LookAt(const float3 &Spot)
 {
 	Reference = Spot;
 
@@ -186,7 +189,7 @@ void ModuleCamera3D::LookAt( const float3 &Spot)
 
 
 // -----------------------------------------------------------------
-void ModuleCamera3D::Move(const float3 &Movement)
+void ComponentCamera::Move(const float3 &Movement)
 {
 	Position += Movement;
 	Reference += Movement;
@@ -195,24 +198,24 @@ void ModuleCamera3D::Move(const float3 &Movement)
 }
 
 // -----------------------------------------------------------------
-float* ModuleCamera3D::GetViewMatrix()
+float* ComponentCamera::GetViewMatrix()
 {
 	return &ViewMatrix[0][0];
 }
 
 // -----------------------------------------------------------------
-void ModuleCamera3D::CalculateViewMatrix()
+void ComponentCamera::CalculateViewMatrix()
 {
 	ViewMatrix = float4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -X.Dot(Position), -Y.Dot(Position), -Z.Dot(Position), 1.0f);
 	ViewMatrixInverse = ViewMatrix.Inverted();
 }
 
 
-void ModuleCamera3D::FocusMeshes()
+void ComponentCamera::FocusMeshes()
 {
 	if (App->renderer3D->meshes.size() == 0)
 		return;
-	
+
 	float3 centerf = App->renderer3D->GetMeshesCenter();
 	AABB gAABB = App->renderer3D->GetMeshesAABB();
 	float3 centerv = { centerf.x, centerf.y, centerf.z };
@@ -226,19 +229,19 @@ void ModuleCamera3D::FocusMeshes()
 
 }
 
-float4x4 ModuleCamera3D::ResizePerspMatrix(int width, int height)
+float4x4 ComponentCamera::ResizePerspMatrix(int width, int height)
 {
 	RecalculateFrustrum(width, height);
 	return	frustum.ProjectionMatrix();
 }
 
-void ModuleCamera3D::RecalculateFrustrum(int width, int height)
+void ComponentCamera::RecalculateFrustrum(int width, int height)
 {
 	aspectRatio = (float)width / (float)height;
 	frustum.verticalFov = math::DegToRad(fovy);
 
 	float ratio = Tan(frustum.verticalFov / 2) * aspectRatio;
 	frustum.horizontalFov = math::Atan(ratio);
-	
+
 
 }

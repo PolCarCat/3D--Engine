@@ -3,10 +3,10 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleWindow.h"
 #include "JsonDoc.h"
-#include "MathGeoLib/MathGeoLib.h"
 #include "WinConsole.h"
 #include "ResMesh.h"
 #include "ResTexture.h"
+
 
 #include "Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
@@ -211,8 +211,10 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
-	glLoadMatrixf(&ProjectionMatrix);
+	App->window->w = width;
+	App->window->h = height;
+	ProjectionMatrix = App->camera->ResizePerspMatrix(width, height);
+	glLoadMatrixf(&ProjectionMatrix[0][0]);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

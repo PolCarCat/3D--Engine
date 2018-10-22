@@ -4,6 +4,8 @@
 #include "GameObject.h"
 #include <list>
 
+class ComponentCamera;
+
 class ModuleScene : public Module
 {
 public:
@@ -14,9 +16,11 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 	void AddGameObject(GameObject* obj);
+	void MoveCurCam();
 
 private:
 	GameObject root;
 	ResTexture currentTex;
+	ComponentCamera* currentCam = nullptr;
 
 };

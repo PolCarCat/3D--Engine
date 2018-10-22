@@ -2,7 +2,6 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Light.h"
-#include "glmath.h"
 #include "Primitive.h"
 #include "SDL/include/SDL.h"
 #include "ResTexture.h"
@@ -58,8 +57,8 @@ public:
 	SDL_GLContext context;
 
 
-	mat3x3 NormalMatrix;
-	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+	float3x3 NormalMatrix;
+	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 	std::list<ResMesh*> meshes;
 
 public:

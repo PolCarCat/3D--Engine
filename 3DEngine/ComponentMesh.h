@@ -10,6 +10,8 @@ class ComponentMesh :
 public:
 	ComponentMesh();
 	~ComponentMesh();
+	bool Start();
+	bool Update();
 
 	ResMesh mesh;
 	ComponentTransform transform;
