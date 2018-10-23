@@ -13,8 +13,8 @@ public:
 	bool Start();
 	bool Update();
 	void UpdateUI();
-	void Render();
 
+	bool draw = true;
 	ResMesh mesh;
 	ComponentTransform transform;
 	ComponentMaterial material;

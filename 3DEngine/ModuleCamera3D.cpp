@@ -229,16 +229,17 @@ void ModuleCamera3D::FocusMeshes()
 float4x4 ModuleCamera3D::ResizePerspMatrix(int width, int height)
 {
 	RecalculateFrustrum(width, height);
+
 	return	frustum.ProjectionMatrix();
 }
 
 void ModuleCamera3D::RecalculateFrustrum(int width, int height)
 {
-	aspectRatio = (float)width / (float)height;
-	frustum.verticalFov = math::DegToRad(fovy);
+	//aspectRatio = (float)width / (float)height;
+	//frustum.verticalFov = math::DegToRad(fovy);
 
-	float ratio = Tan(frustum.verticalFov / 2) * aspectRatio;
-	frustum.horizontalFov = math::Atan(ratio);
+	//float ratio = Tan(frustum.verticalFov / 2) * aspectRatio;
+	//frustum.horizontalFov = math::Atan(ratio);
 	
 
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
-
+#include "ComponentTransform.h"
 
 
 class ModuleCamera3D : public Module
@@ -31,7 +31,6 @@ private:
 public:
 	
 	float3 X, Y, Z, Position, Reference;
-
 
 private:
 

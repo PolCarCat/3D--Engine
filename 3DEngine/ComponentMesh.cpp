@@ -22,13 +22,14 @@ bool ComponentMesh::Start()
 
 bool ComponentMesh::Update()
 {
-	//mesh.Draw();
+
+	mesh.Draw();
 	return true;
 }
 
 void ComponentMesh::UpdateUI()
 { 
-	if (ImGui::CollapsingHeader(mesh.name.c_str()));
+	if (ImGui::CollapsingHeader("Mesh"));
 	{
 		ImGui::NewLine();
 		ImGui::Separator();

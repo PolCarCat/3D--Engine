@@ -16,21 +16,20 @@ ComponentCamera::ComponentCamera(float _near, float _far, float _fov)
 	Y = float3(0.0f, 1.0f, 0.0f);
 	Z = float3(0.0f, 0.0f, 1.0f);
 
-	CalculateViewMatrix();
 
-	Position = float3(0.0f, 0.0f, 0.0f);
+
+	Position = float3(0.0f, 1.0f, -10.0f);
 	Reference = float3(0.0f, 0.0f, 0.0f);
 
 	frustum.nearPlaneDistance = nearDistance;
 	frustum.farPlaneDistance = farDistance;
 
 	RecalculateFrustrum(App->window->w, App->window->h);
-
+	CalculateViewMatrix();
 
 	frustum.type = FrustumType::PerspectiveFrustum;
 	frustum.up = float3(0, 1, 0);
-	frustum.pos = Position;
-
+	
 	frustum.SetWorldMatrix(float3x4::identity);
 
 	ViewMatrix = frustum.ViewMatrix();
@@ -46,7 +45,7 @@ bool ComponentCamera::Start()
 	VSLOG("Setting up the camera");
 	bool ret = true;
 
-
+	frustum.pos = float3(0.0f, 1.0f, 10.0f);
 
 	return ret;
 }
@@ -66,7 +65,7 @@ bool ComponentCamera::Update()
 
 
 	float3 newPos(0, 0, 0);
-	float speed = 8.0f;
+	float speed = 1.0f;
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		speed = 50.0f;
 
@@ -80,6 +79,8 @@ bool ComponentCamera::Update()
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
 
 
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) LookAt({ 0,0,0 });
+
 	if (App->input->GetMouseZ() != 0 && !ImGui::IsMouseHoveringAnyWindow())
 	{
 		float wheelspd = Position.Length() / 2;
@@ -91,8 +92,8 @@ bool ComponentCamera::Update()
 	}
 
 
-	Position += newPos;
-	Reference += newPos;
+	frustum.pos -= newPos;
+	Reference -= newPos;
 
 
 	// Mouse motion ----------------
@@ -140,7 +141,7 @@ bool ComponentCamera::Update()
 		Position = Reference + Z * Position.Length();
 	}
 
-	frustum.pos = Position;
+
 
 
 	// Recalculate matrix -------------
@@ -179,9 +180,11 @@ void ComponentCamera::LookAt(const float3 &Spot)
 {
 	Reference = Spot;
 
-	Z = float3(Position - Reference).Normalized();
-	X = float3(float3(0.0f, 1.0f, 0.0f).Cross(Z)).Normalized();
-	Y = Z.Cross(X);
+	float3x3 rotmat = float3x3::LookAt(frustum.front, (Spot - frustum.pos).Normalized(), frustum.up, { 0,1,0 });
+
+
+	frustum.front = rotmat.MulDir(frustum.front).Normalized();
+	frustum.up = rotmat.MulDir(frustum.up).Normalized();
 
 	CalculateViewMatrix();
 }
@@ -205,8 +208,8 @@ float* ComponentCamera::GetViewMatrix()
 // -----------------------------------------------------------------
 void ComponentCamera::CalculateViewMatrix()
 {
-	ViewMatrix = float4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -X.Dot(Position), -Y.Dot(Position), -Z.Dot(Position), 1.0f);
-	ViewMatrixInverse = ViewMatrix.Inverted();
+	ViewMatrix = frustum.ViewMatrix();
+	ViewMatrix.Transpose();
 }
 
 
@@ -239,8 +242,9 @@ void ComponentCamera::RecalculateFrustrum(int width, int height)
 	aspectRatio = (float)width / (float)height;
 	frustum.verticalFov = math::DegToRad(fovy);
 
-	float ratio = Tan(frustum.verticalFov / 2) * aspectRatio;
-	frustum.horizontalFov = math::Atan(ratio);
+	//float ratio = tanf(frustum.verticalFov / 2) * aspectRatio;
+	//frustum.horizontalFov = atanf(ratio);
+	frustum.horizontalFov = frustum.verticalFov * aspectRatio;
 
-
+	frustum.AspectRatio();
 }
