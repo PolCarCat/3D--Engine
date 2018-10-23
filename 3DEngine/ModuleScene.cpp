@@ -33,8 +33,6 @@ bool ModuleScene::Start()
 	ghostcam->Start();
 	currentCam = ghostcam;
 
-	currentCam->Move(float3(0.0f, 5.0f, 5.0f));
-	//currentCam->LookAt(float3(0, 0, 0));
 	App->renderer3D->OnResize(App->window->w, App->window->h);
 
 	if (App->renderer3D->meshes.size() != 0)

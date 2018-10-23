@@ -32,7 +32,7 @@ private:
 
 public:
 
-	float3 X, Y, Z, Position, Reference;
+	float3  Reference;
 	ComponentTransform transform;
 
 private:
@@ -40,5 +40,6 @@ private:
 	float4x4 ViewMatrix, ViewMatrixInverse;
 	math::Frustum frustum;
 	float aspectRatio = 0;
+	bool lookingAt = false;
 };
 

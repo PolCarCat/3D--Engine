@@ -156,7 +156,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glLoadMatrixf(cam->GetViewMatrix());
 
 	// light 0 on cam pos
-	lights[0].SetPos(cam->Position.x,cam->Position.y, cam->Position.z);
+	//lights[0].SetPos(cam->Position.x,cam->Position.y, cam->Position.z);
 	
 	//Color c = App->camera->background;
 	//glClearColor(c.r, c.g, c.b, c.a);
