@@ -13,7 +13,8 @@
 
 #define MAX_LIGHTS 8
 
-class ResMesh;
+
+class ComponentMesh;
 
 
 class ModuleRenderer3D : public Module
@@ -34,6 +35,7 @@ public:
 	void SetMeshesTex(ResTexture i);
 	float3 GetMeshesCenter();
 	AABB GetMeshesAABB();
+	void DrawFrustum(math::Frustum f);
 
 	void OnResize(int width, int height);
 	void EnableVsync(bool enable);
@@ -59,7 +61,7 @@ public:
 
 	float3x3 NormalMatrix;
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
-	std::list<ResMesh*> meshes;
+	std::list<ComponentMesh*> meshes;
 
 public:
 	bool drawCube = false;
@@ -80,6 +82,7 @@ private:
 	bool colorMaterial = true;
 	bool texture2D = true;
 	bool wireframe = false;
+	bool useGhostCam = true;
 
 	PLine		line;
 	PAxis		axis;

@@ -35,12 +35,15 @@ bool ModuleGui::Start()
 	element = new WinElem(App, true);
 	test = new WinTest(App, true);
 	objects = new WinObjects(App, true);
+	cam = new WinCamera(App, true);
+	cam->SetEnable(false);
 
 	AddWindow(config);
 	AddWindow(element);
 	AddWindow(console);
 	AddWindow(test);
 	AddWindow(objects);
+	AddWindow(cam);
 
 
 	for (std::list<WinBase*>::iterator item = windows.begin(); item != windows.end(); item++) {

@@ -5,7 +5,7 @@
 #include "JsonDoc.h"
 #include "WinConsole.h"
 #include "ResMesh.h"
-#include "ResTexture.h"
+#include "ComponentMesh.h"
 #include "ComponentCamera.h"
 
 
@@ -148,7 +148,13 @@ bool ModuleRenderer3D::Init()
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
-	ComponentCamera* cam = App->scene->GetCurCam();
+	
+	ComponentCamera* cam;
+
+	if (useGhostCam)
+		cam = App->scene->GetGhostCam();
+	else
+		cam = App->scene->GetCurCam();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
@@ -209,7 +215,13 @@ bool ModuleRenderer3D::CleanUp()
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
-	ComponentCamera* cam = App->scene->GetCurCam();
+	ComponentCamera* cam;
+
+	if (useGhostCam)
+		cam = App->scene->GetGhostCam();
+	else
+		cam = App->scene->GetCurCam();
+	
 	glViewport(0, 0, width, height);
 
 	glMatrixMode(GL_PROJECTION);
@@ -282,20 +294,24 @@ void ModuleRenderer3D::EnableWireframe(bool enable)
 
 void ModuleRenderer3D::DrawMeshes()
 {
-	for (std::list<ResMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++) 
+	for (std::list<ComponentMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++) 
 	{
-		(*item)->Draw();
-		if (drawNormals)
-			(*item)->DrawNormals();
-		if (drawBBox)
-			(*item)->DrawBoundingBox();
+		if (App->scene->GetCurCam()->CheckInside((*item)->mesh))
+		{
+			(*item)->mesh.Draw();
+			if ((*item)->drawNormals)
+				(*item)->mesh.DrawNormals();
+			if ((*item)->drawBB)
+				(*item)->mesh.DrawBoundingBox();
+		}
+
 	}
 }
 
 
 void ModuleRenderer3D::CleanUpMeshes()
 {
-	for (std::list<ResMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
+	for (std::list<ComponentMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
 	{
 		(*item)->CleanUp();
 
@@ -308,19 +324,19 @@ void ModuleRenderer3D::CleanUpMeshes()
 void ModuleRenderer3D::SetMeshesTex(ResTexture i)
 {
 
-	for (std::list<ResMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
-	{
-		(*item)->tex = i;
-	}
+	//for (std::list<ResMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
+	//{
+	//	(*item)->tex = i;
+	//}
 }
 
 float3 ModuleRenderer3D::GetMeshesCenter()
 {
 	float3 a = { 0,0,0 };
 	int i = 0;
-	for (std::list<ResMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
+	for (std::list<ComponentMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
 	{
-		a += (*item)->boundingBox.CenterPoint();
+		a += (*item)->mesh.boundingBox.CenterPoint();
 		i++;
 	}
 
@@ -330,18 +346,18 @@ float3 ModuleRenderer3D::GetMeshesCenter()
 AABB ModuleRenderer3D::GetMeshesAABB()
 {
 	AABB ret;
-	float3 min = (*App->renderer3D->meshes.begin())->boundingBox.minPoint;
-	float3 max = (*App->renderer3D->meshes.begin())->boundingBox.maxPoint;
+	float3 min = (*App->renderer3D->meshes.begin())->mesh.boundingBox.minPoint;
+	float3 max = (*App->renderer3D->meshes.begin())->mesh.boundingBox.maxPoint;
 
-	for (std::list<ResMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
+	for (std::list<ComponentMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
 	{
-		if ((*item)->boundingBox.minPoint.x < min.x) min.x = (*item)->boundingBox.minPoint.x;
-		if ((*item)->boundingBox.minPoint.y < min.y) min.y = (*item)->boundingBox.minPoint.y;
-		if ((*item)->boundingBox.minPoint.z < min.z) min.z = (*item)->boundingBox.minPoint.z;
+		if ((*item)->mesh.boundingBox.minPoint.x < min.x) min.x = (*item)->mesh.boundingBox.minPoint.x;
+		if ((*item)->mesh.boundingBox.minPoint.y < min.y) min.y = (*item)->mesh.boundingBox.minPoint.y;
+		if ((*item)->mesh.boundingBox.minPoint.z < min.z) min.z = (*item)->mesh.boundingBox.minPoint.z;
 
-		if ((*item)->boundingBox.maxPoint.x > max.x) max.x = (*item)->boundingBox.maxPoint.x;
-		if ((*item)->boundingBox.maxPoint.y > max.y) max.y = (*item)->boundingBox.maxPoint.y;
-		if ((*item)->boundingBox.maxPoint.z > max.z) max.z = (*item)->boundingBox.maxPoint.z;
+		if ((*item)->mesh.boundingBox.maxPoint.x > max.x) max.x = (*item)->mesh.boundingBox.maxPoint.x;
+		if ((*item)->mesh.boundingBox.maxPoint.y > max.y) max.y = (*item)->mesh.boundingBox.maxPoint.y;
+		if ((*item)->mesh.boundingBox.maxPoint.z > max.z) max.z = (*item)->mesh.boundingBox.maxPoint.z;
 
 	}
 	ret.minPoint = min;
@@ -349,3 +365,55 @@ AABB ModuleRenderer3D::GetMeshesAABB()
 	return ret;
 }
 
+void ModuleRenderer3D::DrawFrustum(math::Frustum f)
+{
+	float3 point[8];
+	f.GetCornerPoints(point);
+
+	glColor4f(0.8f, 0.5f, 0.0f, 1.0f);
+	glLineWidth(2);
+
+	glBegin(GL_LINES);
+	
+	glVertex3f(point[0].x, point[0].y, point[0].z);
+	glVertex3f(point[1].x, point[1].y, point[1].z);
+
+	glVertex3f(point[0].x, point[0].y, point[0].z);
+	glVertex3f(point[2].x, point[2].y, point[2].z);
+
+	glVertex3f(point[2].x, point[2].y, point[2].z);
+	glVertex3f(point[3].x, point[3].y, point[3].z);
+
+	glVertex3f(point[1].x, point[1].y, point[1].z);
+	glVertex3f(point[3].x, point[3].y, point[3].z);
+
+
+
+	glVertex3f(point[7].x, point[7].y, point[7].z);
+	glVertex3f(point[6].x, point[6].y, point[6].z);
+
+	glVertex3f(point[7].x, point[7].y, point[7].z);
+	glVertex3f(point[5].x, point[5].y, point[5].z);
+
+	glVertex3f(point[5].x, point[5].y, point[5].z);
+	glVertex3f(point[4].x, point[4].y, point[4].z);
+
+	glVertex3f(point[6].x, point[6].y, point[6].z);
+	glVertex3f(point[4].x, point[4].y, point[4].z);
+
+	glVertex3f(point[0].x, point[0].y, point[0].z);
+	glVertex3f(point[4].x, point[4].y, point[4].z);
+
+	glVertex3f(point[1].x, point[1].y, point[1].z);
+	glVertex3f(point[5].x, point[5].y, point[5].z);
+
+	glVertex3f(point[2].x, point[2].y, point[2].z);
+	glVertex3f(point[6].x, point[6].y, point[6].z);
+
+	glVertex3f(point[3].x, point[3].y, point[3].z);
+	glVertex3f(point[7].x, point[7].y, point[7].z);
+
+	glEnd();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glLineWidth(1);
+}

@@ -17,7 +17,9 @@ public:
 	bool CleanUp();
 	void AddGameObject(GameObject* obj);
 	void MoveCurCam();
+	void SetCurCam(ComponentCamera* cam);
 	ComponentCamera* GetCurCam();
+	ComponentCamera* GetGhostCam();
 
 	GameObject* selectedObj = nullptr;
 	GameObject root;

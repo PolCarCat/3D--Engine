@@ -7,6 +7,7 @@
 #include "WinElem.h"
 #include "WinTest.h"
 #include "WinObjects.h"
+#include "WinCamera.h"
 #include <list>
 #include "ModuleInput.h"
 #include "ImGui/imgui.h"
@@ -41,6 +42,7 @@ public:
 	WinElem*	element = nullptr;
 	WinTest*	test = nullptr;
 	WinObjects* objects = nullptr;
+	WinCamera* cam = nullptr;
 
 private:
 	void AboutWindow();

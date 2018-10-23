@@ -21,6 +21,7 @@ public:
 	void FocusMeshes();
 	float4x4 ResizePerspMatrix(int width, int heigth);
 	void RecalculateFrustrum(int width, int height);
+
 private:
 
 	void CalculateViewMatrix();

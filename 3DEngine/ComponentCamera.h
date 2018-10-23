@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "MathGeoLib/MathGeoLib.h"
+#include "ResMesh.h"
 
 class ComponentCamera :
 	public Component
@@ -12,6 +13,7 @@ public:
 
 	bool Start();
 	bool Update();
+	void UpdateUI();
 	bool CleanUp();
 
 	void Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference = false);
@@ -20,26 +22,26 @@ public:
 	float* GetViewMatrix();
 	void FocusMeshes();
 	float4x4 ResizePerspMatrix(int width, int heigth);
-	void RecalculateFrustrum(int width, int height);
+	void RecalculateFrustrum(int width = 0, int height = 0);
+	void CheckInput(float dt);
+	bool CheckInside(const ResMesh m);
 
-	float fovy = 60.0f;
-private:
-
-	void CalculateViewMatrix();
-	float nearDistance = 0.5f;
-	float farDistance = 512.0f;
-
-
-public:
 
 	float3  Reference;
 	ComponentTransform transform;
+	bool locked = false;
+	bool drawFrustum = true;
+	bool isCurCam = false;
 
 private:
 
 	float4x4 ViewMatrix, ViewMatrixInverse;
+	void CalculateViewMatrix();
+	float nearDistance = 0.5f;
+	float farDistance = 512.0f;
 	math::Frustum frustum;
 	float aspectRatio = 0;
+	float fovy = 60.0f;
 	bool lookingAt = false;
 };
 

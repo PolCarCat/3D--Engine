@@ -16,6 +16,7 @@ public:
 	bool CleanUp();
 	void AddComponent(Component* comp);
 	void AddCompMesh(ResMesh mesh);
+	void AddCompCam(float _near = 0.5f, float _far = 512.0f, float fov = 60.0f);
 	void AddGameObject(GameObject* obj);
 	bool GetActive();
 	void SetActive(bool b);

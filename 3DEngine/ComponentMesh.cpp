@@ -1,12 +1,14 @@
 #include "ComponentMesh.h"
 #include "ImGui/imgui.h"
-
+#include "Application.h"
+#include "ModuleRenderer3D.h"
 
 ComponentMesh::ComponentMesh(ResMesh _mesh)
 {
 	mesh = _mesh;
 	transform.position = mesh.boundingBox.CenterPoint();
 	type = MESH;
+	App->renderer3D->meshes.push_back(this);
 }
 
 
@@ -23,13 +25,15 @@ bool ComponentMesh::Start()
 bool ComponentMesh::Update()
 {
 
-	mesh.Draw();
+
+
 	return true;
 }
 
 void ComponentMesh::UpdateUI()
 { 
-	if (ImGui::CollapsingHeader("Mesh"));
+
+	if (ImGui::CollapsingHeader(mesh.name.c_str()));
 	{
 		ImGui::NewLine();
 		ImGui::Separator();
@@ -41,8 +45,8 @@ void ComponentMesh::UpdateUI()
 		ImGui::Separator();
 		ImGui::NewLine();
 
-		//if (ImGui::Checkbox("Draw Normals", &App->renderer3D->drawNormals));
-		//if (ImGui::Checkbox("Draw Bounding Box", &App->renderer3D->drawBBox));
+		if (ImGui::Checkbox("Draw Normals", &drawNormals));
+		if (ImGui::Checkbox("Draw Bounding Box", &drawBB));
 
 		ImGui::NewLine();
 

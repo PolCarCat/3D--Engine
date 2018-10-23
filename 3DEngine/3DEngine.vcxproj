@@ -171,6 +171,7 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="VectorialFunctions.h" />
     <ClInclude Include="WinBase.h" />
+    <ClInclude Include="WinCamera.h" />
     <ClInclude Include="WinConfig.h" />
     <ClInclude Include="WinConsole.h" />
     <ClInclude Include="WinElem.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="ResTexture.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="VectorialFunctions.cpp" />
+    <ClCompile Include="WinCamera.cpp" />
     <ClCompile Include="WinConfig.cpp" />
     <ClCompile Include="WinConsole.cpp" />
     <ClCompile Include="WinElem.cpp" />

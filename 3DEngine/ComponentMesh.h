@@ -15,6 +15,8 @@ public:
 	void UpdateUI();
 
 	bool draw = true;
+	bool drawBB = false;
+	bool drawNormals = false;
 	ResMesh mesh;
 	ComponentTransform transform;
 	ComponentMaterial material;

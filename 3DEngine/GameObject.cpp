@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "ResMesh.h"
 #include "ComponentMesh.h"
+#include "ComponentCamera.h"
 
 GameObject::GameObject()
 {
@@ -155,5 +156,11 @@ void GameObject::SetParent(GameObject* p)
 void GameObject::AddCompMesh(ResMesh mesh)
 {
 	Component* newcomp = new ComponentMesh(mesh);
+	newcomp->SetParent(this);
+}
+
+void GameObject::AddCompCam(float _near , float _far, float fov)
+{
+	Component* newcomp = new ComponentCamera(_near, _far, fov);
 	newcomp->SetParent(this);
 }

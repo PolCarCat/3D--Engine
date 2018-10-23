@@ -56,14 +56,49 @@ bool ComponentCamera::CleanUp()
 // -----------------------------------------------------------------
 bool ComponentCamera::Update()
 {
-	////Debug camera
 
+
+	// Recalculate matrix -------------
+	if (drawFrustum)
+	App->renderer3D->DrawFrustum(frustum);
+
+	
+	CalculateViewMatrix();
+	return UPDATE_CONTINUE;
+}
+
+void ComponentCamera::UpdateUI()
+{
+	if (ImGui::CollapsingHeader("Camera"))
+	{
+		bool cur = isCurCam;
+		ImGui::Checkbox("Is current camera", &cur);
+
+		if (cur != isCurCam)
+			App->scene->SetCurCam(this);
+
+		ImGui::Checkbox("Draw Fustum", &drawFrustum);
+
+		ImGui::SliderFloat("FarPlane", &farDistance, nearDistance + 10, 600);
+		ImGui::SliderFloat("NearPlane", &nearDistance, 0, farDistance - 10);
+		ImGui::SliderFloat("FOV", &fovy, 0, 100);
+
+		frustum.nearPlaneDistance = nearDistance;
+		frustum.farPlaneDistance = farDistance;
+		RecalculateFrustrum();
+
+	}
+}
+
+
+void ComponentCamera::CheckInput(float dt)
+{
 
 	float3 newPos(0, 0, 0);
-	
-	float speed = 1.0f;
+
+	float speed = 8.0f * dt;
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-		speed = 50.0f;
+		speed = 50.0f * dt;
 
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) FocusMeshes();
 
@@ -79,18 +114,16 @@ bool ComponentCamera::Update()
 
 	if (App->input->GetMouseZ() != 0 && !ImGui::IsMouseHoveringAnyWindow())
 	{
-		float wheelspd = transform.position.Length() / 2;
+		float wheelspd = frustum.pos.Length() / 2;
 		if (App->input->GetMouseZ() > 0)
-			newPos.z -=  speed * wheelspd;
+			newPos.z -= speed * wheelspd;
 
 		else
-			newPos.z +=  speed * wheelspd;
+			newPos.z += speed * wheelspd;
 	}
 	frustum.pos -= frustum.front * newPos.z;
 	frustum.pos -= frustum.up.Cross(frustum.front) * newPos.x;
-
-	//frustum.Translate(newPos);
-
+ 
 
 	Reference -= newPos;
 
@@ -141,14 +174,8 @@ bool ComponentCamera::Update()
 
 
 
-	// Recalculate matrix -------------
-	CalculateViewMatrix();
 
-
-
-	return UPDATE_CONTINUE;
 }
-
 
 
 // -----------------------------------------------------------------
@@ -229,7 +256,9 @@ float4x4 ComponentCamera::ResizePerspMatrix(int width, int height)
 
 void ComponentCamera::RecalculateFrustrum(int width, int height)
 {
+	if (width != 0 && height != 0)
 	aspectRatio = (float)width / (float)height;
+
 	frustum.verticalFov = math::DegToRad(fovy);
 
 	float ratio = tanf(frustum.verticalFov / 2) * aspectRatio;
@@ -237,4 +266,47 @@ void ComponentCamera::RecalculateFrustrum(int width, int height)
 	//frustum.horizontalFov = frustum.verticalFov * aspectRatio;
 
 	frustum.AspectRatio();
+}
+
+bool ComponentCamera::CheckInside(const ResMesh m)
+{
+	bool ret = false;
+	math::Sphere sphere;
+	sphere.pos = frustum.CenterPoint();
+	float3 point[8];
+	frustum.GetCornerPoints(point);
+	float3 radius = point[0] - sphere.pos;
+
+	for (int i = 0; i < 8; i++)
+	{
+		if ((point[i] - sphere.pos).Length() > radius.Length())
+			radius = point[i] - sphere.pos;
+	}
+	sphere.r = radius.Length();
+
+	if (sphere.Contains(m.boundingBox))
+	{
+		float3 corners[8];
+		m.boundingBox.GetCornerPoints(corners);
+		math::Plane planes[6];
+		frustum.GetPlanes(planes);
+		uint in = 8;
+
+		for (int p = 0; p < 6; ++p) {
+
+			for (int i = 0; i < 8; ++i) {
+
+				if (planes[p].IsOnPositiveSide(corners[i]))
+				{
+					in--;
+				}
+			}
+			// were all the points outside of plane p?
+
+			if (in == 0)
+				return false;
+		}
+
+		return true;
+	}
 }
