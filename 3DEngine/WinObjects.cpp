@@ -3,6 +3,7 @@
 #include "ImGui/imgui.h"
 #include "ResMesh.h"
 #include "WinElem.h"
+#include "GameObject.h"
 
 WinObjects::WinObjects(Application* parent, bool start_enabled) : WinBase(parent, start_enabled)
 {
@@ -20,31 +21,23 @@ bool WinObjects::Update()
 
 	ImGui::Begin("Objects");
 
-	/*	for (std::list<Mesh*>::iterator item = App->renderer3D->meshes.begin(); item != App->renderer3D->meshes.end(); item++)
-		{
-			
-			ImGui::TreeNode((*item)->name);
 
-			ImGui::TreePop();
-	
-		}*/
-
-	if (ImGui::TreeNode("Meshes"))
+	if (ImGui::TreeNode("Game Objects"))
 	{
-	
+
 		
 		int node_clicked = -1;      
 		int i = 1;
-		for (std::list<ResMesh*>::iterator item = App->renderer3D->meshes.begin(); item != App->renderer3D->meshes.end(); item++)
+		for (std::vector<GameObject*>::iterator item = App->scene->root.objChilds.begin(); item != App->scene->root.objChilds.end(); item++)
 		{
 			
 			ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 					
 			node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; 
-			ImGui::TreeNodeEx((*item)->name.c_str(), node_flags);
+			ImGui::TreeNodeEx((*item)->GetName(), node_flags);
 			if (ImGui::IsItemClicked())
 			{
-				App->imgui->element->curMesh = (*item);
+				App->scene->selectedObj = (*item);
 				node_clicked = i;
 			}
 			i++;

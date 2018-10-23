@@ -19,8 +19,10 @@ public:
 	void MoveCurCam();
 	ComponentCamera* GetCurCam();
 
-private:
+	GameObject* selectedObj = nullptr;
 	GameObject root;
+private:
+
 	ResTexture currentTex;
 
 	ComponentCamera* ghostcam;

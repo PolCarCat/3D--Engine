@@ -71,11 +71,11 @@ update_status ModuleLoader::PostUpdate(float dt)
 		{
 		case FBX:
 			App->renderer3D->CleanUpMeshes();
-			if (LoadScene(droppedFile))
-			{
-				App->imgui->element->curMesh = (*App->renderer3D->meshes.begin());
-				//App->camera->FocusMeshes();
-			}
+			LoadScene(droppedFile);
+			//{
+			//	App->imgui->element->curMesh = (*App->renderer3D->meshes.begin());
+			//	//App->camera->FocusMeshes();
+			//}
 			break;
 		case PNG:
 		case DDS:
@@ -112,13 +112,11 @@ void ModuleLoader::SetDropFile(char* f)
 }
 
 
-bool ModuleLoader::LoadScene(const char* path)
+GameObject* ModuleLoader::LoadScene(const char* path)
 {
 	bool ret = true;
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
-
-	if (scene == nullptr)
-		scene = aiImportFile(path, aiProcessPreset_TargetRealtime_Quality);
+	GameObject* newobj = new GameObject();
 
 	if (scene != nullptr && scene->HasMeshes())
 	{				
@@ -160,7 +158,6 @@ bool ModuleLoader::LoadScene(const char* path)
 			mesh->boundingBox.maxPoint = { maxx, maxy, maxz };
 			mesh->boundingBox.minPoint = { minx, miny, minz };
 
-			mesh->position = mesh->boundingBox.CenterPoint();
 
 			if (m->HasFaces())
 			{
@@ -232,8 +229,11 @@ bool ModuleLoader::LoadScene(const char* path)
 			if (!error)
 			{
 				mesh->GenerateBuffer();
-				App->renderer3D->meshes.push_back(mesh);
+				newobj->AddCompMesh(*mesh);
+				//App->renderer3D->meshes.push_back(mesh);
+				delete mesh;
 			}
+
 
 
 			App->imgui->console->AddLog("\nAdded mesh with ");
@@ -244,17 +244,19 @@ bool ModuleLoader::LoadScene(const char* path)
 			App->imgui->console->AddNumLog(mesh->num_normals);
 			App->imgui->console->AddLog(" normals");
 			
-		}	
-
+		}
+		newobj->SetName(GetFileName(path));
+		App->scene->AddGameObject(newobj);
 		aiReleaseImport(scene);
 	}
 	else
 	{
 		VSLOG("Error loading scene %s", path);
 		ret = false;
+		delete newobj;
 	}
 		
-	return ret;
+	return newobj;
 }
 
 
@@ -288,6 +290,28 @@ Format ModuleLoader::CheckFormat(const char* path)
 		VSLOG("Unkown format file\n");
 	
 	return ret;
+}
+
+std::string ModuleLoader::GetFileName(const char* path)
+{
+	std::string t = path;
+	std::string name;
+
+	bool point = false;
+
+	for (std::string::reverse_iterator rit = t.rbegin(); rit != t.rend(); ++rit)
+	{
+		if (*rit == '/')
+			break;
+
+		if (point)
+		name.insert(0, 1, *rit);
+
+		if (*rit == '.')
+			point = true;
+	}
+
+	return name;
 }
 
 void LogAssimp(const char* c1, char* c2)

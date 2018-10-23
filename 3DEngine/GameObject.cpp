@@ -1,11 +1,13 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "Globals.h"
-
-
+#include "ResMesh.h"
+#include "ComponentMesh.h"
 
 GameObject::GameObject()
 {
+	transform = new ComponentTransform();
+	transform->SetParent(this);
 }
 
 
@@ -94,6 +96,12 @@ void GameObject::SetName(const char* n)
 	name = n;
 }
 
+void GameObject::SetName(std::string n)
+{
+	name = n;
+}
+
+
 void GameObject::AddComponent(Component* comp)
 {
 	GameObject* prevparent = comp->GetParent();
@@ -135,11 +143,17 @@ void GameObject::SetParent(GameObject* p)
 
 	if (parent != nullptr)
 	{
-		Utils::RemoveFromVector(p, parent->objChilds);
+		Utils::RemoveFromVector(this, parent->objChilds);
 	}
 
 	parent = p;
 	parent->objChilds.push_back(this);
 
 
+}
+
+void GameObject::AddCompMesh(ResMesh mesh)
+{
+	Component* newcomp = new ComponentMesh(mesh);
+	newcomp->SetParent(this);
 }

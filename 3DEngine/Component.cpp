@@ -1,5 +1,6 @@
 #include "Component.h"
 #include "GameObject.h"
+#include "Globals.h"
 
 Component::Component()
 {
@@ -33,7 +34,14 @@ bool Component::GetActive()
 
 void Component::SetParent(GameObject* p)
 {
+	if (parent != nullptr)
+	{
+		Utils::RemoveFromVector(this, parent->compChilds);
+	}
+
 	parent = p;
+	parent->compChilds.push_back(this);
+
 
 	//UNFINISHED Set this to parent childs
 }

@@ -4,7 +4,7 @@
 
 #define INDICES_CAP 200000
 
-
+class GameObject;
 
 enum Format {
 	FBX,
@@ -33,11 +33,12 @@ public:
 	bool CleanUp();
 
 	
-	bool LoadScene(const char* path);
+	GameObject* LoadScene(const char* path);
 	void SetDropFile(char* f);
 
 
 	Format CheckFormat(const char* path);
+	std::string GetFileName(const char* path);
 
 private:
 	char* droppedFile = nullptr;

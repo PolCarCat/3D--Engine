@@ -34,11 +34,6 @@ public:
 
 	AABB boundingBox;
 
-	float3 position = { 0,0,0 };
-	float3 scale = { 0,0,0 };
-	Quat rotation = { 0,0,0,0 };
-
-
 
 	void GenerateBuffer();
 	void Draw();

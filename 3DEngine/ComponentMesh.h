@@ -8,10 +8,12 @@ class ComponentMesh :
 	public Component
 {
 public:
-	ComponentMesh();
+	ComponentMesh(ResMesh _mesh);
 	~ComponentMesh();
 	bool Start();
 	bool Update();
+	void UpdateUI();
+	void Render();
 
 	ResMesh mesh;
 	ComponentTransform transform;

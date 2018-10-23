@@ -16,9 +16,9 @@ public:
 
 	bool CleanUp();
 
-	float3 position;
-	float3 scale;
-	Quat rotation;
+	float3 position = { 0, 0, 0 };
+	float3 scale = { 0, 0, 0 };
+	Quat rotation = { 0, 0, 0, 0 };
 
 };
 

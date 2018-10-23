@@ -44,6 +44,7 @@ bool ModuleScene::Start()
 		App->camera->FocusMeshes();
 	}
 
+	root.Start();
 	return ret;
 }
 
@@ -82,6 +83,7 @@ update_status ModuleScene::Update(float dt)
 
 void ModuleScene::AddGameObject(GameObject* obj)
 {
+
 	obj->SetParent(&root);
 	
 }
