@@ -242,9 +242,9 @@ void ComponentCamera::RecalculateFrustrum(int width, int height)
 	aspectRatio = (float)width / (float)height;
 	frustum.verticalFov = math::DegToRad(fovy);
 
-	//float ratio = tanf(frustum.verticalFov / 2) * aspectRatio;
-	//frustum.horizontalFov = atanf(ratio);
-	frustum.horizontalFov = frustum.verticalFov * aspectRatio;
+	float ratio = tanf(frustum.verticalFov / 2) * aspectRatio;
+	frustum.horizontalFov = 2*atanf(ratio);
+	//frustum.horizontalFov = frustum.verticalFov * aspectRatio;
 
 	frustum.AspectRatio();
 }
