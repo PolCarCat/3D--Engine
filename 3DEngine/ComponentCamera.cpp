@@ -270,7 +270,6 @@ void ComponentCamera::RecalculateFrustrum(int width, int height)
 
 bool ComponentCamera::CheckInside(const ResMesh m)
 {
-	bool ret = false;
 	math::Sphere sphere;
 	sphere.pos = frustum.CenterPoint();
 	float3 point[8];
@@ -301,12 +300,14 @@ bool ComponentCamera::CheckInside(const ResMesh m)
 					in--;
 				}
 			}
-			// were all the points outside of plane p?
 
 			if (in == 0)
 				return false;
+			else
+				return true;
 		}
 
 		return true;
 	}
+	return false;
 }
