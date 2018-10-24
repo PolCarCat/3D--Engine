@@ -151,7 +151,7 @@ void ComponentCamera::CheckInput(float dt)
 
 
 			float3 focus = frustum.pos - Reference;
-			transform.rotation = transform.rotation.RotateAxisAngle(frustum.up, math::DegToRad(dx)) * transform.rotation.RotateAxisAngle(frustum.front.Cross(frustum.up), math::DegToRad(dy));
+			transform.rotation = transform.rotation.RotateAxisAngle({ 0,1,0 }, math::DegToRad(dx)) * transform.rotation.RotateAxisAngle(frustum.front.Cross(frustum.up), math::DegToRad(dy));
 
 			focus = transform.rotation.Transform(focus);
 			frustum.pos = focus + Reference;
@@ -163,12 +163,13 @@ void ComponentCamera::CheckInput(float dt)
 
 
 		float3 left = frustum.front.Cross(frustum.up);
-		transform.rotation = transform.rotation.RotateAxisAngle(frustum.up, math::DegToRad(dx)) * transform.rotation.RotateAxisAngle(left, math::DegToRad(dy));
-		//transform.rotation =  transform.rotation.RotateX(math::DegToRad(dy)) * transform.rotation.RotateY(math::DegToRad(dx));
+		transform.rotation = transform.rotation.RotateAxisAngle({ 0,1,0 }, math::DegToRad(dx));
+		transform.rotation = transform.rotation * transform.rotation.RotateAxisAngle(left, math::DegToRad(dy));
+	
 		frustum.front = transform.rotation.Mul(frustum.front);
 		frustum.up = transform.rotation.Mul(frustum.up);
 
-		//Position = Reference + Z * Position.Length();
+
 	}
 
 
