@@ -92,6 +92,7 @@
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="Importer.h" />
+    <ClInclude Include="ImporterMesh.h" />
     <ClInclude Include="ImporterTexture.h" />
     <ClInclude Include="JsonDoc.h" />
     <ClInclude Include="Light.h" />
@@ -193,6 +194,7 @@
     <ClCompile Include="ImGui\imgui_impl_opengl2.cpp" />
     <ClCompile Include="ImGui\imgui_impl_sdl.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="ImporterMesh.cpp" />
     <ClCompile Include="ImporterTexture.cpp" />
     <ClCompile Include="JsonDoc.cpp" />
     <ClCompile Include="Light.cpp" />
