@@ -8,13 +8,15 @@ class GameObject;
 class QuadtreeNode
 {
 public:
-	QuadtreeNode();
+	QuadtreeNode(QuadtreeNode* parent = nullptr);
 	~QuadtreeNode();
 	void AddObject(GameObject* o);
 	void RemoveObject(GameObject* o);
 	bool CheckBucketSize(uint s);
 	void ResetBB();
+	void SetBB(AABB b);
 	void Draw();
+	void GenerateChilds();
 
 private:
 	QuadtreeNode * childs[4] = { nullptr };
@@ -32,7 +34,6 @@ public:
 
 	void AddObject(GameObject* o);
 	void RemoveObject(GameObject* o);
-	void CreateRoot();
 	void CheckStaticObj();
 	void Draw();
 	

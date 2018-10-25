@@ -4,11 +4,13 @@
 
 
 
-QuadtreeNode::QuadtreeNode()
+QuadtreeNode::QuadtreeNode(QuadtreeNode* _parent)
 {
+
 	bBox.minPoint.Set(0, 0, 0);
 	bBox.maxPoint.Set(0, 0, 0);
-
+	
+	parent = _parent;
 
 }
 
@@ -69,6 +71,21 @@ void QuadtreeNode::ResetBB()
 
 }
 
+
+
+void QuadtreeNode::GenerateChilds()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		childs[i] = new QuadtreeNode(this);
+	}
+}
+
+void QuadtreeNode::SetBB(AABB b)
+{
+	bBox = b;
+}
+
 Quadtree::Quadtree()
 {
 	bucketSize = 1;
@@ -96,9 +113,4 @@ void Quadtree::RemoveObject(GameObject* o)
 void Quadtree::Draw()
 {
 	root->Draw();
-}
-
-void Quadtree::CheckStaticObj()
-{
-
 }

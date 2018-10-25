@@ -308,7 +308,6 @@ bool ComponentCamera::CheckInside(const ResMesh m)
 				return true;
 		}
 
-		return true;
 	}
 	return false;
 }
