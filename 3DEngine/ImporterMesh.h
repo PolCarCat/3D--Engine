@@ -12,9 +12,9 @@ public:
 	ImporterMesh();
 	~ImporterMesh();
 
-	bool Load();
-	bool Save();
-	bool Start();
-	bool CleanUp();
+	//bool Load();
+	//bool Save();
+	//bool Start();
+	//bool CleanUp();
 
 };

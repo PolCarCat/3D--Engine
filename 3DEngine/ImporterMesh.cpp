@@ -13,7 +13,7 @@ ImporterMesh::~ImporterMesh()
 {
 }
 
-bool ImporterMesh::Start()
-{
-	return true;
-}
+//bool ImporterMesh::Start()
+//{
+//	return true;
+//}

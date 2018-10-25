@@ -36,7 +36,7 @@ bool ModuleScene::Start()
 	camobj->SetName("Camera");
 
 	camobj->AddCompCam();
-	AddGameObject(camobj);
+	//AddGameObject(camobj);
 
 	App->renderer3D->OnResize(App->window->w, App->window->h);
 
@@ -48,6 +48,7 @@ bool ModuleScene::Start()
 	}
 
 	root.Start();
+	//quadTree.TEST();
 	return ret;
 }
 
@@ -63,6 +64,14 @@ update_status ModuleScene::Update(float dt)
 	ghostcam->Update();
 	root.Update();
 	quadTree.Draw();
+
+	ImGui::Begin("TEST");
+	if (ImGui::Button("Distribute tree"))
+	{
+		quadTree.DistributeTree();
+		//quadTree.GenerateTestChildren();
+	}
+	ImGui::End();
 
 	App->renderer3D->OnResize(App->window->w, App->window->h);
 	return UPDATE_CONTINUE;
