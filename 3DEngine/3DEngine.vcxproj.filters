@@ -360,8 +360,13 @@
     <ClInclude Include="WinCamera.h">
       <Filter>Sources\Windows</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="QuadTree.h">
       <Filter>Sources\Helpers</Filter>
+=======
+    <ClInclude Include="ImporterMesh.h">
+      <Filter>Sources\Importers</Filter>
+>>>>>>> d07f6c1a899b5ec8c6441040856c0e7d659db07f
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -575,8 +580,13 @@
     <ClCompile Include="WinCamera.cpp">
       <Filter>Sources\Windows</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="QuadTree.cpp">
       <Filter>Sources\Helpers</Filter>
+=======
+    <ClCompile Include="ImporterMesh.cpp">
+      <Filter>Sources\Importers</Filter>
+>>>>>>> d07f6c1a899b5ec8c6441040856c0e7d659db07f
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
