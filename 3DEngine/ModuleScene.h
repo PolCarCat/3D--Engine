@@ -23,6 +23,8 @@ public:
 
 	GameObject* selectedObj = nullptr;
 	GameObject root;
+
+	Quadtree quadTree;
 private:
 
 	ResTexture currentTex;

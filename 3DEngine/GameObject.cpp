@@ -4,11 +4,14 @@
 #include "ResMesh.h"
 #include "ComponentMesh.h"
 #include "ComponentCamera.h"
+#include "Application.h"
 
 GameObject::GameObject()
 {
 	transform = new ComponentTransform();
 	transform->SetParent(this);
+	bBox.minPoint = { 0, 0, 0 };
+	bBox.maxPoint = { 0, 0, 0 };
 }
 
 
@@ -44,12 +47,17 @@ bool GameObject::Update()
 		if ((*item)->GetActive())
 		(*item)->Update();
 	}
-
+	//App->renderer3D->DrawAABB(bBox);
+	
 	return true;
 }
 
 void GameObject::UpdateUI()
 {
+	bool s = staticobj;
+	ImGui::Checkbox("Set static", &staticobj);
+	if (s != staticobj)
+		SetStatic(staticobj);
 
 	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end(); item++)
 	{
@@ -163,4 +171,32 @@ void GameObject::AddCompCam(float _near , float _far, float fov)
 {
 	Component* newcomp = new ComponentCamera(_near, _far, fov);
 	newcomp->SetParent(this);
+}
+
+void GameObject::AddBox(AABB b)
+{
+	if (bBox.minPoint.Equals(0, 0, 0) && bBox.maxPoint.Equals(0, 0, 0))
+		bBox = b;
+	else
+		bBox.Enclose(b);
+}
+
+bool GameObject::GetStatic()
+{
+	return staticobj;
+}
+void GameObject::SetStatic(bool b)
+{
+	staticobj = b;
+
+	if (staticobj)
+		App->scene->quadTree.AddObject(this);
+
+	else
+		App->scene->quadTree.RemoveObject(this);
+}
+
+AABB GameObject::GetBB()
+{
+	return bBox;
 }

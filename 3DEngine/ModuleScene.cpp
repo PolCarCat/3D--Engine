@@ -36,7 +36,7 @@ bool ModuleScene::Start()
 	camobj->SetName("Camera");
 
 	camobj->AddCompCam();
-	AddGameObject(camobj);
+	//AddGameObject(camobj);
 
 	App->renderer3D->OnResize(App->window->w, App->window->h);
 
@@ -62,6 +62,7 @@ update_status ModuleScene::Update(float dt)
 
 	ghostcam->Update();
 	root.Update();
+	quadTree.Draw();
 
 	App->renderer3D->OnResize(App->window->w, App->window->h);
 	return UPDATE_CONTINUE;

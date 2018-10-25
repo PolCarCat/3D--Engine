@@ -37,6 +37,7 @@ public:
 	void SetDropFile(char* f);
 
 
+
 	Format CheckFormat(const char* path);
 	std::string GetFileName(const char* path);
 

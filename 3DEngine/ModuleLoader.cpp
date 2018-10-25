@@ -116,13 +116,15 @@ GameObject* ModuleLoader::LoadScene(const char* path)
 {
 	bool ret = true;
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
-	GameObject* newobj = new GameObject();
+
+	GameObject* newobj = nullptr;
 
 	if (scene != nullptr && scene->HasMeshes())
 	{				
 		uint i = 0;
 		for (int nm = 0; nm < scene->mNumMeshes; nm++)
 		{	
+			GameObject* newobj = new GameObject();
 			bool error = false;
 			ResMesh* mesh = new ResMesh;
 			aiMesh* m = scene->mMeshes[nm];
@@ -158,7 +160,7 @@ GameObject* ModuleLoader::LoadScene(const char* path)
 			mesh->boundingBox.maxPoint = { maxx, maxy, maxz };
 			mesh->boundingBox.minPoint = { minx, miny, minz };
 
-
+			newobj->AddBox(mesh->boundingBox);
 			if (m->HasFaces())
 			{
 				mesh->num_indice = m->mNumFaces * 3;
@@ -230,8 +232,10 @@ GameObject* ModuleLoader::LoadScene(const char* path)
 			{
 				mesh->GenerateBuffer();
 				newobj->AddCompMesh(*mesh);
+				newobj->SetName(GetFileName(path));
+				App->scene->AddGameObject(newobj);
 				//App->renderer3D->meshes.push_back(mesh);
-				delete mesh;
+
 			}
 
 
@@ -244,16 +248,16 @@ GameObject* ModuleLoader::LoadScene(const char* path)
 			App->imgui->console->AddNumLog(mesh->num_normals);
 			App->imgui->console->AddLog(" normals");
 			
+			delete mesh;
 		}
-		newobj->SetName(GetFileName(path));
-		App->scene->AddGameObject(newobj);
+
 		aiReleaseImport(scene);
 	}
 	else
 	{
 		VSLOG("Error loading scene %s", path);
 		ret = false;
-		delete newobj;
+
 	}
 		
 	return newobj;

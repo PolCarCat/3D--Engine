@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include "ResMesh.h"
+#include "QuadTree.h"
+
 class Component;
 class ComponentTransform;
 
@@ -23,16 +25,23 @@ public:
 	const char* GetName();
 	void SetName(const char* n);
 	void SetName(std::string n);
+	void AddBox(AABB b);
+	bool GetStatic();
+	void SetStatic(bool b);
+	AABB GetBB();
 
 	GameObject* GetParent();
 	void SetParent(GameObject* p);
 
 	std::vector<Component*> compChilds;
 	std::vector<GameObject*> objChilds;
+
 private:
 
 	ComponentTransform * transform = nullptr;
 	GameObject* parent = nullptr;
+	AABB bBox;
 	bool active = true;
+	bool staticobj = false;
 	std::string name;
 };

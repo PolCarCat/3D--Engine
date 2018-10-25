@@ -417,3 +417,54 @@ void ModuleRenderer3D::DrawFrustum(math::Frustum f)
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	glLineWidth(1);
 }
+
+void ModuleRenderer3D::DrawAABB(math::AABB a, Color c)
+{
+	glColor4f(c.r, c.g, c.b, c.a);
+	glLineWidth(2);
+	
+	float3 length = a.maxPoint - a.minPoint;
+	float3 min = a.minPoint;
+	float3 max = a.maxPoint;
+
+	glBegin(GL_LINES);
+	glVertex3f(min.x, min.y, min.z);
+	glVertex3f(min.x + length.x, min.y, min.z);
+
+	glVertex3f(min.x, min.y, min.z);
+	glVertex3f(min.x, min.y + length.y, min.z);
+
+	glVertex3f(min.x, min.y, min.z);
+	glVertex3f(min.x, min.y, min.z + length.z);
+
+	glVertex3f(min.x, min.y + length.y, min.z);
+	glVertex3f(min.x + length.x, min.y + length.y, min.z);
+
+	glVertex3f(min.x, min.y + length.y, min.z);
+	glVertex3f(min.x, min.y + length.y, min.z + length.z);
+
+	glVertex3f(min.x + length.x, min.y, min.z);
+	glVertex3f(min.x + length.x, min.y + length.y, min.z);
+
+	glVertex3f(min.x, min.y, min.z + length.z);
+	glVertex3f(min.x, min.y + length.y, min.z + length.z);
+
+	glVertex3f(max.x, max.y, max.z);
+	glVertex3f(max.x - length.x, max.y, max.z);
+
+	glVertex3f(max.x, max.y, max.z);
+	glVertex3f(max.x, max.y - length.y, max.z);
+
+	glVertex3f(max.x, max.y, max.z);
+	glVertex3f(max.x, max.y, max.z - length.z);
+
+	glVertex3f(max.x, max.y - length.y, max.z);
+	glVertex3f(max.x - length.x, max.y - length.y, max.z);
+
+	glVertex3f(max.x, max.y - length.y, max.z);
+	glVertex3f(max.x, max.y - length.y, max.z - length.z);
+
+	glEnd();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glLineWidth(1);
+}

@@ -36,6 +36,7 @@ public:
 	float3 GetMeshesCenter();
 	AABB GetMeshesAABB();
 	void DrawFrustum(math::Frustum f);
+	void DrawAABB(math::AABB a, Color c = { 0.2f, 0.2f, 1.0f, 1.0f });
 
 	void OnResize(int width, int height);
 	void EnableVsync(bool enable);
