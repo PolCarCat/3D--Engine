@@ -5,7 +5,7 @@
 #include "Primitive.h"
 #include "ModuleLoader.h"
 #include "ComponentCamera.h"
-
+#include "ComponentMaterial.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -42,7 +42,7 @@ bool ModuleScene::Start()
 
 	if (App->renderer3D->meshes.size() != 0)
 	{
-		App->renderer3D->SetMeshesTex(currentTex);
+		//App->renderer3D->SetMeshesTex(currentTex);
 		//App->imgui->element->curMesh = (*App->renderer3D->meshes.begin());
 		App->camera->FocusMeshes();
 	}
@@ -100,9 +100,23 @@ void ModuleScene::AddGameObject(GameObject* obj)
 	
 }
 
-void ModuleScene::MoveCurCam()
+void ModuleScene::DeleteGameObject(GameObject* obj)
 {
+	Utils::RemoveFromVector(obj, root.objChilds);
+}
 
+void ModuleScene::CreateEmptyObj()
+{
+	GameObject* obj = new GameObject();
+	obj->SetName("Untitiled");
+	obj->SetParent(&root);
+}
+
+void ModuleScene::CreateMaterial()
+{
+	ComponentMaterial* mat = new ComponentMaterial();
+	mat->SetName("Untitiled");
+	materials.push_back(mat);
 }
 
 ComponentCamera* ModuleScene::GetCurCam()

@@ -31,6 +31,7 @@ public:
 	bool Save(json_object_t* doc);
 
 	void DrawMeshes();
+	void SetUpMat(ComponentMaterial* mat);
 	void CleanUpMeshes();
 	void SetMeshesTex(ResTexture i);
 	float3 GetMeshesCenter();

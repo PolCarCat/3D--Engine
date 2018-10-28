@@ -19,6 +19,9 @@ public:
 	bool drawNormals = false;
 	ResMesh mesh;
 	ComponentTransform transform;
-	ComponentMaterial material;
+	ComponentMaterial* material = nullptr;
+
+private:
+	void UpdateMatWin();
 };
 

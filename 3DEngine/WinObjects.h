@@ -9,6 +9,7 @@ public:
 
 
 	bool Update();
+	void UpdateMatWin();
 
 
 };

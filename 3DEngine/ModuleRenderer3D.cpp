@@ -298,14 +298,28 @@ void ModuleRenderer3D::DrawMeshes()
 	{
 		if (App->scene->GetCurCam()->CheckInside((*item)->mesh))
 		{
+			if ((*item)->material != nullptr)
+			SetUpMat((*item)->material);
+
 			(*item)->mesh.Draw();
+
 			if ((*item)->drawNormals)
 				(*item)->mesh.DrawNormals();
+
 			if ((*item)->drawBB)
 				(*item)->mesh.DrawBoundingBox();
 		}
 
 	}
+}
+
+void ModuleRenderer3D::SetUpMat(ComponentMaterial* mat)
+{
+	
+	if (mat->texEnabled)
+		glBindTexture(GL_TEXTURE_2D, mat->GetTexture().id);
+	else
+		glColor4f(mat->color.r, mat->color.g, mat->color.b, mat->color.a);
 }
 
 

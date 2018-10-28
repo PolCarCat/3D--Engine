@@ -66,7 +66,7 @@ void ResMesh::Draw()
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	glBindTexture(GL_TEXTURE_2D, tex.id);
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indice);
 	glVertexPointer(3, GL_FLOAT, 0, &vertex[0]);
 	glTexCoordPointer(2, GL_FLOAT, 0, &transC[0]);
@@ -76,6 +76,7 @@ void ResMesh::Draw()
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 	delete[] transC;
 	transC = nullptr;

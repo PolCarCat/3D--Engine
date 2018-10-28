@@ -1,10 +1,11 @@
 #pragma once
 #include "Module.h"
-#include "ResTexture.h"
 #include "GameObject.h"
+
 #include <list>
 
 class ComponentCamera;
+class ComponentMaterial;
 
 class ModuleScene : public Module
 {
@@ -16,18 +17,20 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 	void AddGameObject(GameObject* obj);
-	void MoveCurCam();
+	void CreateEmptyObj();
+	void DeleteGameObject(GameObject* obj);
 	void SetCurCam(ComponentCamera* cam);
+	void CreateMaterial();
 	ComponentCamera* GetCurCam();
 	ComponentCamera* GetGhostCam();
 
 	GameObject* selectedObj = nullptr;
+	ComponentMaterial* selectedMat = nullptr;
 	GameObject root;
+	std::list<ComponentMaterial*> materials;
 
 	Quadtree quadTree;
 private:
-
-	ResTexture currentTex;
 
 	ComponentCamera* ghostcam;
 	ComponentCamera* currentCam = nullptr;

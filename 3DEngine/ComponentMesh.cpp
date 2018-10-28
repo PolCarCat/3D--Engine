@@ -2,6 +2,7 @@
 #include "ImGui/imgui.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "WinObjects.h"
 
 ComponentMesh::ComponentMesh(ResMesh _mesh)
 {
@@ -32,8 +33,7 @@ bool ComponentMesh::Update()
 
 void ComponentMesh::UpdateUI()
 { 
-
-	if (ImGui::CollapsingHeader(mesh.name.c_str()));
+	if (ImGui::CollapsingHeader("Mesh"))
 	{
 		ImGui::NewLine();
 		ImGui::Separator();
@@ -64,6 +64,50 @@ void ComponentMesh::UpdateUI()
 		}
 		ImGui::Columns(1);
 
+		if (material == nullptr)
+		{
+			if (ImGui::Button("Add Material"))
+				ImGui::OpenPopup("select");
+
+			if (ImGui::BeginPopup("select"))
+			{
+				UpdateMatWin();
+				ImGui::EndPopup();
+			}
+		}
+		else
+		{
+			ImGui::NewLine();
+			material->UpdateUI();
+		}
 		transform.UpdateUI();
+	}
+}
+
+void ComponentMesh::UpdateMatWin()
+{
+	for (std::list<ComponentMaterial*>::iterator item = App->scene->materials.begin(); item != App->scene->materials.end(); item++)
+	{
+
+		ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+
+		node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
+		ImGui::TreeNodeEx((*item)->GetName(), node_flags);
+		if (ImGui::IsItemClicked())
+		{
+			material = (*item);
+
+		}
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::BeginTooltip();
+			ImGui::ColorButton("Color##3c", *(ImVec4*)&(*item)->color, 0, ImVec2(80, 80));
+			ImGui::EndTooltip();
+		}
+	}
+
+	if (ImGui::Button("Add Material"))
+	{
+		App->scene->CreateMaterial();
 	}
 }
