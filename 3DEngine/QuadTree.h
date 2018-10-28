@@ -19,7 +19,7 @@ public:
 	void GenerateChildren();
 	void CollectIntersections(std::vector<GameObject*> &objects, const AABB b);
 	void DistributeNode(uint buckedSize);
-	void Insert(GameObject* obj);
+	void Insert(GameObject* obj, uint buckedSize);
 	void GenerateTestChildren();
 	bool CheckIfChildNeeded(GameObject* obj);
 

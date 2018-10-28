@@ -109,38 +109,29 @@ void QuadtreeNode::DistributeNode(uint buckedSize)
 {
 	for (std::list<GameObject*>::iterator item = objects.begin(); item != objects.end();)
 	{
-		if (objects.size() > buckedSize)
+
+		if (!CheckIfChildNeeded(*item) && objects.size() <= buckedSize)
+			++item;
+		else
 		{
-			Insert(*item);
+			GenerateChildren();
+			for (int i = 0; i < 4; ++i)
+			{
+				if (childs[i]->bBox.Intersects((*item)->GetBB()))
+					childs[i]->Insert((*item), buckedSize);
+			}
 			item = objects.erase(item);
 		}
-		else
-			item++;
 	}
 }
 
-void QuadtreeNode::Insert(GameObject* obj)
+void QuadtreeNode::Insert(GameObject* obj, uint buckedSize)
 {
 
 
-	if (!CheckIfChildNeeded(obj))
-	{
 		objects.push_back(obj);
-	}
-	else
-	{
-		if (childs[0] == nullptr)
-		{
-			GenerateChildren();
-		}
-
-		for (int i = 0; i < 4; i++)
-		{
-			if (childs[i]->bBox.Intersects(obj->GetBB()))
-				childs[i]->Insert(obj);
-		}
-	}
-		
+		DistributeNode(buckedSize);
+			
 }
 
 void QuadtreeNode::GenerateTestChildren()
