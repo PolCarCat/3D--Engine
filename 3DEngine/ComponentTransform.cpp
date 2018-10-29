@@ -26,7 +26,7 @@ bool ComponentTransform::Update()
 void ComponentTransform::UpdateUI()
 {
 	ImGui::NewLine();
-	ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.5f, 1.0f), "Transform");
+	ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.5f, 1.0f), "Transformation");
 
 	ImGui::Columns(2);
 	{

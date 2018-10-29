@@ -77,6 +77,15 @@ update_status ModuleScene::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
+
+update_status ModuleScene::PostUpdate(float dt)
+{
+
+	root.PostUpdate();
+
+	return UPDATE_CONTINUE;
+}
+
 // Load assets
 bool ModuleScene::CleanUp()
 {

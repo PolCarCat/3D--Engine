@@ -45,3 +45,13 @@ void Component::SetParent(GameObject* p)
 
 	//UNFINISHED Set this to parent childs
 }
+
+void Component::Delete()
+{
+	toDelete = true;
+}
+
+bool Component::CheckDelete()
+{
+	return toDelete;
+}

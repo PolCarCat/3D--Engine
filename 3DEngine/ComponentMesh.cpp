@@ -64,6 +64,8 @@ void ComponentMesh::UpdateUI()
 		}
 		ImGui::Columns(1);
 
+		ImGui::NewLine();
+		ImGui::Separator();
 		if (material == nullptr)
 		{
 			if (ImGui::Button("Add Material"))
@@ -78,9 +80,15 @@ void ComponentMesh::UpdateUI()
 		else
 		{
 			ImGui::NewLine();
+			ImGui::Separator();
 			material->UpdateUI();
 		}
 		transform.UpdateUI();
+
+		ImGui::NewLine();
+		ImGui::Separator();
+		if (ImGui::Button("Delete"))
+			Delete();
 	}
 }
 

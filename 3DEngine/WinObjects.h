@@ -1,5 +1,8 @@
 #pragma once
 #include "WinBase.h"
+
+class GameObject;
+
 class WinObjects :
 	public WinBase
 {
@@ -9,8 +12,12 @@ public:
 
 
 	bool Update();
+	bool PostUpdate();
 	void UpdateMatWin();
+	void UpdateObj(GameObject* obj);
 
-
+private:
+	GameObject* target = nullptr;
+	GameObject* source = nullptr;
 };
 

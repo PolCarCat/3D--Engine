@@ -42,6 +42,9 @@ public:
 	void SetParent(GameObject* p);
 	void SetActive(bool a);
 	bool GetActive();
+	void Delete();
+	bool CheckDelete();
+	bool toDelete = false;
 
 protected:
 	Type type;

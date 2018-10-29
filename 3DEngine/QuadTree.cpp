@@ -127,11 +127,8 @@ void QuadtreeNode::DistributeNode(uint buckedSize)
 
 void QuadtreeNode::Insert(GameObject* obj, uint buckedSize)
 {
-
-
 		objects.push_back(obj);
-		DistributeNode(buckedSize);
-			
+		DistributeNode(buckedSize);			
 }
 
 void QuadtreeNode::GenerateTestChildren()

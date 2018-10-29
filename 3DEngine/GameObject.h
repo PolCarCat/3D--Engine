@@ -14,12 +14,15 @@ public:
 
 	bool Start();
 	bool Update();
+	bool PostUpdate();
 	void UpdateUI();
 	bool CleanUp();
 	void AddComponent(Component* comp);
 	void AddCompMesh(ResMesh mesh);
 	void AddCompCam(float _near = 0.5f, float _far = 512.0f, float fov = 60.0f);
 	void AddGameObject(GameObject* obj);
+	void DeleteComp(Component* comp);
+	void DeleteGameObj(GameObject* obj);
 	bool GetActive();
 	void SetActive(bool b);
 	const char* GetName();
@@ -29,6 +32,8 @@ public:
 	bool GetStatic();
 	void SetStatic(bool b);
 	AABB GetBB();
+	void Delete();
+	bool CheckDelete();
 
 	GameObject* GetParent();
 	void SetParent(GameObject* p);
@@ -43,5 +48,7 @@ private:
 	AABB bBox;
 	bool active = true;
 	bool staticobj = false;
+	bool toDelete = false;
 	std::string name;
+	void UpdateNewComWindow();
 };

@@ -1,6 +1,7 @@
 #include "ModuleGui.h"
 #include "Application.h"
 #include <gl/GL.h>
+#include "ImGui/imgui_internal.h"
 
 ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -16,15 +17,15 @@ ModuleGui::~ModuleGui()
 
 bool ModuleGui::Start()
 {
-	ImGui::CreateContext();
+	ImGuiContext* context = ImGui::CreateContext();
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
 	ImGui_ImplOpenGL2_Init();
 
-
+	
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-	
+
 
 	release_link = "https://github.com/PolCarCat/3D--Engine/releases";
 	wiki_link = "https://github.com/PolCarCat/3D--Engine/wiki";
@@ -139,6 +140,12 @@ update_status ModuleGui::Update(float dt)
 update_status ModuleGui::PostUpdate(float dt)
 {
 	update_status status = UPDATE_CONTINUE;
+
+
+	for (std::list<WinBase*>::iterator item = windows.begin(); item != windows.end(); item++) {
+		if ((*item)->GetEnable())
+			(*item)->PostUpdate();
+	}
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());

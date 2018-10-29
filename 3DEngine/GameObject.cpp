@@ -52,6 +52,43 @@ bool GameObject::Update()
 	return true;
 }
 
+bool GameObject::PostUpdate()
+
+
+{
+	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end();)
+	{
+		
+		if ((*item)->CheckDelete())
+		{
+			(*item)->CleanUp();
+			item = objChilds.erase(item);
+			//delete *item;
+		}
+		else
+		{
+			(*item)->PostUpdate();
+			item++;
+		}
+
+	}
+
+	for (std::vector<Component*>::iterator item = compChilds.begin(); item != compChilds.end();)
+	{
+		if ((*item)->toDelete)
+		{
+			(*item)->CleanUp();
+			item = compChilds.erase(item);
+			//delete *item;
+		}
+		else
+			item++;
+		
+	}
+
+	return true;
+}
+
 void GameObject::UpdateUI()
 {
 	bool s = staticobj;
@@ -61,14 +98,23 @@ void GameObject::UpdateUI()
 
 	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end(); item++)
 	{
-		(*item)->UpdateUI();
+		//(*item)->UpdateUI();
 	}
 
 	for (std::vector<Component*>::iterator item = compChilds.begin(); item != compChilds.end(); item++)
 	{
 			(*item)->UpdateUI();
+
 	}
 
+	if (ImGui::Button("Add Component"))
+		ImGui::OpenPopup("newcomp");
+
+	if (ImGui::BeginPopup("newcomp"))
+	{
+		UpdateNewComWindow();
+		ImGui::EndPopup();
+	}
 }
 
 bool GameObject::CleanUp()
@@ -83,6 +129,16 @@ bool GameObject::CleanUp()
 			(*item)->CleanUp();
 	}
 	return true;
+}
+
+void GameObject::Delete()
+{
+	toDelete = true;
+}
+
+bool GameObject::CheckDelete()
+{
+	return toDelete;
 }
 
 bool GameObject::GetActive()
@@ -161,6 +217,18 @@ void GameObject::SetParent(GameObject* p)
 
 }
 
+void GameObject::DeleteComp(Component* comp)
+{
+	Utils::RemoveFromVector(comp, compChilds);
+	comp->CleanUp();
+	delete comp;
+}
+
+void GameObject::DeleteGameObj(GameObject* obj)
+{
+
+}
+
 void GameObject::AddCompMesh(ResMesh mesh)
 {
 	Component* newcomp = new ComponentMesh(mesh);
@@ -199,4 +267,16 @@ void GameObject::SetStatic(bool b)
 AABB GameObject::GetBB()
 {
 	return bBox;
+}
+
+
+void GameObject::UpdateNewComWindow()
+{
+	ImGui::Separator();
+	ImGui::NewLine();
+
+	if (ImGui::Button("Add Camera"))
+	{
+		AddCompCam();
+	}
 }

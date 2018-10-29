@@ -87,6 +87,10 @@ void ComponentCamera::UpdateUI()
 		frustum.farPlaneDistance = farDistance;
 		RecalculateFrustrum();
 
+
+		ImGui::Separator();
+		if (ImGui::Button("Delete"))
+			Delete();
 	}
 }
 
