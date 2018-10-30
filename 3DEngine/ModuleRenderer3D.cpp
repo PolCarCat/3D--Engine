@@ -296,7 +296,7 @@ void ModuleRenderer3D::DrawMeshes()
 {
 	for (std::list<ComponentMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++) 
 	{
-		if (App->scene->GetCurCam()->CheckInside((*item)->mesh))
+		if ((*item)->GetActive() && App->scene->GetCurCam()->CheckInside((*item)->mesh))
 		{
 			if ((*item)->material != nullptr)
 			SetUpMat((*item)->material);

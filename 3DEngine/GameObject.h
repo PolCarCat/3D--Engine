@@ -56,4 +56,5 @@ private:
 	bool toDelete = false;
 	std::string name;
 	void UpdateNewComWindow();
+	void SetChildsActive(bool a);
 };

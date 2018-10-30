@@ -92,13 +92,24 @@ bool GameObject::PostUpdate()
 
 void GameObject::UpdateUI()
 {
+
+	char n[50];
+	strcpy_s(n, 50, name.c_str());
+	ImGui::InputText("", n, 50);
+		name = n;
+
+
+	bool a = active;
+	ImGui::Checkbox("Active", &active);
+	if (a != active)
+		SetChildsActive(active);
+
+	ImGui::SameLine();
+
 	bool s = staticobj;
-	ImGui::Checkbox("Set static", &staticobj);
+	ImGui::Checkbox("Static", &staticobj);
 	if (s != staticobj)
 		SetStatic(staticobj);
-
-
-	ImGui::Checkbox("Active", &active);
 
 
 	ImGui::NewLine();
@@ -253,6 +264,20 @@ bool GameObject::CheckIfContained(GameObject* obj)
 	return false;
 }
 
+void GameObject::SetChildsActive(bool a)
+{
+	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end(); item++)
+	{
+		(*item)->SetActive(a);
+		(*item)->SetChildsActive(a);
+	}
+
+	for (std::vector<Component*>::iterator item = compChilds.begin(); item != compChilds.end(); item++)
+	{
+		(*item)->SetActive(a);
+	}
+}
+
 void GameObject::DeleteComp(Component* comp)
 {
 	Utils::RemoveFromVector(comp, compChilds);
@@ -315,24 +340,28 @@ AABB GameObject::GetBB()
 void GameObject::UpdateNewComWindow()
 {
 	ImGui::Separator();
-	ImGui::NewLine();
 
 	ImGuiTreeNodeFlags node_flags =  ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Leaf;
 
 	Type t = Type::NULLCOMP;
-	ImGui::TreeNodeEx("Add Camera", node_flags);
+	bool add = false;
+	ImGui::TreeNodeEx("Camera", node_flags);
 
 	if (ImGui::IsItemClicked())
 	{
-		AddCompCam();
+		t = CAMERA;
+		add = true;
 	}
 	
-	ImGui::TreeNodeEx("Add Mesh", node_flags);
-
+	ImGui::TreeNodeEx("Mesh", node_flags);
 	if (ImGui::IsItemClicked())
 	{
-
+		t = MESH;
+		add = true;
 	}
+
+	if (add)
+		AddComponent(t);
 }
 
 void GameObject::AddComponent(Type t)
