@@ -5,6 +5,7 @@
 #include "ComponentMesh.h"
 #include "ComponentCamera.h"
 #include "Application.h"
+#include "QuadTree.h"
 
 GameObject::GameObject()
 {
@@ -96,29 +97,38 @@ void GameObject::UpdateUI()
 	if (s != staticobj)
 		SetStatic(staticobj);
 
+
+	ImGui::Checkbox("Active", &active);
+
+
+	ImGui::NewLine();
+	ImGui::Text("Objects");
+	ImGui::Separator();
 	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end(); item++)
 	{
-		if (ImGui::CollapsingHeader("Object"))
+		if (ImGui::CollapsingHeader((*item)->GetName()))
 			(*item)->UpdateUI();
 	}
 
+	ImGui::NewLine();
+	ImGui::Text("Components");
+	ImGui::Separator();
 	for (std::vector<Component*>::iterator item = compChilds.begin(); item != compChilds.end(); item++)
 	{
 			(*item)->UpdateUI();
 
 	}
 
-	if (ImGui::Button("Add Component"))
-		ImGui::OpenPopup("newcomp");
-
-	if (ImGui::BeginPopup("newcomp"))
+	if (ImGui::BeginMenu("Add Component"))
 	{
 		UpdateNewComWindow();
-		ImGui::EndPopup();
+		ImGui::EndMenu();
 	}
 
-	if (ImGui::Button("Assing prev parent"))
-		AssignPrevParent();
+	ImGui::NewLine();
+	ImGui::Separator();
+	if (ImGui::Button("Delete"))
+		Delete();
 }
 
 bool GameObject::CleanUp()
@@ -126,6 +136,11 @@ bool GameObject::CleanUp()
 	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end(); item++)
 	{
 			(*item)->CleanUp();
+			if (*item != nullptr)
+			{
+				delete *item;
+				*item = nullptr;
+			}
 	}
 
 	for (std::vector<Component*>::iterator item = compChilds.begin(); item != compChilds.end(); item++)
@@ -209,23 +224,35 @@ GameObject* GameObject::GetParent()
 
 void GameObject::SetParent(GameObject* p)
 {
-
-	if (parent != nullptr)
+	if (!CheckIfContained(p))
 	{
-		Utils::RemoveFromVector(this, parent->objChilds);
+		if (parent != nullptr)
+		{
+			Utils::RemoveFromVector(this, parent->objChilds);
+		}
+
+		parent = p;
+		parent->objChilds.push_back(this);
+	}
+	else
+	{
+		VSLOG("Cannot set a child as parent\n");
 	}
 
-	parent = p;
-	parent->objChilds.push_back(this);
-
-
 }
 
-
-void GameObject::AssignPrevParent()
+bool GameObject::CheckIfContained(GameObject* obj)
 {
-	SetParent(*App->scene->root.objChilds.begin());
+	//Check if the element is in the list or the list of the children
+
+	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end(); item++)
+	{
+		if ((*item) == obj || (*item)->CheckIfContained(obj))
+			return true;
+	}
+	return false;
 }
+
 void GameObject::DeleteComp(Component* comp)
 {
 	Utils::RemoveFromVector(comp, compChilds);
@@ -238,9 +265,15 @@ void GameObject::DeleteGameObj(GameObject* obj)
 
 }
 
-void GameObject::AddCompMesh(ResMesh mesh)
+void GameObject::AddCompMesh()
 {
-	Component* newcomp = new ComponentMesh(mesh);
+	Component* newcomp = new ComponentMesh();
+	newcomp->SetParent(this);
+}
+
+void GameObject::AddCompMesh(ResMesh* m)
+{
+	Component* newcomp = new ComponentMesh(*m);
 	newcomp->SetParent(this);
 }
 
@@ -284,8 +317,35 @@ void GameObject::UpdateNewComWindow()
 	ImGui::Separator();
 	ImGui::NewLine();
 
-	if (ImGui::Button("Add Camera"))
+	ImGuiTreeNodeFlags node_flags =  ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Leaf;
+
+	Type t = Type::NULLCOMP;
+	ImGui::TreeNodeEx("Add Camera", node_flags);
+
+	if (ImGui::IsItemClicked())
 	{
 		AddCompCam();
+	}
+	
+	ImGui::TreeNodeEx("Add Mesh", node_flags);
+
+	if (ImGui::IsItemClicked())
+	{
+
+	}
+}
+
+void GameObject::AddComponent(Type t)
+{
+	switch (t)
+	{
+	case MESH:
+		AddCompMesh();
+		break;
+	case CAMERA:
+		AddCompCam();
+		break;
+	default:
+		break;
 	}
 }

@@ -14,7 +14,7 @@ public:
 	bool Update();
 	bool PostUpdate();
 	void UpdateMatWin();
-	void UpdateObj(GameObject* obj);
+	bool UpdateObj(GameObject* obj);
 
 private:
 	GameObject* target = nullptr;

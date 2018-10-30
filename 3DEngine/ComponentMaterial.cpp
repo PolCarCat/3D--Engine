@@ -52,7 +52,7 @@ void ComponentMaterial::SetTexture(ResTexture _tex)
 
 void ComponentMaterial::UpdateUI()
 {
-	ImGui::TextColored(ImVec4(0.6f, 1.0f, 0.5f, 1.0f),"MATERIAL");
+	ImGui::Text("Material");
 	ImGui::Separator();
 	ImGui::NewLine();
 

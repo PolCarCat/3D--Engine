@@ -81,8 +81,10 @@ void WinObjects::UpdateMatWin()
 	}
 }
 
-void WinObjects::UpdateObj(GameObject* obj)
+bool WinObjects::UpdateObj(GameObject* obj)
 {
+	//Returns true if an objcet has been clicked
+	bool ret = false;
 	int n = 0;
 	for (std::vector<GameObject*>::iterator item = obj->objChilds.begin(); item != obj->objChilds.end();item++)
 	{
@@ -90,18 +92,17 @@ void WinObjects::UpdateObj(GameObject* obj)
 
 		ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 
+
 		if ((*item)->objChilds.size() == 0)
 			node_flags |= ImGuiTreeNodeFlags_Leaf;
 
 		ImGui::TreeNodeEx((*item)->GetName(), node_flags);
 
-		ImGui::Indent();
-		UpdateObj(*item);
-		ImGui::Unindent();
 
 		if (ImGui::IsItemClicked())
 		{
 			App->scene->selectedObj = (*item);
+			ret = true;
 		}
 
 		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
@@ -121,14 +122,22 @@ void WinObjects::UpdateObj(GameObject* obj)
 				IM_ASSERT(payload->DataSize == sizeof(int));
 				int payload_n = *(const int*)payload->Data;
 				target = *item;
-				
+
 			}
 
 			ImGui::EndDragDropTarget();
 
 		}
 
+		ImGui::Indent();
+		bool childClicked = UpdateObj(*item);
+		ImGui::Unindent();
+	
+
+
+	
 		ImGui::PopID();
 		n++;
 	}
+	return ret;
 }

@@ -231,7 +231,7 @@ GameObject* ModuleLoader::LoadScene(const char* path)
 			if (!error)
 			{
 				mesh->GenerateBuffer();
-				newobj->AddCompMesh(*mesh);
+				newobj->AddCompMesh(mesh);
 				newobj->SetName(GetFileName(path));
 				App->scene->AddGameObject(newobj);
 				//App->renderer3D->meshes.push_back(mesh);

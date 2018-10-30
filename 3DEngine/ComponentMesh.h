@@ -9,6 +9,7 @@ class ComponentMesh :
 {
 public:
 	ComponentMesh(ResMesh _mesh);
+	ComponentMesh();
 	~ComponentMesh();
 	bool Start();
 	bool Update();

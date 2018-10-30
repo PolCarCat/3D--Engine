@@ -2,9 +2,11 @@
 #include <vector>
 #include "ResMesh.h"
 #include "QuadTree.h"
+#include "Component.h"
 
-class Component;
+
 class ComponentTransform;
+
 
 class GameObject
 {
@@ -18,7 +20,8 @@ public:
 	void UpdateUI();
 	bool CleanUp();
 	void AddComponent(Component* comp);
-	void AddCompMesh(ResMesh mesh);
+	void AddCompMesh();
+	void AddCompMesh(ResMesh* m);
 	void AddCompCam(float _near = 0.5f, float _far = 512.0f, float fov = 60.0f);
 	void AddGameObject(GameObject* obj);
 	void DeleteComp(Component* comp);
@@ -34,7 +37,8 @@ public:
 	AABB GetBB();
 	void Delete();
 	bool CheckDelete();
-	void AssignPrevParent();
+	void AddComponent(Type t);
+	bool CheckIfContained(GameObject* obj);
 
 	GameObject* GetParent();
 	void SetParent(GameObject* p);

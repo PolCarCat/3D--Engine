@@ -12,6 +12,10 @@ ComponentMesh::ComponentMesh(ResMesh _mesh)
 	App->renderer3D->meshes.push_back(this);
 }
 
+ComponentMesh::ComponentMesh()
+{
+	type = MESH;
+}
 
 ComponentMesh::~ComponentMesh()
 {
@@ -65,7 +69,7 @@ void ComponentMesh::UpdateUI()
 		ImGui::Columns(1);
 
 		ImGui::NewLine();
-		ImGui::Separator();
+
 		if (material == nullptr)
 		{
 			if (ImGui::Button("Add Material"))
@@ -80,7 +84,6 @@ void ComponentMesh::UpdateUI()
 		else
 		{
 			ImGui::NewLine();
-			ImGui::Separator();
 			material->UpdateUI();
 		}
 		transform.UpdateUI();
