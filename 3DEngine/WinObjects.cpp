@@ -44,7 +44,7 @@ bool WinObjects::PostUpdate()
 {
 	if (target != nullptr)
 	{
-		target->AddGameObject(source);
+		source->SetParent(target);
 		target = nullptr;
 		source = nullptr;
 	}
@@ -108,7 +108,7 @@ void WinObjects::UpdateObj(GameObject* obj)
 		{
 			source = *item;
 			ImGui::SetDragDropPayload("Payload", &n, sizeof(int));
-			ImGui::Text("%s", (*item)->GetName());
+			ImGui::Text("%s", source->GetName());
 			ImGui::EndDragDropSource();
 
 		}
@@ -120,8 +120,8 @@ void WinObjects::UpdateObj(GameObject* obj)
 			{
 				IM_ASSERT(payload->DataSize == sizeof(int));
 				int payload_n = *(const int*)payload->Data;
-				target = App->scene->root.objChilds[payload_n];
-
+				target = *item;
+				
 			}
 
 			ImGui::EndDragDropTarget();

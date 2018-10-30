@@ -34,6 +34,7 @@ public:
 	AABB GetBB();
 	void Delete();
 	bool CheckDelete();
+	void AssignPrevParent();
 
 	GameObject* GetParent();
 	void SetParent(GameObject* p);

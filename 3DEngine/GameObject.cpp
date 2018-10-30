@@ -98,7 +98,8 @@ void GameObject::UpdateUI()
 
 	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end(); item++)
 	{
-		//(*item)->UpdateUI();
+		if (ImGui::CollapsingHeader("Object"))
+			(*item)->UpdateUI();
 	}
 
 	for (std::vector<Component*>::iterator item = compChilds.begin(); item != compChilds.end(); item++)
@@ -115,6 +116,9 @@ void GameObject::UpdateUI()
 		UpdateNewComWindow();
 		ImGui::EndPopup();
 	}
+
+	if (ImGui::Button("Assing prev parent"))
+		AssignPrevParent();
 }
 
 bool GameObject::CleanUp()
@@ -217,6 +221,11 @@ void GameObject::SetParent(GameObject* p)
 
 }
 
+
+void GameObject::AssignPrevParent()
+{
+	SetParent(*App->scene->root.objChilds.begin());
+}
 void GameObject::DeleteComp(Component* comp)
 {
 	Utils::RemoveFromVector(comp, compChilds);

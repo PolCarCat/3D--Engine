@@ -143,7 +143,6 @@ update_status ModuleGui::PostUpdate(float dt)
 
 
 	for (std::list<WinBase*>::iterator item = windows.begin(); item != windows.end(); item++) {
-		if ((*item)->GetEnable())
 			(*item)->PostUpdate();
 	}
 
