@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ImGui/imgui.h"
 #include "mmgr/mmgr.h"
+#include "ModuleInput.h"
 
 WinConfig::WinConfig(Application* parent, bool start_enabled) : WinBase(parent, start_enabled) 
 {
@@ -131,12 +132,12 @@ bool WinConfig::Update()
 		bool wire = App->renderer3D->GetWireFrame();
 		ImGui::Checkbox("Wireframe", &wire);
 		if (wire != App->renderer3D->GetWireFrame()) App->renderer3D->EnableWireframe(wire);
-
-
-
-
 	}
-
+	if (ImGui::CollapsingHeader("Mouse Position"))
+	{
+		ImGui::Text("x = %0.f", App->input->Mx);
+		ImGui::Text("y = %0.f", App->input->My);
+	}
 	ImGui::End();
 
 	return true;

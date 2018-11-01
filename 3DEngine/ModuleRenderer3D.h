@@ -76,6 +76,9 @@ public:
 	bool drawAxis = true;
 	bool drawCylinder = false;
 	bool drawCapsule = false;
+	float xx = 0;
+	float yy = 0;
+	float zz = 0;
 private:
 	bool vsync = false;
 	bool depthTest = true;

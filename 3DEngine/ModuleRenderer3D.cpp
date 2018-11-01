@@ -172,7 +172,10 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	if (drawCube)
 		cube.Render();
 	if (drawLine)
+	{
+		line.Create(3.0f, 15, 0, 0, xx, yy, zz);
 		line.Render();
+	}
 	if (drawArrow)
 		arrow.Render();
 	if (drawAxis)

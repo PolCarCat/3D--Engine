@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "ModuleCamera3D.h"
 #include "VectorialFunctions.h"
+#include "ModuleInput.h"
+#include "GameObject.h"
 
 namespace VectF = VectorialFunctions;
 
@@ -62,90 +64,100 @@ update_status ModuleCamera3D::Update(float dt)
 {
 	////Debug camera
 
+	float3 newPos(0,0,0);
+	float speed = 8.0f * dt;
+	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		speed = 50.0f * dt;
 
-		float3 newPos(0,0,0);
-		float speed = 8.0f * dt;
-		if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-			speed = 50.0f * dt;
+	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) FocusMeshes();
 
-		if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) FocusMeshes();
+	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
+	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
 
-		if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
-		if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
+	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
+	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
+
+	if (App->input->GetMouseZ() != 0 && !ImGui::IsMouseHoveringAnyWindow())
+	{
+		float wheelspd = Position.Length() / 2;
+		if (App->input->GetMouseZ() > 0)
+			newPos -= Z * speed * wheelspd;
+
+		else
+			newPos += Z * speed * wheelspd;
+	}
 
 
-		if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
-		if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
+	Position += newPos;
+	Reference += newPos;
 
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && !ImGui::IsMouseHoveringAnyWindow() && !ImGui::IsMouseDragging())
+	{
+		float3 origin;
+		float3 end;
 
-		if (App->input->GetMouseZ() != 0 && !ImGui::IsMouseHoveringAnyWindow())
+		origin.x = App->input->Mx;
+		origin.y = App->input->My;
+		origin.z = 0;
+
+		end = origin;
+		end.Normalize();
+		end.x *= farDistance;
+		end.y *= farDistance;
+
+		LineSegment(origin, end);
+	}
+
+	// Mouse motion ----------------
+
+	if(App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT && !ImGui::IsMouseHoveringAnyWindow() && !ImGui::IsMouseDragging())
+	{
+		int dx = -App->input->GetMouseXMotion();
+		int dy = -App->input->GetMouseYMotion();
+		float3 realRef = Reference;
+		float3 realPos = Position;
+		float Sensitivity = 0.25f;
+		float3 pos = App->renderer3D->GetMeshesCenter();
+
+		if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
+			LookAt({ pos.x, pos.y, pos.z });
+		else
+			Reference = Position;
+
+		Position -= Reference;
+
+		if(dx != 0)
 		{
-			float wheelspd = Position.Length() / 2;
-			if (App->input->GetMouseZ() > 0)
-				newPos -= Z * speed * wheelspd;
+			float DeltaX = (float)dx * Sensitivity;
 
-			else
-				newPos += Z * speed * wheelspd;
+			X = VectF::rotatef3(X, DeltaX, float3(0.0f, 1.0f, 0.0f));
+			Y = VectF::rotatef3(Y, DeltaX, float3(0.0f, 1.0f, 0.0f));
+			Z = VectF::rotatef3(Z, DeltaX, float3(0.0f, 1.0f, 0.0f));
 		}
 
-
-		Position += newPos;
-		Reference += newPos;
-		
-
-		// Mouse motion ----------------
-
-		if(App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT && !ImGui::IsMouseHoveringAnyWindow() && !ImGui::IsMouseDragging())
+		if(dy != 0)
 		{
-			int dx = -App->input->GetMouseXMotion();
-			int dy = -App->input->GetMouseYMotion();
-			float3 realRef = Reference;
-			float3 realPos = Position;
-			float Sensitivity = 0.25f;
-			float3 pos = App->renderer3D->GetMeshesCenter();
+			float DeltaY = (float)dy * Sensitivity;
 
-			if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
-				LookAt({ pos.x, pos.y, pos.z });
-			else
-				Reference = Position;
+			Y = VectF::rotatef3(Y, DeltaY, X);
+			Z = VectF::rotatef3(Z, DeltaY, X);
 
-			Position -= Reference;
-
-			if(dx != 0)
+			if(Y.y < 0.0f)
 			{
-				float DeltaX = (float)dx * Sensitivity;
-
-				X = VectF::rotatef3(X, DeltaX, float3(0.0f, 1.0f, 0.0f));
-				Y = VectF::rotatef3(Y, DeltaX, float3(0.0f, 1.0f, 0.0f));
-				Z = VectF::rotatef3(Z, DeltaX, float3(0.0f, 1.0f, 0.0f));
+				Z = float3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
+				Y = Z.Cross(X);
 			}
-
-			if(dy != 0)
-			{
-				float DeltaY = (float)dy * Sensitivity;
-
-				Y = VectF::rotatef3(Y, DeltaY, X);
-				Z = VectF::rotatef3(Z, DeltaY, X);
-
-				if(Y.y < 0.0f)
-				{
-					Z = float3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
-					Y = Z.Cross(X);
-				}
-			}
-	
-
-			Position = Reference + Z * Position.Length();
 		}
+	
 
-		frustum.pos = Position;
+		Position = Reference + Z * Position.Length();
+	}
+
+	frustum.pos = Position;
 		
-
-		// Recalculate matrix -------------
-		CalculateViewMatrix();
-	
-
-	
+	// Recalculate matrix -------------
+	CalculateViewMatrix();
+		
 	return UPDATE_CONTINUE;
 }
 

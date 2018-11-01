@@ -46,6 +46,9 @@ bool WinTest::Update()
 
 	if (ImGui::CollapsingHeader("Primitives"))
 	{
+		ImGui::SliderFloat("x", &App->renderer3D->xx, -3, 6);
+		ImGui::SliderFloat("y", &App->renderer3D->yy, -3, 6);
+		ImGui::SliderFloat("z", &App->renderer3D->zz, -3, 6);
 		ImGui::Checkbox("Grid", &App->renderer3D->drawPlane);
 		ImGui::Checkbox("Axis", &App->renderer3D->drawAxis);
 		ImGui::Checkbox("Cube", &App->renderer3D->drawCube);
