@@ -186,7 +186,7 @@ bool Application::SaveNow()
 
 	for (list<Module*>::const_iterator it = list_modules.begin(); it != list_modules.end(); ++it)
 	{
-		(*it)->Save(config.GetRootObj());
+		(*it)->Save(config.GetObj((*it)->GetName()));
 	}
 
 

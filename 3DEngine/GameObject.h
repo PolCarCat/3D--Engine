@@ -3,7 +3,7 @@
 #include "ResMesh.h"
 #include "QuadTree.h"
 #include "Component.h"
-
+#include "JsonDoc.h"
 
 class ComponentTransform;
 
@@ -39,6 +39,8 @@ public:
 	bool CheckDelete();
 	void AddComponent(Type t);
 	bool CheckIfContained(GameObject* obj);
+	void Save(JSON_Object* json, JsonDoc* doc);
+	void Load(JSON_Object* json, JsonDoc* doc);
 
 	GameObject* GetParent();
 	void SetParent(GameObject* p);
@@ -57,4 +59,5 @@ private:
 	std::string name;
 	void UpdateNewComWindow();
 	void SetChildsActive(bool a);
+	uint64_t uuid = 0;
 };

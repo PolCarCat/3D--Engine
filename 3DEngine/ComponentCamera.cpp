@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include <math.h>
+#include "JsonDoc.h"
 
 
 namespace VectF = VectorialFunctions;
@@ -178,8 +179,6 @@ void ComponentCamera::CheckInput(float dt)
 
 
 
-
-
 }
 
 
@@ -314,4 +313,21 @@ bool ComponentCamera::CheckInside(const ResMesh m)
 
 	}
 	return false;
+}
+
+bool ComponentCamera::Save(JSON_Object* json, JsonDoc* doc)
+{
+
+	json_object_dotset_boolean(json, "Active", active);
+	json_object_dotset_number(json, "Near Plane", nearDistance);
+	json_object_dotset_number(json, "Far Plane", farDistance);
+	json_object_dotset_number(json, "FOV", fovy);
+	
+	return true;
+}
+
+bool ComponentCamera::Load(JSON_Object* json, JsonDoc* doc)
+{
+
+	return true;
 }

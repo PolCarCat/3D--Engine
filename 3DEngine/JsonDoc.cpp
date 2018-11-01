@@ -123,3 +123,9 @@ json_object_t* JsonDoc::GetRootObj()
 {
 	return rootObj;
 }
+
+JSON_Object* JsonDoc::SetObj(JSON_Object* parent, const char* name)
+{	
+	json_object_set_value(parent, name, json_value_init_object());
+	return GetObj(name);
+}

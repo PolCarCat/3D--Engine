@@ -9,12 +9,13 @@ public:
 	~ComponentTransform();
 
 	bool Start();
-
 	bool Update();
-
 	void UpdateUI();
-
 	bool CleanUp();
+	bool Save(JSON_Object* json, JsonDoc* doc);
+	bool Load(JSON_Object* json, JsonDoc* doc);
+
+
 
 	float3 position = { 0, 0, 0 };
 	float3 scale = { 0, 0, 0 };

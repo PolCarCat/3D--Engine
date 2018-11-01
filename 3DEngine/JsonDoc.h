@@ -2,6 +2,7 @@
 #include "Parson/parson.h"
 #include <string>
 
+
 class JsonDoc
 {
 public:
@@ -15,6 +16,7 @@ public:
 	json_object_t* GetRootObj();
 	json_object_t* GetObj(const char* _name);
 	json_object_t* GetObjObj(json_object_t* _obj, const char* _name);
+	JSON_Object* SetObj(JSON_Object* parent, const char* name);
 
 	int GetObjValueInt(json_object_t* _obj, const char* _name);
 	float GetObjValueFloat(json_object_t* _obj, const char* _name);

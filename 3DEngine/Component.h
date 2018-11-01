@@ -1,6 +1,8 @@
 #pragma once
+#include "JsonDoc.h"
 
 class GameObject;
+
 
 enum Type {
 	MESH,
@@ -35,6 +37,17 @@ public:
 	}
 
 	virtual bool CleanUp()
+	{
+		return true;
+	}
+
+
+	virtual bool Save(JSON_Object* json, JsonDoc* doc)
+	{
+		return true;
+	}
+
+	virtual bool Load(JSON_Object* json, JsonDoc* doc)
 	{
 		return true;
 	}

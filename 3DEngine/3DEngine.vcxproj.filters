@@ -366,6 +366,9 @@
     <ClInclude Include="ImporterMesh.h">
       <Filter>Sources\Importers</Filter>
     </ClInclude>
+    <ClInclude Include="SceneLoader.h">
+      <Filter>Sources\Modules\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -583,6 +586,9 @@
     </ClCompile>
     <ClCompile Include="ImporterMesh.cpp">
       <Filter>Sources\Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneLoader.cpp">
+      <Filter>Sources\Modules\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

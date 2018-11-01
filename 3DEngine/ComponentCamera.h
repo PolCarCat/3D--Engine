@@ -15,6 +15,9 @@ public:
 	bool Update();
 	void UpdateUI();
 	bool CleanUp();
+	bool Save(JSON_Object* json, JsonDoc* doc);
+	bool Load(JSON_Object* json, JsonDoc* doc);
+
 
 	void Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference = false);
 	void LookAt(const float3 &Spot);

@@ -244,7 +244,7 @@ bool ModuleRenderer3D::Load(json_object_t* doc)
 
 bool ModuleRenderer3D::Save(json_object_t* doc)
 {
-	json_object_dotset_boolean(doc, "Renderer.Vsync", vsync);
+	json_object_dotset_boolean(doc, "Vsync", vsync);
 	return true;
 }
 

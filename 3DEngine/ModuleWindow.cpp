@@ -173,13 +173,13 @@ bool ModuleWindow::Save(json_object_t* doc)
 {
 	JSON_Status error; 
 
-	error = json_object_dotset_number(doc, "Window.Width", w);
-	error = json_object_dotset_number(doc, "Window.Height", h);
-	error = json_object_dotset_number(doc, "Window.Brightness", brightness);
-	error = json_object_dotset_boolean(doc, "Window.Resizable", res);
-	error = json_object_dotset_boolean(doc, "Window.Borderless", bord);
-	error = json_object_dotset_boolean(doc, "Window.Fullscreen", FS);
-	error = json_object_dotset_boolean(doc, "Window.Fullscreen Window", FSWin);
+	error = json_object_dotset_number(doc, "Width", w);
+	error = json_object_dotset_number(doc, "Height", h);
+	error = json_object_dotset_number(doc, "Brightness", brightness);
+	error = json_object_dotset_boolean(doc, "Resizable", res);
+	error = json_object_dotset_boolean(doc, "Borderless", bord);
+	error = json_object_dotset_boolean(doc, "Fullscreen", FS);
+	error = json_object_dotset_boolean(doc, "Fullscreen Window", FSWin);
 
 	return !error;
 }

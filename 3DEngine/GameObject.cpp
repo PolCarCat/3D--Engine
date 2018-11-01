@@ -7,6 +7,7 @@
 #include "Application.h"
 #include "QuadTree.h"
 
+
 GameObject::GameObject()
 {
 	transform = new ComponentTransform();
@@ -377,4 +378,33 @@ void GameObject::AddComponent(Type t)
 	default:
 		break;
 	}
+}
+
+void GameObject::Save(JSON_Object* json, JsonDoc* doc)
+{
+//	if (uuid == 0)
+	json_object_dotset_string(json, "Name", name.c_str());
+	json_object_dotset_boolean(json, "Active", active);
+	json_object_dotset_boolean(json, "Static", staticobj);
+
+	transform->Save(json, doc);
+
+	JSON_Object* objects = doc->SetObj(json, "Objects");
+	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end(); item++)
+	{
+		(*item)->Save(objects, doc);
+	}
+
+
+	JSON_Object* components = doc->SetObj(json, "Objects");
+	for (std::vector<Component*>::iterator item = compChilds.begin(); item != compChilds.end(); item++)
+	{
+		(*item)->Save(components, doc);
+	}
+
+	
+}
+void GameObject::Load(JSON_Object* json, JsonDoc* doc)
+{
+
 }

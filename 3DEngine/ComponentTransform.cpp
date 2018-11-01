@@ -52,3 +52,16 @@ bool ComponentTransform::CleanUp()
 {
 	return true;
 }
+
+bool ComponentTransform::Save(JSON_Object* json, JsonDoc* doc)
+{
+
+
+	return true;
+}
+
+bool ComponentTransform::Load(JSON_Object* json, JsonDoc* doc)
+{
+
+	return true;
+}
