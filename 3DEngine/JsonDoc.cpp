@@ -1,5 +1,5 @@
 #include "JsonDoc.h"
-
+#include <fstream>
 
 
 JsonDoc::JsonDoc()
@@ -15,9 +15,20 @@ JsonDoc::~JsonDoc()
 bool JsonDoc::Init(const char* _path)
 {
 	bool ret = true;
+	
+
+	std::ifstream infile(_path);
+
+	if (!infile.good())
+	{
+		std::ofstream file(_path);
+	
+	}
+
 
 	root = json_value_init_object();
 	root = json_parse_file(_path);
+
 	path = _path;
 
 
@@ -54,11 +65,20 @@ json_object_t* JsonDoc::GetObj(const char* _name)
 	return obj;
 }
 
+JSON_Array* JsonDoc::GetAr(const char* _name)
+{
+	return SetArray(rootObj, _name);
+}
+
 json_object_t* JsonDoc::GetObjObj(json_object_t* _obj, const char* _name)
 {
 	return json_object_get_object(_obj, _name);
 }
 
+JSON_Object* JsonDoc::GetArObj(JSON_Array* parent, uint index)
+{
+	return json_array_get_object(parent, index);
+}
 
 
 int JsonDoc::GetObjValueInt(json_object_t* _obj, const char* _name)
@@ -127,5 +147,21 @@ json_object_t* JsonDoc::GetRootObj()
 JSON_Object* JsonDoc::SetObj(JSON_Object* parent, const char* name)
 {	
 	json_object_set_value(parent, name, json_value_init_object());
-	return GetObj(name);
+	return GetObjObj(parent, name);
+}
+
+JSON_Object* JsonDoc::SetObj(JSON_Array* parent)
+{
+	json_array_append_value(parent, json_value_init_object());
+	uint size =	json_array_get_count(parent);
+	return GetArObj(parent, size - 1);
+}
+
+JSON_Array* JsonDoc::SetArray(JSON_Object* parent, const char* name)
+{
+	JSON_Value* va = json_value_init_array();
+	JSON_Array* array = json_value_get_array(va);
+	json_object_set_value(parent, name, va);
+
+	return array;
 }

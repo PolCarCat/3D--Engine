@@ -62,7 +62,7 @@ public:
 	bool toDelete = false;
 
 protected:
-	Type type;
+	Type type = NULLCOMP;
 	GameObject* parent = nullptr;
 	bool active = true;
 

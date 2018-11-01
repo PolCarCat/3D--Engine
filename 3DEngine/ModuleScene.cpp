@@ -6,6 +6,7 @@
 #include "ModuleLoader.h"
 #include "ComponentCamera.h"
 #include "ComponentMaterial.h"
+#include "SceneLoader.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -48,6 +49,7 @@ bool ModuleScene::Start()
 	}
 
 	root.Start();
+	root.SetName("root");
 	//quadTree.TEST();
 	return ret;
 }
@@ -66,10 +68,11 @@ update_status ModuleScene::Update(float dt)
 	quadTree.Draw();
 
 	ImGui::Begin("TEST");
-	if (ImGui::Button("Distribute tree"))
+	if (ImGui::Button("Save Scene"))
 	{
 		quadTree.DistributeTree();
 		//quadTree.GenerateTestChildren();
+		SceneLoader::SaveScene("Assets/scenes/scene1.json", &root);
 	}
 	ImGui::End();
 

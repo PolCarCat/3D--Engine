@@ -34,6 +34,10 @@
 
 static pcg32_random_t pcg32_global = PCG32_INITIALIZER;
 
+static pcg32_random_t pcg64_global1 = PCG32_INITIALIZER;
+static pcg32_random_t pcg64_global2 = PCG32_INITIALIZER;
+
+
 // pcg32_srandom(initstate, initseq)
 // pcg32_srandom_r(rng, initstate, initseq):
 //     Seed the rng.  Specified in two parts, state initializer and a
@@ -71,6 +75,15 @@ uint32_t pcg32_random()
     return pcg32_random_r(&pcg32_global);
 }
 
+
+
+//Uint 64 inclusion
+
+uint64_t pcg64_random()
+{
+	return ((uint64_t)(pcg32_random_r(&pcg64_global1)) << 32)
+		| pcg32_random_r(&pcg64_global2);
+}
 
 // pcg32_boundedrand(bound):
 // pcg32_boundedrand_r(rng, bound):

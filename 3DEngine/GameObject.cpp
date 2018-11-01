@@ -6,7 +6,7 @@
 #include "ComponentCamera.h"
 #include "Application.h"
 #include "QuadTree.h"
-
+#include "pcg-c-basic-0.9/pcg_basic.h"
 
 GameObject::GameObject()
 {
@@ -380,27 +380,43 @@ void GameObject::AddComponent(Type t)
 	}
 }
 
-void GameObject::Save(JSON_Object* json, JsonDoc* doc)
+uint32_t GameObject::GetUUID()
 {
-//	if (uuid == 0)
-	json_object_dotset_string(json, "Name", name.c_str());
-	json_object_dotset_boolean(json, "Active", active);
-	json_object_dotset_boolean(json, "Static", staticobj);
+	return uuid;
+}
 
-	transform->Save(json, doc);
+void GameObject::Save(JSON_Array* objects, JsonDoc* doc)
+{
+	if (uuid == 0)
+		uuid = pcg32_random();
 
-	JSON_Object* objects = doc->SetObj(json, "Objects");
+	uint32_t parentUuid = 0;
+	if (parent != nullptr)
+		parentUuid = parent->GetUUID();
+
+	JSON_Object* obj = doc->SetObj(objects);
+
+	json_object_dotset_number(obj, "UUID", uuid);
+	json_object_dotset_number(obj, "Parent UUID", parentUuid);
+	json_object_dotset_string(obj, "Name", name.c_str());
+	json_object_dotset_boolean(obj, "Active", active);
+	json_object_dotset_boolean(obj, "Static", staticobj);
+
+	JSON_Array* components = doc->SetArray(obj, "Components");
+	for (std::vector<Component*>::iterator item = compChilds.begin(); item != compChilds.end(); item++)
+	{
+		JSON_Object* obj = doc->SetObj(components);
+		(*item)->Save(obj, doc);
+	}
+
 	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end(); item++)
 	{
+
 		(*item)->Save(objects, doc);
 	}
 
 
-	JSON_Object* components = doc->SetObj(json, "Objects");
-	for (std::vector<Component*>::iterator item = compChilds.begin(); item != compChilds.end(); item++)
-	{
-		(*item)->Save(components, doc);
-	}
+
 
 	
 }

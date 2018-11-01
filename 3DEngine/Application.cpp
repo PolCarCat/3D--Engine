@@ -195,3 +195,4 @@ bool Application::SaveNow()
 	want_to_save = false;
 	return ret;
 }
+

@@ -10,8 +10,8 @@ namespace SceneLoader
 
 
 	void LoadScene(const char* path, GameObject* root, JsonDoc* doc);
-	void SaveScene(const char* path, GameObject* root, JsonDoc* doc);
-	void SaveGameObj(GameObject* obj, JSON_Object* doc);
+	JsonDoc* SaveScene(const char* path, GameObject* root);
+
 }
 
 

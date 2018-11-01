@@ -55,8 +55,24 @@ bool ComponentTransform::CleanUp()
 
 bool ComponentTransform::Save(JSON_Object* json, JsonDoc* doc)
 {
+	json_object_dotset_number(json, "Type", type);
+	json_object_dotset_boolean(json, "Active", active);
 
+	JSON_Array* pos = doc->SetArray(json, "Position");
+	json_array_append_number(pos, position.x);
+	json_array_append_number(pos, position.y);
+	json_array_append_number(pos, position.z);
 
+	JSON_Array* sc = doc->SetArray(json, "Scale");
+	json_array_append_number(sc, scale.x);
+	json_array_append_number(sc, scale.y);
+	json_array_append_number(sc, scale.z);
+
+	JSON_Array* rt = doc->SetArray(json, "Rotation");
+	json_array_append_number(rt, rotation.x);
+	json_array_append_number(rt, rotation.y);
+	json_array_append_number(rt, rotation.z);
+	json_array_append_number(rt, rotation.w);
 	return true;
 }
 

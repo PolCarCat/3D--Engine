@@ -19,6 +19,7 @@ public:
 	bool PostUpdate();
 	void UpdateUI();
 	bool CleanUp();
+
 	void AddComponent(Component* comp);
 	void AddCompMesh();
 	void AddCompMesh(ResMesh* m);
@@ -26,6 +27,9 @@ public:
 	void AddGameObject(GameObject* obj);
 	void DeleteComp(Component* comp);
 	void DeleteGameObj(GameObject* obj);
+	void AddComponent(Type t);
+	bool CheckIfContained(GameObject* obj);
+
 	bool GetActive();
 	void SetActive(bool b);
 	const char* GetName();
@@ -37,9 +41,9 @@ public:
 	AABB GetBB();
 	void Delete();
 	bool CheckDelete();
-	void AddComponent(Type t);
-	bool CheckIfContained(GameObject* obj);
-	void Save(JSON_Object* json, JsonDoc* doc);
+	uint32_t GetUUID();
+
+	void Save(JSON_Array* objects, JsonDoc* doc);
 	void Load(JSON_Object* json, JsonDoc* doc);
 
 	GameObject* GetParent();
@@ -59,5 +63,5 @@ private:
 	std::string name;
 	void UpdateNewComWindow();
 	void SetChildsActive(bool a);
-	uint64_t uuid = 0;
+	uint32_t uuid = 0;
 };

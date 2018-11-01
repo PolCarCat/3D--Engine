@@ -6,12 +6,6 @@
 
 void SceneLoader::LoadScene(const char* path, GameObject* root, JsonDoc* doc)
 {
-	
-
-}
-
-void SceneLoader::SaveScene(const char* path, GameObject* root, JsonDoc* doc)
-{
 	if (!doc->Init(path))
 	{
 		VSLOG("Cannot load scene");
@@ -21,8 +15,21 @@ void SceneLoader::SaveScene(const char* path, GameObject* root, JsonDoc* doc)
 
 }
 
-void SceneLoader::SaveGameObj(GameObject* obj, JSON_Object* json)
+JsonDoc* SceneLoader::SaveScene(const char* path, GameObject* root)
 {
+	JsonDoc* doc = new JsonDoc;
 	
+	if (!doc->Init(path))
+	{
+		VSLOG("Cannot save scene");
+		return nullptr;
+	}
 
+	JSON_Array* obj = doc->SetArray(doc->GetRootObj(), "Objects");
+	
+	root->Save(obj, doc);
+
+
+	doc->Save();
+	return doc;
 }

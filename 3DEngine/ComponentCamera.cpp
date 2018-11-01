@@ -10,6 +10,7 @@ namespace VectF = VectorialFunctions;
 
 ComponentCamera::ComponentCamera(float _near, float _far, float _fov)
 {
+	type = CAMERA;
 	nearDistance = _near;
 	farDistance = _far;
 	fovy = _fov;
@@ -317,12 +318,14 @@ bool ComponentCamera::CheckInside(const ResMesh m)
 
 bool ComponentCamera::Save(JSON_Object* json, JsonDoc* doc)
 {
-
+	json_object_dotset_number(json, "Type", type);
 	json_object_dotset_boolean(json, "Active", active);
 	json_object_dotset_number(json, "Near Plane", nearDistance);
 	json_object_dotset_number(json, "Far Plane", farDistance);
 	json_object_dotset_number(json, "FOV", fovy);
 	
+
+
 	return true;
 }
 

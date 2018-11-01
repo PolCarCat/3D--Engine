@@ -46,10 +46,12 @@ public:
 	void LoadGame();
 	void SaveGame() const;
 
+
 private:
 
 	Timer	ms_timer;
 	float	dt;
+	pcg32_random_t rng;
 	list<Module*> list_modules;
 
 	mutable bool		want_to_save = false;
