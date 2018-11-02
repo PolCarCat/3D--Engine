@@ -29,7 +29,7 @@ bool ComponentMesh::Start()
 
 bool ComponentMesh::Update()
 {
-
+	mesh->Draw();
 
 
 	return true;

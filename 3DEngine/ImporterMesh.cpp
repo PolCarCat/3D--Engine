@@ -75,7 +75,7 @@ GameObject* ImporterMesh::LoadScene(const char* path)
 		newobj->transform->rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
 
 
-		for (int nm = 0; nm < scene->mNumMeshes; nm++)
+		for (uint nm = 0; nm < scene->mNumMeshes; nm++)
 		{		
 			aiMesh* m = scene->mMeshes[nm];
 
@@ -83,6 +83,7 @@ GameObject* ImporterMesh::LoadScene(const char* path)
 			if (obj != nullptr)
 				obj->SetParent(newobj);
 		}
+
 		aiReleaseImport(scene);
 	}
 	else
@@ -219,7 +220,7 @@ GameObject* ImporterMesh::LoadMesh(aiMesh* m, aiNode* n)
 		newobj->transform->scale.Set(scaling.x, scaling.y, scaling.z);
 		newobj->transform->rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
 
-	
+		App->scene->AddGameObject(newobj);
 	}
 	else
 	{
