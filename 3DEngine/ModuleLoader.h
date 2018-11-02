@@ -1,8 +1,9 @@
 #pragma once
 #include "Module.h"
 #include "ImporterTexture.h"
+#include "ImporterMesh.h"
 
-#define INDICES_CAP 200000
+
 
 class GameObject;
 
@@ -33,9 +34,9 @@ public:
 	bool CleanUp();
 
 	
-	GameObject* LoadScene(const char* path);
-	void SetDropFile(char* f);
 
+	void SetDropFile(char* f);
+	void LoadFBX(const char* path);
 
 
 	Format CheckFormat(const char* path);
@@ -46,9 +47,8 @@ private:
 	Format dFformat = FNULL;
 
 	ImporterTexture texImporter;
-
+	ImporterMesh meshImporter;
 
 };
 
 
-void LogAssimp(const char* c1, char* c2);

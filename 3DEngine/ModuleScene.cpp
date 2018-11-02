@@ -26,7 +26,7 @@ bool ModuleScene::Start()
 
 
 	//currentTex = App->loader->LoadTex("Assets/Baker_house.png");
-	App->loader->LoadScene("Assets/BakerHouse.fbx");
+	App->loader->LoadFBX("Assets/BakerHouse.fbx");
 
 	ghostcam = new ComponentCamera(0.5f, 512.0f, 50.0f);
 	ghostcam->Start();

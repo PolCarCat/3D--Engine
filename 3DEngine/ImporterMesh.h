@@ -1,9 +1,12 @@
-#pragma once
+#ifndef __IMPORTERMESH_H__
+#define __IMPORTERMESH_H__
+
 #include "Importer.h"
 #include "Globals.h"
 
-#define CHECKERS_SIZE 20
+#define INDICES_CAP 200000
 
+class GameObject;
 
 class ImporterMesh :
 	public Importer
@@ -14,7 +17,15 @@ public:
 
 	//bool Load();
 	//bool Save();
-	//bool Start();
-	//bool CleanUp();
+	bool Start();
+	bool CleanUp();
+
+	GameObject* LoadScene(const char* path);
+
 
 };
+
+
+void LogAssimp(const char* c1, char* c2);
+
+#endif // !__IMPORTERMESH_H__
