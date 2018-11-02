@@ -2,6 +2,8 @@
 #include "Importer.h"
 #include "Globals.h"
 
+#define DIR "Libraries\\Textures\\"
+#define TEXT_EXTENSION ".dds"
 #define CHECKERS_SIZE 20
 
 struct ResTexture;
@@ -20,5 +22,6 @@ public:
 
 	uint LoadChekerTex();
 	ResTexture LoadTex(const char* path);
+	void SaveTex(ResTexture tex);
 };
 

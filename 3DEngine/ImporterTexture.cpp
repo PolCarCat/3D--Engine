@@ -7,6 +7,8 @@
 #include "DevIL/include/ilu.h"
 #include "DevIL/include/ilut.h"
 
+#include <fstream>
+
 
 #pragma comment (lib, "DevIL/libx86/DevIL.lib")
 #pragma comment (lib, "DevIL/libx86/ILU.lib")
@@ -140,4 +142,23 @@ ResTexture ImporterTexture::LoadTex(const char* path)
 
 
 	return ret;
+}
+
+void ImporterTexture::SaveTex(ResTexture tex)
+{
+	ILuint size;
+	ILubyte* data;
+	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
+
+	size = ilSaveL(IL_DDS, NULL, 0);
+	if (size > 0)
+	{
+		data = new ILubyte[size];
+		if (ilSaveL(IL_DDS, data, size) > 0)
+		{
+			std::ofstream dataFile(tex.name.c_str(), std::fstream::out | std::fstream::binary);
+			dataFile.write((const char*)data, size);
+			dataFile.close();
+		}
+	}
 }
