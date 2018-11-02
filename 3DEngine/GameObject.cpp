@@ -299,7 +299,7 @@ void GameObject::AddCompMesh()
 
 void GameObject::AddCompMesh(ResMesh* m)
 {
-	Component* newcomp = new ComponentMesh(*m);
+	Component* newcomp = new ComponentMesh(m);
 	newcomp->SetParent(this);
 }
 

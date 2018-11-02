@@ -7,7 +7,6 @@ Application::Application()
 	input = new ModuleInput(this);
 	scene = new ModuleScene(this);
 	renderer3D = new ModuleRenderer3D(this);
-	camera = new ModuleCamera3D(this);
 	imgui = new ModuleGui(this);
 	loader = new ModuleLoader(this);
 	// The order of calls is very important!
@@ -16,7 +15,7 @@ Application::Application()
 
 	// Main Modules
 	AddModule(window);
-	AddModule(camera);
+
 	AddModule(input);
 	AddModule(imgui);
 	AddModule(loader);

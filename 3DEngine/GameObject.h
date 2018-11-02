@@ -51,10 +51,11 @@ public:
 
 	std::vector<Component*> compChilds;
 	std::vector<GameObject*> objChilds;
+	ComponentTransform * transform = nullptr;
 
 private:
 
-	ComponentTransform * transform = nullptr;
+
 	GameObject* parent = nullptr;
 	AABB bBox;
 	bool active = true;

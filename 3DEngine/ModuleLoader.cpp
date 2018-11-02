@@ -77,7 +77,6 @@ update_status ModuleLoader::PostUpdate(float dt)
 		case PNG:
 		case DDS:
 			App->imgui->element->curMesh->tex.CleanUp();
-			//App->renderer3D->SetMeshesTex(LoadTex(droppedFile));
 			break;
 		case FNULL:
 			break;
@@ -147,7 +146,7 @@ std::string ModuleLoader::GetFileName(const char* path)
 
 	for (std::string::reverse_iterator rit = t.rbegin(); rit != t.rend(); ++rit)
 	{
-		if (*rit == '/')
+		if (*rit == '/' || *rit == '\\')
 			break;
 
 		if (point)

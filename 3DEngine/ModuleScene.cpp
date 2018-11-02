@@ -41,12 +41,6 @@ bool ModuleScene::Start()
 
 	App->renderer3D->OnResize(App->window->w, App->window->h);
 
-	if (App->renderer3D->meshes.size() != 0)
-	{
-		//App->renderer3D->SetMeshesTex(currentTex);
-		//App->imgui->element->curMesh = (*App->renderer3D->meshes.begin());
-		App->camera->FocusMeshes();
-	}
 
 	root.Start();
 	root.SetName("root");

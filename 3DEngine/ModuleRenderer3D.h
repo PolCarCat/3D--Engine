@@ -63,7 +63,7 @@ public:
 
 	float3x3 NormalMatrix;
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
-	std::list<ComponentMesh*> meshes;
+	std::list<ResMesh*> meshes;
 
 public:
 	bool drawCube = false;

@@ -297,23 +297,23 @@ void ModuleRenderer3D::EnableWireframe(bool enable)
 
 void ModuleRenderer3D::DrawMeshes()
 {
-	for (std::list<ComponentMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++) 
-	{
-		if ((*item)->GetActive() && App->scene->GetCurCam()->CheckInside((*item)->mesh))
-		{
-			if ((*item)->material != nullptr)
-			SetUpMat((*item)->material);
+	//for (std::list<ResMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++) 
+	//{
+	//	if ((*item)->GetActive() && App->scene->GetCurCam()->CheckInside((*item)->mesh))
+	//	{
+	//		if ((*item)->material != nullptr)
+	//		SetUpMat((*item)->material);
 
-			(*item)->mesh.Draw();
+	//		(*item)->mesh.Draw();
 
-			if ((*item)->drawNormals)
-				(*item)->mesh.DrawNormals();
+	//		if ((*item)->drawNormals)
+	//			(*item)->mesh.DrawNormals();
 
-			if ((*item)->drawBB)
-				(*item)->mesh.DrawBoundingBox();
-		}
+	//		if ((*item)->drawBB)
+	//			(*item)->mesh.DrawBoundingBox();
+	//	}
 
-	}
+	//}
 }
 
 void ModuleRenderer3D::SetUpMat(ComponentMaterial* mat)
@@ -328,32 +328,32 @@ void ModuleRenderer3D::SetUpMat(ComponentMaterial* mat)
 
 void ModuleRenderer3D::CleanUpMeshes()
 {
-	for (std::list<ComponentMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
-	{
-		(*item)->CleanUp();
-
-	}
-
-	meshes.clear();
-}
-
-
-void ModuleRenderer3D::SetMeshesTex(ResTexture i)
-{
-
-	//for (std::list<ResMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
+	//for (std::list<ComponentMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
 	//{
-	//	(*item)->tex = i;
+	//	(*item)->CleanUp();
+
 	//}
+
+	//meshes.clear();
 }
+
+//
+//void ModuleRenderer3D::SetMeshesTex(ResTexture i)
+//{
+//
+//	//for (std::list<ResMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
+//	//{
+//	//	(*item)->tex = i;
+//	//}
+//}
 
 float3 ModuleRenderer3D::GetMeshesCenter()
 {
 	float3 a = { 0,0,0 };
 	int i = 0;
-	for (std::list<ComponentMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
+	for (std::list<ResMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
 	{
-		a += (*item)->mesh.boundingBox.CenterPoint();
+		a += (*item)->boundingBox.CenterPoint();
 		i++;
 	}
 
@@ -363,18 +363,18 @@ float3 ModuleRenderer3D::GetMeshesCenter()
 AABB ModuleRenderer3D::GetMeshesAABB()
 {
 	AABB ret;
-	float3 min = (*App->renderer3D->meshes.begin())->mesh.boundingBox.minPoint;
-	float3 max = (*App->renderer3D->meshes.begin())->mesh.boundingBox.maxPoint;
+	float3 min = (*App->renderer3D->meshes.begin())->boundingBox.minPoint;
+	float3 max = (*App->renderer3D->meshes.begin())->boundingBox.maxPoint;
 
-	for (std::list<ComponentMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
+	for (std::list<ResMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
 	{
-		if ((*item)->mesh.boundingBox.minPoint.x < min.x) min.x = (*item)->mesh.boundingBox.minPoint.x;
-		if ((*item)->mesh.boundingBox.minPoint.y < min.y) min.y = (*item)->mesh.boundingBox.minPoint.y;
-		if ((*item)->mesh.boundingBox.minPoint.z < min.z) min.z = (*item)->mesh.boundingBox.minPoint.z;
+		if ((*item)->boundingBox.minPoint.x < min.x) min.x = (*item)->boundingBox.minPoint.x;
+		if ((*item)->boundingBox.minPoint.y < min.y) min.y = (*item)->boundingBox.minPoint.y;
+		if ((*item)->boundingBox.minPoint.z < min.z) min.z = (*item)->boundingBox.minPoint.z;
 
-		if ((*item)->mesh.boundingBox.maxPoint.x > max.x) max.x = (*item)->mesh.boundingBox.maxPoint.x;
-		if ((*item)->mesh.boundingBox.maxPoint.y > max.y) max.y = (*item)->mesh.boundingBox.maxPoint.y;
-		if ((*item)->mesh.boundingBox.maxPoint.z > max.z) max.z = (*item)->mesh.boundingBox.maxPoint.z;
+		if ((*item)->boundingBox.maxPoint.x > max.x) max.x = (*item)->boundingBox.maxPoint.x;
+		if ((*item)->boundingBox.maxPoint.y > max.y) max.y = (*item)->boundingBox.maxPoint.y;
+		if ((*item)->boundingBox.maxPoint.z > max.z) max.z = (*item)->boundingBox.maxPoint.z;
 
 	}
 	ret.minPoint = min;

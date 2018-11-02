@@ -4,12 +4,12 @@
 #include "ModuleRenderer3D.h"
 #include "WinObjects.h"
 
-ComponentMesh::ComponentMesh(ResMesh _mesh)
+ComponentMesh::ComponentMesh(ResMesh* _mesh)
 {
 	mesh = _mesh;
-	transform.position = mesh.boundingBox.CenterPoint();
+	transform.position = mesh->boundingBox.CenterPoint();
 	type = MESH;
-	App->renderer3D->meshes.push_back(this);
+	App->renderer3D->meshes.push_back(this->mesh);
 }
 
 ComponentMesh::ComponentMesh()
@@ -41,8 +41,8 @@ void ComponentMesh::UpdateUI()
 	{
 		ImGui::NewLine();
 		ImGui::Separator();
-		if (mesh.name.c_str() != nullptr)
-			ImGui::Text("%s", mesh.name.c_str());
+		if (mesh->name.c_str() != nullptr)
+			ImGui::Text("%s", mesh->name.c_str());
 		else
 			ImGui::Text("This Mesh hasn't name");
 
@@ -61,9 +61,9 @@ void ComponentMesh::UpdateUI()
 			ImGui::Text("Num Indices:");
 			ImGui::Text("Num Normals:");
 			ImGui::NextColumn();
-			ImGui::Text("%d", mesh.num_vertex);
-			ImGui::Text("%d", mesh.num_indice);
-			ImGui::Text("%d", mesh.num_normals);
+			ImGui::Text("%d", mesh->num_vertex);
+			ImGui::Text("%d", mesh->num_indice);
+			ImGui::Text("%d", mesh->num_normals);
 
 		}
 		ImGui::Columns(1);

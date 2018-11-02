@@ -7,6 +7,10 @@
 #define INDICES_CAP 200000
 
 class GameObject;
+class ResMesh;
+class aiMesh;
+class aiNode;
+
 
 class ImporterMesh :
 	public Importer
@@ -21,7 +25,7 @@ public:
 	bool CleanUp();
 
 	GameObject* LoadScene(const char* path);
-
+	GameObject* LoadMesh(aiMesh* m, aiNode* n);
 
 };
 

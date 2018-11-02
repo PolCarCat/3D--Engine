@@ -8,7 +8,7 @@ class ComponentMesh :
 	public Component
 {
 public:
-	ComponentMesh(ResMesh _mesh);
+	ComponentMesh(ResMesh* _mesh);
 	ComponentMesh();
 	~ComponentMesh();
 	bool Start();
@@ -18,7 +18,7 @@ public:
 	bool draw = true;
 	bool drawBB = false;
 	bool drawNormals = false;
-	ResMesh mesh;
+	ResMesh* mesh;
 	ComponentTransform transform;
 	ComponentMaterial* material = nullptr;
 
