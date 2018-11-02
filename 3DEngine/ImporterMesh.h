@@ -25,8 +25,8 @@ public:
 	bool CleanUp();
 
 	GameObject* LoadScene(const char* path);
-	GameObject* LoadMesh(aiMesh* m, aiNode* n);
-
+	GameObject* LoadMesh(aiMesh* m);
+	void SaveMeshAsMeh(ResMesh* m);
 };
 
 

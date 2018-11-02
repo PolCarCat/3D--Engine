@@ -78,8 +78,8 @@ GameObject* ImporterMesh::LoadScene(const char* path)
 		for (uint nm = 0; nm < scene->mNumMeshes; nm++)
 		{		
 			aiMesh* m = scene->mMeshes[nm];
-
-			GameObject* obj = LoadMesh(m, root->mChildren[nm]);
+			aiNode* n = root->mChildren[nm];
+			GameObject* obj = LoadMesh(m);
 			if (obj != nullptr)
 				obj->SetParent(newobj);
 		}
@@ -97,7 +97,7 @@ GameObject* ImporterMesh::LoadScene(const char* path)
 }
 
 
-GameObject* ImporterMesh::LoadMesh(aiMesh* m, aiNode* n)
+GameObject* ImporterMesh::LoadMesh(aiMesh* m)
 {
 	GameObject* newobj = new GameObject();
 	bool error = false;
@@ -208,17 +208,18 @@ GameObject* ImporterMesh::LoadMesh(aiMesh* m, aiNode* n)
 	{
 		mesh->GenerateBuffer();
 		newobj->AddCompMesh(mesh);
-		newobj->SetName(n->mName.C_Str());
+		newobj->SetName(m->mName.C_Str());
+		
 		App->scene->AddGameObject(newobj);
 
 		aiVector3D position;
 		aiQuaternion rotation;
 		aiVector3D scaling;
-		n->mTransformation.Decompose(scaling, rotation, position);
+		/*n->mTransformation.Decompose(scaling, rotation, position);
 
 		newobj->transform->position.Set(position.x, position.y, position.z);
 		newobj->transform->scale.Set(scaling.x, scaling.y, scaling.z);
-		newobj->transform->rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
+		newobj->transform->rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);*/
 
 		App->scene->AddGameObject(newobj);
 	}
@@ -236,12 +237,17 @@ GameObject* ImporterMesh::LoadMesh(aiMesh* m, aiNode* n)
 
 	VSLOG("\nAdded mesh with %d ", mesh->num_vertex);
 	VSLOG(" vertices, %d", mesh->num_indice);
-	VSLOG(" indices and &d", mesh->num_normals);
+	VSLOG(" indices and %d", mesh->num_normals);
 	VSLOG(" normals");
 
 	return newobj;
 }
 
+
+void ImporterMesh::SaveMeshAsMeh(ResMesh* m)
+{
+
+}
 
 void LogAssimp(const char* c1, char* c2)
 {

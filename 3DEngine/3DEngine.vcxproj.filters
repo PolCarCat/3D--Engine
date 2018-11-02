@@ -366,6 +366,9 @@
     <ClInclude Include="SceneLoader.h">
       <Filter>Sources\Modules\Game</Filter>
     </ClInclude>
+    <ClInclude Include="FileSystem.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -583,6 +586,9 @@
     </ClCompile>
     <ClCompile Include="SceneLoader.cpp">
       <Filter>Sources\Modules\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="FileSystem.cpp">
+      <Filter>Sources\Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
