@@ -26,7 +26,11 @@ bool ModuleScene::Start()
 
 
 	//currentTex = App->loader->LoadTex("Assets/Baker_house.png");
-	App->loader->LoadFBX("Assets/BakerHouse.fbx");
+	//App->loader->LoadFBX("Assets/BakerHouse.fbx");
+
+	GameObject* bk1 = new GameObject();
+	bk1->AddCompMesh(App->loader->meshImporter.LoadMeh("Untitled"));
+	AddGameObject(bk1);
 
 	ghostcam = new ComponentCamera(0.5f, 512.0f, 50.0f);
 	ghostcam->Start();

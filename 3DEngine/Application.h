@@ -10,6 +10,7 @@
 #include "ModuleGui.h"
 #include "ModuleLoader.h"
 #include "JsonDoc.h"
+#include "FileSystem.h"
 #include <list>
 
 using namespace std;
@@ -25,6 +26,7 @@ public:
 	ModuleLoader* loader;
 
 	JsonDoc config;
+	FileSystem fileSystem;
 
 	int fps_counter = 0;
 	int ms_counter = 0;

@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "WinObjects.h"
+#include "ImporterMesh.h"
 
 ComponentMesh::ComponentMesh(ResMesh* _mesh)
 {
@@ -121,4 +122,19 @@ void ComponentMesh::UpdateMatWin()
 	{
 		App->scene->CreateMaterial();
 	}
+}
+
+
+bool ComponentMesh::Save(JSON_Object* json, JsonDoc* doc)
+{
+	App->loader->meshImporter.SaveMeshAsMeh(mesh);
+
+	return true;
+}
+
+bool ComponentMesh::Load(JSON_Object* json, JsonDoc* doc)
+{
+
+
+	return true;
 }

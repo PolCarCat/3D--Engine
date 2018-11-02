@@ -6,7 +6,8 @@
 #include "ComponentTransform.h"
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
-
+#include <experimental/filesystem>
+#include <fstream>
 
 #include "SDL/include/SDL.h"
 #include "Assimp/include/postprocess.h"
@@ -246,7 +247,104 @@ GameObject* ImporterMesh::LoadMesh(aiMesh* m)
 
 void ImporterMesh::SaveMeshAsMeh(ResMesh* m)
 {
+	uint ranges[2] = { m->num_vertex, m->num_indice };
 
+	uint fileSize = sizeof(ranges) + sizeof(float)*m->num_vertex * 3 + sizeof(uint)*m->num_indice + sizeof(float)*m->num_vertex * 2 + sizeof(float)*m->num_vertex * 3;
+	
+	char* data = new char[fileSize];
+	char* last = data;
+
+
+	uint bytes = sizeof(ranges);
+	memcpy(last, ranges, bytes);
+
+	last += bytes;
+
+	bytes = sizeof(float)*m->num_vertex * 3;
+	memcpy(last, m->vertex, bytes);
+
+	last += bytes;
+
+	bytes = sizeof(uint)*m->num_indice;
+	memcpy(last, m->indice, bytes);
+
+	last += bytes;
+
+	bytes = sizeof(float)*m->num_vertex * 2;
+	memcpy(last, m->textC, bytes);
+
+	last += bytes;
+
+	bytes = sizeof(float)*m->num_vertex * 3;
+	memcpy(last, m->normals, bytes);
+
+	std::string str = DIR + m->name + MESH_EXTENSION;
+
+	std::ofstream dataFile(str.c_str(), std::fstream::out | std::fstream::binary);
+	dataFile.write(data, fileSize);
+	dataFile.close();
+
+	//App->fileSystem.SaveFile(str.c_str(), data, fileSize);
+
+}
+
+ResMesh* ImporterMesh::LoadMeh(const char* name)
+{
+	ResMesh* mesh = new ResMesh();
+
+	std::string str = DIR + std::string(name) + MESH_EXTENSION;
+	App->fileSystem.InvertBars(str);
+	//std::ifstream dataFile(str.c_str(), std::fstream::binary);
+
+	//// get length of file:
+	//int length = dataFile.tellg();
+
+
+	//if (length <= 0)
+	//{
+	//	VSLOG("Error Loading %s", str.c_str());
+	//	dataFile.close();
+	//	return nullptr;
+	//}
+	char* data;
+	App->fileSystem.LoadFile(str.c_str(), &data);
+	
+
+	char* last = data;
+	uint ranges[2];
+	uint bytes = sizeof(ranges);
+
+	memcpy(ranges, last, bytes);
+
+	mesh->num_vertex = ranges[0];
+	mesh->num_indice = ranges[1];
+
+	last += bytes;
+	bytes = sizeof(float)*mesh->num_vertex * 3;
+
+	mesh->vertex = new float[mesh->num_vertex * 3];
+	memcpy(mesh->vertex, last, bytes);
+
+	last += bytes;
+	bytes = sizeof(uint)*mesh->num_indice;
+
+	mesh->indice = new uint[mesh->num_indice];
+	memcpy(mesh->indice, last, bytes);
+
+	last += bytes;
+	bytes = sizeof(float)*mesh->num_vertex * 2;
+
+	mesh->textC = new float[mesh->num_vertex * 2];
+	memcpy(mesh->textC, last, bytes);
+
+	last += bytes;
+	bytes = sizeof(float)*mesh->num_vertex * 3;
+
+	mesh->normals = new float[mesh->num_vertex * 3];
+	memcpy(mesh->normals, last, bytes);
+
+	mesh->GenerateBuffer();
+	return mesh;
 }
 
 void LogAssimp(const char* c1, char* c2)

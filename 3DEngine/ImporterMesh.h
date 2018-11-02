@@ -4,6 +4,9 @@
 #include "Importer.h"
 #include "Globals.h"
 
+#define DIR "Libraries\\Meshes\\"
+#define MESH_EXTENSION ".meh"
+
 #define INDICES_CAP 200000
 
 class GameObject;
@@ -27,6 +30,7 @@ public:
 	GameObject* LoadScene(const char* path);
 	GameObject* LoadMesh(aiMesh* m);
 	void SaveMeshAsMeh(ResMesh* m);
+	ResMesh* LoadMeh(const char* name);
 };
 
 

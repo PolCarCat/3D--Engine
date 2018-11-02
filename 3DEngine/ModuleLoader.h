@@ -42,12 +42,14 @@ public:
 	Format CheckFormat(const char* path);
 	std::string GetFileName(const char* path);
 
+	ImporterTexture texImporter;
+	ImporterMesh meshImporter;
+
 private:
 	char* droppedFile = nullptr;
 	Format dFformat = FNULL;
 
-	ImporterTexture texImporter;
-	ImporterMesh meshImporter;
+
 
 };
 

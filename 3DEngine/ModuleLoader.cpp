@@ -161,5 +161,6 @@ std::string ModuleLoader::GetFileName(const char* path)
 
 void ModuleLoader::LoadFBX(const char* path)
 {
+
 	meshImporter.LoadScene(path);
 }
