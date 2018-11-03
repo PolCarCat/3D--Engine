@@ -324,13 +324,14 @@ bool ComponentCamera::Save(JSON_Object* json, JsonDoc* doc)
 	json_object_dotset_number(json, "Far Plane", farDistance);
 	json_object_dotset_number(json, "FOV", fovy);
 	
-
-
 	return true;
 }
 
 bool ComponentCamera::Load(JSON_Object* json, JsonDoc* doc)
 {
-
+	active = json_object_dotget_boolean(json, "Active");
+	nearDistance = json_object_dotget_number(json, "Near Plane");
+	farDistance = json_object_dotget_number(json, "Far Plane");
+	active = json_object_dotget_number(json, "FOV");
 	return true;
 }

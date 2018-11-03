@@ -20,14 +20,15 @@ public:
 	void UpdateUI();
 	bool CleanUp();
 
+	//Components
 	void AddComponent(Component* comp);
-	void AddCompMesh();
-	void AddCompMesh(ResMesh* m);
-	void AddCompCam(float _near = 0.5f, float _far = 512.0f, float fov = 60.0f);
+	Component* AddComponent(Type t);
+	Component* AddCompMesh();
+	Component* AddCompMesh(ResMesh* m);
+	Component* AddCompCam(float _near = 0.5f, float _far = 512.0f, float fov = 60.0f);
 	void AddGameObject(GameObject* obj);
 	void DeleteComp(Component* comp);
 	void DeleteGameObj(GameObject* obj);
-	void AddComponent(Type t);
 	bool CheckIfContained(GameObject* obj);
 
 	bool GetActive();
@@ -42,16 +43,20 @@ public:
 	void Delete();
 	bool CheckDelete();
 	uint32_t GetUUID();
+	GameObject* GetObjByUUID(uint32_t id);
 
 	void Save(JSON_Array* objects, JsonDoc* doc);
 	void Load(JSON_Object* json, JsonDoc* doc);
 
 	GameObject* GetParent();
 	void SetParent(GameObject* p);
+	void CalcGlobalTransform();
 
 	std::vector<Component*> compChilds;
 	std::vector<GameObject*> objChilds;
 	ComponentTransform * transform = nullptr;
+	ComponentTransform * globalTransform = nullptr;
+
 
 private:
 

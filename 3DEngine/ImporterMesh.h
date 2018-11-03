@@ -4,7 +4,7 @@
 #include "Importer.h"
 #include "Globals.h"
 
-#define DIR "Libraries\\Meshes\\"
+#define MESH_DIR "Libraries\\Meshes\\"
 #define MESH_EXTENSION ".meh"
 
 #define INDICES_CAP 200000

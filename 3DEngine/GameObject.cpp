@@ -291,22 +291,46 @@ void GameObject::DeleteGameObj(GameObject* obj)
 
 }
 
-void GameObject::AddCompMesh()
+Component* GameObject::AddCompMesh()
 {
 	Component* newcomp = new ComponentMesh();
 	newcomp->SetParent(this);
+
+	return newcomp;
 }
 
-void GameObject::AddCompMesh(ResMesh* m)
+Component* GameObject::AddCompMesh(ResMesh* m)
 {
 	Component* newcomp = new ComponentMesh(m);
 	newcomp->SetParent(this);
+
+	return newcomp;
 }
 
-void GameObject::AddCompCam(float _near , float _far, float fov)
+Component* GameObject::AddCompCam(float _near , float _far, float fov)
 {
 	Component* newcomp = new ComponentCamera(_near, _far, fov);
 	newcomp->SetParent(this);
+
+	return newcomp;
+}
+
+Component* GameObject::AddComponent(Type t)
+{
+	Component* newcomp = nullptr;
+	switch (t)
+	{
+	case MESH:
+		newcomp = AddCompMesh();
+		break;
+	case CAMERA:
+		newcomp = AddCompCam();
+		break;
+	default:
+		break;
+	}
+
+	return newcomp;
 }
 
 void GameObject::AddBox(AABB b)
@@ -365,24 +389,35 @@ void GameObject::UpdateNewComWindow()
 		AddComponent(t);
 }
 
-void GameObject::AddComponent(Type t)
-{
-	switch (t)
-	{
-	case MESH:
-		AddCompMesh();
-		break;
-	case CAMERA:
-		AddCompCam();
-		break;
-	default:
-		break;
-	}
-}
+
 
 uint32_t GameObject::GetUUID()
 {
 	return uuid;
+}
+
+
+GameObject* GameObject::GetObjByUUID(uint32_t id)
+{
+	//Function to get the game object with the same uuid between the children
+	if (id == uuid)
+		return this;
+	else
+	{
+		for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end(); item++)
+		{
+			if ((*item)->GetObjByUUID(id) != nullptr)
+			{
+				return *item;
+			}
+		}
+	}
+	return nullptr;
+}
+
+void GameObject::CalcGlobalTransform()
+{
+	//I save this for later
 }
 
 void GameObject::Save(JSON_Array* objects, JsonDoc* doc)
@@ -414,13 +449,44 @@ void GameObject::Save(JSON_Array* objects, JsonDoc* doc)
 
 		(*item)->Save(objects, doc);
 	}
-
-
-
-
 	
 }
 void GameObject::Load(JSON_Object* json, JsonDoc* doc)
 {
+	GameObject* obj = new GameObject();
 
+	obj->uuid = json_object_dotget_number(json, "UUID");
+	uint32_t parentuuid = json_object_dotget_number(json, "Parent UUID");
+	obj->name = json_object_dotget_string(json, "Name");
+
+	obj->active = json_object_dotget_boolean(json, "Active");
+	obj->staticobj = json_object_dotget_boolean(json, "Static");
+
+	if (parentuuid == 0)
+	{
+		VSLOG("Object %s set as root", obj->name)
+		App->scene->root = *obj;
+		delete obj;
+	}
+
+
+	//Loading Components
+	JSON_Array* comp = doc->GetObjAr(json, "Components");
+
+	int i = 0;
+	JSON_Object* item = doc->GetArObj(comp, i);
+	while (item != nullptr)
+	{
+		uint type = json_object_dotget_number(item, "Type");
+
+		if ((Type)type == TRANSFORM)
+			transform->Load(item, doc);
+		else
+		{
+			Component* newcomp = AddComponent((Type)type);
+			newcomp->Load(item, doc);
+		}
+
+		item = doc->GetArObj(comp, ++i);
+	}
 }

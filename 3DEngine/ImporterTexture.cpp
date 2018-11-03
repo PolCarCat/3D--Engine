@@ -156,6 +156,7 @@ void ImporterTexture::SaveTex(ResTexture tex)
 		data = new ILubyte[size];
 		if (ilSaveL(IL_DDS, data, size) > 0)
 		{
+			//WRONG
 			std::ofstream dataFile(tex.name.c_str(), std::fstream::out | std::fstream::binary);
 			dataFile.write((const char*)data, size);
 			dataFile.close();

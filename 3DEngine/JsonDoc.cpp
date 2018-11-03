@@ -80,6 +80,10 @@ JSON_Object* JsonDoc::GetArObj(JSON_Array* parent, uint index)
 	return json_array_get_object(parent, index);
 }
 
+JSON_Array* JsonDoc::GetObjAr(JSON_Object* parent, const char* _name)
+{
+	return json_object_dotget_array(parent, _name);
+}
 
 int JsonDoc::GetObjValueInt(json_object_t* _obj, const char* _name)
 {

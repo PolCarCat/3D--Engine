@@ -2,7 +2,7 @@
 #include "Importer.h"
 #include "Globals.h"
 
-#define DIR "Libraries\\Textures\\"
+#define TEXT_DIR "Libraries\\Textures\\"
 #define TEXT_EXTENSION ".dds"
 #define CHECKERS_SIZE 20
 

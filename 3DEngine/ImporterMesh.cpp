@@ -278,7 +278,7 @@ void ImporterMesh::SaveMeshAsMeh(ResMesh* m)
 	bytes = sizeof(float)*m->num_vertex * 3;
 	memcpy(last, m->normals, bytes);
 
-	std::string str = DIR + m->name + MESH_EXTENSION;
+	std::string str = MESH_DIR + m->name + MESH_EXTENSION;
 
 	std::ofstream dataFile(str.c_str(), std::fstream::out | std::fstream::binary);
 	dataFile.write(data, fileSize);
@@ -292,7 +292,7 @@ ResMesh* ImporterMesh::LoadMeh(const char* name)
 {
 	ResMesh* mesh = new ResMesh();
 
-	std::string str = DIR + std::string(name) + MESH_EXTENSION;
+	std::string str = MESH_DIR + std::string(name) + MESH_EXTENSION;
 	App->fileSystem.InvertBars(str);
 	//std::ifstream dataFile(str.c_str(), std::fstream::binary);
 
