@@ -451,22 +451,36 @@ void GameObject::Save(JSON_Array* objects, JsonDoc* doc)
 	}
 	
 }
-void GameObject::Load(JSON_Object* json, JsonDoc* doc)
+bool GameObject::Load(JSON_Object* json, JsonDoc* doc)
 {
-	GameObject* obj = new GameObject();
+	//Returns true if the objects is set as root, so it has to be deleted
+	bool ret = false;
 
-	obj->uuid = json_object_dotget_number(json, "UUID");
+	uuid = json_object_dotget_number(json, "UUID");
 	uint32_t parentuuid = json_object_dotget_number(json, "Parent UUID");
-	obj->name = json_object_dotget_string(json, "Name");
+	name = json_object_dotget_string(json, "Name");
 
-	obj->active = json_object_dotget_boolean(json, "Active");
-	obj->staticobj = json_object_dotget_boolean(json, "Static");
+	active = json_object_dotget_boolean(json, "Active");
+	staticobj = json_object_dotget_boolean(json, "Static");
 
 	if (parentuuid == 0)
 	{
-		VSLOG("Object %s set as root", obj->name)
-		App->scene->root = *obj;
-		delete obj;
+		VSLOG("Object %s set as root", name.c_str())
+		App->scene->root = *this;
+		ret = true;
+	}
+	else
+	{
+		GameObject* parent = App->scene->root.GetObjByUUID(parentuuid);
+
+		if (parent != nullptr)
+			SetParent(parent);
+		else
+		{
+			VSLOG("Can't find %s's parent", name.c_str());
+			App->scene->AddGameObject(this);
+		}
+		
 	}
 
 
@@ -489,4 +503,6 @@ void GameObject::Load(JSON_Object* json, JsonDoc* doc)
 
 		item = doc->GetArObj(comp, ++i);
 	}
+
+	return ret;
 }

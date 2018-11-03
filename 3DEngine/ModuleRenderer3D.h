@@ -33,7 +33,7 @@ public:
 	void DrawMeshes();
 	void SetUpMat(ComponentMaterial* mat);
 	void CleanUpMeshes();
-	void SetMeshesTex(ResTexture i);
+	void SaveMeshes();
 	float3 GetMeshesCenter();
 	AABB GetMeshesAABB();
 	void DrawFrustum(math::Frustum f);

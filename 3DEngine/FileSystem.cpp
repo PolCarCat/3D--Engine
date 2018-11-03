@@ -2,7 +2,7 @@
 
 #include "SDL/include/SDL.h"
 #include "PhysFS/include/physfs.h"
-
+#include <fstream>
 
 #pragma comment (lib, "PhysFS/libx86/physfs.lib")
 
@@ -23,8 +23,8 @@ FileSystem::FileSystem()
 	AddPath("Libraries/");
 
 
-	if (PHYSFS_exists("Libraries/Meshes/") == 0)
-		PHYSFS_mkdir("Libraries/Meshes/");
+	if (PHYSFS_exists("Libraries\\Meshes\\") == 0)
+		PHYSFS_mkdir("Libraries\\Meshes\\");
 
 	AddPath("Libraries/Meshes/");
 
@@ -79,16 +79,24 @@ uint FileSystem::SaveFile(const char* file, char* buffer, unsigned int size) con
 	uint ret = 0;
 	PHYSFS_file* filefs = PHYSFS_openWrite(file);
 
-	if (filefs != nullptr)
+	if (filefs == nullptr)
+	{
+		std::ofstream dataFile(file, std::fstream::out | std::fstream::binary);
+		dataFile.write(buffer, size);
+		dataFile.close();
+
+		//VSLOG("\nCreated new file %s", file);
+	}
+	else
 	{
 		if (size == PHYSFS_writeBytes(filefs, (const void*)buffer, size))
 			ret = size;
 
 
-	PHYSFS_close(filefs);	
+		PHYSFS_close(filefs);
 	}
-	else
-		VSLOG("Error opening %s, %s", file, PHYSFS_getLastError());
+
+	
 
 	return ret;
 }

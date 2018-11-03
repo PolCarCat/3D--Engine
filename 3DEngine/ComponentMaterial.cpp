@@ -110,3 +110,16 @@ bool ComponentMaterial::CleanUp()
 {
 	return true;
 }
+
+bool ComponentMaterial::Save(JSON_Object* json, JsonDoc* doc)
+{
+
+
+	return true;
+}
+bool ComponentMaterial::Load(JSON_Object* json, JsonDoc* doc)
+{
+
+
+	return true;
+}

@@ -15,6 +15,7 @@ public:
 	
 	json_object_t* GetRootObj();
 	json_object_t* GetObj(const char* _name);
+	JSON_Array* SetAr(const char* _name);
 	JSON_Array* GetAr(const char* _name);
 	json_object_t* GetObjObj(json_object_t* _obj, const char* _name);
 	JSON_Array* GetObjAr(JSON_Object* parent, const char* _name);

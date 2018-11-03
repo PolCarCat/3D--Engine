@@ -382,6 +382,15 @@ AABB ModuleRenderer3D::GetMeshesAABB()
 	return ret;
 }
 
+
+void ModuleRenderer3D::SaveMeshes()
+{
+	for (std::list<ResMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
+	{
+		App->loader->meshImporter.SaveMeshAsMeh(*item);
+	}
+}
+
 void ModuleRenderer3D::DrawFrustum(math::Frustum f)
 {
 	float3 point[8];

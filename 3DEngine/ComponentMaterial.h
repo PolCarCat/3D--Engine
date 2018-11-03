@@ -12,12 +12,12 @@ public:
 	~ComponentMaterial();
 
 	bool Start();
-
 	bool Update();
-
 	void UpdateUI();
-
 	bool CleanUp();
+	bool Save(JSON_Object* json, JsonDoc* doc);
+	bool Load(JSON_Object* json, JsonDoc* doc);
+
 	void SetName(const char* n);
 	void SetName(std::string n);
 	const char* GetName();

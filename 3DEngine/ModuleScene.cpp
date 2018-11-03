@@ -28,9 +28,9 @@ bool ModuleScene::Start()
 	//currentTex = App->loader->LoadTex("Assets/Baker_house.png");
 	//App->loader->LoadFBX("Assets/BakerHouse.fbx");
 
-	GameObject* bk1 = new GameObject();
-	bk1->AddCompMesh(App->loader->meshImporter.LoadMeh("Untitled"));
-	AddGameObject(bk1);
+	//GameObject* bk1 = new GameObject();
+	//bk1->AddCompMesh(App->loader->meshImporter.LoadMeh("Untitled"));
+	//AddGameObject(bk1);
 
 	ghostcam = new ComponentCamera(0.5f, 512.0f, 50.0f);
 	ghostcam->Start();
@@ -71,6 +71,12 @@ update_status ModuleScene::Update(float dt)
 		quadTree.DistributeTree();
 		//quadTree.GenerateTestChildren();
 		SceneLoader::SaveScene("Assets/scenes/scene1.json", &root);
+	}
+
+
+	if (ImGui::Button("Load Scene"))
+	{
+		SceneLoader::LoadScene("Assets/scenes/scene1.json", &root);
 	}
 	ImGui::End();
 

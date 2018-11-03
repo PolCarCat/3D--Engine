@@ -46,7 +46,7 @@ public:
 	GameObject* GetObjByUUID(uint32_t id);
 
 	void Save(JSON_Array* objects, JsonDoc* doc);
-	void Load(JSON_Object* json, JsonDoc* doc);
+	bool Load(JSON_Object* json, JsonDoc* doc);
 
 	GameObject* GetParent();
 	void SetParent(GameObject* p);

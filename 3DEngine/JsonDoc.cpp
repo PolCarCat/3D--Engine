@@ -65,9 +65,14 @@ json_object_t* JsonDoc::GetObj(const char* _name)
 	return obj;
 }
 
-JSON_Array* JsonDoc::GetAr(const char* _name)
+JSON_Array* JsonDoc::SetAr(const char* _name)
 {
 	return SetArray(rootObj, _name);
+}
+
+JSON_Array* JsonDoc::GetAr(const char* _name)
+{
+	return json_object_dotget_array(rootObj, _name);
 }
 
 json_object_t* JsonDoc::GetObjObj(json_object_t* _obj, const char* _name)

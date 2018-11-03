@@ -7,7 +7,7 @@
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include <experimental/filesystem>
-#include <fstream>
+
 
 #include "SDL/include/SDL.h"
 #include "Assimp/include/postprocess.h"
@@ -208,6 +208,8 @@ GameObject* ImporterMesh::LoadMesh(aiMesh* m)
 	if (!error)
 	{
 		mesh->GenerateBuffer();
+		mesh->name = m->mName.C_Str();
+		App->renderer3D->meshes.push_back(mesh);
 		newobj->AddCompMesh(mesh);
 		newobj->SetName(m->mName.C_Str());
 		
@@ -247,9 +249,9 @@ GameObject* ImporterMesh::LoadMesh(aiMesh* m)
 
 void ImporterMesh::SaveMeshAsMeh(ResMesh* m)
 {
-	uint ranges[2] = { m->num_vertex, m->num_indice };
+	uint ranges[3] = { m->num_vertex, m->num_indice, m->uuid };
 
-	uint fileSize = sizeof(ranges) + sizeof(float)*m->num_vertex * 3 + sizeof(uint)*m->num_indice + sizeof(float)*m->num_vertex * 2 + sizeof(float)*m->num_vertex * 3;
+	uint fileSize = sizeof(ranges) + sizeof(float)*m->num_vertex * 3 + sizeof(uint)*m->num_indice + sizeof(float)*m->num_vertex * 2 + sizeof(float)*m->num_vertex * 3 + sizeof(uint32_t);
 	
 	char* data = new char[fileSize];
 	char* last = data;
@@ -278,13 +280,10 @@ void ImporterMesh::SaveMeshAsMeh(ResMesh* m)
 	bytes = sizeof(float)*m->num_vertex * 3;
 	memcpy(last, m->normals, bytes);
 
+
 	std::string str = MESH_DIR + m->name + MESH_EXTENSION;
 
-	std::ofstream dataFile(str.c_str(), std::fstream::out | std::fstream::binary);
-	dataFile.write(data, fileSize);
-	dataFile.close();
-
-	//App->fileSystem.SaveFile(str.c_str(), data, fileSize);
+	App->fileSystem.SaveFile(str.c_str(), data, fileSize);
 
 }
 
@@ -300,15 +299,16 @@ ResMesh* ImporterMesh::LoadMeh(const char* name)
 	//int length = dataFile.tellg();
 
 
-	//if (length <= 0)
-	//{
-	//	VSLOG("Error Loading %s", str.c_str());
-	//	dataFile.close();
-	//	return nullptr;
-	//}
-	char* data;
+
+	char* data = nullptr;
 	App->fileSystem.LoadFile(str.c_str(), &data);
 	
+
+	if (data == nullptr )
+{
+	VSLOG("Error Loading %s", str.c_str());
+	return nullptr;
+}
 
 	char* last = data;
 	uint ranges[2];
@@ -318,6 +318,7 @@ ResMesh* ImporterMesh::LoadMeh(const char* name)
 
 	mesh->num_vertex = ranges[0];
 	mesh->num_indice = ranges[1];
+	mesh->uuid		 = ranges[2];
 
 	last += bytes;
 	bytes = sizeof(float)*mesh->num_vertex * 3;
@@ -344,6 +345,10 @@ ResMesh* ImporterMesh::LoadMeh(const char* name)
 	memcpy(mesh->normals, last, bytes);
 
 	mesh->GenerateBuffer();
+
+	delete data;
+	data = nullptr;
+
 	return mesh;
 }
 

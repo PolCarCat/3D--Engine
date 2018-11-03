@@ -34,6 +34,7 @@ public:
 
 	AABB boundingBox;
 
+	uint32_t uuid = 0;
 
 	void GenerateBuffer();
 	void Draw();

@@ -10,7 +10,6 @@ ComponentMesh::ComponentMesh(ResMesh* _mesh)
 	mesh = _mesh;
 	transform.position = mesh->boundingBox.CenterPoint();
 	type = MESH;
-	App->renderer3D->meshes.push_back(this->mesh);
 }
 
 ComponentMesh::ComponentMesh()
@@ -127,7 +126,10 @@ void ComponentMesh::UpdateMatWin()
 
 bool ComponentMesh::Save(JSON_Object* json, JsonDoc* doc)
 {
-	App->loader->meshImporter.SaveMeshAsMeh(mesh);
+	
+	transform.Save(json, doc);
+
+	json_object_dotset_number(json, "Mesh UUID", mesh->uuid);
 
 	return true;
 }
@@ -135,6 +137,7 @@ bool ComponentMesh::Save(JSON_Object* json, JsonDoc* doc)
 bool ComponentMesh::Load(JSON_Object* json, JsonDoc* doc)
 {
 
+	uint32_t meshuuid = json_object_dotget_number(json, "Mesh UUID");
 
 	return true;
 }
