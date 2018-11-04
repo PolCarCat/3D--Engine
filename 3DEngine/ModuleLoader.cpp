@@ -69,10 +69,6 @@ update_status ModuleLoader::PostUpdate(float dt)
 		case FBX:
 			App->renderer3D->CleanUpMeshes();
 			meshImporter.LoadScene(droppedFile);
-			//{
-			//	App->imgui->element->curMesh = (*App->renderer3D->meshes.begin());
-			//	//App->camera->FocusMeshes();
-			//}
 			break;
 		case PNG:
 		case DDS:
@@ -157,6 +153,21 @@ std::string ModuleLoader::GetFileName(const char* path)
 	}
 
 	return name;
+}
+
+
+std::string ModuleLoader::GetFileDir(const char* path)
+{
+	std::string t = path;
+
+	for (std::string::reverse_iterator rit = t.rbegin(); rit != t.rend(); ++rit)
+	{
+		if (*rit == '/' || *rit == '\\')
+			break;
+		else
+			t.pop_back();
+	}
+	return t;
 }
 
 void ModuleLoader::LoadFBX(const char* path)

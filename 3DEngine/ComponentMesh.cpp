@@ -29,9 +29,10 @@ bool ComponentMesh::Start()
 
 bool ComponentMesh::Update()
 {
+	if (material != nullptr)
+	App->renderer3D->SetUpMat(material);
+
 	mesh->Draw();
-
-
 	return true;
 }
 

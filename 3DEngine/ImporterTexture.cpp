@@ -93,6 +93,8 @@ ResTexture ImporterTexture::LoadTex(const char* path)
 
 	if (success)
 	{
+
+		ret.name = App->loader->GetFileName(path);
 		ILinfo ImageInfo;
 		iluGetImageInfo(&ImageInfo);
 		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)

@@ -22,8 +22,6 @@ bool WinElem::Start()
 }
 bool WinElem::Update()
 {
-
-
 	ImGui::Begin("Element");
 	if (App->scene->selectedObj != nullptr)
 	{	

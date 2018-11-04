@@ -24,13 +24,16 @@ public:
 	void CreateMaterial();
 	ComponentCamera* GetCurCam();
 	ComponentCamera* GetGhostCam();
+	ComponentMaterial* CheckMaterial(const char* name);
 
 	GameObject* selectedObj = nullptr;
 	ComponentMaterial* selectedMat = nullptr;
 	GameObject root;
+
 	std::list<ComponentMaterial*> materials;
 
 	Quadtree quadTree;
+
 private:
 
 	ComponentCamera* ghostcam;

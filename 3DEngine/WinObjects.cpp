@@ -96,7 +96,11 @@ bool WinObjects::UpdateObj(GameObject* obj)
 		if ((*item)->objChilds.size() == 0)
 			node_flags |= ImGuiTreeNodeFlags_Leaf;
 
-		ImGui::TreeNodeEx((*item)->GetName(), node_flags);
+		bool open = false;
+		if (ImGui::TreeNodeEx((*item)->GetName(), node_flags))
+		{
+			open = true;
+		}
 
 
 		if (ImGui::IsItemClicked())
@@ -105,6 +109,8 @@ bool WinObjects::UpdateObj(GameObject* obj)
 			ret = true;
 		}
 
+
+		//Drag and drop stuff
 		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 		{
 			source = *item;
@@ -129,12 +135,12 @@ bool WinObjects::UpdateObj(GameObject* obj)
 
 		}
 
-		ImGui::Indent();
-		bool childClicked = UpdateObj(*item);
-		ImGui::Unindent();
-	
-
-
+		if (open)
+		{
+			ImGui::Indent();
+			bool childClicked = UpdateObj(*item);
+			ImGui::Unindent();
+		}
 	
 		ImGui::PopID();
 		n++;

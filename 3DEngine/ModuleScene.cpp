@@ -124,15 +124,28 @@ void ModuleScene::DeleteGameObject(GameObject* obj)
 void ModuleScene::CreateEmptyObj()
 {
 	GameObject* obj = new GameObject();
-	obj->SetName("Untitiled");
+	obj->SetName("New Object");
 	obj->SetParent(&root);
 }
 
 void ModuleScene::CreateMaterial()
 {
 	ComponentMaterial* mat = new ComponentMaterial();
-	mat->SetName("Untitiled");
+	mat->SetName("New Material");
 	materials.push_back(mat);
+}
+
+ComponentMaterial* ModuleScene::CheckMaterial(const char* name)
+{
+	for (std::list<ComponentMaterial*>::iterator item = materials.begin(); item != materials.end(); item++)
+	{
+		if (std::string((*item)->GetName()) == name)
+		{
+			return *item;
+		}
+	}
+
+	return nullptr;
 }
 
 ComponentCamera* ModuleScene::GetCurCam()

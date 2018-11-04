@@ -4,6 +4,7 @@
 #include "ModuleRenderer3D.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
+#include "ComponentMesh.h"
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include <experimental/filesystem>
@@ -54,36 +55,29 @@ GameObject* ImporterMesh::LoadScene(const char* path)
 {
 	bool ret = true;
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
+	currentPath = App->loader->GetFileDir(path);
 
 	GameObject* newobj = nullptr;
 	
-	if (scene != nullptr && scene->HasMeshes())
+	if (scene != nullptr)
 	{
-		uint i = 0;
-		aiNode* root = scene->mRootNode;
 
-		aiVector3D position;
-		aiQuaternion rotation;
-		aiVector3D scaling;
-		root->mTransformation.Decompose(scaling, rotation, position);
 
-		newobj = new GameObject();
+		GameObject* newobj = new GameObject();
+		newobj->SetName(App->loader->GetFileName(path));
 		App->scene->AddGameObject(newobj);
 
-		newobj->SetName(App->loader->GetFileName(path));
-		newobj->transform->position.Set(position.x, position.y, position.z);
-		newobj->transform->scale.Set(scaling.x, scaling.y, scaling.z);
-		newobj->transform->rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
+		GameObject* child = LoadNode(scene->mRootNode, scene, newobj);
 
 
-		for (uint nm = 0; nm < scene->mNumMeshes; nm++)
-		{		
-			aiMesh* m = scene->mMeshes[nm];
-			aiNode* n = root->mChildren[nm];
-			GameObject* obj = LoadMesh(m);
-			if (obj != nullptr)
-				obj->SetParent(newobj);
-		}
+		//for (uint nm = 0; nm < scene->mNumMeshes; nm++)
+		//{		
+		//	aiMesh* m = scene->mMeshes[nm];
+		//	aiNode* n = root->mChildren[nm];
+		//	GameObject* obj = LoadMesh(m);
+		//	if (obj != nullptr)
+		//		obj->SetParent(newobj);
+		//}
 
 		aiReleaseImport(scene);
 	}
@@ -94,13 +88,64 @@ GameObject* ImporterMesh::LoadScene(const char* path)
 
 	}
 
+	currentPath = "";
 	return newobj;
 }
 
-
-GameObject* ImporterMesh::LoadMesh(aiMesh* m)
+GameObject* ImporterMesh::LoadNode(aiNode* n, const aiScene* scene, GameObject* parent)
 {
-	GameObject* newobj = new GameObject();
+	GameObject* nodeobj = nullptr;
+
+
+	if (n->mMetaData != nullptr)
+	{
+		nodeobj = new GameObject();
+		nodeobj->SetName(n->mName.C_Str());
+		nodeobj->SetParent(parent);
+
+		aiVector3D position;
+		aiQuaternion rotation;
+		aiVector3D scaling;
+		n->mTransformation.Decompose(scaling, rotation, position);
+
+		nodeobj->transform->position.Set(position.x, position.y, position.z);
+		nodeobj->transform->scale.Set(scaling.x, scaling.y, scaling.z);
+		nodeobj->transform->rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
+
+
+		if (n->mNumMeshes != 0)
+		{
+			for (uint i = 0; i < n->mNumMeshes; i++)
+			{
+				aiMesh* mesh = scene->mMeshes[n->mMeshes[i]];
+				ComponentMesh* meshobj = LoadMesh(mesh);
+
+				if (meshobj != nullptr)
+				{
+					nodeobj->AddComponent(meshobj);
+
+					aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
+					meshobj->material = LoadMat(mat);
+				}
+
+			}
+		}
+	}
+
+	if (nodeobj == nullptr)
+		nodeobj = parent;
+
+	for (uint i = 0; i < n->mNumChildren; i++)
+	{
+		GameObject* child = LoadNode(n->mChildren[i], scene, nodeobj);
+	}
+
+	return nodeobj;
+}
+
+ComponentMesh* ImporterMesh::LoadMesh(aiMesh* m)
+{
+
 	bool error = false;
 
 	
@@ -109,6 +154,8 @@ GameObject* ImporterMesh::LoadMesh(aiMesh* m)
 	mesh->vertex = new float[mesh->num_vertex * 3];
 	memcpy(mesh->vertex, m->mVertices, sizeof(float) * mesh->num_vertex * 3);
 
+
+	//Create AABB
 	float minx = mesh->vertex[0];
 	float maxx = mesh->vertex[0];
 	float miny = mesh->vertex[1];
@@ -137,7 +184,7 @@ GameObject* ImporterMesh::LoadMesh(aiMesh* m)
 	mesh->boundingBox.maxPoint = { maxx, maxy, maxz };
 	mesh->boundingBox.minPoint = { minx, miny, minz };
 
-	newobj->AddBox(mesh->boundingBox);
+	//Load indices and faces
 	if (m->HasFaces())
 	{
 		mesh->num_indice = m->mNumFaces * 3;
@@ -158,7 +205,6 @@ GameObject* ImporterMesh::LoadMesh(aiMesh* m)
 			}
 			else
 				memcpy(&mesh->indice[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
-
 
 		}
 	}
@@ -204,46 +250,50 @@ GameObject* ImporterMesh::LoadMesh(aiMesh* m)
 	}
 
 
-
+	ComponentMesh* newcomp = nullptr;
 	if (!error)
 	{
 		mesh->GenerateBuffer();
 		mesh->name = m->mName.C_Str();
 		App->renderer3D->meshes.push_back(mesh);
-		newobj->AddCompMesh(mesh);
-		newobj->SetName(m->mName.C_Str());
+
+		newcomp = new ComponentMesh(mesh);
+
+		VSLOG("\nAdded mesh with %d ", mesh->num_vertex);
+		VSLOG(" vertices, %d", mesh->num_indice);
+		VSLOG(" indices and %d", mesh->num_normals);
+		VSLOG(" normals");
 		
-		App->scene->AddGameObject(newobj);
-
-		aiVector3D position;
-		aiQuaternion rotation;
-		aiVector3D scaling;
-		/*n->mTransformation.Decompose(scaling, rotation, position);
-
-		newobj->transform->position.Set(position.x, position.y, position.z);
-		newobj->transform->scale.Set(scaling.x, scaling.y, scaling.z);
-		newobj->transform->rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);*/
-
-		App->scene->AddGameObject(newobj);
 	}
-	else
+
+	return newcomp;
+}
+
+ComponentMaterial* ImporterMesh::LoadMat(aiMaterial* m)
+{
+	ComponentMaterial* mat = nullptr;
+	aiString path;
+	aiReturn error = m->GetTexture(aiTextureType::aiTextureType_DIFFUSE, 0, &path);
+	std::string fullpath = currentPath + path.C_Str();
+
+	if (error == aiReturn::aiReturn_SUCCESS)
 	{
-		newobj->CleanUp();
-		delete newobj;
-		newobj = nullptr;
+		ComponentMaterial* usedMat = App->scene->CheckMaterial(path.C_Str());
+		if (usedMat != nullptr)
+		{
+			mat = usedMat;
+		}
+		else
+		{
+			mat = new ComponentMaterial();
+			mat->SetTexture(App->loader->texImporter.LoadTex(fullpath.c_str()));
+			mat->SetName(path.C_Str());
+			App->scene->materials.push_back(mat);
+		}
 
-		//delete mesh;
-		//mesh = nullptr;
 	}
 
-
-
-	VSLOG("\nAdded mesh with %d ", mesh->num_vertex);
-	VSLOG(" vertices, %d", mesh->num_indice);
-	VSLOG(" indices and %d", mesh->num_normals);
-	VSLOG(" normals");
-
-	return newobj;
+	return mat;
 }
 
 

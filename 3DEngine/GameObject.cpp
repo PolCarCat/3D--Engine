@@ -208,7 +208,6 @@ void GameObject::AddComponent(Component* comp)
 			Utils::RemoveFromVector(comp, prevparent->compChilds);		
 		}
 
-		compChilds.push_back(comp);
 		comp->SetParent(this);
 	}
 

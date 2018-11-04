@@ -41,6 +41,7 @@ public:
 
 	Format CheckFormat(const char* path);
 	std::string GetFileName(const char* path);
+	std::string GetFileDir(const char* path);
 
 	ImporterTexture texImporter;
 	ImporterMesh meshImporter;

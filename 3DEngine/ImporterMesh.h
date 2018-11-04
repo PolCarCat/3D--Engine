@@ -10,9 +10,13 @@
 #define INDICES_CAP 200000
 
 class GameObject;
+class ComponentMesh;
+class ComponentMaterial;
 class ResMesh;
 class aiMesh;
 class aiNode;
+class aiScene;
+class aiMaterial;
 
 
 class ImporterMesh :
@@ -28,9 +32,16 @@ public:
 	bool CleanUp();
 
 	GameObject* LoadScene(const char* path);
-	GameObject* LoadMesh(aiMesh* m);
+	GameObject* LoadNode(aiNode* n, const aiScene* scene, GameObject* parent);
+	ComponentMesh* LoadMesh(aiMesh* m);
+	ComponentMaterial* LoadMat(aiMaterial* m);
+
+
 	void SaveMeshAsMeh(ResMesh* m);
 	ResMesh* LoadMeh(const char* name);
+
+private:
+	std::string currentPath;
 };
 
 
