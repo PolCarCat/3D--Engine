@@ -4,6 +4,7 @@
 #include "ModuleRenderer3D.h"
 #include "WinObjects.h"
 #include "ImporterMesh.h"
+#include "GameObject.h"
 
 #include "Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
@@ -14,7 +15,6 @@
 ComponentMesh::ComponentMesh(ResMesh* _mesh)
 {
 	mesh = _mesh;
-	transform.position = mesh->boundingBox.CenterPoint();
 	type = MESH;
 }
 
@@ -39,8 +39,8 @@ bool ComponentMesh::Update()
 	App->renderer3D->SetUpMat(material);
 
 	glPushMatrix();
-	glMultMatrixf(transform.matrix.Transposed().ptr());
-
+	glMultMatrixf(parent->transform->globalMartix.Transposed().ptr());
+	
 	mesh->Draw();
 
 	glPopMatrix();
@@ -99,7 +99,7 @@ void ComponentMesh::UpdateUI()
 			ImGui::NewLine();
 			material->UpdateUI();
 		}
-		transform.UpdateUI();
+
 
 		ImGui::NewLine();
 		ImGui::Separator();
@@ -140,7 +140,7 @@ void ComponentMesh::UpdateMatWin()
 bool ComponentMesh::Save(JSON_Object* json, JsonDoc* doc)
 {
 	
-	transform.Save(json, doc);
+	//transform.Save(json, doc);
 
 	json_object_dotset_number(json, "Mesh UUID", mesh->uuid);
 

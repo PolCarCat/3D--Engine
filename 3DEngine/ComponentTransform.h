@@ -21,7 +21,8 @@ public:
 	float3 scale = { 0, 0, 0 };
 	Quat rotation = { 0, 0, 0, 0 };
 
-	float4x4 matrix;
+	float4x4 localMartix;
+	float4x4 globalMartix;
 
 };
 

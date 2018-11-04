@@ -55,7 +55,6 @@ public:
 	std::vector<Component*> compChilds;
 	std::vector<GameObject*> objChilds;
 	ComponentTransform * transform = nullptr;
-	ComponentTransform * globalTransform = nullptr;
 
 
 private:

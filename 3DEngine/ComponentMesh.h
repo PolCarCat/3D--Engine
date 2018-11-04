@@ -17,12 +17,10 @@ public:
 	bool Save(JSON_Object* json, JsonDoc* doc);
 	bool Load(JSON_Object* json, JsonDoc* doc);
 
-
 	bool draw = true;
 	bool drawBB = false;
 	bool drawNormals = false;
 	ResMesh* mesh;
-	ComponentTransform transform;
 	ComponentMaterial* material = nullptr;
 
 private:

@@ -8,6 +8,11 @@
 #include "QuadTree.h"
 #include "pcg-c-basic-0.9/pcg_basic.h"
 
+#include "Glew/include/glew.h"
+#include "SDL\include\SDL_opengl.h"
+#include <gl/GL.h>
+#include <gl/GLU.h>
+
 GameObject::GameObject()
 {
 	transform = new ComponentTransform();
@@ -55,9 +60,11 @@ bool GameObject::Update()
 }
 
 bool GameObject::PostUpdate()
-
-
 {
+
+
+
+
 	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end();)
 	{
 		
@@ -416,7 +423,16 @@ GameObject* GameObject::GetObjByUUID(uint32_t id)
 
 void GameObject::CalcGlobalTransform()
 {
-	//I save this for later
+
+	if  (parent != nullptr)
+	{
+		transform->globalMartix =  parent->transform->globalMartix * transform->localMartix;
+	}
+
+	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end(); item++)
+	{
+		(*item)->CalcGlobalTransform();
+	}
 }
 
 void GameObject::Save(JSON_Array* objects, JsonDoc* doc)

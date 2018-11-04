@@ -90,7 +90,6 @@ ResTexture ImporterTexture::LoadTex(const char* path)
 	ilBindImage(imageID);
 	success = ilLoadImage((ILconst_string)path);
 
-
 	if (success)
 	{
 
@@ -138,8 +137,8 @@ ResTexture ImporterTexture::LoadTex(const char* path)
 	else
 	{
 		error = ilGetError();
-		VSLOG("Image loading eror %d", error);
-		App->imgui->console->AddLog("\nImage loading error");
+		VSLOG("\nImage loading eror %d", error);
+		
 	}
 
 

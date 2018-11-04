@@ -62,6 +62,7 @@ update_status ModuleScene::Update(float dt)
 		currentCam->CheckInput(dt);
 
 	ghostcam->Update();
+	root.CalcGlobalTransform();
 	root.Update();
 	quadTree.Draw();
 
