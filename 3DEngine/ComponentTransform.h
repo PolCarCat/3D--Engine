@@ -14,12 +14,14 @@ public:
 	bool CleanUp();
 	bool Save(JSON_Object* json, JsonDoc* doc);
 	bool Load(JSON_Object* json, JsonDoc* doc);
-
+	void CalcMatrix();
 
 
 	float3 position = { 0, 0, 0 };
 	float3 scale = { 0, 0, 0 };
 	Quat rotation = { 0, 0, 0, 0 };
+
+	float4x4 matrix;
 
 };
 

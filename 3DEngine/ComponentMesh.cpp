@@ -5,6 +5,12 @@
 #include "WinObjects.h"
 #include "ImporterMesh.h"
 
+#include "Glew/include/glew.h"
+#include "SDL\include\SDL_opengl.h"
+#include <gl/GL.h>
+#include <gl/GLU.h>
+
+
 ComponentMesh::ComponentMesh(ResMesh* _mesh)
 {
 	mesh = _mesh;
@@ -32,7 +38,13 @@ bool ComponentMesh::Update()
 	if (material != nullptr)
 	App->renderer3D->SetUpMat(material);
 
+	glPushMatrix();
+	glMultMatrixf(transform.matrix.Transposed().ptr());
+
 	mesh->Draw();
+
+	glPopMatrix();
+
 	return true;
 }
 

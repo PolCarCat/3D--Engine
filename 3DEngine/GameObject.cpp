@@ -96,7 +96,7 @@ void GameObject::UpdateUI()
 
 	char n[50];
 	strcpy_s(n, 50, name.c_str());
-	ImGui::InputText("", n, 50);
+	ImGui::InputText(name.c_str(), n, 50);
 		name = n;
 
 

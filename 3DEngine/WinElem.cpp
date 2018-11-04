@@ -35,6 +35,7 @@ bool WinElem::Update()
 		App->scene->selectedMat->UpdateUI();
 	}
 	ImGui::End();
+
 	return true;
 }
 

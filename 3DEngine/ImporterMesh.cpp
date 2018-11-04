@@ -111,7 +111,7 @@ GameObject* ImporterMesh::LoadNode(aiNode* n, const aiScene* scene, GameObject* 
 		nodeobj->transform->position.Set(position.x, position.y, position.z);
 		nodeobj->transform->scale.Set(scaling.x, scaling.y, scaling.z);
 		nodeobj->transform->rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
-
+		nodeobj->transform->CalcMatrix();
 
 		if (n->mNumMeshes != 0)
 		{

@@ -5,6 +5,9 @@
 ComponentTransform::ComponentTransform()
 {
 	type = TRANSFORM;
+	matrix = float4x4::identity;
+	position.Set(0, 0, 0);
+	scale.Set(1, 1, 1);
 }
 
 
@@ -28,29 +31,42 @@ void ComponentTransform::UpdateUI()
 	ImGui::NewLine();
 	ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.5f, 1.0f), "Transformation");
 
-	ImGui::Columns(2);
+	bool changed = false;
+
+	if (ImGui::DragFloat3("Positon", (float*)&position, 0.25f, -100, 100))
+		changed = true;
+
+	if (ImGui::DragFloat3("Scale", (float*)&scale, 0.25f, -100, 100))
+		changed = true;
+
+
+	float3 rot = rotation.ToEulerXYZ();
+	if (ImGui::DragFloat3("Rotation", (float*)&rot, 0.25f, -100, 100))
 	{
-
-		ImGui::Text("Position:");
-		ImGui::Text("Scale");
-		ImGui::Text("Rotation:");
-		float x = 0;
-		float y = 0;
-		float z = 0;
-		rotation.FromEulerXYZ(x, y, z);
-		ImGui::NextColumn();
-		ImGui::Text("%.2f %.2f  %.2f", position.x, position.y, position.z);
-		ImGui::Text("%d  %d  %d", scale.x, scale.y, scale.z);
-		ImGui::Text("%d  %d  %d", x, y, z);
-
+		rotation = rotation.FromEulerXYZ(rot.x, rot.y, rot.z);
+		changed = true;
 	}
-	ImGui::Columns(1);
 	
+
+	ImGui::Text("%d %d %d %d", matrix.v[0][0], matrix.v[1][0], matrix.v[2][0], matrix.v[3][0]);
+	ImGui::Text("%d %d %d %d", matrix.v[0][1], matrix.v[1][1], matrix.v[2][1], matrix.v[3][1]);
+	ImGui::Text("%d %d %d %d", matrix.v[0][2], matrix.v[1][2], matrix.v[2][2], matrix.v[3][2]);
+	ImGui::Text("%d %d %d %d", matrix.v[0][3], matrix.v[1][3], matrix.v[2][3], matrix.v[3][3]);
+
+	if (changed)
+		CalcMatrix();
+
 }
 
 bool ComponentTransform::CleanUp()
 {
 	return true;
+}
+
+
+void ComponentTransform::CalcMatrix()
+{
+	matrix.Set(float4x4::FromTRS(position, rotation, scale));
 }
 
 bool ComponentTransform::Save(JSON_Object* json, JsonDoc* doc)
