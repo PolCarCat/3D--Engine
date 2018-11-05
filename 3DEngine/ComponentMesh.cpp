@@ -46,10 +46,20 @@ bool ComponentMesh::Update()
 	if (drawNormals)
 		mesh->DrawNormals();
 
-	if (drawBB)
-		mesh->DrawBoundingBox();
-
 	glPopMatrix();
+
+	if (drawBB)
+	{
+		float4 min = float4(mesh->boundingBox.minPoint, 1);
+		float4 max = float4(mesh->boundingBox.maxPoint, 1);
+
+		min = parent->transform->globalMartix.Mul(min);
+		max = parent->transform->globalMartix.Mul(max);
+		mesh->boundingBox.minPoint.Set(min.x, min.y, min.z);
+		mesh->boundingBox.maxPoint.Set(max.x, max.y, max.z);
+		mesh->DrawBoundingBox();
+	}
+
 
 	return true;
 }

@@ -17,8 +17,8 @@ GameObject::GameObject()
 {
 	transform = new ComponentTransform();
 	transform->SetParent(this);
-	bBox.minPoint = { 0, 0, 0 };
-	bBox.maxPoint = { 0, 0, 0 };
+	bBox.minPoint.Set(INT_MAX, INT_MAX, INT_MAX);
+	bBox.maxPoint.Set(INT_MIN, INT_MIN, INT_MIN);
 }
 
 
