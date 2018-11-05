@@ -1,5 +1,6 @@
 #include "ComponentMaterial.h"
 #include "ImGui/imgui.h"
+#include "Application.h"
 
 ComponentMaterial::ComponentMaterial()
 {
@@ -114,12 +115,38 @@ bool ComponentMaterial::CleanUp()
 bool ComponentMaterial::Save(JSON_Object* json, JsonDoc* doc)
 {
 
+	json_object_dotset_number(json, "Type", type);
+	json_object_dotset_boolean(json, "Active", active);
+	json_object_dotset_boolean(json, "Texture Enabled", texEnabled);
+	json_object_dotset_string(json, "Name", App->loader->GetFileName(name.c_str()).c_str());
 
+
+	JSON_Array* col = doc->SetArray(json, "Color");
+	json_array_append_number(col, color.r);
+	json_array_append_number(col, color.g);
+	json_array_append_number(col, color.b);
+	json_array_append_number(col, color.a);
+
+	App->loader->texImporter.SaveTex(tex);
 	return true;
 }
 bool ComponentMaterial::Load(JSON_Object* json, JsonDoc* doc)
 {
 
+	active = json_object_dotget_boolean(json, "Active");
+	texEnabled = json_object_dotget_boolean(json, "Texture Enabled");
 
+	std::string matName = json_object_dotget_string(json, "Name");
+
+	JSON_Array* pos = doc->GetObjAr(json, "Color");
+	color.r = json_array_get_number(pos, 0);
+	color.g = json_array_get_number(pos, 1);
+	color.b = json_array_get_number(pos, 2);
+	color.a = json_array_get_number(pos, 3);
+
+	name = matName;
+	tex = App->loader->texImporter.LoadTex(matName.c_str(), false);
+	
+	App->scene->materials.push_back(this);
 	return true;
 }

@@ -1,3 +1,4 @@
+#include "Application.h"
 #include "ImporterTexture.h"
 #include "Globals.h"
 #include "Application.h"
@@ -78,8 +79,12 @@ uint ImporterTexture::LoadChekerTex()
 	return id;
 }
 
-ResTexture ImporterTexture::LoadTex(const char* path)
+ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 {
+	std::string fullPath = path;
+	if (!isfullpath)
+		fullPath = std::string(TEXT_DIR) + path + TEXT_EXTENSION;
+
 	ResTexture ret;
 	ILuint imageID;
 	GLuint textureID;
@@ -88,12 +93,13 @@ ResTexture ImporterTexture::LoadTex(const char* path)
 
 	ilGenImages(1, &imageID);
 	ilBindImage(imageID);
-	success = ilLoadImage((ILconst_string)path);
+	success = ilLoadImage((ILconst_string)fullPath.c_str());
 
 	if (success)
 	{
 
-		ret.name = App->loader->GetFileName(path);
+		ret.name = App->loader->GetFileName(fullPath.c_str());
+		ret.path = path;
 		ILinfo ImageInfo;
 		iluGetImageInfo(&ImageInfo);
 		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
@@ -108,7 +114,6 @@ ResTexture ImporterTexture::LoadTex(const char* path)
 		{
 			error = ilGetError();
 			VSLOG("Image fliping error %d", error);
-			App->imgui->console->AddLog("\Image fliping error");
 		}
 
 
@@ -147,20 +152,46 @@ ResTexture ImporterTexture::LoadTex(const char* path)
 
 void ImporterTexture::SaveTex(ResTexture tex)
 {
-	ILuint size;
-	ILubyte* data;
-	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
+	std::string path = std::string(TEXT_DIR) + tex.name + TEXT_EXTENSION;
+	std::string path2 = path;
+	App->fileSystem.InvertBars(path2);
 
-	size = ilSaveL(IL_DDS, NULL, 0);
-	if (size > 0)
+	if (App->fileSystem.fileExists(path2.c_str()))
+		return;
+
+	ILuint image_name;
+	ilGenImages(1, &image_name);
+	ilBindImage(image_name);
+
+
+	if (ilLoadImage(tex.path.c_str()))
 	{
-		data = new ILubyte[size];
-		if (ilSaveL(IL_DDS, data, size) > 0)
+		ILinfo info;
+		iluGetImageInfo(&info);
+
+		if (ilGetError() == IL_NO_ERROR)
 		{
-			//WRONG
-			std::ofstream dataFile(tex.name.c_str(), std::fstream::out | std::fstream::binary);
-			dataFile.write((const char*)data, size);
-			dataFile.close();
+	
+			ILuint size;
+			ILubyte* data;
+			ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
+
+			size = ilSaveL(IL_DDS, NULL, 0);
+			if (size > 0)
+			{
+				data = new ILubyte[size];
+				if (ilSaveL(IL_DDS, data, size) > 0)
+				{
+					std::ofstream dataFile(path.c_str(), std::fstream::out | std::fstream::binary);
+					dataFile.write((const char*)data, size);
+					dataFile.close();
+				}
+				delete[]data;
+				ilDeleteImages(1, &image_name);
+		}
+
+		
 		}
 	}
+	
 }

@@ -14,7 +14,7 @@ public:
 	uint SaveFile(const char* file, char* buffer, unsigned int size) const;
 
 	void AddPath(const char* path, const char* mount_point = nullptr);
-	void InvertBars(const char* path);
+	void InvertBars(char* path);
 	void InvertBars(std::string& str);
 
 private:

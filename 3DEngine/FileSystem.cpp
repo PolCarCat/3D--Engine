@@ -104,6 +104,10 @@ uint FileSystem::SaveFile(const char* file, char* buffer, unsigned int size) con
 }
 
 bool FileSystem::fileExists(const char* file) const {
+	//Excuse me wtf
+	//std::string path = file;
+	//InvertBars(path);
+
 	return PHYSFS_exists(file);
 }
 
@@ -118,14 +122,13 @@ void FileSystem::AddPath(const char* path, const char* mount_point)
 		
 }
 
-void FileSystem::InvertBars(const char* path)
+void FileSystem::InvertBars(char* path)
 {
 	uint size = strlen(path);
-	std::string ret = path;
 	for (int i = 0; i < size; ++i)
 	{
-		if (ret[i] == '\\')
-			ret[i] = '/';
+		if (path[i] == '\\')
+			path[i] = '/';
 	}
 
 }

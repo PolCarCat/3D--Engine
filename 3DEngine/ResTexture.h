@@ -17,6 +17,7 @@ public:
 	float angle = 0;
 
 	std::string name;
+	std::string path;
 	void CleanUp();
 };
 

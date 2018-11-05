@@ -66,21 +66,6 @@ update_status ModuleScene::Update(float dt)
 	root.Update();
 	quadTree.Draw();
 
-	ImGui::Begin("TEST");
-	if (ImGui::Button("Save Scene"))
-	{
-		quadTree.DistributeTree();
-		//quadTree.GenerateTestChildren();
-		SceneLoader::SaveScene("Libraries/Scenes/scene1.json", &root);
-	}
-
-
-	if (ImGui::Button("Load Scene"))
-	{
-		SceneLoader::LoadScene("Libraries/Scenes/scene1.json", &root);
-	}
-	ImGui::End();
-
 	App->renderer3D->OnResize(App->window->w, App->window->h);
 	return UPDATE_CONTINUE;
 }
