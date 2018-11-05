@@ -488,3 +488,56 @@ void ModuleRenderer3D::DrawAABB(math::AABB a, Color c)
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	glLineWidth(1);
 }
+
+void ModuleRenderer3D::DrawOBB(math::OBB a, Color c)
+{
+	float3 point[8];
+	a.GetCornerPoints(point);
+
+	glColor4f(c.r, c.g, c.b, c.a);
+	glLineWidth(2);
+
+	glBegin(GL_LINES);
+
+	glVertex3f(point[0].x, point[0].y, point[0].z);
+	glVertex3f(point[1].x, point[1].y, point[1].z);
+
+	glVertex3f(point[0].x, point[0].y, point[0].z);
+	glVertex3f(point[2].x, point[2].y, point[2].z);
+
+	glVertex3f(point[2].x, point[2].y, point[2].z);
+	glVertex3f(point[3].x, point[3].y, point[3].z);
+
+	glVertex3f(point[1].x, point[1].y, point[1].z);
+	glVertex3f(point[3].x, point[3].y, point[3].z);
+
+
+
+	glVertex3f(point[7].x, point[7].y, point[7].z);
+	glVertex3f(point[6].x, point[6].y, point[6].z);
+
+	glVertex3f(point[7].x, point[7].y, point[7].z);
+	glVertex3f(point[5].x, point[5].y, point[5].z);
+
+	glVertex3f(point[5].x, point[5].y, point[5].z);
+	glVertex3f(point[4].x, point[4].y, point[4].z);
+
+	glVertex3f(point[6].x, point[6].y, point[6].z);
+	glVertex3f(point[4].x, point[4].y, point[4].z);
+
+	glVertex3f(point[0].x, point[0].y, point[0].z);
+	glVertex3f(point[4].x, point[4].y, point[4].z);
+
+	glVertex3f(point[1].x, point[1].y, point[1].z);
+	glVertex3f(point[5].x, point[5].y, point[5].z);
+
+	glVertex3f(point[2].x, point[2].y, point[2].z);
+	glVertex3f(point[6].x, point[6].y, point[6].z);
+
+	glVertex3f(point[3].x, point[3].y, point[3].z);
+	glVertex3f(point[7].x, point[7].y, point[7].z);
+
+	glEnd();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glLineWidth(1);
+}

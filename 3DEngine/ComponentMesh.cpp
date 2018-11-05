@@ -50,14 +50,8 @@ bool ComponentMesh::Update()
 
 	if (drawBB)
 	{
-		float4 min = float4(mesh->boundingBox.minPoint, 1);
-		float4 max = float4(mesh->boundingBox.maxPoint, 1);
-
-		min = parent->transform->globalMartix.Mul(min);
-		max = parent->transform->globalMartix.Mul(max);
-		mesh->boundingBox.minPoint.Set(min.x, min.y, min.z);
-		mesh->boundingBox.maxPoint.Set(max.x, max.y, max.z);
-		mesh->DrawBoundingBox();
+		App->renderer3D->DrawAABB(parent->GetGlobalABB());
+		App->renderer3D->DrawOBB(parent->GetOBB(), { 1.0f, 0.0f, 1.0f, 1.0f });
 	}
 
 

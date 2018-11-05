@@ -39,7 +39,9 @@ public:
 	void AddBox(AABB b);
 	bool GetStatic();
 	void SetStatic(bool b);
-	AABB GetBB();
+	AABB GetLocalABB();
+	AABB GetGlobalABB();
+	OBB GetOBB();
 	void Delete();
 	bool CheckDelete();
 	uint32_t GetUUID();
@@ -61,7 +63,9 @@ private:
 
 
 	GameObject* parent = nullptr;
-	AABB bBox;
+	AABB localABB;
+	AABB globalABB;
+	OBB oBB;
 	bool active = true;
 	bool staticobj = false;
 	bool toDelete = false;

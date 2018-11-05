@@ -25,9 +25,9 @@ void QuadtreeNode::AddObject(GameObject* o)
 
 
 	if (bBox.minPoint.Equals(0, 0, 0) && bBox.maxPoint.Equals(0, 0, 0))
-		bBox = o->GetBB();
+		bBox = o->GetLocalABB();
 	else
-		bBox.Enclose(o->GetBB());
+		bBox.Enclose(o->GetLocalABB());
 	objects.push_back(o);
 
 }
@@ -57,12 +57,12 @@ void QuadtreeNode::ResetBB()
 {
 	if (objects.size() > 0)
 	{
-		bBox.minPoint = (*objects.begin())->GetBB().minPoint;
-		bBox.maxPoint = (*objects.begin())->GetBB().maxPoint;
+		bBox.minPoint = (*objects.begin())->GetLocalABB().minPoint;
+		bBox.maxPoint = (*objects.begin())->GetLocalABB().maxPoint;
 
 		for (std::list<GameObject*>::iterator item = objects.begin(); item != objects.end(); item++)
 		{
-			bBox.Enclose((*item)->GetBB());
+			bBox.Enclose((*item)->GetLocalABB());
 		}
 	}
 	else
@@ -117,7 +117,7 @@ void QuadtreeNode::DistributeNode(uint buckedSize)
 			GenerateChildren();
 			for (int i = 0; i < 4; ++i)
 			{
-				if (childs[i]->bBox.Intersects((*item)->GetBB()))
+				if (childs[i]->bBox.Intersects((*item)->GetLocalABB()))
 					childs[i]->Insert((*item), buckedSize);
 			}
 			item = objects.erase(item);
@@ -169,7 +169,7 @@ bool QuadtreeNode::CheckIfChildNeeded(GameObject* obj)
 
 
 
-	return !(checkers[0].Intersects(obj->GetBB()) && checkers[1].Intersects(obj->GetBB()) && checkers[2].Intersects(obj->GetBB()) && checkers[3].Intersects(obj->GetBB()));
+	return !(checkers[0].Intersects(obj->GetLocalABB()) && checkers[1].Intersects(obj->GetLocalABB()) && checkers[2].Intersects(obj->GetLocalABB()) && checkers[3].Intersects(obj->GetLocalABB()));
 }
 
 void QuadtreeNode::SetBB(AABB b)

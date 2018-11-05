@@ -17,8 +17,11 @@ GameObject::GameObject()
 {
 	transform = new ComponentTransform();
 	transform->SetParent(this);
-	bBox.minPoint.Set(INT_MAX, INT_MAX, INT_MAX);
-	bBox.maxPoint.Set(INT_MIN, INT_MIN, INT_MIN);
+	localABB.minPoint.Set(INT_MAX, INT_MAX, INT_MAX);
+	localABB.maxPoint.Set(INT_MIN, INT_MIN, INT_MIN);
+
+	globalABB.minPoint.Set(INT_MAX, INT_MAX, INT_MAX);
+	globalABB.maxPoint.Set(INT_MIN, INT_MIN, INT_MIN);
 }
 
 
@@ -118,6 +121,7 @@ void GameObject::UpdateUI()
 	ImGui::Checkbox("Static", &staticobj);
 	if (s != staticobj)
 		SetStatic(staticobj);
+
 
 
 	ImGui::NewLine();
@@ -341,10 +345,14 @@ Component* GameObject::AddComponent(Type t)
 
 void GameObject::AddBox(AABB b)
 {
-	if (bBox.minPoint.Equals(0, 0, 0) && bBox.maxPoint.Equals(0, 0, 0))
-		bBox = b;
+	if (localABB.minPoint.Equals(INT_MAX, INT_MAX, INT_MAX) && localABB.maxPoint.Equals(INT_MIN, INT_MIN, INT_MIN))
+	{
+		localABB = b;
+		oBB = localABB;
+	}
+
 	else
-		bBox.Enclose(b);
+		localABB.Enclose(b);
 }
 
 bool GameObject::GetStatic()
@@ -362,11 +370,20 @@ void GameObject::SetStatic(bool b)
 		App->scene->quadTree.RemoveObject(this);
 }
 
-AABB GameObject::GetBB()
+AABB GameObject::GetLocalABB()
 {
-	return bBox;
+	return localABB;
 }
 
+AABB GameObject::GetGlobalABB()
+{
+	return globalABB;
+}
+
+OBB GameObject::GetOBB()
+{
+	return oBB;
+}
 
 void GameObject::UpdateNewComWindow()
 {
@@ -428,6 +445,13 @@ void GameObject::CalcGlobalTransform()
 	{
 		transform->globalMartix =  parent->transform->globalMartix * transform->localMartix;
 	}
+	OBB newobb = localABB;
+	newobb.Transform(transform->globalMartix);
+	
+	oBB = newobb;
+	globalABB.minPoint.Set(INT_MAX, INT_MAX, INT_MAX);
+	globalABB.maxPoint.Set(INT_MIN, INT_MIN, INT_MIN);
+	globalABB.Enclose(oBB);
 
 	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end(); item++)
 	{

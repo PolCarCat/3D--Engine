@@ -109,6 +109,7 @@ GameObject* ImporterMesh::LoadNode(aiNode* n, const aiScene* scene, GameObject* 
 			{
 				aiMesh* mesh = scene->mMeshes[n->mMeshes[i]];
 				ComponentMesh* meshobj = LoadMesh(mesh);
+				nodeobj->AddBox(meshobj->mesh->boundingBox);
 
 				if (meshobj != nullptr)
 				{

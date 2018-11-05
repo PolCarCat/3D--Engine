@@ -38,6 +38,7 @@ public:
 	AABB GetMeshesAABB();
 	void DrawFrustum(math::Frustum f);
 	void DrawAABB(math::AABB a, Color c = { 0.2f, 0.2f, 1.0f, 1.0f });
+	void DrawOBB(math::OBB a, Color c = { 0.2f, 0.2f, 1.0f, 1.0f });
 	ResMesh* CheckMesh(const char* name);
 
 	void OnResize(int width, int height);
