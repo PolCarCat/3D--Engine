@@ -1,4 +1,5 @@
 #include "JsonDoc.h"
+#include "Application.h"
 #include <fstream>
 
 
@@ -28,6 +29,8 @@ bool JsonDoc::Init(const char* _path)
 
 	root = json_value_init_object();
 	root = json_parse_file(_path);
+	if (root == nullptr)
+		root = json_value_init_object();
 
 	path = _path;
 
@@ -51,7 +54,11 @@ void JsonDoc::CleanUp()
 void JsonDoc::Save()
 {
 
-	json_serialize_to_file_pretty(root, path.c_str());
+	if (json_serialize_to_file_pretty(root, path.c_str()) == JSONFailure)
+	{
+		char* str = json_serialize_to_string_pretty(root);
+		App->fileSystem.SaveFile(path.c_str(), str, strlen(str));
+	}
 	//json_value_free(root);
 	
 

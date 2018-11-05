@@ -369,6 +369,9 @@
     <ClInclude Include="FileSystem.h">
       <Filter>Sources\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="WinSceneLoader.h">
+      <Filter>Sources\Windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -589,6 +592,9 @@
     </ClCompile>
     <ClCompile Include="FileSystem.cpp">
       <Filter>Sources\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="WinSceneLoader.cpp">
+      <Filter>Sources\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

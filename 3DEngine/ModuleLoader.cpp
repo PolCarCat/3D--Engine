@@ -127,6 +127,9 @@ Format ModuleLoader::CheckFormat(const char* path)
 	
 	else if (format == "DDS" || format == "dds")
 		ret = DDS;
+
+	else if (format == "json" || format == "JSON")
+		ret = JSON;
 	else
 		VSLOG("Unkown format file\n");
 	

@@ -167,3 +167,14 @@ void ModuleScene::SetCurCam(ComponentCamera* cam)
 	currentCam = cam;
 	currentCam->isCurCam = true;
 }
+
+
+const char*  ModuleScene::GetName()
+{
+	return name.c_str();
+}
+
+void  ModuleScene::SetName(const char* n)
+{
+	name = n;
+}

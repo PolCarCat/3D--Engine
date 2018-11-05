@@ -26,6 +26,9 @@ public:
 	ComponentCamera* GetGhostCam();
 	ComponentMaterial* CheckMaterial(const char* name);
 
+	const char* GetName();
+	void SetName(const char* n);
+
 	GameObject* selectedObj = nullptr;
 	ComponentMaterial* selectedMat = nullptr;
 	GameObject root;
@@ -38,5 +41,6 @@ private:
 
 	ComponentCamera* ghostcam;
 	ComponentCamera* currentCam = nullptr;
+	std::string name;
 
 };

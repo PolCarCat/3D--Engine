@@ -17,23 +17,25 @@ FileSystem::FileSystem()
 	AddPath(".");
 
 
-	if (PHYSFS_exists("Libraries/") == 0)
-		PHYSFS_mkdir("Libraries/");
+	if (PHYSFS_exists("Libraries\\") == 0)
+		PHYSFS_mkdir("Libraries\\");
 
-	AddPath("Libraries/");
+	AddPath("Libraries\\");
 
 
 	if (PHYSFS_exists("Libraries\\Meshes\\") == 0)
 		PHYSFS_mkdir("Libraries\\Meshes\\");
 
-	AddPath("Libraries/Meshes/");
+	AddPath("Libraries\\Meshes\\");
 
 
-	if (PHYSFS_exists("Libraries/Textures/") == 0)
-		PHYSFS_mkdir("Libraries/Textures/");
+	if (PHYSFS_exists("Libraries\\Textures\\") == 0)
+		PHYSFS_mkdir("Libraries\\Textures\\");
 
 
-	AddPath("Libaries/Textures/");
+	AddPath("Libaries\\Textures\\");
+
+	
 	
 }
 
@@ -136,3 +138,4 @@ void FileSystem::InvertBars(std::string& str)
 			str[i] = '/';
 	}
 }
+

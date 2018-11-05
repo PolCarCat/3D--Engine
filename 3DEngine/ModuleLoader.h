@@ -11,6 +11,7 @@ enum Format {
 	FBX,
 	PNG,
 	DDS,
+	JSON,
 	FNULL
 };
 

@@ -36,8 +36,10 @@ bool ModuleGui::Start()
 	element = new WinElem(App, true);
 	test = new WinTest(App, true);
 	objects = new WinObjects(App, true);
-	cam = new WinCamera(App, true);
-	cam->SetEnable(false);
+	cam = new WinCamera(App, false);
+	scene = new WinSceneLoader(App, true);
+
+
 
 	AddWindow(config);
 	AddWindow(element);
@@ -45,7 +47,7 @@ bool ModuleGui::Start()
 	AddWindow(test);
 	AddWindow(objects);
 	AddWindow(cam);
-
+	AddWindow(scene);
 
 	for (std::list<WinBase*>::iterator item = windows.begin(); item != windows.end(); item++) {
 		(*item)->Start();
@@ -72,10 +74,20 @@ update_status ModuleGui::PreUpdate(float dt)
 		if (ImGui::BeginMenu("File"))
 		{
 			if (ImGui::MenuItem("Save"))
+			{
 				App->SaveGame();
+				scene->enabled = true;
+				scene->save = true;
+			}
+
 
 			if (ImGui::MenuItem("Load"))
+			{
 				App->LoadGame();
+				scene->enabled = true;
+				scene->save = false;
+			}
+
 
 			if (ImGui::MenuItem("Quit"))
 				quit = true;

@@ -8,6 +8,7 @@
 #include "WinTest.h"
 #include "WinObjects.h"
 #include "WinCamera.h"
+#include "WinSceneLoader.h"
 #include <list>
 #include "ModuleInput.h"
 #include "ImGui/imgui.h"
@@ -43,6 +44,7 @@ public:
 	WinTest*	test = nullptr;
 	WinObjects* objects = nullptr;
 	WinCamera* cam = nullptr;
+	WinSceneLoader* scene = nullptr;
 
 private:
 	void AboutWindow();

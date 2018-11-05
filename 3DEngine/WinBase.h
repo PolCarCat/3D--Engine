@@ -10,7 +10,9 @@ public:
 	Application * App;
 
 	WinBase(Application* parent, bool start_enabled = true) : App(parent)
-	{}
+	{
+		enabled = start_enabled;
+	}
 
 	~WinBase()
 	{}
