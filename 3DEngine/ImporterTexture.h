@@ -22,6 +22,8 @@ public:
 
 	uint LoadChekerTex();
 	ResTexture LoadTex(const char* path, bool isfullpath = true);
+	void SaveTex(const char* path, bool isfullpath = true);
 	void SaveTex(ResTexture tex);
+
 };
 

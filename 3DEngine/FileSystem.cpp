@@ -17,19 +17,19 @@ FileSystem::FileSystem()
 	AddPath(".");
 
 
-	if (PHYSFS_exists("Libraries\\") == 0)
+	if (!PHYSFS_exists("Libraries\\"))
 		PHYSFS_mkdir("Libraries\\");
 
 	AddPath("Libraries\\");
 
 
-	if (PHYSFS_exists("Libraries\\Meshes\\") == 0)
+	if (!PHYSFS_exists("Libraries\\Meshes\\"))
 		PHYSFS_mkdir("Libraries\\Meshes\\");
 
 	AddPath("Libraries\\Meshes\\");
 
 
-	if (PHYSFS_exists("Libraries\\Textures\\") == 0)
+	if (!PHYSFS_exists("Libraries\\Textures\\"))
 		PHYSFS_mkdir("Libraries\\Textures\\");
 
 
