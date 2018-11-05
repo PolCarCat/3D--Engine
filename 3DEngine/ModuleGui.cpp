@@ -37,7 +37,7 @@ bool ModuleGui::Start()
 	test = new WinTest(App, true);
 	objects = new WinObjects(App, true);
 	cam = new WinCamera(App, false);
-	scene = new WinSceneLoader(App, true);
+	scene = new WinSceneLoader(App, false);
 
 
 
@@ -75,7 +75,7 @@ update_status ModuleGui::PreUpdate(float dt)
 		{
 			if (ImGui::MenuItem("Save"))
 			{
-				App->SaveGame();
+				//App->SaveGame();
 				scene->enabled = true;
 				scene->save = true;
 			}
@@ -83,7 +83,7 @@ update_status ModuleGui::PreUpdate(float dt)
 
 			if (ImGui::MenuItem("Load"))
 			{
-				App->LoadGame();
+				//App->LoadGame();
 				scene->enabled = true;
 				scene->save = false;
 			}

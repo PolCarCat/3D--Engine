@@ -19,6 +19,6 @@ public:
 	std::string GetDirectory();
 	std::string path;
 	std::string selectedElem;
-	bool save = true;
+	bool save = false;
 };
 
