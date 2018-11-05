@@ -189,7 +189,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	if (drawCapsule)
 		capsule.Render();
 
-	DrawMeshes();
+
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -295,25 +295,19 @@ void ModuleRenderer3D::EnableWireframe(bool enable)
 	wireframe == true ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
-void ModuleRenderer3D::DrawMeshes()
+
+
+ResMesh* ModuleRenderer3D::CheckMesh(const char* name)
 {
-	//for (std::list<ResMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++) 
-	//{
-	//	if ((*item)->GetActive() && App->scene->GetCurCam()->CheckInside((*item)->mesh))
-	//	{
-	//		if ((*item)->material != nullptr)
-	//		SetUpMat((*item)->material);
+	for (std::list<ResMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
+	{
+		if ((*item)->name == name)
+		{
+			return *item;
+		}
+	}
 
-	//		(*item)->mesh.Draw();
-
-	//		if ((*item)->drawNormals)
-	//			(*item)->mesh.DrawNormals();
-
-	//		if ((*item)->drawBB)
-	//			(*item)->mesh.DrawBoundingBox();
-	//	}
-
-	//}
+	return nullptr;
 }
 
 void ModuleRenderer3D::SetUpMat(ComponentMaterial* mat)

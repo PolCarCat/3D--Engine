@@ -31,6 +31,8 @@ JsonDoc SceneLoader::LoadScene(const char* path, GameObject* root)
 			item = doc.GetArObj(objects, ++i);
 		}
 	}
+
+	root->CalcGlobalTransform();
 	return doc;
 }
 

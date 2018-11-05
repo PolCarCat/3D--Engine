@@ -30,7 +30,7 @@ public:
 	bool Load(json_object_t* doc);
 	bool Save(json_object_t* doc);
 
-	void DrawMeshes();
+
 	void SetUpMat(ComponentMaterial* mat);
 	void CleanUpMeshes();
 	void SaveMeshes();
@@ -38,6 +38,7 @@ public:
 	AABB GetMeshesAABB();
 	void DrawFrustum(math::Frustum f);
 	void DrawAABB(math::AABB a, Color c = { 0.2f, 0.2f, 1.0f, 1.0f });
+	ResMesh* CheckMesh(const char* name);
 
 	void OnResize(int width, int height);
 	void EnableVsync(bool enable);

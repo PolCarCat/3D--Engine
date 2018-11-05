@@ -43,6 +43,12 @@ bool ComponentMesh::Update()
 	
 	mesh->Draw();
 
+	if (drawNormals)
+		mesh->DrawNormals();
+
+	if (drawBB)
+		mesh->DrawBoundingBox();
+
 	glPopMatrix();
 
 	return true;
@@ -141,8 +147,9 @@ bool ComponentMesh::Save(JSON_Object* json, JsonDoc* doc)
 {
 	
 	//transform.Save(json, doc);
-
+	json_object_dotset_string(json, "Mesh Name", mesh->name.c_str());
 	json_object_dotset_number(json, "Mesh UUID", mesh->uuid);
+
 
 	return true;
 }
@@ -151,6 +158,32 @@ bool ComponentMesh::Load(JSON_Object* json, JsonDoc* doc)
 {
 
 	uint32_t meshuuid = json_object_dotget_number(json, "Mesh UUID");
+	std::string name = json_object_dotget_string(json, "Mesh Name");
 
+	ResMesh* m  = App->renderer3D->CheckMesh(name.c_str());
+
+	if (m == nullptr)
+	{
+		ResMesh* m = App->loader->meshImporter.LoadMeh(name.c_str());
+		m->GenerateBuffer();
+		
+		if (m != nullptr)
+		{
+			mesh = m;
+			App->renderer3D->meshes.push_back(m);
+		}
+		else
+		{
+			VSLOG("Cannot load mesh %s", name.c_str());
+		}
+
+
+	}
+	else
+	{
+		mesh = m;
+	}
+
+	parent->transform->CalcMatrix();
 	return true;
 }

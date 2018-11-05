@@ -69,16 +69,6 @@ GameObject* ImporterMesh::LoadScene(const char* path)
 
 		GameObject* child = LoadNode(scene->mRootNode, scene, newobj);
 
-
-		//for (uint nm = 0; nm < scene->mNumMeshes; nm++)
-		//{		
-		//	aiMesh* m = scene->mMeshes[nm];
-		//	aiNode* n = root->mChildren[nm];
-		//	GameObject* obj = LoadMesh(m);
-		//	if (obj != nullptr)
-		//		obj->SetParent(newobj);
-		//}
-
 		aiReleaseImport(scene);
 	}
 	else
@@ -274,7 +264,7 @@ ComponentMaterial* ImporterMesh::LoadMat(aiMaterial* m)
 	ComponentMaterial* mat = nullptr;
 	aiString path;
 	aiReturn error = m->GetTexture(aiTextureType::aiTextureType_DIFFUSE, 0, &path);
-	std::string fullpath = currentPath + path.C_Str();
+	std::string fullpath = currentPath +  App->loader->GetFileName(path.C_Str(), true);
 
 	if (error == aiReturn::aiReturn_SUCCESS)
 	{
@@ -299,9 +289,9 @@ ComponentMaterial* ImporterMesh::LoadMat(aiMaterial* m)
 
 void ImporterMesh::SaveMeshAsMeh(ResMesh* m)
 {
-	uint ranges[3] = { m->num_vertex, m->num_indice, m->uuid };
+	uint ranges[2] = { m->num_vertex, m->num_indice };
 
-	uint fileSize = sizeof(ranges) + sizeof(float)*m->num_vertex * 3 + sizeof(uint)*m->num_indice + sizeof(float)*m->num_vertex * 2 + sizeof(float)*m->num_vertex * 3 + sizeof(uint32_t);
+	uint fileSize = sizeof(ranges) + sizeof(float)*m->num_vertex * 3 + sizeof(uint)*m->num_indice + sizeof(float)*m->num_vertex * 2 + sizeof(float)*m->num_vertex * 3;
 	
 	char* data = new char[fileSize];
 	char* last = data;
@@ -341,13 +331,9 @@ ResMesh* ImporterMesh::LoadMeh(const char* name)
 {
 	ResMesh* mesh = new ResMesh();
 
+	mesh->name = name;
 	std::string str = MESH_DIR + std::string(name) + MESH_EXTENSION;
 	App->fileSystem.InvertBars(str);
-	//std::ifstream dataFile(str.c_str(), std::fstream::binary);
-
-	//// get length of file:
-	//int length = dataFile.tellg();
-
 
 
 	char* data = nullptr;
@@ -368,7 +354,6 @@ ResMesh* ImporterMesh::LoadMeh(const char* name)
 
 	mesh->num_vertex = ranges[0];
 	mesh->num_indice = ranges[1];
-	mesh->uuid		 = ranges[2];
 
 	last += bytes;
 	bytes = sizeof(float)*mesh->num_vertex * 3;
@@ -396,7 +381,7 @@ ResMesh* ImporterMesh::LoadMeh(const char* name)
 
 	mesh->GenerateBuffer();
 
-	delete data;
+	delete[] data;
 	data = nullptr;
 
 	return mesh;

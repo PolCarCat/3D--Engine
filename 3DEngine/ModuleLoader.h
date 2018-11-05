@@ -40,7 +40,7 @@ public:
 
 
 	Format CheckFormat(const char* path);
-	std::string GetFileName(const char* path);
+	std::string GetFileName(const char* path, bool extension = false);
 	std::string GetFileDir(const char* path);
 
 	ImporterTexture texImporter;

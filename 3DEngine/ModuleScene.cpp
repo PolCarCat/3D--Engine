@@ -71,13 +71,13 @@ update_status ModuleScene::Update(float dt)
 	{
 		quadTree.DistributeTree();
 		//quadTree.GenerateTestChildren();
-		SceneLoader::SaveScene("Assets/scenes/scene1.json", &root);
+		SceneLoader::SaveScene("Libraries/Scenes/scene1.json", &root);
 	}
 
 
 	if (ImGui::Button("Load Scene"))
 	{
-		SceneLoader::LoadScene("Assets/scenes/scene1.json", &root);
+		SceneLoader::LoadScene("Libraries/Scenes/scene1.json", &root);
 	}
 	ImGui::End();
 

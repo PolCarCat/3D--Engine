@@ -133,12 +133,14 @@ Format ModuleLoader::CheckFormat(const char* path)
 	return ret;
 }
 
-std::string ModuleLoader::GetFileName(const char* path)
+std::string ModuleLoader::GetFileName(const char* path, bool extension)
 {
 	std::string t = path;
 	std::string name;
 
 	bool point = false;
+
+	if (extension) point = true;
 
 	for (std::string::reverse_iterator rit = t.rbegin(); rit != t.rend(); ++rit)
 	{
