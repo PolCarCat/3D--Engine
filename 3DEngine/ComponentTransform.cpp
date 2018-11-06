@@ -75,21 +75,20 @@ bool ComponentTransform::Save(JSON_Object* json, JsonDoc* doc)
 	json_object_dotset_number(json, "Type", type);
 	json_object_dotset_boolean(json, "Active", active);
 
-	JSON_Array* pos = doc->SetArray(json, "Position");
-	json_array_append_number(pos, position.x);
-	json_array_append_number(pos, position.y);
-	json_array_append_number(pos, position.z);
+	JSON_Array* local = doc->SetArray(json, "Local Matrix");
 
-	JSON_Array* sc = doc->SetArray(json, "Scale");
-	json_array_append_number(sc, scale.x);
-	json_array_append_number(sc, scale.y);
-	json_array_append_number(sc, scale.z);
+	for (uint columns = 0; columns < 4; columns++)
+	{
+		for (uint rows = 0; rows < 4; rows++)
+		{
+			json_array_append_number(local, localMartix.At(rows, columns));
+		}
 
-	JSON_Array* rt = doc->SetArray(json, "Rotation");
-	json_array_append_number(rt, rotation.x);
-	json_array_append_number(rt, rotation.y);
-	json_array_append_number(rt, rotation.z);
-	json_array_append_number(rt, rotation.w);
+	}
+
+
+
+
 	return true;
 }
 
@@ -98,22 +97,18 @@ bool ComponentTransform::Load(JSON_Object* json, JsonDoc* doc)
 
 	active = json_object_dotget_boolean(json, "Active");
 
-	JSON_Array* pos = doc->GetObjAr(json, "Position");
-	position.x = json_array_get_number(pos, 0);
-	position.y = json_array_get_number(pos, 1);
-	position.z = json_array_get_number(pos, 2);
+	JSON_Array* local = doc->GetObjAr(json, "Local Matrix");
+	uint i = 0;
+	for (uint columns = 0; columns < 4; columns++)
+	{
+		for (uint rows = 0; rows < 4; rows++)
+		{
+			localMartix.At(rows, columns) = json_array_get_number(local, i++);
 
-	JSON_Array* sc = doc->GetObjAr(json, "Scale");
-	scale.x = json_array_get_number(sc, 0);
-	scale.y = json_array_get_number(sc, 1);
-	scale.z = json_array_get_number(sc, 2);
+		}
 
-	JSON_Array* rt = doc->GetObjAr(json, "Rotation");
-	rotation.x = json_array_get_number(rt, 0);
-	rotation.y = json_array_get_number(rt, 1);
-	rotation.z = json_array_get_number(rt, 2);
-	rotation.w = json_array_get_number(rt, 3);
+	}
 
-
+	localMartix.Decompose(position, rotation, scale);
 	return true;
 }

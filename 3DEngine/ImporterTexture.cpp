@@ -85,7 +85,9 @@ ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 	std::string name = path;
 	SaveTex(path);
 
-	name = App->loader->GetFileName(path);
+	if (isfullpath)
+		name = App->loader->GetFileName(path);
+
 	std::string fullPath = std::string(TEXT_DIR) + name + TEXT_EXTENSION;
 
 	ResTexture ret;
