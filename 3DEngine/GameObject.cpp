@@ -57,7 +57,9 @@ bool GameObject::Update()
 		if ((*item)->GetActive())
 		(*item)->Update();
 	}
-	//App->renderer3D->DrawAABB(bBox);
+
+	if (selected)
+		App->renderer3D->DrawAABB(globalABB);
 	
 	return true;
 }
@@ -546,7 +548,7 @@ bool GameObject::Load(JSON_Object* json, JsonDoc* doc)
 	return ret;
 }
 
-void GameObject::IsPickedABB(LineSegment picking, std::vector<GameObject*> vec)
+void GameObject::IsPickedABB(LineSegment picking, std::vector<GameObject*> &vec)
 {
 	if (!objChilds.empty())
 	{
@@ -558,6 +560,9 @@ void GameObject::IsPickedABB(LineSegment picking, std::vector<GameObject*> vec)
 
 	if (globalABB.Intersects(picking))
 	{
+		selected = true;
 		vec.push_back(this);
 	}
+	else
+		selected = false;
 }

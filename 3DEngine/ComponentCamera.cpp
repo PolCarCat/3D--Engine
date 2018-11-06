@@ -353,8 +353,6 @@ GameObject* ComponentCamera::Pick(float3* hit_point)
 
 	//return hit;
 
-	//-----------------------------
-
 	std::vector<GameObject*> ABBpicked;
 
 	for (vector<GameObject*>::iterator it = App->scene->root.objChilds.begin(); it != App->scene->root.objChilds.end(); ++it)
@@ -362,8 +360,7 @@ GameObject* ComponentCamera::Pick(float3* hit_point)
 
 	for (vector<GameObject*>::iterator it = ABBpicked.begin(); it != ABBpicked.end(); ++it)
 	{
-		if ((*it) != nullptr)
-			(*it)->GetName();
+		
 	}
 
 	return nullptr;
