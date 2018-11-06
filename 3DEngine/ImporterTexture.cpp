@@ -1,14 +1,13 @@
 #include "Application.h"
 #include "ImporterTexture.h"
 #include "Globals.h"
-#include "Application.h"
 #include "ModuleRenderer3D.h"
+#include <fstream>
+
 
 #include "DevIL/include/il.h"
-#include "DevIL/include/ilu.h"
-#include "DevIL/include/ilut.h"
 
-#include <fstream>
+#include "DevIL/include/ilut.h"
 
 
 #pragma comment (lib, "DevIL/libx86/DevIL.lib")
@@ -82,13 +81,31 @@ uint ImporterTexture::LoadChekerTex()
 ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 {
 	//If its not full path it's asumed that is a texture from the library
-	std::string name = path;
-	SaveTex(path);
+
+	std::string oldPath = path;
+	std::string name;
+	std::string newPath;
 
 	if (isfullpath)
-		name = App->loader->GetFileName(path);
+		
 
-	std::string fullPath = std::string(TEXT_DIR) + name + TEXT_EXTENSION;
+	if (isfullpath)
+	{
+		name = App->loader->GetFileName(path);
+		
+		if (App->loader->CheckFormat(path) != DDS)
+		{
+			newPath = std::string(TEXT_DIR) + name + TEXT_EXTENSION;
+			//SaveTex(path);
+		}
+
+	}
+	else
+	{
+		SaveTex(oldPath.c_str());
+	}
+
+	newPath = std::string(TEXT_DIR) + name + TEXT_EXTENSION;
 
 	ResTexture ret;
 	ILuint imageID = 0;
@@ -98,7 +115,7 @@ ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 	glGenTextures(1, &imageID);
 	glBindTexture(GL_TEXTURE_2D, imageID);
 
-	success = ilLoadImage((ILconst_string)fullPath.c_str());
+	success = ilLoadImage((ILconst_string)oldPath.c_str());
 
 	if (success)
 	{
@@ -132,7 +149,7 @@ ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 		ret.width = ilGetInteger(IL_IMAGE_WIDTH);
 		ret.heigth = ilGetInteger(IL_IMAGE_HEIGHT);
 		ret.id = imageID;
-		ret.name = App->loader->GetFileName(fullPath.c_str());
+		ret.name = name;
 		ret.path = path;
 
 
@@ -146,11 +163,8 @@ ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 	}
 	else
 	{
-
 		error = ilGetError();
 		VSLOG("\nImage loading eror %d", error);
-
-
 	}
 
 
@@ -159,14 +173,18 @@ ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 
 void ImporterTexture::SaveTex(const char* path, bool isfullpath)
 {
-	std::string fullPath = path;
-	if (!isfullpath)
-		fullPath = std::string(TEXT_DIR) + path + TEXT_EXTENSION;
+	std::string oldPath = path;
+	std::string newPath;
 
-	std::string path2 = path;
-	App->fileSystem.InvertBars(path2);
+	if (isfullpath)
+		newPath = std::string(TEXT_DIR) + App->loader->GetFileName(path) + TEXT_EXTENSION;	
+	else
+		newPath = std::string(TEXT_DIR) + path + TEXT_EXTENSION;
 
-	if (App->fileSystem.fileExists(path2.c_str()))
+
+	App->fileSystem.InvertBars(oldPath);
+
+	if (App->fileSystem.fileExists(newPath.c_str()))
 		return;
 
 	ILuint image_name;
@@ -174,7 +192,7 @@ void ImporterTexture::SaveTex(const char* path, bool isfullpath)
 	ilBindImage(image_name);
 
 
-	if (ilLoadImage(fullPath.c_str()))
+	if (ilLoadImage(oldPath.c_str()))
 	{
 		ILinfo info;
 		iluGetImageInfo(&info);
@@ -192,7 +210,7 @@ void ImporterTexture::SaveTex(const char* path, bool isfullpath)
 				data = new ILubyte[size];
 				if (ilSaveL(IL_DDS, data, size) > 0)
 				{
-					std::ofstream dataFile(fullPath.c_str(), std::fstream::out | std::fstream::binary);
+					std::ofstream dataFile(newPath.c_str(), std::fstream::out | std::fstream::binary);
 					dataFile.write((const char*)data, size);
 					dataFile.close();
 				}
@@ -202,6 +220,10 @@ void ImporterTexture::SaveTex(const char* path, bool isfullpath)
 
 
 		}
+	}
+	else
+	{
+		VSLOG("\nImage saving eror %d", ilGetError());
 	}
 }
 
