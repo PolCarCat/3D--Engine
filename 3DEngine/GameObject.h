@@ -46,7 +46,7 @@ public:
 	bool CheckDelete();
 	uint32_t GetUUID();
 	GameObject* GetObjByUUID(uint32_t id);
-	void IsPickedABB(LineSegment picking, std::vector<GameObject*> vec);
+	void IsPickedABB(LineSegment picking, std::vector<GameObject*> &vec);
 
 	void Save(JSON_Array* objects, JsonDoc* doc);
 	bool Load(JSON_Object* json, JsonDoc* doc);
@@ -62,7 +62,7 @@ public:
 
 private:
 
-
+	bool selected = false;
 	GameObject* parent = nullptr;
 	AABB localABB;
 	AABB globalABB;
