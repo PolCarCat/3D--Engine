@@ -9,6 +9,8 @@ Application::Application()
 	renderer3D = new ModuleRenderer3D(this);
 	imgui = new ModuleGui(this);
 	loader = new ModuleLoader(this);
+	timeManager = new ModuleTimeManager(this);
+
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
@@ -19,6 +21,7 @@ Application::Application()
 	AddModule(input);
 	AddModule(imgui);
 	AddModule(loader);
+	AddModule(timeManager);
 	
 	// Scenes
 	AddModule(scene);

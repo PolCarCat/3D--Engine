@@ -9,6 +9,7 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleGui.h"
 #include "ModuleLoader.h"
+#include "ModuleTimeManager.h"
 #include "JsonDoc.h"
 #include "FileSystem.h"
 #include <list>
@@ -24,6 +25,7 @@ public:
 	ModuleRenderer3D* renderer3D;
 	ModuleGui* imgui;
 	ModuleLoader* loader;
+	ModuleTimeManager* timeManager;
 
 	JsonDoc config;
 	FileSystem fileSystem;

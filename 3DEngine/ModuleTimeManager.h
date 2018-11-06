@@ -16,11 +16,26 @@ public:
 
 	update_status PostUpdate(float dt);
 
+	void StartTimers();
+	void Reset();
+
+	float GetRealTime();
+	float GetGameTime();
+	float GetTimeScale();
+	float GetDeltaTime();
+	float GetRealDeltaTime();
+	bool GetPlaying();
+
+	void SetTimeScale(float ts);
+	void SetPlaying(bool p);
+
 private:
-	Timer RealTime;
-	uint FrameCount;
-	float GameTime;
-	float Time_Scale;
-	float Delta_Time;
-	float Real_Delta_Time;
+	Timer realTime;
+	uint frameCount = 0;
+	float gameTime = 0;
+	float timeScale = 0;
+	float deltaTime = 0;
+	float realDeltaTime = 0;
+
+	bool playing = false;
 };

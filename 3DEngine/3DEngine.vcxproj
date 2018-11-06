@@ -182,6 +182,7 @@
     <ClInclude Include="WinObjects.h" />
     <ClInclude Include="WinSceneLoader.h" />
     <ClInclude Include="WinTest.h" />
+    <ClInclude Include="WinTimeManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -259,6 +260,7 @@
     <ClCompile Include="WinObjects.cpp" />
     <ClCompile Include="WinSceneLoader.cpp" />
     <ClCompile Include="WinTest.cpp" />
+    <ClCompile Include="WinTimeManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Geometry\KDTree.inl" />

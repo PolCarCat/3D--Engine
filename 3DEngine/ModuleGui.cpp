@@ -38,6 +38,7 @@ bool ModuleGui::Start()
 	objects = new WinObjects(App, true);
 	cam = new WinCamera(App, false);
 	scene = new WinSceneLoader(App, false);
+	time = new 	WinTimeManager(App, true);
 
 
 
@@ -48,6 +49,7 @@ bool ModuleGui::Start()
 	AddWindow(objects);
 	AddWindow(cam);
 	AddWindow(scene);
+	AddWindow(time);
 
 	for (std::list<WinBase*>::iterator item = windows.begin(); item != windows.end(); item++) {
 		(*item)->Start();
