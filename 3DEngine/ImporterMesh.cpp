@@ -103,6 +103,9 @@ GameObject* ImporterMesh::LoadNode(aiNode* n, const aiScene* scene, GameObject* 
 		nodeobj->transform->rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
 		nodeobj->transform->CalcMatrix();
 
+		nodeobj->transform->localMartix = nodeobj->transform->localMartix * GetMatrix(mat);
+		mat = aiMatrix4x4();
+
 		if (n->mNumMeshes != 0)
 		{
 			for (uint i = 0; i < n->mNumMeshes; i++)
@@ -123,6 +126,10 @@ GameObject* ImporterMesh::LoadNode(aiNode* n, const aiScene* scene, GameObject* 
 			}
 		}
 	}
+	else
+	{
+		mat = mat * n->mTransformation;
+	}
 
 	if (nodeobj == nullptr)
 		nodeobj = parent;
@@ -130,6 +137,7 @@ GameObject* ImporterMesh::LoadNode(aiNode* n, const aiScene* scene, GameObject* 
 	for (uint i = 0; i < n->mNumChildren; i++)
 	{
 		GameObject* child = LoadNode(n->mChildren[i], scene, nodeobj);
+
 	}
 
 	return nodeobj;
@@ -389,7 +397,28 @@ ResMesh* ImporterMesh::LoadMeh(const char* name)
 	return mesh;
 }
 
+float4x4 ImporterMesh::GetMatrix(aiMatrix4x4 m)
+{
+	float values[16] =
+	{
+		m.a1, m.a2, m.a3, m.a4,
+		m.b1, m.b2, m.b3, m.b4,
+		m.c1, m.c2, m.c3, m.c4,
+		m.d1, m.d2, m.d3, m.d4
+	};
+
+	float4x4 newmat;
+	newmat.Set(values);
+	return newmat;
+}
+
+void ImporterMesh::SetMatrix(float4x4 m)
+{
+
+}
+
 void LogAssimp(const char* c1, char* c2)
 {
 	VSLOG("%s", c1);
 }
+

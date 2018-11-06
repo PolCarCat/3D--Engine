@@ -3,6 +3,8 @@
 
 #include "Importer.h"
 #include "Globals.h"
+#include "Assimp/include/matrix4x4.h"
+#include "MathGeoLib/MathGeoLib.h"
 
 #define MESH_DIR "Libraries\\Meshes\\"
 #define MESH_EXTENSION ".meh"
@@ -40,8 +42,12 @@ public:
 	void SaveMeshAsMeh(ResMesh* m);
 	ResMesh* LoadMeh(const char* name);
 
+	float4x4 GetMatrix(aiMatrix4x4 m);
+	void SetMatrix(float4x4 m);
+
 private:
 	std::string currentPath;
+	aiMatrix4x4 mat;
 };
 
 
