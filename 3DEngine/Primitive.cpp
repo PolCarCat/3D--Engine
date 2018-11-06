@@ -238,12 +238,14 @@ void PLine::Create(float thickness, float ox, float oy, float oz, float ex, floa
 
 void PLine::Render() const
 {
+	glColor3f(0, 1, 0);
 	glLineWidth(thickness);
 	glBegin(GL_LINES);
 	glVertex3f(ox, oy, oz);
 	glVertex3f(ex, ey, ez);
 	glEnd();
 	glLineWidth(1);
+	glColor3f(1, 1, 1);
 }
 
 PArrow::PArrow() : Primitive()

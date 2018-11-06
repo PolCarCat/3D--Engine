@@ -3,12 +3,13 @@
 #include "ComponentTransform.h"
 #include "MathGeoLib/MathGeoLib.h"
 #include "ResMesh.h"
+#include "Primitive.h"
 
 class ComponentCamera :
 	public Component
 {
 public:
-	ComponentCamera(float _near = 0.5f, float _far = 5000.f, float fov = 60.0f);
+	ComponentCamera(float _near = 0.5f, float _far = 512.0f, float fov = 60.0f);
 	~ComponentCamera();
 
 	bool Start();
@@ -48,5 +49,7 @@ private:
 	float aspectRatio = 0;
 	float fovy = 60.0f;
 	bool lookingAt = false;
+	PLine idk;
+	bool linedraw = false;
 };
 

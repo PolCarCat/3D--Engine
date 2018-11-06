@@ -554,6 +554,8 @@ bool GameObject::Load(JSON_Object* json, JsonDoc* doc)
 
 void GameObject::IsPickedABB(LineSegment picking, std::vector<GameObject*> &vec)
 {
+	Deselect();
+
 	if (!objChilds.empty())
 	{
 		for (vector<GameObject*>::iterator it = objChilds.begin(); it != objChilds.end(); ++it)
@@ -564,11 +566,11 @@ void GameObject::IsPickedABB(LineSegment picking, std::vector<GameObject*> &vec)
 
 	if (globalABB.Intersects(picking))
 	{
-		selected = true;
+		//selected = true;
 		vec.push_back(this);
 	}
-	else
-		selected = false;
+	//else
+	//	selected = false;
 }
 
 void GameObject::Select()
@@ -576,7 +578,7 @@ void GameObject::Select()
 	selected = true;
 }
 
-void GameObject::Diselect()
+void GameObject::Deselect()
 {
 	selected = false;
 }

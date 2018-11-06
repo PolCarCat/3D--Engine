@@ -55,7 +55,7 @@ public:
 	void SetParent(GameObject* p);
 	void CalcGlobalTransform();
 	void Select();
-	void Diselect();
+	void Deselect();
 
 	std::vector<Component*> compChilds;
 	std::vector<GameObject*> objChilds;

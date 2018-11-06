@@ -4,6 +4,7 @@
 #include "Application.h"
 #include <math.h>
 #include "JsonDoc.h"
+#include "ComponentMesh.h"
 
 
 namespace VectF = VectorialFunctions;
@@ -135,6 +136,9 @@ void ComponentCamera::CheckInput(float dt)
 
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && !ImGui::IsMouseHoveringAnyWindow() && !ImGui::IsMouseDragging())
 		Pick((0, 0, 0));
+
+	if (linedraw)
+		idk.Render();
 
 	// Mouse motion ----------------
 
@@ -350,39 +354,55 @@ GameObject* ComponentCamera::Pick(float3* hit_point)
 	for (vector<GameObject*>::iterator it = App->scene->root.objChilds.begin(); it != App->scene->root.objChilds.end(); ++it)
 		(*it)->IsPickedABB(picking, ABBpicked);
 
-		//for (vector<GameObject*>::iterator it = ABBpicked.begin(); it != ABBpicked.end(); ++it)
-		//{
-		//	for (vector<Component*>::iterator cit = (*it)->compChilds.begin(); cit != (*it)->compChilds.end(); ++cit)
-		//	{
-		//		if ((*cit)->GetType() == RESMESH)
-		//		{
-		//			LineSegment localSeg(picking);
-		//			localSeg.Transform((*it)->transform->globalMartix.Inverted());
+	GameObject* selection = nullptr;
+	float min_distance = -1;
 
-		//			Triangle tri;
-		//			for (uint i = 0; i < ((ResMesh*)*cit)->num_indice;)
-		//			{
-		//					tri.a.x = ((ResMesh*)*cit)->vertex[((ResMesh*)*cit)->indice[i++]];
-		//					tri.a.y = ((ResMesh*)*cit)->vertex[((ResMesh*)*cit)->indice[i++]];
-		//					tri.a.z = ((ResMesh*)*cit)->vertex[((ResMesh*)*cit)->indice[i++]];
+	for (vector<GameObject*>::iterator it = ABBpicked.begin(); it != ABBpicked.end(); ++it)
+	{
+		for (vector<Component*>::iterator cit = (*it)->compChilds.begin(); cit != (*it)->compChilds.end(); ++cit)
+		{
+			if ((*cit)->GetType() == MESH)
+			{
+				LineSegment localSeg(picking);
+				localSeg.Transform((*it)->transform->globalMartix.Inverted());
+				idk.Create(3.0f, localSeg.a.x, localSeg.a.y, localSeg.a.z, localSeg.b.x, localSeg.b.y, localSeg.b.z);
+				linedraw = true;
+				ResMesh* mesh = ((ComponentMesh*)*cit)->mesh;
+				Triangle tri;
 
-		//					tri.b.x = ((ResMesh*)*cit)->vertex[((ResMesh*)*cit)->indice[i++]];
-		//					tri.b.y = ((ResMesh*)*cit)->vertex[((ResMesh*)*cit)->indice[i++]];
-		//					tri.b.z = ((ResMesh*)*cit)->vertex[((ResMesh*)*cit)->indice[i++]];
+				for (uint i = 0; i < mesh->num_indice;)
+				{
+					if (mesh->num_indice - i > 9)
+					{
+						tri.a.x = mesh->vertex[mesh->indice[i++]];
+						tri.a.y = mesh->vertex[mesh->indice[i++]];
+						tri.a.z = mesh->vertex[mesh->indice[i++]];
 
-		//					tri.c.x = ((ResMesh*)*cit)->vertex[((ResMesh*)*cit)->indice[i++]];
-		//					tri.c.y = ((ResMesh*)*cit)->vertex[((ResMesh*)*cit)->indice[i++]];
-		//					tri.c.z = ((ResMesh*)*cit)->vertex[((ResMesh*)*cit)->indice[i++]];
+						tri.b.x = mesh->vertex[mesh->indice[i++]];
+						tri.b.y = mesh->vertex[mesh->indice[i++]];
+						tri.b.z = mesh->vertex[mesh->indice[i++]];
 
-		//					if (tri.Intersects(localSeg))
-		//					{
-		//						(*it)->Select();
-		//					}
-		//			}
-		//		}
-		//	}
-		//}
+						tri.c.x = mesh->vertex[mesh->indice[i++]];
+						tri.c.y = mesh->vertex[mesh->indice[i++]];
+						tri.c.z = mesh->vertex[mesh->indice[i++]];
+
+						float distance;
+						float3 hit_point;
+						if (localSeg.Intersects(tri, &distance, &hit_point))
+						{
+							if (min_distance == -1 || distance < min_distance)
+								selection = (*it);
+						}
+					}
+					else
+						break;
+				}
+			}
+		}
+	}
+
+	if (selection != nullptr)
+		selection->Select();
 
 	return nullptr;
 }
-
