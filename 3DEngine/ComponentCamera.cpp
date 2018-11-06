@@ -133,6 +133,8 @@ void ComponentCamera::CheckInput(float dt)
 
 	Reference -= newPos;
 
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && !ImGui::IsMouseHoveringAnyWindow() && !ImGui::IsMouseDragging())
+		Pick((0, 0, 0));
 
 	// Mouse motion ----------------
 
@@ -335,3 +337,35 @@ bool ComponentCamera::Load(JSON_Object* json, JsonDoc* doc)
 	active = json_object_dotget_number(json, "FOV");
 	return true;
 }
+
+GameObject* ComponentCamera::Pick(float3* hit_point)
+{
+	float norm_x = -(1.0f - (float(App->input->Mx) * 2.0f) / (float)App->window->w);
+	float norm_y = 1.0f - (float(App->input->My) * 2.0f) / (float)App->window->h;
+
+	LineSegment picking = frustum.UnProjectLineSegment(norm_x, norm_y);
+
+	//float distance;
+	//GameObject* hit = App->level->CastRay(picking, distance);
+
+	//if (hit != nullptr && hit_point != nullptr)
+	//	*hit_point = picking.GetPoint(distance);
+
+	//return hit;
+
+	//-----------------------------
+
+	std::vector<GameObject*> ABBpicked;
+
+	for (vector<GameObject*>::iterator it = App->scene->root.objChilds.begin(); it != App->scene->root.objChilds.end(); ++it)
+		(*it)->IsPickedABB(picking, ABBpicked);
+
+	for (vector<GameObject*>::iterator it = ABBpicked.begin(); it != ABBpicked.end(); ++it)
+	{
+		if ((*it) != nullptr)
+			(*it)->GetName();
+	}
+
+	return nullptr;
+}
+

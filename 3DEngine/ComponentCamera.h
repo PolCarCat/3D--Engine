@@ -36,6 +36,8 @@ public:
 	bool drawFrustum = true;
 	bool isCurCam = false;
 
+	GameObject* Pick(float3* hit_point);
+
 private:
 
 	float4x4 ViewMatrix, ViewMatrixInverse;
