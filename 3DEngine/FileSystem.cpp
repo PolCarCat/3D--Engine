@@ -33,9 +33,12 @@ FileSystem::FileSystem()
 		PHYSFS_mkdir("Libraries\\Textures\\");
 
 
-	AddPath("Libaries\\Textures\\");
+	AddPath("Libaries\Textures\\");
 
-	
+	if (!PHYSFS_exists("Libraries/Scenes/"))
+		PHYSFS_mkdir("Libraries/Scenes/");
+
+	AddPath("Libraries/Scenes/");
 	
 }
 

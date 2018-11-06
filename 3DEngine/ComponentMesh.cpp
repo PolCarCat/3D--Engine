@@ -154,9 +154,14 @@ bool ComponentMesh::Save(JSON_Object* json, JsonDoc* doc)
 	json_object_dotset_string(json, "Mesh Name", mesh->name.c_str());
 	json_object_dotset_number(json, "Mesh UUID", mesh->uuid);
 
-	JSON_Object* mat = doc->SetObj(json, "Material");
+	if (material != nullptr)
+	{
+		JSON_Object* mat = doc->SetObj(json, "Material");
 
-	material->Save(mat, doc);
+		material->Save(mat, doc);
+	}
+
+
 	return true;
 }
 
@@ -169,16 +174,21 @@ bool ComponentMesh::Load(JSON_Object* json, JsonDoc* doc)
 
 
 	JSON_Object* mat = doc->GetObjObj(json, "Material");
-	std::string matName = json_object_dotget_string(mat, "Name");
-	ComponentMaterial* usedMat = App->scene->CheckMaterial(matName.c_str());
-
-	if (usedMat == nullptr)
+	
+	if (mat != nullptr)
 	{
-		material = new ComponentMaterial();
-		material->Load(mat, doc);
+		std::string matName = json_object_dotget_string(mat, "Name");
+		ComponentMaterial* usedMat = App->scene->CheckMaterial(matName.c_str());
+
+		if (usedMat == nullptr)
+		{
+			material = new ComponentMaterial();
+			material->Load(mat, doc);
+		}
+		else
+			material = usedMat;
 	}
-	else
-		material = usedMat;
+
 
 
 

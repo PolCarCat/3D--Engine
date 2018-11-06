@@ -112,11 +112,15 @@ GameObject* ImporterMesh::LoadNode(aiNode* n, const aiScene* scene, GameObject* 
 			{
 				aiMesh* mesh = scene->mMeshes[n->mMeshes[i]];
 				ComponentMesh* meshobj = LoadMesh(mesh);
-				if (meshobj != nullptr)
-					nodeobj->AddBox(meshobj->mesh->boundingBox);
 
 				if (meshobj != nullptr)
 				{
+					if (meshobj->mesh->name == "")
+					{
+						meshobj->mesh->name = n->mName.C_Str();
+					}
+
+					nodeobj->AddBox(meshobj->mesh->boundingBox);
 					nodeobj->AddComponent(meshobj);
 
 					aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
@@ -299,7 +303,7 @@ ComponentMaterial* ImporterMesh::LoadMat(aiMaterial* m)
 
 void ImporterMesh::SaveMeshAsMeh(ResMesh* m)
 {
-	uint ranges[2] = { m->num_vertex, m->num_indice };
+	uint ranges[3] = { m->num_vertex, m->num_indice, m->num_textC};
 
 	uint fileSize = sizeof(ranges) + sizeof(float)*m->num_vertex * 3 + sizeof(uint)*m->num_indice + sizeof(float)*m->num_vertex * 2 + sizeof(float)*m->num_vertex * 3;
 	
@@ -322,14 +326,17 @@ void ImporterMesh::SaveMeshAsMeh(ResMesh* m)
 
 	last += bytes;
 
-	bytes = sizeof(float)*m->num_vertex * 2;
-	memcpy(last, m->textC, bytes);
-
-	last += bytes;
-
 	bytes = sizeof(float)*m->num_vertex * 3;
 	memcpy(last, m->normals, bytes);
 
+	if (m->num_textC > 0)
+	{
+		last += bytes;
+
+		bytes = sizeof(float)*m->num_textC;
+		memcpy(last, m->textC, bytes);
+
+	}
 
 	std::string str = MESH_DIR + m->name + MESH_EXTENSION;
 
@@ -357,13 +364,14 @@ ResMesh* ImporterMesh::LoadMeh(const char* name)
 }
 
 	char* last = data;
-	uint ranges[2];
+	uint ranges[3];
 	uint bytes = sizeof(ranges);
 
 	memcpy(ranges, last, bytes);
 
 	mesh->num_vertex = ranges[0];
 	mesh->num_indice = ranges[1];
+	mesh->num_textC = ranges[2];
 
 	last += bytes;
 	bytes = sizeof(float)*mesh->num_vertex * 3;
@@ -378,17 +386,19 @@ ResMesh* ImporterMesh::LoadMeh(const char* name)
 	memcpy(mesh->indice, last, bytes);
 
 	last += bytes;
-	bytes = sizeof(float)*mesh->num_vertex * 2;
-
-	mesh->textC = new float[mesh->num_vertex * 2];
-	memcpy(mesh->textC, last, bytes);
-
-	last += bytes;
 	bytes = sizeof(float)*mesh->num_vertex * 3;
 
 	mesh->normals = new float[mesh->num_vertex * 3];
 	memcpy(mesh->normals, last, bytes);
 
+	if (mesh->num_textC > 0)
+	{
+		last += bytes;
+		bytes = sizeof(float)*mesh->num_textC;
+
+		mesh->textC = new float[mesh->num_textC];
+		memcpy(mesh->textC, last, bytes);
+	}
 	mesh->GenerateBuffer();
 
 	delete[] data;
