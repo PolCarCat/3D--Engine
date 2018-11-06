@@ -22,6 +22,9 @@ GameObject::GameObject()
 
 	globalABB.minPoint.Set(INT_MAX, INT_MAX, INT_MAX);
 	globalABB.maxPoint.Set(INT_MIN, INT_MIN, INT_MIN);
+
+	if (uuid == 0)
+		uuid = pcg32_random();
 }
 
 
@@ -431,10 +434,11 @@ GameObject* GameObject::GetObjByUUID(uint32_t id)
 		{
 			if ((*item)->GetObjByUUID(id) != nullptr)
 			{
-				return *item;
+				return (*item)->GetObjByUUID(id);
 			}
 		}
 	}
+
 	return nullptr;
 }
 
