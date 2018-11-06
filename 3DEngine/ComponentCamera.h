@@ -8,7 +8,7 @@ class ComponentCamera :
 	public Component
 {
 public:
-	ComponentCamera(float _near = 0.5f, float _far = inf, float fov = 60.0f);
+	ComponentCamera(float _near = 0.5f, float _far = 5000.f, float fov = 60.0f);
 	~ComponentCamera();
 
 	bool Start();

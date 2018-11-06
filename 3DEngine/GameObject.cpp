@@ -566,3 +566,13 @@ void GameObject::IsPickedABB(LineSegment picking, std::vector<GameObject*> &vec)
 	else
 		selected = false;
 }
+
+void GameObject::Select()
+{
+	selected = true;
+}
+
+void GameObject::Diselect()
+{
+	selected = false;
+}

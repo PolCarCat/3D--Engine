@@ -15,7 +15,7 @@
 ComponentMesh::ComponentMesh(ResMesh* _mesh)
 {
 	mesh = _mesh;
-	type = MESH;
+	type = RESMESH;
 }
 
 ComponentMesh::ComponentMesh()

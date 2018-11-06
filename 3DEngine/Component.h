@@ -6,6 +6,7 @@ class GameObject;
 
 enum Type {
 	MESH,
+	RESMESH,
 	TRANSFORM,
 	CAMERA,
 	MATERIAL,

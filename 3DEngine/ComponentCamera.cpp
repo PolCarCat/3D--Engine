@@ -345,23 +345,43 @@ GameObject* ComponentCamera::Pick(float3* hit_point)
 
 	LineSegment picking = frustum.UnProjectLineSegment(norm_x, norm_y);
 
-	//float distance;
-	//GameObject* hit = App->level->CastRay(picking, distance);
-
-	//if (hit != nullptr && hit_point != nullptr)
-	//	*hit_point = picking.GetPoint(distance);
-
-	//return hit;
-
 	std::vector<GameObject*> ABBpicked;
 
 	for (vector<GameObject*>::iterator it = App->scene->root.objChilds.begin(); it != App->scene->root.objChilds.end(); ++it)
 		(*it)->IsPickedABB(picking, ABBpicked);
 
-	for (vector<GameObject*>::iterator it = ABBpicked.begin(); it != ABBpicked.end(); ++it)
-	{
-		
-	}
+		//for (vector<GameObject*>::iterator it = ABBpicked.begin(); it != ABBpicked.end(); ++it)
+		//{
+		//	for (vector<Component*>::iterator cit = (*it)->compChilds.begin(); cit != (*it)->compChilds.end(); ++cit)
+		//	{
+		//		if ((*cit)->GetType() == RESMESH)
+		//		{
+		//			LineSegment localSeg(picking);
+		//			localSeg.Transform((*it)->transform->globalMartix.Inverted());
+
+		//			Triangle tri;
+		//			for (uint i = 0; i < ((ResMesh*)*cit)->num_indice;)
+		//			{
+		//					tri.a.x = ((ResMesh*)*cit)->vertex[((ResMesh*)*cit)->indice[i++]];
+		//					tri.a.y = ((ResMesh*)*cit)->vertex[((ResMesh*)*cit)->indice[i++]];
+		//					tri.a.z = ((ResMesh*)*cit)->vertex[((ResMesh*)*cit)->indice[i++]];
+
+		//					tri.b.x = ((ResMesh*)*cit)->vertex[((ResMesh*)*cit)->indice[i++]];
+		//					tri.b.y = ((ResMesh*)*cit)->vertex[((ResMesh*)*cit)->indice[i++]];
+		//					tri.b.z = ((ResMesh*)*cit)->vertex[((ResMesh*)*cit)->indice[i++]];
+
+		//					tri.c.x = ((ResMesh*)*cit)->vertex[((ResMesh*)*cit)->indice[i++]];
+		//					tri.c.y = ((ResMesh*)*cit)->vertex[((ResMesh*)*cit)->indice[i++]];
+		//					tri.c.z = ((ResMesh*)*cit)->vertex[((ResMesh*)*cit)->indice[i++]];
+
+		//					if (tri.Intersects(localSeg))
+		//					{
+		//						(*it)->Select();
+		//					}
+		//			}
+		//		}
+		//	}
+		//}
 
 	return nullptr;
 }
