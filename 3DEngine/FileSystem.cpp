@@ -9,10 +9,12 @@
 
 FileSystem::FileSystem()
 {
-	basePath = SDL_GetBasePath();
-	PHYSFS_init(basePath);
+	char* base_path = SDL_GetBasePath();
+	PHYSFS_init(base_path);
+	SDL_free(base_path);
 
-	PHYSFS_setWriteDir(".");
+	if (PHYSFS_setWriteDir(".") == 0)
+		VSLOG("File System error while creating write dir: %s\n", PHYSFS_getLastError());
 
 	AddPath(".");
 

@@ -32,6 +32,8 @@ bool ImporterTexture::Start()
 	ilutInit();
 	ilutRenderer(ILUT_OPENGL);
 
+
+
 	return true;
 }
 
@@ -87,16 +89,13 @@ ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 	std::string newPath;
 
 	if (isfullpath)
-		
-
-	if (isfullpath)
 	{
 		name = App->loader->GetFileName(path);
 		
 		if (App->loader->CheckFormat(path) != DDS)
 		{
 			newPath = std::string(TEXT_DIR) + name + TEXT_EXTENSION;
-			//SaveTex(path);
+			SaveTex(path);
 		}
 
 	}
@@ -115,7 +114,8 @@ ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 	glGenTextures(1, &imageID);
 	glBindTexture(GL_TEXTURE_2D, imageID);
 
-	success = ilLoadImage((ILconst_string)oldPath.c_str());
+	success = iluLoadImage((ILconst_string)oldPath.c_str());
+
 
 	if (success)
 	{
@@ -140,7 +140,7 @@ ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 		}
 
 
-		//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -158,7 +158,7 @@ ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 		glBindTexture(GL_TEXTURE_2D, 0);
 		VSLOG("Texture creation successful, image id %d", imageID);
 
-		//ilDeleteImages(1, &imageID);
+		ilDeleteImages(1, &imageID);
 
 	}
 	else
@@ -182,8 +182,6 @@ void ImporterTexture::SaveTex(const char* path, bool isfullpath)
 		newPath = std::string(TEXT_DIR) + path + TEXT_EXTENSION;
 
 
-	App->fileSystem.InvertBars(oldPath);
-
 	if (App->fileSystem.fileExists(newPath.c_str()))
 		return;
 
@@ -191,8 +189,10 @@ void ImporterTexture::SaveTex(const char* path, bool isfullpath)
 	ilGenImages(1, &image_name);
 	ilBindImage(image_name);
 
+	char* buffer = nullptr;
+	int	  lenght = App->fileSystem.LoadFile(path, &buffer);
 
-	if (ilLoadImage(oldPath.c_str()))
+	if (ilLoadL(IL_TYPE_UNKNOWN, (const void*)buffer, lenght))
 	{
 		ILinfo info;
 		iluGetImageInfo(&info);
