@@ -26,7 +26,7 @@ ImporterTexture::~ImporterTexture()
 
 bool ImporterTexture::Start()
 {
-	ilutRenderer(ILUT_OPENGL);
+	ilShutDown();
 	ilInit();
 	iluInit();
 	ilutInit();
@@ -39,6 +39,7 @@ bool ImporterTexture::Start()
 
 bool ImporterTexture::CleanUp()
 {
+	ilShutDown();
 	return true;
 }
 
@@ -82,65 +83,130 @@ uint ImporterTexture::LoadChekerTex()
 
 ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 {
-	//If its not full path it's asumed that is a texture from the library
 
-	std::string oldPath = path;
-	std::string name;
-	std::string newPath;
 
-	if (isfullpath)
-	{
-		name = App->loader->GetFileName(path);
-		
-		if (App->loader->CheckFormat(path) != DDS)
-		{
-			newPath = std::string(TEXT_DIR) + name + TEXT_EXTENSION;
-			SaveTex(path);
-		}
+	//std::string oldPath = path;
+	//std::string name = path;
 
-	}
-	else
-	{
-		SaveTex(oldPath.c_str());
-	}
+	//if (isfullpath)
+	//name = App->loader->GetFileName(path);
 
-	newPath = std::string(TEXT_DIR) + name + TEXT_EXTENSION;
+	//std::string newPath = std::string(TEXT_DIR) + name + TEXT_EXTENSION;;
+
+
+	////Check image format and decide to create a new file or just copy the dds
+	////If its not full path it's asumed that is a texture from the library so no need to save it
+	//if (isfullpath)
+	//{
+	//	if (App->loader->CheckFormat(path) != DDS)
+	//		SaveTex(oldPath.c_str());
+
+	//	else
+	//		App->fileSystem.Copy(oldPath.c_str(), newPath.c_str());
+	//}
+	//	
+
+	////Begin Loading the already saved texture
+	//ResTexture ret;
+	//ILuint imageID = 0;
+	//ILboolean success = false;
+	//ILenum error;
+
+	//glGenTextures(1, &imageID);
+	//glBindTexture(GL_TEXTURE_2D, imageID);
+
+	//success = iluLoadImage(path);
+
+
+	//if (success)
+	//{
+
+	//	ILinfo ImageInfo;
+	//	iluGetImageInfo(&ImageInfo);
+
+	//	glBindTexture(GL_TEXTURE_2D, imageID);
+
+	//	if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+	//	{
+	//		success = iluFlipImage();
+	//	}
+
+	//	success = ilConvertImage(ilGetInteger(IL_IMAGE_FORMAT), IL_UNSIGNED_BYTE);
+
+
+	//	if (!success)
+	//	{
+	//		error = ilGetError();
+	//		VSLOG("error %d", error);
+	//	}
+
+
+	//	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	//	ret.width = ilGetInteger(IL_IMAGE_WIDTH);
+	//	ret.heigth = ilGetInteger(IL_IMAGE_HEIGHT);
+	//	ret.id = imageID;
+	//	ret.name = name;
+	//	ret.path = path;
+
+
+	//	glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ret.width, ret.heigth, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+
+	//	glBindTexture(GL_TEXTURE_2D, 0);
+	//	VSLOG("Texture creation successful, image id %d", imageID);
+
+	//	ilDeleteImages(1, &imageID);
+
+	//}
+	//else
+	//{
+	//	error = ilGetError();
+	//	VSLOG("\nImage loading eror %d", error);
+	//}
+
+	SaveTex(path);
 
 	ResTexture ret;
-	ILuint imageID = 0;
+	ILuint imageID;
+	GLuint textureID;
 	ILboolean success = false;
 	ILenum error;
 
-	glGenTextures(1, &imageID);
-	glBindTexture(GL_TEXTURE_2D, imageID);
+	ilGenImages(1, &imageID);
+	ilBindImage(imageID);
 
-	success = iluLoadImage((ILconst_string)oldPath.c_str());
+	//char* buffer = nullptr;
+	//int	  lenght = App->fileSystem.LoadFile(path, &buffer);
+
+	success = ilLoadImage(path);
 
 
 	if (success)
 	{
-
 		ILinfo ImageInfo;
 		iluGetImageInfo(&ImageInfo);
-
-		glBindTexture(GL_TEXTURE_2D, imageID);
-
 		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
 		{
-			success = iluFlipImage();
+			iluFlipImage();
 		}
 
-		success = ilConvertImage(ilGetInteger(IL_IMAGE_FORMAT), IL_UNSIGNED_BYTE);
+		//success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
 
 
 		if (!success)
 		{
 			error = ilGetError();
-			VSLOG("error %d", error);
+			VSLOG("Image fliping error %d", error);
 		}
 
 
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glGenTextures(1, &textureID);
+		glBindTexture(GL_TEXTURE_2D, textureID);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -148,25 +214,24 @@ ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 
 		ret.width = ilGetInteger(IL_IMAGE_WIDTH);
 		ret.heigth = ilGetInteger(IL_IMAGE_HEIGHT);
-		ret.id = imageID;
-		ret.name = name;
-		ret.path = path;
+		ret.id = textureID;
 
 
 		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ret.width, ret.heigth, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
 
 		glBindTexture(GL_TEXTURE_2D, 0);
-		VSLOG("Texture creation successful, image id %d", imageID);
+		VSLOG("Texture creation successful, image id %d", textureID);
+		App->imgui->console->AddLog("\nTexture creation successful, image id ");
+		App->imgui->console->AddNumLog((int)textureID);
 
 		ilDeleteImages(1, &imageID);
-
 	}
 	else
 	{
 		error = ilGetError();
 		VSLOG("\nImage loading eror %d", error);
-	}
 
+	}
 
 	return ret;
 }
@@ -182,8 +247,8 @@ void ImporterTexture::SaveTex(const char* path, bool isfullpath)
 		newPath = std::string(TEXT_DIR) + path + TEXT_EXTENSION;
 
 
-	if (App->fileSystem.fileExists(newPath.c_str()))
-		return;
+	//if (App->fileSystem.fileExists(newPath.c_str()))
+	//	return;
 
 	ILuint image_name;
 	ilGenImages(1, &image_name);
@@ -192,38 +257,28 @@ void ImporterTexture::SaveTex(const char* path, bool isfullpath)
 	char* buffer = nullptr;
 	int	  lenght = App->fileSystem.LoadFile(path, &buffer);
 
-	if (ilLoadL(IL_TYPE_UNKNOWN, (const void*)buffer, lenght))
-	{
-		ILinfo info;
-		iluGetImageInfo(&info);
 
-		if (ilGetError() == IL_NO_ERROR)
+	ilLoadL(IL_TYPE_UNKNOWN, (const void*)buffer, lenght);
+	//ilLoad(IL_PNG, path);
+	
+	//ilLoadImage(path);
+	VSLOG("\nImage saving eror %d", ilGetError());
+	ILuint size = 0;
+	ILubyte* data = nullptr;
+
+	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
+	size = ilSaveL(IL_DDS, NULL, 0); 
+	if (size != 0) {
+		data = new ILubyte[size]; 
+		if (ilSaveL(IL_DDS, data, size) > 0)
 		{
-
-			ILuint size;
-			ILubyte* data;
-			ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
-
-			size = ilSaveL(IL_DDS, NULL, 0);
-			if (size > 0)
-			{
-				data = new ILubyte[size];
-				if (ilSaveL(IL_DDS, data, size) > 0)
-				{
-					std::ofstream dataFile(newPath.c_str(), std::fstream::out | std::fstream::binary);
-					dataFile.write((const char*)data, size);
-					dataFile.close();
-				}
-				delete[]data;
-				ilDeleteImages(1, &image_name);
-			}
-
-
+			char* stuff = (char*)(data);
+			
+			App->fileSystem.SaveFile(newPath.c_str(), stuff, size);
 		}
-	}
-	else
-	{
-		VSLOG("\nImage saving eror %d", ilGetError());
+		delete[] data;
+
+
 	}
 }
 

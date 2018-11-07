@@ -52,7 +52,6 @@ update_status ModuleLoader::PreUpdate(float dt)
 update_status ModuleLoader::Update(float dt)
 {
 
-	//CheckDropEvent();
 
 
 	return UPDATE_CONTINUE;
@@ -91,7 +90,7 @@ bool ModuleLoader::CleanUp()
 	SDL_free(droppedFile);
 
 
-
+	meshImporter.CleanUp();
 	texImporter.CleanUp();
 	return true;
 }
