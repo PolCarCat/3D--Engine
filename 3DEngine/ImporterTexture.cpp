@@ -91,8 +91,10 @@ ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 	if (isfullpath)
 		name = App->loader->GetFileName(path);
 
+
 	std::string newPath = std::string(TEXT_DIR) + name + TEXT_EXTENSION;
 
+	//If it's not fullpath it's assumed that is from the library or we couldn't load it
 	if (isfullpath)
 	{
 		if (App->loader->CheckFormat(path) != DDS)
@@ -123,14 +125,10 @@ ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 			iluFlipImage();
 		}
 
-		//success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
-
-
 		if (!success)
 		{
 			error = ilGetError();
-			VSLOG("Image fliping error %d", error);
-			App->imgui->console->AddLog("\Image fliping error");
+			VSLOG("\nImage fliping error %d", error);
 		}
 
 
@@ -150,17 +148,14 @@ ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ret.width, ret.heigth, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
 
 		glBindTexture(GL_TEXTURE_2D, 0);
-		VSLOG("Texture creation successful, image id %d", textureID);
-		App->imgui->console->AddLog("\nTexture creation successful, image id ");
-		App->imgui->console->AddNumLog((int)textureID);
+		VSLOG("\nTexture creation successful, image id %d", textureID);
 
 		ilDeleteImages(1, &imageID);
 	}
 	else
 	{
 		error = ilGetError();
-		VSLOG("Image loading eror %d", error);
-		App->imgui->console->AddLog("\nImage loading error");
+		VSLOG("\nImage loading eror %d", error);
 	}
 
 
@@ -178,40 +173,36 @@ void ImporterTexture::SaveTex(const char* path, bool isfullpath)
 		newPath = std::string(TEXT_DIR) + path + TEXT_EXTENSION;
 
 
-	//if (App->fileSystem.fileExists(newPath.c_str()))
-	//	return;
+	if (App->fileSystem.fileExists(newPath.c_str()))
+		return;
 
 	ILuint image_name;
 	ilGenImages(1, &image_name);
 	ilBindImage(image_name);
 
-	char* buffer = nullptr;
-	int	  lenght = App->fileSystem.LoadFile(path, &buffer);
 
-	//ilLoadL(IL_TYPE_UNKNOWN, (const void*)buffer, lenght);
-	//ilLoad(IL_PNG, path);
-	ilLoadImage(path);
-	//char* noconstChar = strdup(path);
+	if (ilLoadImage(path))
+	{
+		VSLOG("\nImage saving eror %d", ilGetError());
+		ILuint size = 0;
+		ILubyte* data = nullptr;
 
-	//uint id = ilutGLLoadImage(noconstChar);
-	
-	//ilLoadImage(path);
-	VSLOG("\nImage saving eror %d", ilGetError());
-	ILuint size = 0;
-	ILubyte* data = nullptr;
+		ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
+		size = ilSaveL(IL_DDS, NULL, 0);
+		if (size != 0) {
+			data = new ILubyte[size];
+			if (ilSaveL(IL_DDS, data, size) > 0)
+			{
+				char* stuff = (char*)(data);
 
-	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
-	size = ilSaveL(IL_DDS, NULL, 0); 
-	if (size != 0) {
-		data = new ILubyte[size]; 
-		if (ilSaveL(IL_DDS, data, size) > 0)
-		{
-			char* stuff = (char*)(data);
-			
-			App->fileSystem.SaveFile(newPath.c_str(), stuff, size);
+				App->fileSystem.SaveFile(newPath.c_str(), stuff, size);
+			}
+			delete[] data;
+			ilDeleteImages(1, &image_name);
 		}
-		delete[] data;
 	}
+
+
 
 }
 

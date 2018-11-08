@@ -109,6 +109,8 @@ void ComponentMaterial::UpdateUI()
 
 bool ComponentMaterial::CleanUp()
 {
+
+	name.clear();
 	return true;
 }
 
@@ -118,7 +120,7 @@ bool ComponentMaterial::Save(JSON_Object* json, JsonDoc* doc)
 	json_object_dotset_number(json, "Type", type);
 	json_object_dotset_boolean(json, "Active", active);
 	json_object_dotset_boolean(json, "Texture Enabled", texEnabled);
-	json_object_dotset_string(json, "Name", App->loader->GetFileName(name.c_str()).c_str());
+	json_object_dotset_string(json, "Name", name.c_str());
 
 
 	JSON_Array* col = doc->SetArray(json, "Color");
@@ -127,7 +129,7 @@ bool ComponentMaterial::Save(JSON_Object* json, JsonDoc* doc)
 	json_array_append_number(col, color.b);
 	json_array_append_number(col, color.a);
 
-	App->loader->texImporter.SaveTex(tex);
+	
 	return true;
 }
 bool ComponentMaterial::Load(JSON_Object* json, JsonDoc* doc)

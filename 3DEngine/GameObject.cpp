@@ -70,9 +70,6 @@ bool GameObject::Update()
 bool GameObject::PostUpdate()
 {
 
-
-
-
 	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end();)
 	{
 		
@@ -175,6 +172,9 @@ bool GameObject::CleanUp()
 	{
 			(*item)->CleanUp();
 	}
+
+	name.clear();
+
 	return true;
 }
 
@@ -303,7 +303,7 @@ void GameObject::DeleteComp(Component* comp)
 
 void GameObject::DeleteGameObj(GameObject* obj)
 {
-
+	obj->Delete();
 }
 
 Component* GameObject::AddCompMesh()

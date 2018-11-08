@@ -190,8 +190,6 @@ bool ComponentMesh::Load(JSON_Object* json, JsonDoc* doc)
 	}
 
 
-
-
 	ResMesh* m  = App->renderer3D->CheckMesh(name.c_str());
 
 	if (m == nullptr)

@@ -82,15 +82,13 @@ update_status ModuleScene::PostUpdate(float dt)
 // Load assets
 bool ModuleScene::CleanUp()
 {
-	//LOG("Unloading scene");
+	VSLOG("Unloading scene");
 	root.CleanUp();
 
 	if (currentCam != ghostcam)
 		delete currentCam;
 
 	delete ghostcam;
-
-
 
 	return true;
 }
