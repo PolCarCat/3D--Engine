@@ -168,45 +168,46 @@ ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 	//	VSLOG("\nImage loading eror %d", error);
 	//}
 
+	std::string name = path;
 	SaveTex(path);
 
+	name = App->loader->GetFileName(path);
+	std::string fullPath = std::string(TEXT_DIR) + name + TEXT_EXTENSION;
+
 	ResTexture ret;
-	ILuint imageID;
-	GLuint textureID;
+	ILuint imageID = 0;
 	ILboolean success = false;
 	ILenum error;
 
-	ilGenImages(1, &imageID);
-	ilBindImage(imageID);
+	glGenTextures(1, &imageID);
+	glBindTexture(GL_TEXTURE_2D, imageID);
 
-	//char* buffer = nullptr;
-	//int	  lenght = App->fileSystem.LoadFile(path, &buffer);
-
-	success = ilLoadImage(path);
-
+	success = ilLoadImage((ILconst_string)fullPath.c_str());
 
 	if (success)
 	{
+
 		ILinfo ImageInfo;
 		iluGetImageInfo(&ImageInfo);
+
+		glBindTexture(GL_TEXTURE_2D, imageID);
+
 		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
 		{
-			iluFlipImage();
+			success = iluFlipImage();
 		}
 
-		//success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
+		success = ilConvertImage(ilGetInteger(IL_IMAGE_FORMAT), IL_UNSIGNED_BYTE);
 
 
 		if (!success)
 		{
 			error = ilGetError();
-			VSLOG("Image fliping error %d", error);
+			VSLOG("error %d", error);
 		}
 
 
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		glGenTextures(1, &textureID);
-		glBindTexture(GL_TEXTURE_2D, textureID);
+		//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -214,22 +215,25 @@ ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 
 		ret.width = ilGetInteger(IL_IMAGE_WIDTH);
 		ret.heigth = ilGetInteger(IL_IMAGE_HEIGHT);
-		ret.id = textureID;
+		ret.id = imageID;
+		ret.name = App->loader->GetFileName(fullPath.c_str());
+		ret.path = path;
 
 
 		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ret.width, ret.heigth, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
 
 		glBindTexture(GL_TEXTURE_2D, 0);
-		VSLOG("Texture creation successful, image id %d", textureID);
-		App->imgui->console->AddLog("\nTexture creation successful, image id ");
-		App->imgui->console->AddNumLog((int)textureID);
+		VSLOG("Texture creation successful, image id %d", imageID);
 
-		ilDeleteImages(1, &imageID);
+		//ilDeleteImages(1, &imageID);
+
 	}
 	else
 	{
+
 		error = ilGetError();
 		VSLOG("\nImage loading eror %d", error);
+
 
 	}
 
@@ -280,6 +284,9 @@ void ImporterTexture::SaveTex(const char* path, bool isfullpath)
 
 
 	}
+
+
+
 }
 
 void ImporterTexture::SaveTex(ResTexture tex)
