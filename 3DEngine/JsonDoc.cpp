@@ -45,10 +45,25 @@ bool JsonDoc::Init(const char* _path)
 	return ret;
 }
 
+bool JsonDoc::Init()
+{
+	//Generates a root obj in memory
+	bool ret = true;
+	root = json_value_init_object();
+
+	if (json_value_get_type(root) == JSONNull)
+		ret = false;
+
+	rootObj = json_value_get_object(root);
+
+
+	return ret;
+}
+
 void JsonDoc::CleanUp()
 {
 	json_value_free(root);
-	json_object_clear(rootObj);
+	path.clear();
 }
 
 void JsonDoc::Save()

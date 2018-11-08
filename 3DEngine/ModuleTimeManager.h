@@ -1,5 +1,9 @@
+#ifndef __MODULETIMEMANAGER_H__
+#define __MODULETIMEMANAGER_H__
+
 #include "Module.h"
 #include "Timer.h"
+
 
 class ModuleTimeManager :
 	public Module
@@ -16,7 +20,7 @@ public:
 
 	update_status PostUpdate(float dt);
 
-	void StartTimers();
+	void StartGame();
 	void Reset();
 
 	float GetRealTime();
@@ -38,4 +42,8 @@ private:
 	float realDeltaTime = 0;
 
 	bool playing = false;
+
+	JsonDoc serializedScene;
 };
+
+#endif // !__MODULETIMEMANAGER_H__

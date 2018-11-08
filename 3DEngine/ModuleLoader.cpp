@@ -69,14 +69,15 @@ update_status ModuleLoader::PostUpdate(float dt)
 			App->renderer3D->CleanUpMeshes();
 			meshImporter.LoadScene(droppedFile);
 			break;
+		case MEH:
+			App->loader->meshImporter.LoadMeh(droppedFile, true);
+			break;
 		case PNG:
 		case DDS:
 			//App->imgui->element->curMesh->tex.CleanUp();
 			App->loader->texImporter.LoadTex(droppedFile);
-
 			break;
 		case FNULL:
-			break;
 		default:
 			break;
 		}
@@ -131,6 +132,9 @@ Format ModuleLoader::CheckFormat(const char* path)
 
 	else if (format == "json" || format == "JSON")
 		ret = JSON;
+
+	else if (format == "meh" || format == "MEH")
+		ret = MEH;
 	
 	return ret;
 }

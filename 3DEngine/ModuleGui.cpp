@@ -2,6 +2,7 @@
 #include "Application.h"
 #include <gl/GL.h>
 #include "ImGui/imgui_internal.h"
+#include "SceneLoader.h"
 
 ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -90,6 +91,10 @@ update_status ModuleGui::PreUpdate(float dt)
 				scene->save = false;
 			}
 
+			if (ImGui::MenuItem("Clear"))
+			{
+				SceneLoader::CleanScene();
+			}
 
 			if (ImGui::MenuItem("Quit"))
 				quit = true;

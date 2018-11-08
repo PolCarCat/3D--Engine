@@ -167,13 +167,20 @@ bool GameObject::CleanUp()
 				*item = nullptr;
 			}
 	}
+	objChilds.clear();
 
 	for (std::vector<Component*>::iterator item = compChilds.begin(); item != compChilds.end(); item++)
 	{
 			(*item)->CleanUp();
+			if (*item != nullptr)
+			{
+				delete *item;
+				*item = nullptr;
+			}
 	}
-
+	compChilds.clear();
 	name.clear();
+
 
 	return true;
 }

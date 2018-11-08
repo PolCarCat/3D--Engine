@@ -358,13 +358,17 @@ void ImporterMesh::SaveMeshAsMeh(ResMesh* m)
 
 }
 
-ResMesh* ImporterMesh::LoadMeh(const char* name)
+ResMesh* ImporterMesh::LoadMeh(const char* name, bool fullpath)
 {
 	ResMesh* mesh = new ResMesh();
 
 	mesh->name = name;
-	std::string str = MESH_DIR + std::string(name) + MESH_EXTENSION;
-	App->fileSystem.InvertBars(str);
+	std::string str;
+
+	if (fullpath)
+		str = name;
+	else
+		str = MESH_DIR + std::string(name) + MESH_EXTENSION;
 
 
 	char* data = nullptr;

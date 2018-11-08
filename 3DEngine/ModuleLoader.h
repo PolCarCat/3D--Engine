@@ -12,6 +12,7 @@ enum Format {
 	PNG,
 	DDS,
 	JSON,
+	MEH,
 	FNULL
 };
 

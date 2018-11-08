@@ -14,6 +14,7 @@ public:
 	GameObject();
 	~GameObject();
 
+	//Mono behaviour
 	bool Start();
 	bool Update();
 	bool PostUpdate();
@@ -31,6 +32,7 @@ public:
 	void DeleteGameObj(GameObject* obj);
 	bool CheckIfContained(GameObject* obj);
 
+	//Self Properties
 	bool GetActive();
 	void SetActive(bool b);
 	const char* GetName();

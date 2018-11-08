@@ -170,6 +170,7 @@
     <ClInclude Include="pcg-c-basic-0.9\pcg_basic.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="ResMesh.h" />
+    <ClInclude Include="Resource.h" />
     <ClInclude Include="ResTexture.h" />
     <ClInclude Include="SceneLoader.h" />
     <ClInclude Include="Timer.h" />
@@ -249,6 +250,7 @@
     <ClCompile Include="pcg-c-basic-0.9\pcg_basic.c" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="ResMesh.cpp" />
+    <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResTexture.cpp" />
     <ClCompile Include="SceneLoader.cpp" />
     <ClCompile Include="Timer.cpp" />

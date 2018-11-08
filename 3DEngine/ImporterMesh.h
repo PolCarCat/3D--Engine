@@ -40,7 +40,7 @@ public:
 
 
 	void SaveMeshAsMeh(ResMesh* m);
-	ResMesh* LoadMeh(const char* name);
+	ResMesh* LoadMeh(const char* name, bool fullpath = false);
 
 	float4x4 GetMatrix(aiMatrix4x4 m);
 	void SetMatrix(float4x4 m);

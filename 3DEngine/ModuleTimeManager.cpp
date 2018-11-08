@@ -1,5 +1,6 @@
+//#include "Application.h"
 #include "ModuleTimeManager.h"
-
+#include "SceneLoader.h"
 
 
 ModuleTimeManager::ModuleTimeManager(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -14,6 +15,8 @@ ModuleTimeManager::~ModuleTimeManager()
 bool ModuleTimeManager::Start()
 {
 	timeScale = 1;
+	realTime.SetZero();
+
 	return true;
 }
 
@@ -43,11 +46,13 @@ update_status ModuleTimeManager::PostUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void ModuleTimeManager::StartTimers()
+void ModuleTimeManager::StartGame()
 {
 	realTime.Start();
 	gameTime = 0;
 	playing = true;
+
+	serializedScene = SceneLoader::SerializeScene();
 }
 
 void ModuleTimeManager::Reset()
@@ -55,6 +60,8 @@ void ModuleTimeManager::Reset()
 	gameTime = 0;
 	playing = false;
 	realTime.SetZero();
+
+	SceneLoader::LoadScene(serializedScene);
 }
 
 float ModuleTimeManager::GetRealTime()
@@ -102,7 +109,7 @@ void ModuleTimeManager::SetPlaying(bool p)
 
 	if (playing && gameTime == 0)
 	{
-		StartTimers();
+		StartGame();
 	}
 
 }

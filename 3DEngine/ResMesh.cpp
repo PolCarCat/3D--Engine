@@ -40,36 +40,37 @@ void ResMesh::GenerateBuffer()
 void ResMesh::Draw()
 {
 
-	float* transC = new float[num_textC];
-	memcpy(transC, textC, sizeof(float) * num_textC);
+	//float* transC = new float[num_textC];
+	//memcpy(transC, textC, sizeof(float) * num_textC);
 
 
-	for (uint i = 0; i < num_textC; i += 2)
-	{
-		transC[i] += tex.position.x;
-		transC[i + 1] += tex.position.y;
+	//for (uint i = 0; i < num_textC; i += 2)
+	//{
+	//	transC[i] += tex.position.x;
+	//	transC[i + 1] += tex.position.y;
 
-		transC[i] /= tex.scale.x;
-		transC[i + 1] /= tex.scale.y;
+	//	transC[i] /= tex.scale.x;
+	//	transC[i + 1] /= tex.scale.y;
 
-		float2 vec = { transC[i], transC[i + 1] };
-		float angle = tex.angle * (pi / 180);
+	//	float2 vec = { transC[i], transC[i + 1] };
+	//	float angle = tex.angle * (pi / 180);
 
-	
-		float2 result = vec;
-		result.x = (vec.x *  cos(angle)) + (vec.y * sin(angle));
-		result.y = (vec.x * -sin(angle)) + (vec.y * cos(angle));
+	//
+	//	float2 result = vec;
+	//	result.x = (vec.x *  cos(angle)) + (vec.y * sin(angle));
+	//	result.y = (vec.x * -sin(angle)) + (vec.y * cos(angle));
 
-		transC[i] = result.x;
-		transC[i + 1] = result.y;
-	}
+	//	transC[i] = result.x;
+	//	transC[i + 1] = result.y;
+	//}
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indice);
 	glVertexPointer(3, GL_FLOAT, 0, &vertex[0]);
-	glTexCoordPointer(2, GL_FLOAT, 0, &transC[0]);
+
+	glTexCoordPointer(2, GL_FLOAT, 0, &textC[0]);
 	glDrawElements(GL_TRIANGLES, num_indice, GL_UNSIGNED_INT, NULL);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
@@ -78,8 +79,8 @@ void ResMesh::Draw()
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
-	delete[] transC;
-	transC = nullptr;
+	//delete[] transC;
+	//transC = nullptr;
 }
 
 

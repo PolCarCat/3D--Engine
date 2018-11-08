@@ -49,11 +49,6 @@ void ComponentTransform::UpdateUI()
 	}
 	
 
-	ImGui::Text("%d %d %d %d", localMartix.v[0][0], localMartix.v[1][0], localMartix.v[2][0], localMartix.v[3][0]);
-	ImGui::Text("%d %d %d %d", localMartix.v[0][1], localMartix.v[1][1], localMartix.v[2][1], localMartix.v[3][1]);
-	ImGui::Text("%d %d %d %d", localMartix.v[0][2], localMartix.v[1][2], localMartix.v[2][2], localMartix.v[3][2]);
-	ImGui::Text("%d %d %d %d", localMartix.v[0][3], localMartix.v[1][3], localMartix.v[2][3], localMartix.v[3][3]);
-
 	if (changed)
 		CalcMatrix();
 
@@ -85,9 +80,6 @@ bool ComponentTransform::Save(JSON_Object* json, JsonDoc* doc)
 		}
 
 	}
-
-
-
 
 	return true;
 }

@@ -378,6 +378,9 @@
     <ClInclude Include="WinTimeManager.h">
       <Filter>Sources\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -607,6 +610,9 @@
     </ClCompile>
     <ClCompile Include="WinTimeManager.cpp">
       <Filter>Sources\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Sources\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

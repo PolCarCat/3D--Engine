@@ -211,6 +211,7 @@ bool ComponentMesh::Load(JSON_Object* json, JsonDoc* doc)
 	}
 	else
 	{
+		VSLOG("Using Repeated Mesh")
 		mesh = m;
 	}
 

@@ -10,6 +10,7 @@ public:
 	~JsonDoc();
 
 	bool Init(const char* _path);
+	bool Init();
 	void CleanUp();
 	void Save();
 	
