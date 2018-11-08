@@ -291,9 +291,23 @@ ComponentMaterial* ImporterMesh::LoadMat(aiMaterial* m)
 		{
 			mat = new ComponentMaterial();
 			mat->SetTexture(App->loader->texImporter.LoadTex(fullpath.c_str()));
-			mat->SetName(path.C_Str());
+			std::string name = App->loader->GetFileName(path.C_Str());
+			mat->SetName(name);
 			App->scene->materials.push_back(mat);
 		}
+
+	}
+	else 
+	{
+		mat = new ComponentMaterial();
+		mat->SetName(path.C_Str());
+		App->scene->materials.push_back(mat);
+		aiColor3D c(0.0f, 0.0f, 0.0f);
+		m->Get(AI_MATKEY_COLOR_DIFFUSE, c);
+		mat->color.r = c.r;
+		mat->color.g = c.g;
+		mat->color.b = c.b;
+		mat->texEnabled = false;
 
 	}
 

@@ -84,130 +84,59 @@ uint ImporterTexture::LoadChekerTex()
 ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 {
 
-
-	//std::string oldPath = path;
-	//std::string name = path;
-
-	//if (isfullpath)
-	//name = App->loader->GetFileName(path);
-
-	//std::string newPath = std::string(TEXT_DIR) + name + TEXT_EXTENSION;;
-
-
-	////Check image format and decide to create a new file or just copy the dds
-	////If its not full path it's asumed that is a texture from the library so no need to save it
-	//if (isfullpath)
-	//{
-	//	if (App->loader->CheckFormat(path) != DDS)
-	//		SaveTex(oldPath.c_str());
-
-	//	else
-	//		App->fileSystem.Copy(oldPath.c_str(), newPath.c_str());
-	//}
-	//	
-
-	////Begin Loading the already saved texture
-	//ResTexture ret;
-	//ILuint imageID = 0;
-	//ILboolean success = false;
-	//ILenum error;
-
-	//glGenTextures(1, &imageID);
-	//glBindTexture(GL_TEXTURE_2D, imageID);
-
-	//success = iluLoadImage(path);
-
-
-	//if (success)
-	//{
-
-	//	ILinfo ImageInfo;
-	//	iluGetImageInfo(&ImageInfo);
-
-	//	glBindTexture(GL_TEXTURE_2D, imageID);
-
-	//	if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
-	//	{
-	//		success = iluFlipImage();
-	//	}
-
-	//	success = ilConvertImage(ilGetInteger(IL_IMAGE_FORMAT), IL_UNSIGNED_BYTE);
-
-
-	//	if (!success)
-	//	{
-	//		error = ilGetError();
-	//		VSLOG("error %d", error);
-	//	}
-
-
-	//	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-	//	ret.width = ilGetInteger(IL_IMAGE_WIDTH);
-	//	ret.heigth = ilGetInteger(IL_IMAGE_HEIGHT);
-	//	ret.id = imageID;
-	//	ret.name = name;
-	//	ret.path = path;
-
-
-	//	glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ret.width, ret.heigth, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
-
-	//	glBindTexture(GL_TEXTURE_2D, 0);
-	//	VSLOG("Texture creation successful, image id %d", imageID);
-
-	//	ilDeleteImages(1, &imageID);
-
-	//}
-	//else
-	//{
-	//	error = ilGetError();
-	//	VSLOG("\nImage loading eror %d", error);
-	//}
-
+	//return ret;
+	std::string oldPath = path;
 	std::string name = path;
-	SaveTex(path);
 
-	name = App->loader->GetFileName(path);
-	std::string fullPath = std::string(TEXT_DIR) + name + TEXT_EXTENSION;
+	if (isfullpath)
+		name = App->loader->GetFileName(path);
+
+	std::string newPath = std::string(TEXT_DIR) + name + TEXT_EXTENSION;
+
+	if (isfullpath)
+	{
+		if (App->loader->CheckFormat(path) != DDS)
+			SaveTex(oldPath.c_str());
+
+		else
+			App->fileSystem.Copy(oldPath.c_str(), newPath.c_str());
+	}
+
 
 	ResTexture ret;
-	ILuint imageID = 0;
+	ILuint imageID;
+	GLuint textureID;
 	ILboolean success = false;
 	ILenum error;
 
-	glGenTextures(1, &imageID);
-	glBindTexture(GL_TEXTURE_2D, imageID);
+	ilGenImages(1, &imageID);
+	ilBindImage(imageID);
+	success = ilLoadImage((ILconst_string)newPath.c_str());
 
-	success = ilLoadImage((ILconst_string)fullPath.c_str());
 
 	if (success)
 	{
-
 		ILinfo ImageInfo;
 		iluGetImageInfo(&ImageInfo);
-
-		glBindTexture(GL_TEXTURE_2D, imageID);
-
 		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
 		{
-			success = iluFlipImage();
+			iluFlipImage();
 		}
 
-		success = ilConvertImage(ilGetInteger(IL_IMAGE_FORMAT), IL_UNSIGNED_BYTE);
+		//success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
 
 
 		if (!success)
 		{
 			error = ilGetError();
-			VSLOG("error %d", error);
+			VSLOG("Image fliping error %d", error);
+			App->imgui->console->AddLog("\Image fliping error");
 		}
 
 
-		//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glGenTextures(1, &textureID);
+		glBindTexture(GL_TEXTURE_2D, textureID);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -215,27 +144,25 @@ ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 
 		ret.width = ilGetInteger(IL_IMAGE_WIDTH);
 		ret.heigth = ilGetInteger(IL_IMAGE_HEIGHT);
-		ret.id = imageID;
-		ret.name = App->loader->GetFileName(fullPath.c_str());
-		ret.path = path;
+		ret.id = textureID;
 
 
 		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ret.width, ret.heigth, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
 
 		glBindTexture(GL_TEXTURE_2D, 0);
-		VSLOG("Texture creation successful, image id %d", imageID);
+		VSLOG("Texture creation successful, image id %d", textureID);
+		App->imgui->console->AddLog("\nTexture creation successful, image id ");
+		App->imgui->console->AddNumLog((int)textureID);
 
-		//ilDeleteImages(1, &imageID);
-
+		ilDeleteImages(1, &imageID);
 	}
 	else
 	{
-
 		error = ilGetError();
-		VSLOG("\nImage loading eror %d", error);
-
-
+		VSLOG("Image loading eror %d", error);
+		App->imgui->console->AddLog("\nImage loading error");
 	}
+
 
 	return ret;
 }
@@ -261,9 +188,12 @@ void ImporterTexture::SaveTex(const char* path, bool isfullpath)
 	char* buffer = nullptr;
 	int	  lenght = App->fileSystem.LoadFile(path, &buffer);
 
-
-	ilLoadL(IL_TYPE_UNKNOWN, (const void*)buffer, lenght);
+	//ilLoadL(IL_TYPE_UNKNOWN, (const void*)buffer, lenght);
 	//ilLoad(IL_PNG, path);
+	ilLoadImage(path);
+	//char* noconstChar = strdup(path);
+
+	//uint id = ilutGLLoadImage(noconstChar);
 	
 	//ilLoadImage(path);
 	VSLOG("\nImage saving eror %d", ilGetError());
@@ -281,11 +211,7 @@ void ImporterTexture::SaveTex(const char* path, bool isfullpath)
 			App->fileSystem.SaveFile(newPath.c_str(), stuff, size);
 		}
 		delete[] data;
-
-
 	}
-
-
 
 }
 

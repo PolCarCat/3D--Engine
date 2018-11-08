@@ -71,7 +71,9 @@ update_status ModuleLoader::PostUpdate(float dt)
 			break;
 		case PNG:
 		case DDS:
-			App->imgui->element->curMesh->tex.CleanUp();
+			//App->imgui->element->curMesh->tex.CleanUp();
+			App->loader->texImporter.LoadTex(droppedFile);
+
 			break;
 		case FNULL:
 			break;
