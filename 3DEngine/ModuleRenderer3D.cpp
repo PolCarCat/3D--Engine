@@ -300,7 +300,7 @@ ResMesh* ModuleRenderer3D::CheckMesh(const char* name)
 {
 	for (std::list<ResMesh*>::iterator item = meshes.begin(); item != meshes.end(); item++)
 	{
-		if ((*item)->name == name)
+		if (std::string((*item)->GetName()) == name)
 		{
 			return *item;
 		}

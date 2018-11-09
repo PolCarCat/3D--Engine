@@ -1,7 +1,6 @@
 #pragma once
 #include "Component.h"
 #include "ComponentTransform.h"
-#include "MathGeoLib/MathGeoLib.h"
 #include "ResMesh.h"
 #include "Primitive.h"
 

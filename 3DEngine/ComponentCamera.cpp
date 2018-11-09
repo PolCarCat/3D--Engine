@@ -284,7 +284,7 @@ bool ComponentCamera::CheckInside(const ResMesh m)
 	//THIS function should check BB not the mesh
 	//------------------------------
 
-	/*math::Sphere sphere;
+	math::Sphere sphere;
 	sphere.pos = frustum.CenterPoint();
 	float3 point[8];
 	frustum.GetCornerPoints(point);
@@ -322,7 +322,7 @@ bool ComponentCamera::CheckInside(const ResMesh m)
 		}
 
 	}
-	return false;*/
+	return false;
 }
 
 bool ComponentCamera::Save(JSON_Object* json, JsonDoc* doc)

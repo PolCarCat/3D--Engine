@@ -46,7 +46,7 @@ bool ComponentMesh::Update()
 
 	if (drawNormals)
 		mesh->DrawNormals();
-
+	
 	glPopMatrix();
 
 	if (drawBB)

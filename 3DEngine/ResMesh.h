@@ -1,7 +1,7 @@
 #ifndef __RESMESH_H__
-#define _RESMESH_H_
+#define __RESMESH_H__
 #include "Resource.h"
-
+#include "MathGeoLib/MathGeoLib.h"
 
 class ResMesh : public Resource
 {
@@ -33,7 +33,7 @@ public:
 	void Draw();
 	void DrawNormals();
 	void CleanUp();
-
+	AABB boundingBox;
 };
 
 #endif //!__RESMES_H__

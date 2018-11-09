@@ -115,9 +115,9 @@ GameObject* ImporterMesh::LoadNode(aiNode* n, const aiScene* scene, GameObject* 
 
 				if (meshobj != nullptr)
 				{
-					if (meshobj->mesh->name == "")
+					if (meshobj->mesh->GetName() == "")
 					{
-						meshobj->mesh->name = n->mName.C_Str();
+						meshobj->mesh->SetName(n->mName.C_Str());
 					}
 
 					nodeobj->AddBox(meshobj->mesh->boundingBox);
@@ -153,7 +153,7 @@ ComponentMesh* ImporterMesh::LoadMesh(aiMesh* m)
 	bool error = false;
 
 	
-	ResMesh* mesh = new ResMesh;
+	ResMesh* mesh = new ResMesh(0);
 	mesh->num_vertex = m->mNumVertices;
 	mesh->vertex = new float[mesh->num_vertex * 3];
 	memcpy(mesh->vertex, m->mVertices, sizeof(float) * mesh->num_vertex * 3);
@@ -241,16 +241,16 @@ ComponentMesh* ImporterMesh::LoadMesh(aiMesh* m)
 		}
 	}
 
-	mesh->tex.id = 0;
+	//mesh->tex.id = 0;
 
 	if (m->mName.length > 0)
 	{
 
-		mesh->name = m->mName.C_Str();
+		mesh->SetName(m->mName.C_Str());
 	}
 	else
 	{
-		mesh->name = "New mesh";
+		mesh->SetName("New mesh");
 	}
 
 
@@ -258,7 +258,7 @@ ComponentMesh* ImporterMesh::LoadMesh(aiMesh* m)
 	if (!error)
 	{
 		mesh->GenerateBuffer();
-		mesh->name = m->mName.C_Str();
+		mesh->SetName(m->mName.C_Str());
 		App->renderer3D->meshes.push_back(mesh);
 
 		newcomp = new ComponentMesh(mesh);
@@ -352,7 +352,7 @@ void ImporterMesh::SaveMeshAsMeh(ResMesh* m)
 
 	}
 
-	std::string str = MESH_DIR + m->name + MESH_EXTENSION;
+	std::string str = std::string(MESH_DIR) + m->GetName() + MESH_EXTENSION;
 
 	App->fileSystem.SaveFile(str.c_str(), data, fileSize);
 
@@ -360,9 +360,9 @@ void ImporterMesh::SaveMeshAsMeh(ResMesh* m)
 
 ResMesh* ImporterMesh::LoadMeh(const char* name, bool fullpath)
 {
-	ResMesh* mesh = new ResMesh();
+	ResMesh* mesh = new ResMesh(0);
 
-	mesh->name = name;
+	mesh->SetName(name);
 	std::string str;
 
 	if (fullpath)
