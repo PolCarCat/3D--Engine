@@ -5,8 +5,8 @@
 
 enum ResType 
 {
-	MESH,
-	TEXTURE,
+	RESMESH,
+	RESTEXTURE,
 	RESNULL,
 };
 
@@ -14,19 +14,27 @@ enum ResType
 class Resource
 {
 public:
-	Resource();
-	~Resource();
-	uint32_t GetUUID();
-	const char* GetName();
+	Resource(uint32_t UUID, ResType _type);
+	virtual ~Resource();
+	uint32_t GetUUID() const;
+	const char* GetName() const;
 	void SetName(const char* n);
 	void SetName(std::string n);
+	ResType GetType() const;
+	const char* GetFile() const;
+	const char* GetExportedFile() const;
+	uint InMemory() const;
+
 
 protected:
 
 	uint32_t uuid = 0;
 	std::string name;
-	std::string path;
+	std::string exportedFile;
+	std::string file;
 	ResType type = RESNULL;
+
+	uint inMemory = 0;
 };
 
 #endif // !__RESOURCE_H__

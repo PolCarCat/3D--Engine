@@ -1,12 +1,12 @@
-#pragma once
+#ifndef __RESMESH_H__
+#define _RESMESH_H_
+#include "Resource.h"
 
-#include "Globals.h"
-#include "ResTexture.h"
 
-class ResMesh
+class ResMesh : public Resource
 {
 public:
-	ResMesh();
+	ResMesh(uint32_t UUID);
 	~ResMesh();
 
 
@@ -29,18 +29,11 @@ public:
 	uint num_textC = 0;
 	float* textC = nullptr;
 
-	ResTexture tex;
-	std::string name;
-
-	AABB boundingBox;
-
-	uint32_t uuid = 0;
-
 	void GenerateBuffer();
 	void Draw();
 	void DrawNormals();
-	void DrawBoundingBox();
 	void CleanUp();
 
 };
 
+#endif //!__RESMES_H__

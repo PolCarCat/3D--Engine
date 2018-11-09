@@ -2,14 +2,19 @@
 #include "SDL/include/SDL.h"
 
 #include <fstream>
-
+#include <direct.h>
 
 
 
 FileSystem::FileSystem()
 {
 
+	CreateDir("Assets/");
+	CreateDir("Libraries/");
 
+	CreateDir("Libraries/Meshes/");
+	CreateDir("Libraries/Scenes/");
+	CreateDir("Libraries/Textures/");
 
 }
 
@@ -63,16 +68,6 @@ bool FileSystem::fileExists(const char* file) const {
 
 }
 
-void FileSystem::AddPath(const char* path, const char* mount_point)
-{
-	//if (PHYSFS_mount(path, mount_point, 1) == 0)
-	//{
-
-	//	VSLOG("Error adding %s, %s", path, PHYSFS_getLastError());
-	//	
-	//}
-		
-}
 
 void FileSystem::InvertBars(char* path)
 {
@@ -105,3 +100,8 @@ void FileSystem::Copy(const char* oldPath, const char* newPath)
 		VSLOG("Cannot copy file %s to %s", oldPath, newPath);
 }
 
+void FileSystem::CreateDir(const char * path)
+{
+		mkdir(path);
+
+}

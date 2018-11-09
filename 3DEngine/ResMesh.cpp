@@ -9,7 +9,7 @@
 
 
 
-ResMesh::ResMesh()
+ResMesh::ResMesh(uint32_t UUID): Resource(UUID, RESMESH)
 {
 }
 
@@ -19,21 +19,13 @@ ResMesh::~ResMesh()
 }
 
 
-
-
 void ResMesh::GenerateBuffer()
 {
-
-	//glGenBuffers(1, (GLuint*) &(id_index));
-	//glBindBuffer(GL_ARRAY_BUFFER, id_index);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_index, &index[0], GL_STATIC_DRAW);
-
+	
 	glGenBuffers(1, (GLuint*) &(id_indice));
 	glBindBuffer(GL_ARRAY_BUFFER, id_indice);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * num_indice, indice, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-
 
 }
 
@@ -63,6 +55,7 @@ void ResMesh::Draw()
 	//	transC[i] = result.x;
 	//	transC[i + 1] = result.y;
 	//}
+
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
@@ -112,56 +105,6 @@ void ResMesh::DrawNormals()
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-void ResMesh::DrawBoundingBox()
-{
-	glColor4f(0.2f, 0.2f, 1.0f, 1.0f);
-	glLineWidth(2);
-
-	float3 length = boundingBox.maxPoint - boundingBox.minPoint;
-	float3 min = boundingBox.minPoint;
-	float3 max = boundingBox.maxPoint;
-
-	glBegin(GL_LINES);
-	glVertex3f(min.x, min.y, min.z);
-	glVertex3f(min.x + length.x, min.y, min.z);
-
-	glVertex3f(min.x, min.y, min.z);
-	glVertex3f(min.x, min.y + length.y, min.z);
-
-	glVertex3f(min.x, min.y, min.z);
-	glVertex3f(min.x, min.y, min.z + length.z);
-
-	glVertex3f(min.x, min.y + length.y, min.z);
-	glVertex3f(min.x + length.x, min.y + length.y, min.z);
-
-	glVertex3f(min.x, min.y + length.y, min.z);
-	glVertex3f(min.x, min.y + length.y, min.z + length.z);
-
-	glVertex3f(min.x + length.x, min.y, min.z);
-	glVertex3f(min.x + length.x, min.y + length.y, min.z);
-
-	glVertex3f(min.x, min.y, min.z + length.z);
-	glVertex3f(min.x, min.y + length.y, min.z + length.z);
-
-	glVertex3f(max.x, max.y, max.z);
-	glVertex3f(max.x - length.x, max.y, max.z);
-
-	glVertex3f(max.x, max.y, max.z);
-	glVertex3f(max.x, max.y - length.y, max.z);
-
-	glVertex3f(max.x, max.y, max.z);
-	glVertex3f(max.x, max.y, max.z - length.z);
-
-	glVertex3f(max.x, max.y - length.y, max.z);
-	glVertex3f(max.x - length.x, max.y - length.y, max.z);
-
-	glVertex3f(max.x, max.y - length.y, max.z);
-	glVertex3f(max.x, max.y - length.y, max.z - length.z);
-
-	glEnd();
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	glLineWidth(1);
-}
 
 void ResMesh::CleanUp()
 {
@@ -182,7 +125,5 @@ void ResMesh::CleanUp()
 
 	delete[] textC;
 	textC = nullptr;
-
-	name.clear();
 
 }

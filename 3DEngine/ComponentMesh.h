@@ -1,8 +1,11 @@
-#pragma once
+#ifndef __COMPONENTMESH_H__
+#define __COMPONENTMESH_H__
+
 #include "Component.h"
-#include "ResMesh.h"
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
+
+class ResMesh;
 
 class ComponentMesh :
 	public Component
@@ -27,3 +30,5 @@ private:
 	void UpdateMatWin();
 };
 
+
+#endif // !__COMPONENTMESH_H__

@@ -5,6 +5,7 @@
 #include "WinObjects.h"
 #include "ImporterMesh.h"
 #include "GameObject.h"
+#include "ResMesh.h"
 
 #include "Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
@@ -64,8 +65,8 @@ void ComponentMesh::UpdateUI()
 	{
 		ImGui::NewLine();
 		ImGui::Separator();
-		if (mesh->name.c_str() != nullptr)
-			ImGui::Text("%s", mesh->name.c_str());
+		if (mesh->GetName() != nullptr)
+			ImGui::Text("%s", mesh->GetName());
 		else
 			ImGui::Text("This Mesh hasn't name");
 
@@ -84,7 +85,7 @@ void ComponentMesh::UpdateUI()
 			ImGui::Text("Num Indices:");
 			ImGui::Text("Num Normals:");
 			ImGui::NextColumn();
-			ImGui::Text("%d", mesh->num_vertex);
+			ImGui::Text("%d", mesh->id_vertex);
 			ImGui::Text("%d", mesh->num_indice);
 			ImGui::Text("%d", mesh->num_normals);
 
@@ -151,8 +152,8 @@ bool ComponentMesh::Save(JSON_Object* json, JsonDoc* doc)
 {
 	
 	//transform.Save(json, doc);
-	json_object_dotset_string(json, "Mesh Name", mesh->name.c_str());
-	json_object_dotset_number(json, "Mesh UUID", mesh->uuid);
+	json_object_dotset_string(json, "Mesh Name", mesh->GetName());
+	json_object_dotset_number(json, "Mesh UUID", mesh->GetUUID());
 
 	if (material != nullptr)
 	{

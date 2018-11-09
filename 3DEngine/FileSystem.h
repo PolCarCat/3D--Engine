@@ -13,8 +13,8 @@ public:
 	uint LoadFile(const char* file, char** buffer);
 	uint SaveFile(const char* file, char* buffer, unsigned int size) const;
 	void Copy(const char* oldPath, const char* newPath);
-
-	void AddPath(const char* path, const char* mount_point = nullptr);
+	void CreateDir(const char* path);
+	
 	void InvertBars(char* path);
 	void InvertBars(std::string& str);
 
