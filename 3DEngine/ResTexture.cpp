@@ -7,7 +7,7 @@
 #include <gl/GLU.h>
 
 
-ResTexture::ResTexture()
+ResTexture::ResTexture(uint32_t UUID) : Resource(UUID, RESTEXTURE)
 {
 }
 

@@ -1,11 +1,12 @@
-#pragma once
-#include "Globals.h"
+#ifndef __RESTEXTURE_H__
+#define __RESTEXTURE_H__
+#include "Resource.h"
 #include "MathGeoLib/MathGeoLib.h"
 
-class ResTexture
+class ResTexture : public Resource
 {
 public:
-	ResTexture();
+	ResTexture(uint32_t UUID);
 	~ResTexture();
 
 	uint id = 0;
@@ -16,8 +17,8 @@ public:
 	float2 scale = { 1,1 };
 	float angle = 0;
 
-	std::string name;
-	std::string path;
+
 	void CleanUp();
 };
 
+#endif // !__RESTEXTURE_H__

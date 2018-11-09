@@ -26,7 +26,7 @@ bool WinCamera::Update()
 	ImVec2 size;
 	size.x = ImGui::GetWindowContentRegionWidth() - 20;
 	size.y = ImGui::GetWindowHeight() - 20;
-	ImGui::Image((void*)image.id, size , ImVec2(0, 1), ImVec2(1, 0));
+	//ImGui::Image((void*)image.id, size , ImVec2(0, 1), ImVec2(1, 0));
 	ImGui::End();
 
 	return true;

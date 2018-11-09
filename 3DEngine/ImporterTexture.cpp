@@ -81,7 +81,7 @@ uint ImporterTexture::LoadChekerTex()
 	return id;
 }
 
-ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
+ResTexture* ImporterTexture::LoadTex(const char* path, bool isfullpath)
 {
 
 	//return ret;
@@ -105,7 +105,7 @@ ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 	}
 
 
-	ResTexture ret;
+	ResTexture* ret = new ResTexture(0);
 	ILuint imageID;
 	GLuint textureID;
 	ILboolean success = false;
@@ -140,12 +140,12 @@ ResTexture ImporterTexture::LoadTex(const char* path, bool isfullpath)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-		ret.width = ilGetInteger(IL_IMAGE_WIDTH);
-		ret.heigth = ilGetInteger(IL_IMAGE_HEIGHT);
-		ret.id = textureID;
+		ret->width = ilGetInteger(IL_IMAGE_WIDTH);
+		ret->heigth = ilGetInteger(IL_IMAGE_HEIGHT);
+		ret->id = textureID;
 
 
-		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ret.width, ret.heigth, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ret->width, ret->heigth, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 		VSLOG("\nTexture creation successful, image id %d", textureID);
@@ -208,7 +208,7 @@ void ImporterTexture::SaveTex(const char* path, bool isfullpath)
 
 void ImporterTexture::SaveTex(ResTexture tex)
 {
-	std::string path = std::string(TEXT_DIR) + tex.name + TEXT_EXTENSION;
+	std::string path = std::string(TEXT_DIR) + tex.GetName() + TEXT_EXTENSION;
 	std::string path2 = path;
 	App->fileSystem.InvertBars(path2);
 
@@ -220,7 +220,7 @@ void ImporterTexture::SaveTex(ResTexture tex)
 	ilBindImage(image_name);
 
 
-	if (ilLoadImage(tex.path.c_str()))
+	if (ilLoadImage(tex.GetFile()))
 	{
 		ILinfo info;
 		iluGetImageInfo(&info);

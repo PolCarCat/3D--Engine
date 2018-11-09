@@ -21,14 +21,14 @@ public:
 	void SetName(const char* n);
 	void SetName(std::string n);
 	const char* GetName();
-	ResTexture GetTexture();
-	void SetTexture(ResTexture tex);
+	ResTexture* GetTexture();
+	void SetTexture(ResTexture* tex);
 	bool texEnabled = true;
 	Color color;
 
 private:
 
-	ResTexture tex;
+	ResTexture* tex;
 	std::string name;
 };
 

@@ -72,7 +72,7 @@ void WinObjects::UpdateMatWin()
 			ImGui::BeginTooltip();
 			if ((*item)->texEnabled)
 			{
-				ImGui::Image((void*)(*item)->GetTexture().id, ImVec2(80, 80), ImVec2(0, 1), ImVec2(1, 0));
+				ImGui::Image((void*)(*item)->GetTexture()->id, ImVec2(80, 80), ImVec2(0, 1), ImVec2(1, 0));
 			}
 			else
 			ImGui::ColorButton("Color##3c", *(ImVec4*)&(*item)->color, 0, ImVec2(80, 80));
