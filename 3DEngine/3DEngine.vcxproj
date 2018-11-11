@@ -157,6 +157,7 @@
     <ClInclude Include="MathGeoLib\Time\Clock.h" />
     <ClInclude Include="mmgr\mmgr.h" />
     <ClInclude Include="mmgr\nommgr.h" />
+    <ClInclude Include="ModuleResourceManager.h" />
     <ClInclude Include="ModuleTimeManager.h" />
     <ClInclude Include="ModuleLoader.h" />
     <ClInclude Include="ModuleGui.h" />
@@ -238,6 +239,7 @@
     <ClCompile Include="MathGeoLib\Math\TransformOps.cpp" />
     <ClCompile Include="MathGeoLib\Time\Clock.cpp" />
     <ClCompile Include="mmgr\mmgr.cpp" />
+    <ClCompile Include="ModuleResourceManager.cpp" />
     <ClCompile Include="ModuleTimeManager.cpp" />
     <ClCompile Include="ModuleLoader.cpp" />
     <ClCompile Include="ModuleGui.cpp" />

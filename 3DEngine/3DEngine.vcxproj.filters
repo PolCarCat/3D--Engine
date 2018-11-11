@@ -381,6 +381,9 @@
     <ClInclude Include="Resource.h">
       <Filter>Sources\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleResourceManager.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -613,6 +616,9 @@
     </ClCompile>
     <ClCompile Include="Resource.cpp">
       <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleResourceManager.cpp">
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
