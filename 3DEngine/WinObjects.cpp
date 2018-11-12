@@ -70,7 +70,7 @@ void WinObjects::UpdateMatWin()
 		if (ImGui::IsItemHovered())
 		{
 			ImGui::BeginTooltip();
-			if ((*item)->texEnabled)
+			if ((*item)->texEnabled && (*item)->GetTexture() != nullptr)
 			{
 				ImGui::Image((void*)(*item)->GetTexture()->id, ImVec2(80, 80), ImVec2(0, 1), ImVec2(1, 0));
 			}

@@ -176,6 +176,7 @@
     <ClInclude Include="SceneLoader.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="VectorialFunctions.h" />
+    <ClInclude Include="WinAssets.h" />
     <ClInclude Include="WinBase.h" />
     <ClInclude Include="WinCamera.h" />
     <ClInclude Include="WinConfig.h" />
@@ -257,6 +258,7 @@
     <ClCompile Include="SceneLoader.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="VectorialFunctions.cpp" />
+    <ClCompile Include="WinAssets.cpp" />
     <ClCompile Include="WinCamera.cpp" />
     <ClCompile Include="WinConfig.cpp" />
     <ClCompile Include="WinConsole.cpp" />

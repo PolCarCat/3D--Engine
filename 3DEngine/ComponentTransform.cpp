@@ -2,6 +2,8 @@
 #include "ImGui/imgui.h"
 #include "GameObject.h"
 
+#include "mmgr/mmgr.h"
+
 ComponentTransform::ComponentTransform()
 {
 	type = TRANSFORM;

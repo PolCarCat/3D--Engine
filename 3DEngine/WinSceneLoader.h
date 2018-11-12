@@ -16,7 +16,6 @@ public:
 	void UpdateLoad();
 
 	void ObjectsInDir(bool s);
-	std::string GetDirectory();
 	std::string path;
 	std::string selectedElem;
 	bool save = false;

@@ -105,3 +105,26 @@ void FileSystem::CreateDir(const char * path)
 		mkdir(path);
 
 }
+
+std::string FileSystem::GetDirectory()
+{
+	char buf[256];
+	GetCurrentDirectoryA(256, buf);
+	return std::string(buf) + '\\';
+}
+
+
+void FileSystem::GetDirDir(std::string dir)
+{
+
+	bool point = false;
+
+
+	for (std::string::reverse_iterator rit = dir.rbegin(); rit != dir.rend(); ++rit)
+	{
+		if (*rit == '/' || *rit == '\\')
+			break;
+
+
+	}
+}

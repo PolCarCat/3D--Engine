@@ -12,6 +12,7 @@
 
 #include "SDL/include/SDL.h"
 #include "Assimp/include/postprocess.h"
+#include "mmgr/mmgr.h"
 
 
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
@@ -270,6 +271,11 @@ ComponentMesh* ImporterMesh::LoadMesh(aiMesh* m)
 		VSLOG(" indices and %d", mesh->num_normals);
 		VSLOG(" normals");
 		
+	}
+	else
+	{
+		mesh->CleanUp();
+		delete mesh;
 	}
 
 	return newcomp;

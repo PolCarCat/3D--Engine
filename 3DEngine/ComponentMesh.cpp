@@ -12,6 +12,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+#include "mmgr/mmgr.h"
 
 ComponentMesh::ComponentMesh(ResMesh* _mesh)
 {

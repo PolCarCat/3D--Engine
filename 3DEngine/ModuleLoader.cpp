@@ -18,7 +18,7 @@
 //#include "Assimp/include/cfileio.h"
 
 
-
+#include "mmgr/mmgr.h"
 
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
 

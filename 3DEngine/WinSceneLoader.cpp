@@ -9,7 +9,7 @@
 WinSceneLoader::WinSceneLoader(Application* parent, bool start_enabled) : WinBase(parent, start_enabled)
 {
 
-	path = GetDirectory() + FOLDER;
+	path = App->fileSystem.GetDirectory() + FOLDER;
 }
 
 
@@ -106,9 +106,3 @@ void WinSceneLoader::ObjectsInDir(bool s)
 	}
 }
 
-std::string WinSceneLoader::GetDirectory()
-{
-	char buf[256];
-	GetCurrentDirectoryA(256, buf);
-	return std::string(buf) + '\\';
-}

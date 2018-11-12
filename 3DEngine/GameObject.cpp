@@ -13,6 +13,8 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+#include "mmgr/mmgr.h"
+
 GameObject::GameObject()
 {
 	transform = new ComponentTransform();

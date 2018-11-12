@@ -10,6 +10,7 @@
 #include "WinCamera.h"
 #include "WinSceneLoader.h"
 #include "WinTimeManager.h"
+#include "WinAssets.h"
 #include <list>
 #include "ModuleInput.h"
 #include "ImGui/imgui.h"
@@ -47,6 +48,7 @@ public:
 	WinCamera* cam = nullptr;
 	WinSceneLoader* scene = nullptr;
 	WinTimeManager* time = nullptr;
+	WinAssets* assets = nullptr;
 
 private:
 	void AboutWindow();

@@ -5,6 +5,7 @@
 #include "ComponentCamera.h"
 
 
+
 void SceneLoader::LoadScene(const char* path, GameObject* root)
 {
 	//Inits a new document

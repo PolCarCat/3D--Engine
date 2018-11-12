@@ -14,6 +14,8 @@ public:
 	uint SaveFile(const char* file, char* buffer, unsigned int size) const;
 	void Copy(const char* oldPath, const char* newPath);
 	void CreateDir(const char* path);
+	void GetDirDir(std::string dir);
+	std::string GetDirectory();
 	
 	void InvertBars(char* path);
 	void InvertBars(std::string& str);

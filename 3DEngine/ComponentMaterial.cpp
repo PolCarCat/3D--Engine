@@ -2,6 +2,8 @@
 #include "ImGui/imgui.h"
 #include "Application.h"
 
+#include "mmgr/mmgr.h"
+
 ComponentMaterial::ComponentMaterial()
 {
 	type = MATERIAL;
@@ -62,7 +64,7 @@ void ComponentMaterial::UpdateUI()
 
 	ImGui::Checkbox("Use Texture", &texEnabled);
 
-	if (tex->id != 0)
+	if (tex != nullptr && tex->id != 0)
 	{
 		uint margin = -100;
 		if (texEnabled)

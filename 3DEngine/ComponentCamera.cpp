@@ -6,6 +6,8 @@
 #include "JsonDoc.h"
 #include "ComponentMesh.h"
 
+#include "mmgr/mmgr.h"
+
 
 namespace VectF = VectorialFunctions;
 

@@ -4,6 +4,8 @@
 #include "ImGui/imgui_internal.h"
 #include "SceneLoader.h"
 
+#include "mmgr/mmgr.h"
+
 ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	console = new WinConsole(App, true);
@@ -40,7 +42,7 @@ bool ModuleGui::Start()
 	cam = new WinCamera(App, true);
 	scene = new WinSceneLoader(App, false);
 	time = new 	WinTimeManager(App, true);
-
+	assets = new WinAssets(App, true);
 
 
 	AddWindow(config);
@@ -51,6 +53,7 @@ bool ModuleGui::Start()
 	AddWindow(cam);
 	AddWindow(scene);
 	AddWindow(time);
+	AddWindow(assets);
 
 	for (std::list<WinBase*>::iterator item = windows.begin(); item != windows.end(); item++) {
 		(*item)->Start();

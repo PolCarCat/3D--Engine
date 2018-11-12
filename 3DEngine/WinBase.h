@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef __WINBASE_H__
+#define __WINBASE_H__
 
 class Application;
 
@@ -43,3 +43,4 @@ public:
 
 };
 
+#endif // !__WINBASE_H__

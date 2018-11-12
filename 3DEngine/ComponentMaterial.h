@@ -28,7 +28,7 @@ public:
 
 private:
 
-	ResTexture* tex;
+	ResTexture* tex = nullptr;
 	std::string name;
 };
 

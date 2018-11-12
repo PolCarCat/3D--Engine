@@ -29,6 +29,8 @@ bool WinCamera::Update()
 	////ImGui::Image((void*)image.id, size , ImVec2(0, 1), ImVec2(1, 0));
 	//ImGui::End();
 
+
+
 	//Provisional window to see the resources 
 
 	ImGui::Begin("Resources");
