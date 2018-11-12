@@ -120,6 +120,17 @@ void ComponentMesh::UpdateUI()
 	}
 }
 
+bool ComponentMesh::CleanUp()
+{
+
+	material->CleanUp();
+	delete material;
+	material = nullptr;
+
+	mesh = nullptr;
+	return true;
+}
+
 void ComponentMesh::UpdateMatWin()
 {
 	for (std::list<ComponentMaterial*>::iterator item = App->scene->materials.begin(); item != App->scene->materials.end(); item++)

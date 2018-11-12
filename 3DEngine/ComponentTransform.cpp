@@ -58,6 +58,7 @@ void ComponentTransform::UpdateUI()
 
 bool ComponentTransform::CleanUp()
 {
+	parent = nullptr;
 	return true;
 }
 

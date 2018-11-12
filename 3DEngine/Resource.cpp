@@ -15,6 +15,10 @@ Resource::~Resource()
 {
 }
 
+void Resource::CleanUp()
+{
+}
+
 uint32_t Resource::GetUUID() const
 {
 	return uuid;

@@ -20,6 +20,8 @@
 
 ImporterMesh::ImporterMesh()
 {
+
+
 }
 
 
@@ -32,11 +34,11 @@ bool ImporterMesh::Start()
 	//Init Assimp
 
 	// Stream log messages to Debug window
+
 	struct aiLogStream stream;
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	stream.callback = LogAssimp;
 	aiAttachLogStream(&stream);
-
 
 	return true;
 }
@@ -318,7 +320,7 @@ ComponentMaterial* ImporterMesh::LoadMat(aiMaterial* m)
 		mat->texEnabled = false;
 
 	}
-
+	
 	return mat;
 }
 
@@ -364,6 +366,10 @@ void ImporterMesh::SaveMeshAsMeh(ResMesh* m)
 
 	App->fileSystem.SaveFile(str.c_str(), data, fileSize);
 
+	delete[] data;
+	data = nullptr;
+
+	last = nullptr;
 }
 
 ResMesh* ImporterMesh::LoadMeh(const char* name, bool fullpath)

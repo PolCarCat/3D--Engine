@@ -111,7 +111,7 @@ void ComponentMaterial::UpdateUI()
 
 bool ComponentMaterial::CleanUp()
 {
-
+	parent = nullptr;
 	name.clear();
 	return true;
 }

@@ -16,6 +16,8 @@ class Resource
 public:
 	Resource(uint32_t UUID = 0, ResType _type = RESNULL);
 	virtual ~Resource();
+	virtual void CleanUp();
+
 	uint32_t GetUUID() const;
 	const char* GetName() const;
 	void SetName(const char* n);
@@ -23,9 +25,11 @@ public:
 	ResType GetType() const;
 	const char* GetFile() const;
 	const char* GetExportedFile() const;
+
 	uint InMemory() const;
 	void AddInMemory();
 	void SubstractInMemory();
+	
 
 protected:
 

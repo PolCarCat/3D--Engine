@@ -43,6 +43,8 @@ Application::~Application()
 {
 	for (list<Module*>::reverse_iterator it = list_modules.rbegin(); !list_modules.empty() && it != list_modules.rend(); ++it)
 		delete (*it);
+	
+
 
 	list_modules.clear();
 }

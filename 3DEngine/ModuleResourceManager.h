@@ -13,6 +13,7 @@ public:
 	~ModuleResourceManager();
 
 	bool Init();
+	bool Start();
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
@@ -20,6 +21,7 @@ public:
 
 	uint32_t FindFile(const char* file) const;
 	uint32_t ImportFile(const char* file);
+	uint32_t ImportFile(std::string file);
 	Resource* GetResource(uint32_t uid) const;
 	Resource* GetResourceByName(const char* name) const;
 	Resource* GetResourceByName(std::string name) const;
@@ -28,6 +30,9 @@ public:
 	Resource* CreateNewResource(ResType t, uint32_t id = 0);
 	void AddResource(Resource* res);
 
+
+	void LoadAssets();
+	void LoadDirectory(std::string dir);
 	//Should be private
 	std::map<uint32_t, Resource*> resources;
 

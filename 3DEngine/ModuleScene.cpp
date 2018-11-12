@@ -86,10 +86,12 @@ bool ModuleScene::CleanUp()
 	VSLOG("Unloading scene");
 	root.CleanUp();
 
+	ghostcam->CleanUp();
 	if (currentCam != ghostcam)
 		delete currentCam;
 
 	delete ghostcam;
+	ghostcam = nullptr;
 
 	return true;
 }

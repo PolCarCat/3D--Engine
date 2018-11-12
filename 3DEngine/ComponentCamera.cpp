@@ -54,7 +54,8 @@ bool ComponentCamera::Start()
 bool ComponentCamera::CleanUp()
 {
 	VSLOG("Cleaning camera");
-
+	parent = nullptr;
+	
 	return true;
 }
 

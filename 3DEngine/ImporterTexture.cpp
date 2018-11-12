@@ -18,6 +18,7 @@
 
 ImporterTexture::ImporterTexture()
 {
+
 }
 
 
@@ -27,13 +28,11 @@ ImporterTexture::~ImporterTexture()
 
 bool ImporterTexture::Start()
 {
-	ilShutDown();
+
 	ilInit();
 	iluInit();
 	ilutInit();
 	ilutRenderer(ILUT_OPENGL);
-
-
 
 	return true;
 }

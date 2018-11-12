@@ -17,6 +17,7 @@ public:
 	bool Start();
 	bool Update();
 	void UpdateUI();
+	bool CleanUp();
 	bool Save(JSON_Object* json, JsonDoc* doc);
 	bool Load(JSON_Object* json, JsonDoc* doc);
 

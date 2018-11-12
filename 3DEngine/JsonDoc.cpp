@@ -2,6 +2,8 @@
 #include "Application.h"
 #include <fstream>
 
+#include "mmgr/mmgr.h"
+
 
 JsonDoc::JsonDoc()
 {

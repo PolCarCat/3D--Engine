@@ -20,6 +20,13 @@ ModuleResourceManager::~ModuleResourceManager()
 bool ModuleResourceManager::Init()
 {
 
+
+	return true;
+}
+
+bool ModuleResourceManager::Start()
+{
+	//LoadDirectory("Assets/");
 	return true;
 }
 
@@ -43,12 +50,15 @@ update_status ModuleResourceManager::PostUpdate(float dt)
 
 bool ModuleResourceManager::CleanUp()
 {
-	std::map<uint32_t, Resource*>::iterator it = resources.begin();
-	for (it; it != resources.end(); it++)
-	{
 
+	for (auto it = resources.begin(); it != resources.end(); it++)
+	{
+		it->second->CleanUp();
+		delete it->second;
+		it->second = nullptr;
 	}
 	
+	resources.clear();
 
 	return true;
 }
@@ -81,6 +91,32 @@ uint32_t ModuleResourceManager::ImportFile(const char * file)
 		break;
 	case MEH:
 		App->loader->meshImporter.LoadMeh(file, true);
+		break;
+	case JSON:
+		break;
+	case FNULL:
+		break;
+	}
+
+	return 0;
+}
+
+uint32_t ModuleResourceManager::ImportFile(std::string file)
+{
+
+	Format f = App->loader->CheckFormat(file.c_str());
+
+	switch (f)
+	{
+	case FBX:
+		App->loader->meshImporter.LoadScene(file.c_str());
+		break;
+	case PNG:
+	case DDS:
+		App->loader->texImporter.LoadTex(file.c_str());
+		break;
+	case MEH:
+		App->loader->meshImporter.LoadMeh(file.c_str(), true);
 		break;
 	case JSON:
 		break;
@@ -160,4 +196,33 @@ void ModuleResourceManager::AddResource(Resource * res)
 	resources[res->GetUUID()] = res;
 
 	res->AddInMemory();
+}
+
+void ModuleResourceManager::LoadAssets()
+{
+	LoadDirectory("Assets/");
+}
+
+void ModuleResourceManager::LoadDirectory(std::string dir)
+{
+	HANDLE hFind;
+	WIN32_FIND_DATA data;
+	hFind = FindFirstFile((dir + "*").c_str(), &data);
+
+	if (hFind != INVALID_HANDLE_VALUE) {
+		do {
+
+			if (data.dwFileAttributes == FILE_ATTRIBUTE_DIRECTORY && data.cFileName != std::string(".") && data.cFileName != std::string(".."))
+			{
+				//LoadDirectory(dir + data.cFileName + std::string("\\"));
+			}
+			else if (data.cFileName != std::string(".") && data.cFileName != std::string(".."))
+			{
+				ImportFile(dir + data.cFileName);
+			}
+			
+
+		} while (FindNextFile(hFind, &data));
+		FindClose(hFind);
+	}
 }

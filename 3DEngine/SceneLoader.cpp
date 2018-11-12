@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "ComponentCamera.h"
 
+#include "mmgr/mmgr.h"
 
 
 void SceneLoader::LoadScene(const char* path, GameObject* root)
