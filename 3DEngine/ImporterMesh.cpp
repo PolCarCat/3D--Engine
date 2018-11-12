@@ -259,6 +259,7 @@ ComponentMesh* ImporterMesh::LoadMesh(aiMesh* m)
 	{
 		mesh->GenerateBuffer();
 		mesh->SetName(m->mName.C_Str());
+		SaveMeshAsMeh(mesh);
 		App->resourceManager->AddResource(mesh);
 
 		newcomp = new ComponentMesh(mesh);

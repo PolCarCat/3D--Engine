@@ -104,53 +104,76 @@ ResTexture* ImporterTexture::LoadTex(const char* path, bool isfullpath)
 			App->fileSystem.Copy(oldPath.c_str(), newPath.c_str());
 	}
 
+	
+	Resource* resource = App->resourceManager->GetResourceByName(name);
+	ResTexture* ret = nullptr;
 
-	ResTexture* ret = new ResTexture(0);
+
+
 	ILuint imageID;
 	GLuint textureID;
 	ILboolean success = false;
 	ILenum error;
 
-	ilGenImages(1, &imageID);
-	ilBindImage(imageID);
-	success = ilLoadImage((ILconst_string)newPath.c_str());
-
-
-	if (success)
+	if (resource != nullptr && resource->GetType() == RESTEXTURE)
 	{
-		ILinfo ImageInfo;
-		iluGetImageInfo(&ImageInfo);
-		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+		//Check if the image already exisit
+		ret = (ResTexture*)resource;
+	}
+	else if (resource == nullptr)
+	{
+		//Load image
+		ret = new ResTexture();
+
+		ilGenImages(1, &imageID);
+		ilBindImage(imageID);
+		success = ilLoadImage((ILconst_string)newPath.c_str());
+
+
+		if (success)
 		{
-			iluFlipImage();
+			ILinfo ImageInfo;
+			iluGetImageInfo(&ImageInfo);
+			if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+			{
+				iluFlipImage();
+			}
+
+			if (!success)
+			{
+				error = ilGetError();
+				VSLOG("\nImage fliping error %d", error);
+			}
+
+
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+			glGenTextures(1, &textureID);
+			glBindTexture(GL_TEXTURE_2D, textureID);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+			ret->width = ilGetInteger(IL_IMAGE_WIDTH);
+			ret->heigth = ilGetInteger(IL_IMAGE_HEIGHT);
+			ret->id = textureID;
+			ret->SetName(name);
+
+
+			glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ret->width, ret->heigth, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+
+			glBindTexture(GL_TEXTURE_2D, 0);
+			VSLOG("\nTexture creation successful, image id %d", textureID);
+
+			ilDeleteImages(1, &imageID);
+
+			//Add to resources
+			App->resourceManager->AddResource(ret);
 		}
-
-		if (!success)
-		{
-			error = ilGetError();
-			VSLOG("\nImage fliping error %d", error);
-		}
-
-
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		glGenTextures(1, &textureID);
-		glBindTexture(GL_TEXTURE_2D, textureID);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-		ret->width = ilGetInteger(IL_IMAGE_WIDTH);
-		ret->heigth = ilGetInteger(IL_IMAGE_HEIGHT);
-		ret->id = textureID;
-
-
-		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ret->width, ret->heigth, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-		VSLOG("\nTexture creation successful, image id %d", textureID);
-
-		ilDeleteImages(1, &imageID);
+	}
+	else if (resource == nullptr)
+	{
+		VSLOG("Found resource with same id but different type");
 	}
 	else
 	{

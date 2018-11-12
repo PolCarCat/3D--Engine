@@ -55,11 +55,12 @@ bool ModuleResourceManager::CleanUp()
 
 uint32_t ModuleResourceManager::FindFile(const char * file) const
 {
-	//std::map<uint32_t, Resource*>::iterator it = resources.begin();
-	//for (it; it != resources.end(); it++)
-	//{
 
-	//}
+	for (auto it = resources.begin(); it != resources.end(); it++) 
+	{
+		if (std::string(it->second->GetName()) == file)
+			return it->first;
+	}
 
 	return 0;
 }
@@ -87,29 +88,43 @@ uint32_t ModuleResourceManager::ImportFile(const char * file)
 		break;
 	}
 
-
-	
-	return uint32_t();
+	return 0;
 }
 
 Resource * ModuleResourceManager::GetResource(uint32_t uid) const
 {
-	//Should check if exists
+	//Check if exists
+	Resource* ret = nullptr;
+	if (resources.find(uid) != resources.end())
+		ret = resources.find(uid)->second;
+	else
+		VSLOG("\nCannot find resource with uuid %d", uid);
 
-	//std::map<uint32_t, Resource*>::iterator it = resources.find(uid);
-	return resources.find(uid)->second;
+
+	return ret;
 }
 
 Resource * ModuleResourceManager::GetResourceByName(const char * name) const
 {
-	Resource* ret = nullptr;
 
-	//for (std::map<uint32_t, Resource*>::iterator it = resources.begin();  it !=  resources.end(); it++)
-	//{
+	for (auto it = resources.begin(); it != resources.end(); it++)
+	{
+		if (std::string(it->second->GetName()) == name)
+			return it->second;
+	}
 
-	//}
+	return nullptr;
+}
 
-	return ret;
+Resource * ModuleResourceManager::GetResourceByName(std::string name) const
+{
+	for (auto it = resources.begin(); it != resources.end(); it++)
+	{
+		if (it->second->GetName() == name)
+			return it->second;
+	}
+
+	return nullptr;
 }
 
 Resource * ModuleResourceManager::CreateNewResource(ResType t, uint32_t id)
@@ -140,7 +155,7 @@ void ModuleResourceManager::AddResource(Resource * res)
 		return;
 
 	if (resources[res->GetUUID()] != nullptr)
-		VSLOG("Memory overriden in resource map");
+		VSLOG("\nMemory overriden in resource map");
 
 	resources[res->GetUUID()] = res;
 }

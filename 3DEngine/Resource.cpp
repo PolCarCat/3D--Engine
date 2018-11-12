@@ -17,7 +17,7 @@ Resource::~Resource()
 
 uint32_t Resource::GetUUID() const
 {
-	return uint32_t();
+	return uuid;
 }
 
 const char * Resource::GetName() const

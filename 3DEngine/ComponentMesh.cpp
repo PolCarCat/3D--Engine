@@ -191,7 +191,7 @@ bool ComponentMesh::Load(JSON_Object* json, JsonDoc* doc)
 	}
 
 
-	Resource* m  = App->resourceManager->GetResourceByName(name.c_str());
+	Resource* m  = App->resourceManager->GetResource(meshuuid);
 
 	if (m == nullptr)
 	{
@@ -212,7 +212,7 @@ bool ComponentMesh::Load(JSON_Object* json, JsonDoc* doc)
 	}
 	else if (m->GetType() == RESMESH)
 	{
-		VSLOG("Using Repeated Mesh")
+		VSLOG("\nUsing repeated mesh with id %d", (int)m->GetUUID())
 		mesh = (ResMesh*)m;
 	}
 	else
