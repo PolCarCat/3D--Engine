@@ -153,7 +153,7 @@ ComponentMesh* ImporterMesh::LoadMesh(aiMesh* m)
 	bool error = false;
 
 	
-	ResMesh* mesh = new ResMesh(0);
+	ResMesh* mesh = new ResMesh();
 	mesh->num_vertex = m->mNumVertices;
 	mesh->vertex = new float[mesh->num_vertex * 3];
 	memcpy(mesh->vertex, m->mVertices, sizeof(float) * mesh->num_vertex * 3);
@@ -259,7 +259,7 @@ ComponentMesh* ImporterMesh::LoadMesh(aiMesh* m)
 	{
 		mesh->GenerateBuffer();
 		mesh->SetName(m->mName.C_Str());
-		App->renderer3D->meshes.push_back(mesh);
+		App->resourceManager->AddResource(mesh);
 
 		newcomp = new ComponentMesh(mesh);
 
@@ -360,7 +360,7 @@ void ImporterMesh::SaveMeshAsMeh(ResMesh* m)
 
 ResMesh* ImporterMesh::LoadMeh(const char* name, bool fullpath)
 {
-	ResMesh* mesh = new ResMesh(0);
+	ResMesh* mesh = new ResMesh();
 
 	mesh->SetName(name);
 	std::string str;

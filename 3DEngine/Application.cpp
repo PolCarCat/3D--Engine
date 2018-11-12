@@ -10,6 +10,7 @@ Application::Application()
 	imgui = new ModuleGui(this);
 	loader = new ModuleLoader(this);
 	timeManager = new ModuleTimeManager(this);
+	resourceManager = new ModuleResourceManager(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -22,6 +23,7 @@ Application::Application()
 	AddModule(imgui);
 	AddModule(loader);
 	AddModule(timeManager);
+	AddModule(resourceManager);
 	
 	// Scenes
 	AddModule(scene);

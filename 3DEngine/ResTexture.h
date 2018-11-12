@@ -6,7 +6,7 @@
 class ResTexture : public Resource
 {
 public:
-	ResTexture(uint32_t UUID);
+	ResTexture(uint32_t UUID = 0);
 	~ResTexture();
 
 	uint id = 0;

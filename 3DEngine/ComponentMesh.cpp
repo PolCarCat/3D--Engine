@@ -191,17 +191,17 @@ bool ComponentMesh::Load(JSON_Object* json, JsonDoc* doc)
 	}
 
 
-	ResMesh* m  = App->renderer3D->CheckMesh(name.c_str());
+	Resource* m  = App->resourceManager->GetResourceByName(name.c_str());
 
 	if (m == nullptr)
 	{
 		ResMesh* m = App->loader->meshImporter.LoadMeh(name.c_str());
-		m->GenerateBuffer();
+	
 		
 		if (m != nullptr)
 		{
 			mesh = m;
-			App->renderer3D->meshes.push_back(m);
+			App->resourceManager->AddResource(m);
 		}
 		else
 		{
@@ -210,11 +210,14 @@ bool ComponentMesh::Load(JSON_Object* json, JsonDoc* doc)
 
 
 	}
-	else
+	else if (m->GetType() == RESMESH)
 	{
 		VSLOG("Using Repeated Mesh")
-		mesh = m;
+		mesh = (ResMesh*)m;
 	}
+	else
+		VSLOG("Found resource that should be mesh but it isn't");
+	
 
 	parent->transform->CalcMatrix();
 	return true;

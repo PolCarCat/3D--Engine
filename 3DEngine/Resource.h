@@ -14,7 +14,7 @@ enum ResType
 class Resource
 {
 public:
-	Resource(uint32_t UUID, ResType _type);
+	Resource(uint32_t UUID = 0, ResType _type = RESNULL);
 	virtual ~Resource();
 	uint32_t GetUUID() const;
 	const char* GetName() const;

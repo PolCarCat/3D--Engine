@@ -66,7 +66,6 @@ update_status ModuleLoader::PostUpdate(float dt)
 		switch (f)
 		{
 		case FBX:
-			App->renderer3D->CleanUpMeshes();
 			meshImporter.LoadScene(droppedFile);
 			break;
 		case MEH:

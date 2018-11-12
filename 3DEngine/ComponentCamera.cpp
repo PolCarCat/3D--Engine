@@ -148,7 +148,7 @@ void ComponentCamera::CheckInput(float dt)
 		int dy = -App->input->GetMouseYMotion();
 
 		float Sensitivity = 0.25f;
-		float3 pos = App->renderer3D->GetMeshesCenter();
+
 
 		if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
 		{
@@ -243,19 +243,19 @@ void ComponentCamera::CalculateViewMatrix()
 
 void ComponentCamera::FocusMeshes()
 {
-	if (App->renderer3D->meshes.size() == 0)
-		return;
+	//if (App->renderer3D->meshes.size() == 0)
+	//	return;
 
-	float3 centerf = App->renderer3D->GetMeshesCenter();
-	AABB gAABB = App->renderer3D->GetMeshesAABB();
-	float3 centerv = { centerf.x, centerf.y, centerf.z };
+	//float3 centerf = App->renderer3D->GetMeshesCenter();
+	//AABB gAABB = App->renderer3D->GetMeshesAABB();
+	//float3 centerv = { centerf.x, centerf.y, centerf.z };
 
 
-	transform.position.z = centerv.z;
-	transform.position.x = gAABB.MaxX() - (gAABB.MinX() * 2);
-	transform.position.y = gAABB.MaxY() - (gAABB.MinY() * 2);
+	//transform.position.z = centerv.z;
+	//transform.position.x = gAABB.MaxX() - (gAABB.MinX() * 2);
+	//transform.position.y = gAABB.MaxY() - (gAABB.MinY() * 2);
 
-	LookAt(centerv);
+	//LookAt(centerv);
 
 }
 

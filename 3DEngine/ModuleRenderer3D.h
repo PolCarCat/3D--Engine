@@ -32,14 +32,10 @@ public:
 
 
 	void SetUpMat(ComponentMaterial* mat);
-	void CleanUpMeshes();
-	void SaveMeshes();
-	float3 GetMeshesCenter();
-	AABB GetMeshesAABB();
 	void DrawFrustum(math::Frustum f);
 	void DrawAABB(math::AABB a, Color c = { 0.2f, 0.2f, 1.0f, 1.0f });
 	void DrawOBB(math::OBB a, Color c = { 0.2f, 0.2f, 1.0f, 1.0f });
-	ResMesh* CheckMesh(const char* name);
+
 
 	void OnResize(int width, int height);
 	void EnableVsync(bool enable);
@@ -65,7 +61,6 @@ public:
 
 	float3x3 NormalMatrix;
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
-	std::list<ResMesh*> meshes;
 
 public:
 	bool drawCube = false;

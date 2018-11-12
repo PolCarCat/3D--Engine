@@ -21,8 +21,11 @@ public:
 	uint32_t FindFile(const char* file) const;
 	uint32_t ImportFile(const char* file);
 	Resource* GetResource(uint32_t uid) const;
+	Resource* GetResourceByName(const char* name) const;
+
 
 	Resource* CreateNewResource(ResType t, uint32_t id = 0);
+	void AddResource(Resource* res);
 
 private:
 

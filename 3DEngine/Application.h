@@ -10,6 +10,7 @@
 #include "ModuleGui.h"
 #include "ModuleLoader.h"
 #include "ModuleTimeManager.h"
+#include "ModuleResourceManager.h"
 #include "JsonDoc.h"
 #include "FileSystem.h"
 #include <list>
@@ -19,14 +20,14 @@ using namespace std;
 class Application
 {
 public:
-	ModuleWindow* window;
-	ModuleInput* input;
-	ModuleScene* scene;
-	ModuleRenderer3D* renderer3D;
-	ModuleGui* imgui;
-	ModuleLoader* loader;
-	ModuleTimeManager* timeManager;
-
+	ModuleWindow* window = nullptr;
+	ModuleInput* input = nullptr;
+	ModuleScene* scene = nullptr;
+	ModuleRenderer3D* renderer3D = nullptr;
+	ModuleGui* imgui = nullptr;
+	ModuleLoader* loader = nullptr;
+	ModuleTimeManager* timeManager = nullptr;
+	ModuleResourceManager* resourceManager = nullptr;
 	JsonDoc config;
 	FileSystem fileSystem;
 

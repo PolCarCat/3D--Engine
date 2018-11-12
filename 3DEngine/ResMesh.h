@@ -6,7 +6,7 @@
 class ResMesh : public Resource
 {
 public:
-	ResMesh(uint32_t UUID);
+	ResMesh(uint32_t UUID = 0);
 	~ResMesh();
 
 

@@ -101,7 +101,6 @@ void SceneLoader::SaveScene(const char* path, GameObject* root)
 
 		JSON_Array* obj = doc.SetArray(doc.GetRootObj(), "Objects");
 
-		App->renderer3D->SaveMeshes();
 		root->Save(obj, &doc);
 
 
@@ -132,7 +131,6 @@ JsonDoc SceneLoader::SerializeScene(GameObject * root)
 
 		JSON_Array* obj = doc.SetArray(doc.GetRootObj(), "Objects");
 
-		App->renderer3D->SaveMeshes();
 		root->Save(obj, &doc);
 
 	}

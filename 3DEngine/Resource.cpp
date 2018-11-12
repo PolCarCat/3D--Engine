@@ -1,9 +1,13 @@
 #include "Resource.h"
-
+#include "pcg-c-basic-0.9/pcg_basic.h"
 
 Resource::Resource(uint32_t UUID, ResType _type)
 {
-	uuid = UUID;
+	if (uuid == 0)
+		uuid = pcg32_random();
+	else
+		uuid = UUID;
+
 	type = _type;
 }
 
