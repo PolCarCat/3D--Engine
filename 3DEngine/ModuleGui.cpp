@@ -37,7 +37,7 @@ bool ModuleGui::Start()
 	element = new WinElem(App, true);
 	test = new WinTest(App, true);
 	objects = new WinObjects(App, true);
-	cam = new WinCamera(App, false);
+	cam = new WinCamera(App, true);
 	scene = new WinSceneLoader(App, false);
 	time = new 	WinTimeManager(App, true);
 

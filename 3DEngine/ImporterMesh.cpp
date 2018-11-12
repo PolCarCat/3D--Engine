@@ -262,6 +262,7 @@ ComponentMesh* ImporterMesh::LoadMesh(aiMesh* m)
 		SaveMeshAsMeh(mesh);
 		App->resourceManager->AddResource(mesh);
 
+
 		newcomp = new ComponentMesh(mesh);
 
 		VSLOG("\nAdded mesh with %d ", mesh->num_vertex);

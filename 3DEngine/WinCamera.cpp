@@ -10,7 +10,7 @@
 
 WinCamera::WinCamera(Application* parent, bool start_enabled) : WinBase(parent, start_enabled)
 {
-	GenerateBuffer();
+	//GenerateBuffer();
 };
 
 
@@ -21,12 +21,26 @@ WinCamera::~WinCamera()
 
 bool WinCamera::Update()
 {
-	BindImage();
-	ImGui::Begin("Camera");
-	ImVec2 size;
-	size.x = ImGui::GetWindowContentRegionWidth() - 20;
-	size.y = ImGui::GetWindowHeight() - 20;
-	//ImGui::Image((void*)image.id, size , ImVec2(0, 1), ImVec2(1, 0));
+	//BindImage();
+	//ImGui::Begin("Camera");
+	//ImVec2 size;
+	//size.x = ImGui::GetWindowContentRegionWidth() - 20;
+	//size.y = ImGui::GetWindowHeight() - 20;
+	////ImGui::Image((void*)image.id, size , ImVec2(0, 1), ImVec2(1, 0));
+	//ImGui::End();
+
+	//Provisional window to see the resources 
+
+	ImGui::Begin("Resources");
+	for (auto it = App->resourceManager->resources.begin(); it != App->resourceManager->resources.end(); it++)
+	{
+		ImGui::Text(it->second->GetName());
+		ImGui::SameLine();
+		ImGui::Text("Used %d times", it->second->InMemory());
+
+	}
+
+
 	ImGui::End();
 
 	return true;

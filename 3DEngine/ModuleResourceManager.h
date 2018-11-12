@@ -28,9 +28,11 @@ public:
 	Resource* CreateNewResource(ResType t, uint32_t id = 0);
 	void AddResource(Resource* res);
 
+	//Should be private
+	std::map<uint32_t, Resource*> resources;
+
 private:
 
-	std::map<uint32_t, Resource*> resources;
 
 };
 

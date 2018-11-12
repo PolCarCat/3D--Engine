@@ -54,3 +54,13 @@ uint Resource::InMemory() const
 {
 	return inMemory;
 }
+
+void Resource::AddInMemory()
+{
+	inMemory++;
+}
+
+void Resource::SubstractInMemory()
+{
+	inMemory--;
+}

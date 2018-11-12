@@ -59,7 +59,6 @@ bool WinTest::Update()
 		ImGui::Checkbox("Capsule", &App->renderer3D->drawCapsule);
 	}
 
-
 	ImGui::End();
 	return true;
 }

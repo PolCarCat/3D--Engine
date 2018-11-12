@@ -24,7 +24,8 @@ public:
 	const char* GetFile() const;
 	const char* GetExportedFile() const;
 	uint InMemory() const;
-
+	void AddInMemory();
+	void SubstractInMemory();
 
 protected:
 

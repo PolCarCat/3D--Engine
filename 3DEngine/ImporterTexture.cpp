@@ -119,6 +119,7 @@ ResTexture* ImporterTexture::LoadTex(const char* path, bool isfullpath)
 	{
 		//Check if the image already exisit
 		ret = (ResTexture*)resource;
+		ret->AddInMemory();
 	}
 	else if (resource == nullptr)
 	{

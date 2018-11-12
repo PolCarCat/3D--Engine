@@ -158,4 +158,6 @@ void ModuleResourceManager::AddResource(Resource * res)
 		VSLOG("\nMemory overriden in resource map");
 
 	resources[res->GetUUID()] = res;
+
+	res->AddInMemory();
 }
