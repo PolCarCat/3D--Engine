@@ -38,6 +38,7 @@ public:
 	bool CleanUp();
 	void AddWindow(WinBase* win);
 	void ReadInput(SDL_Event * e) const;
+	void DrawGuizmo(GameObject* obj);
 
 public:
 	WinConfig * config = nullptr;

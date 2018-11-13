@@ -3,6 +3,8 @@
 #include <gl/GL.h>
 #include "ImGui/imgui_internal.h"
 #include "SceneLoader.h"
+#include "ImGui/ImGuizmo.h"
+#include "ComponentTransform.h"
 
 #include "mmgr/mmgr.h"
 
@@ -20,21 +22,20 @@ ModuleGui::~ModuleGui()
 
 bool ModuleGui::Start()
 {
+	//Init ImGui
 	ImGuiContext* context = ImGui::CreateContext();
-
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
 	ImGui_ImplOpenGL2_Init();
 
-	
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
-
+	//Basic Links
 	release_link = "https://github.com/PolCarCat/3D--Engine/releases";
 	wiki_link = "https://github.com/PolCarCat/3D--Engine/wiki";
 	issues_link = "https://github.com/PolCarCat/3D--Engine/issues";
 
-
+	//Init Windows 
 	config = new WinConfig(App, true);
 	element = new WinElem(App, true);
 	test = new WinTest(App, true);
@@ -59,6 +60,8 @@ bool ModuleGui::Start()
 		(*item)->Start();
 	}
 
+
+
 	return true;
 }
 
@@ -67,6 +70,8 @@ update_status ModuleGui::PreUpdate(float dt)
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
+	ImGuizmo::BeginFrame();
+
 
 	UpdateDockSpace();
 
@@ -148,6 +153,10 @@ update_status ModuleGui::PreUpdate(float dt)
 	if (about)
 		AboutWindow();
 
+	ImGuizmo::BeginFrame();
+	ImGui::Begin("GUIZMO");
+	DrawGuizmo(App->scene->selectedObj);
+	ImGui::End();
 	return UPDATE_CONTINUE;
 }
 
@@ -564,4 +573,88 @@ struct ExampleAppConsole
 void ModuleGui::ReadInput(SDL_Event * e) const
 {
 	ImGui_ImplSDL2_ProcessEvent(e);
+}
+
+void ModuleGui::DrawGuizmo(GameObject * obj)
+{
+	if (obj == nullptr) return;
+
+
+
+	static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
+	static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::LOCAL);
+	static bool useSnap = false;
+	static float snap[3] = { 1.f, 1.f, 1.f };
+	static float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
+	static float boundsSnap[] = { 0.1f, 0.1f, 0.1f };
+	static bool boundSizing = false;
+	static bool boundSizingSnap = false;
+
+	if (ImGui::IsKeyPressed(90))
+		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+	if (ImGui::IsKeyPressed(69))
+		mCurrentGizmoOperation = ImGuizmo::ROTATE;
+	if (ImGui::IsKeyPressed(82)) // r Key
+		mCurrentGizmoOperation = ImGuizmo::SCALE;
+	if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
+		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+	ImGui::SameLine();
+	if (ImGui::RadioButton("Rotate", mCurrentGizmoOperation == ImGuizmo::ROTATE))
+		mCurrentGizmoOperation = ImGuizmo::ROTATE;
+	ImGui::SameLine();
+	if (ImGui::RadioButton("Scale", mCurrentGizmoOperation == ImGuizmo::SCALE))
+		mCurrentGizmoOperation = ImGuizmo::SCALE;
+	float matrixTranslation[3], matrixRotation[3], matrixScale[3];
+	ImGuizmo::DecomposeMatrixToComponents((float*)obj->transform->globalMartix.v, matrixTranslation, matrixRotation, matrixScale);
+	ImGui::InputFloat3("Tr", matrixTranslation, 3);
+	ImGui::InputFloat3("Rt", matrixRotation, 3);
+	ImGui::InputFloat3("Sc", matrixScale, 3);
+	ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, (float*)obj->transform->globalMartix.v);
+
+	if (mCurrentGizmoOperation != ImGuizmo::SCALE)
+	{
+		if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
+			mCurrentGizmoMode = ImGuizmo::LOCAL;
+		ImGui::SameLine();
+		if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
+			mCurrentGizmoMode = ImGuizmo::WORLD;
+	}
+	if (ImGui::IsKeyPressed(83))
+		useSnap = !useSnap;
+	ImGui::Checkbox("", &useSnap);
+	ImGui::SameLine();
+
+	switch (mCurrentGizmoOperation)
+	{
+	case ImGuizmo::TRANSLATE:
+		ImGui::InputFloat3("Snap", &snap[0]);
+		break;
+	case ImGuizmo::ROTATE:
+		ImGui::InputFloat("Angle Snap", &snap[0]);
+		break;
+	case ImGuizmo::SCALE:
+		ImGui::InputFloat("Scale Snap", &snap[0]);
+		break;
+	}
+	ImGui::Checkbox("Bound Sizing", &boundSizing);
+	if (boundSizing)
+	{
+		ImGui::PushID(3);
+		ImGui::Checkbox("", &boundSizingSnap);
+		ImGui::SameLine();
+		ImGui::InputFloat3("Snap", boundsSnap);
+		ImGui::PopID();
+	}
+
+	float4x4 ViewMatrix, ProjectionMatrix;
+	glGetFloatv(GL_MODELVIEW_MATRIX, (float*)ViewMatrix.v);
+	glGetFloatv(GL_PROJECTION_MATRIX, (float*)ProjectionMatrix.v);
+
+	ImGuiIO& io = ImGui::GetIO();
+	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+	ImGuizmo::Manipulate((float*)ViewMatrix.v, (float*)ProjectionMatrix.v, mCurrentGizmoOperation, mCurrentGizmoMode, (float*)obj->transform->localMartix.v, NULL, useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
+
+
+	ImGuizmo::DrawCube((float*)ViewMatrix.v, (float*)ProjectionMatrix.v, (float*)obj->transform->localMartix.v);
+	ImGuizmo::DrawGrid((float*)ViewMatrix.v, (float*)ProjectionMatrix.v, (float*)float4x4::identity.v, 10.f);
 }
