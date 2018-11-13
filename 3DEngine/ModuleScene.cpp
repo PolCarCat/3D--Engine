@@ -124,13 +124,13 @@ void ModuleScene::CreateMaterial()
 
 ComponentMaterial* ModuleScene::CheckMaterial(const char* name)
 {
-	for (std::list<ComponentMaterial*>::iterator item = materials.begin(); item != materials.end(); item++)
-	{
-		if (std::string((*item)->GetName()) == name)
-		{
-			return *item;
-		}
-	}
+	//for (std::list<ComponentMaterial*>::iterator item = materials.begin(); item != materials.end(); item++)
+	//{
+	//	if (std::string((*item)->GetName()) == name)
+	//	{
+	//		return *item;
+	//	}
+	//}
 
 	return nullptr;
 }

@@ -112,6 +112,7 @@ void ComponentMaterial::UpdateUI()
 bool ComponentMaterial::CleanUp()
 {
 	parent = nullptr;
+	tex = nullptr;
 	name.clear();
 	return true;
 }

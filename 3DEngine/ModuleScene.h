@@ -39,7 +39,7 @@ public:
 
 private:
 
-	ComponentCamera* ghostcam;
+	ComponentCamera* ghostcam = nullptr;
 	ComponentCamera* currentCam = nullptr;
 	std::string name;
 

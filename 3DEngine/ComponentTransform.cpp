@@ -46,7 +46,7 @@ void ComponentTransform::UpdateUI()
 	float3 rot = rotation.ToEulerXYZ();
 	if (ImGui::DragFloat3("Rotation", (float*)&rot, 0.25f, -100, 100))
 	{
-		rotation = rotation.FromEulerXYZ(rot.x, rot.y, rot.z);
+		rotation = rotation.FromEulerXYZ(rot.x , rot.y , rot.z);
 		changed = true;
 	}
 	
@@ -106,4 +106,5 @@ bool ComponentTransform::Load(JSON_Object* json, JsonDoc* doc)
 
 	localMartix.Decompose(position, rotation, scale);
 	return true;
+
 }

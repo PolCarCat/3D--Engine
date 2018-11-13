@@ -107,12 +107,13 @@ bool GameObject::PostUpdate()
 
 void GameObject::UpdateUI()
 {
-
+	ImGui::PushID("go");
 	char n[50];
 	strcpy_s(n, 50, name.c_str());
-	ImGui::InputText(name.c_str(), n, 50);
+	ImGui::InputText("Name", n, 50);
 		name = n;
 
+	ImGui::PopID();
 
 	bool a = active;
 	ImGui::Checkbox("Active", &active);
@@ -465,8 +466,7 @@ void GameObject::CalcGlobalTransform()
 	newobb.Transform(transform->globalMartix);
 	
 	oBB = newobb;
-	globalABB.minPoint.Set(INT_MAX, INT_MAX, INT_MAX);
-	globalABB.maxPoint.Set(INT_MIN, INT_MIN, INT_MIN);
+	globalABB.SetNegativeInfinity();
 	globalABB.Enclose(oBB);
 
 	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end(); item++)

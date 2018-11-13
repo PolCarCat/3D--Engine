@@ -37,7 +37,9 @@ ComponentCamera::ComponentCamera(float _near, float _far, float _fov)
 }
 
 ComponentCamera::~ComponentCamera()
-{}
+{
+
+}
 
 // -----------------------------------------------------------------
 bool ComponentCamera::Start()
@@ -104,6 +106,9 @@ void ComponentCamera::UpdateUI()
 void ComponentCamera::CheckInput(float dt)
 {
 
+	if (ImGui::IsMouseHoveringAnyWindow())
+		return;
+
 	float3 newPos(0, 0, 0);
 
 	float speed = 8.0f * dt;
@@ -137,7 +142,7 @@ void ComponentCamera::CheckInput(float dt)
 
 	Reference -= newPos;
 
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && !ImGui::IsMouseHoveringAnyWindow() && !ImGui::IsMouseDragging())
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 		Pick((0, 0, 0));
 
 	if (linedraw)
@@ -145,7 +150,7 @@ void ComponentCamera::CheckInput(float dt)
 
 	// Mouse motion ----------------
 
-	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT && !ImGui::IsMouseHoveringAnyWindow() && !ImGui::IsMouseDragging())
+	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		int dx = -App->input->GetMouseXMotion();
 		int dy = -App->input->GetMouseYMotion();
@@ -277,9 +282,8 @@ void ComponentCamera::RecalculateFrustrum(int width, int height)
 
 	float ratio = tanf(frustum.verticalFov / 2) * aspectRatio;
 	frustum.horizontalFov = 2*atanf(ratio);
-	//frustum.horizontalFov = frustum.verticalFov * aspectRatio;
+	
 
-	frustum.AspectRatio();
 }
 
 bool ComponentCamera::CheckInside(const ResMesh m)

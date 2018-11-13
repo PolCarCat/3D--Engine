@@ -60,6 +60,7 @@ void ResMesh::Draw()
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indice);
 	glVertexPointer(3, GL_FLOAT, 0, &vertex[0]);
 
