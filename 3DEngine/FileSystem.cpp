@@ -29,7 +29,7 @@ uint FileSystem::LoadFile(const char* file, char** buffer)
 	uint ret = 0;
 
 		//VSLOG("Error opening %s, %s", file, PHYSFS_getLastError());
-		std::ifstream dataFile(file);
+		std::ifstream dataFile(file, std::ifstream::binary);
 
 		if (dataFile.good())
 		{

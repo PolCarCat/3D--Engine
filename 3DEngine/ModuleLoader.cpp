@@ -7,6 +7,7 @@
 #include "WinConsole.h"
 #include "ResMesh.h"
 #include "ResTexture.h"
+#include "ComponentMesh.h"
 
 #include "Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
@@ -69,7 +70,14 @@ update_status ModuleLoader::PostUpdate(float dt)
 			meshImporter.LoadScene(droppedFile);
 			break;
 		case MEH:
-			App->loader->meshImporter.LoadMeh(droppedFile, true);
+		{
+			GameObject * obj = new GameObject();
+			ComponentMesh* mesh = new ComponentMesh(App->loader->meshImporter.LoadMeh(droppedFile, true));
+
+			obj->AddComponent(mesh);
+			App->scene->AddGameObject(obj);
+		}
+
 			break;
 		case PNG:
 		case DDS:

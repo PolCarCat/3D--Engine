@@ -329,26 +329,30 @@ void ImporterMesh::SaveMeshAsMeh(ResMesh* m)
 {
 	uint ranges[3] = { m->num_vertex, m->num_indice, m->num_textC};
 
-	uint fileSize = sizeof(ranges) + sizeof(float)*m->num_vertex * 3 + sizeof(uint)*m->num_indice + sizeof(float)*m->num_vertex * 2 + sizeof(float)*m->num_vertex * 3;
+	uint fileSize = sizeof(ranges) + (sizeof(float)*m->num_vertex * 3) + (sizeof(uint)*m->num_indice) + (sizeof(float)*m->num_vertex * 3) + (sizeof(float)*m->num_vertex * 2);
 	
 	char* data = new char[fileSize];
 	char* last = data;
 
-
+	
 	uint bytes = sizeof(ranges);
 	memcpy(last, ranges, bytes);
+	uint count = bytes;
 
 	last += bytes;
+	count += bytes;
 
 	bytes = sizeof(float)*m->num_vertex * 3;
 	memcpy(last, m->vertex, bytes);
 
 	last += bytes;
+	count += bytes;
 
 	bytes = sizeof(uint)*m->num_indice;
 	memcpy(last, m->indice, bytes);
 
 	last += bytes;
+	count += bytes;
 
 	bytes = sizeof(float)*m->num_vertex * 3;
 	memcpy(last, m->normals, bytes);
@@ -356,11 +360,16 @@ void ImporterMesh::SaveMeshAsMeh(ResMesh* m)
 	if (m->num_textC > 0)
 	{
 		last += bytes;
+		count += bytes;
 
 		bytes = sizeof(float)*m->num_textC;
 		memcpy(last, m->textC, bytes);
 
 	}
+
+	count += bytes;
+	if (count < fileSize)
+		VSLOG("Error Saving meh, mismatch amout of reserved memory and actual memory used");
 
 	std::string str = std::string(MESH_DIR) + m->GetName() + MESH_EXTENSION;
 
@@ -390,10 +399,10 @@ ResMesh* ImporterMesh::LoadMeh(const char* name, bool fullpath)
 	
 
 	if (data == nullptr )
-{
+	{
 	VSLOG("Error Loading %s", str.c_str());
 	return nullptr;
-}
+	}
 
 	char* last = data;
 	uint ranges[3];

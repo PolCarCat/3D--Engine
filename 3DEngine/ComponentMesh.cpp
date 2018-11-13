@@ -122,10 +122,13 @@ void ComponentMesh::UpdateUI()
 
 bool ComponentMesh::CleanUp()
 {
+	//if (material != nullptr)
+	//{
+	//	material->CleanUp();
+	//	delete material;
+	//	material = nullptr;
+	//}
 
-	material->CleanUp();
-	delete material;
-	material = nullptr;
 
 	mesh = nullptr;
 	return true;
@@ -207,13 +210,13 @@ bool ComponentMesh::Load(JSON_Object* json, JsonDoc* doc)
 
 	if (m == nullptr)
 	{
-		ResMesh* m = App->loader->meshImporter.LoadMeh(name.c_str());
+		ResMesh* mes = App->loader->meshImporter.LoadMeh(name.c_str());
 	
 		
-		if (m != nullptr)
+		if (mes != nullptr)
 		{
-			mesh = m;
-			App->resourceManager->AddResource(m);
+			mesh = mes;
+			App->resourceManager->AddResource(mes);
 		}
 		else
 		{
