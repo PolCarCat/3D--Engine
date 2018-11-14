@@ -5,6 +5,8 @@
 #include "SceneLoader.h"
 #include "ImGui/ImGuizmo.h"
 #include "ComponentTransform.h"
+#include "ComponentCamera.h"
+
 
 #include "mmgr/mmgr.h"
 
@@ -153,10 +155,9 @@ update_status ModuleGui::PreUpdate(float dt)
 	if (about)
 		AboutWindow();
 
-	ImGuizmo::BeginFrame();
-	ImGui::Begin("GUIZMO");
+
 	DrawGuizmo(App->scene->selectedObj);
-	ImGui::End();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -176,6 +177,8 @@ update_status ModuleGui::PostUpdate(float dt)
 	for (std::list<WinBase*>::iterator item = windows.begin(); item != windows.end(); item++) {
 			(*item)->PostUpdate();
 	}
+
+
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
@@ -577,84 +580,86 @@ void ModuleGui::ReadInput(SDL_Event * e) const
 
 void ModuleGui::DrawGuizmo(GameObject * obj)
 {
-	if (obj == nullptr) return;
+
+	//ImGuizmo::Enable(true);
+	//float4x4 view_matrix;
+	//float4x4 projection_matrix;
+	//glGetFloatv(GL_MODELVIEW_MATRIX, (float*)view_matrix.v);
+	//glGetFloatv(GL_PROJECTION_MATRIX, (float*)projection_matrix.v);
 
 
 
-	static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
-	static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::LOCAL);
-	static bool useSnap = false;
-	static float snap[3] = { 1.f, 1.f, 1.f };
-	static float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
-	static float boundsSnap[] = { 0.1f, 0.1f, 0.1f };
-	static bool boundSizing = false;
-	static bool boundSizingSnap = false;
+	//ImGuiIO& io = ImGui::GetIO();
+	//ImGuizmo::SetOrthographic(false);
+	//ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 
-	if (ImGui::IsKeyPressed(90))
-		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-	if (ImGui::IsKeyPressed(69))
-		mCurrentGizmoOperation = ImGuizmo::ROTATE;
-	if (ImGui::IsKeyPressed(82)) // r Key
-		mCurrentGizmoOperation = ImGuizmo::SCALE;
-	if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
-		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-	ImGui::SameLine();
-	if (ImGui::RadioButton("Rotate", mCurrentGizmoOperation == ImGuizmo::ROTATE))
-		mCurrentGizmoOperation = ImGuizmo::ROTATE;
-	ImGui::SameLine();
-	if (ImGui::RadioButton("Scale", mCurrentGizmoOperation == ImGuizmo::SCALE))
-		mCurrentGizmoOperation = ImGuizmo::SCALE;
-	float matrixTranslation[3], matrixRotation[3], matrixScale[3];
-	ImGuizmo::DecomposeMatrixToComponents((float*)obj->transform->globalMartix.v, matrixTranslation, matrixRotation, matrixScale);
-	ImGui::InputFloat3("Tr", matrixTranslation, 3);
-	ImGui::InputFloat3("Rt", matrixRotation, 3);
-	ImGui::InputFloat3("Sc", matrixScale, 3);
-	ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, (float*)obj->transform->globalMartix.v);
+	//
+	//float4x4 localMat;
 
-	if (mCurrentGizmoOperation != ImGuizmo::SCALE)
-	{
-		if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
-			mCurrentGizmoMode = ImGuizmo::LOCAL;
-		ImGui::SameLine();
-		if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
-			mCurrentGizmoMode = ImGuizmo::WORLD;
-	}
-	if (ImGui::IsKeyPressed(83))
-		useSnap = !useSnap;
-	ImGui::Checkbox("", &useSnap);
-	ImGui::SameLine();
+	//if (obj != nullptr)
+	//	localMat = obj->transform->localMartix;
+	//else
+	//	localMat = float4x4::identity;
 
-	switch (mCurrentGizmoOperation)
-	{
-	case ImGuizmo::TRANSLATE:
-		ImGui::InputFloat3("Snap", &snap[0]);
-		break;
-	case ImGuizmo::ROTATE:
-		ImGui::InputFloat("Angle Snap", &snap[0]);
-		break;
-	case ImGuizmo::SCALE:
-		ImGui::InputFloat("Scale Snap", &snap[0]);
-		break;
-	}
-	ImGui::Checkbox("Bound Sizing", &boundSizing);
-	if (boundSizing)
-	{
-		ImGui::PushID(3);
-		ImGui::Checkbox("", &boundSizingSnap);
-		ImGui::SameLine();
-		ImGui::InputFloat3("Snap", boundsSnap);
-		ImGui::PopID();
-	}
+	//ImGuizmo::BeginFrame();
+	//localMat.Transpose();
+	//ImGuizmo::Manipulate(App->scene->GetCurCam()->GetViewMatrix(), App->scene->GetCurCam()->GetPerspMatrix(), ImGuizmo::TRANSLATE, ImGuizmo::WORLD, (float*)localMat.v, NULL, NULL);
 
-	float4x4 ViewMatrix, ProjectionMatrix;
-	glGetFloatv(GL_MODELVIEW_MATRIX, (float*)ViewMatrix.v);
-	glGetFloatv(GL_PROJECTION_MATRIX, (float*)ProjectionMatrix.v);
+	//ImGuizmo::DrawGrid(App->scene->GetCurCam()->GetViewMatrix(), App->scene->GetCurCam()->GetPerspMatrix(), (float*)localMat.v, 100);
 
-	ImGuiIO& io = ImGui::GetIO();
-	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-	ImGuizmo::Manipulate((float*)ViewMatrix.v, (float*)ProjectionMatrix.v, mCurrentGizmoOperation, mCurrentGizmoMode, (float*)obj->transform->localMartix.v, NULL, useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
+	//ImGuizmo::Manipulate((float*)view_matrix.v, (float*)projection_matrix.v, ImGuizmo::TRANSLATE, ImGuizmo::WORLD, (float*)localMat.v, NULL, NULL);
+
+	//ImGuizmo::DrawGrid((float*)view_matrix.v, (float*)projection_matrix.v, (float*)localMat.v, 10);
 
 
-	ImGuizmo::DrawCube((float*)ViewMatrix.v, (float*)ProjectionMatrix.v, (float*)obj->transform->localMartix.v);
-	ImGuizmo::DrawGrid((float*)ViewMatrix.v, (float*)ProjectionMatrix.v, (float*)float4x4::identity.v, 10.f);
+	float objectMatrix[16] =
+	{ 1.f, 0.f, 0.f, 0.f,
+		0.f, 1.f, 0.f, 0.f,
+		0.f, 0.f, 1.f, 0.f,
+		0.f, 0.f, 0.f, 1.f };
+
+	static const float identityMatrix[16] =
+	{ 1.f, 0.f, 0.f, 0.f,
+		0.f, 1.f, 0.f, 0.f,
+		0.f, 0.f, 1.f, 0.f,
+		0.f, 0.f, 0.f, 1.f };
+
+	float cameraView[16];
+
+	float cameraProjection[16];
+
+	glGetFloatv(GL_MODELVIEW_MATRIX, cameraView);
+	glGetFloatv(GL_PROJECTION_MATRIX, cameraProjection);
+
+
+	//// Camera projection
+	//bool isPerspective = false;
+	//float fov = 27.f;
+	//float viewWidth = 10.f; // for orthographic
+	//float camYAngle = 165.f / 180.f * 3.14159f;
+	//float camXAngle = 52.f / 180.f * 3.14159f;
+	//float camDistance = 8.f;
+
+
+
+
+	//ImGuizmo::SetOrthographic(!isPerspective);
+
+	//float eye[] = { cosf(camYAngle) * cosf(camXAngle) * camDistance, sinf(camXAngle) * camDistance, sinf(camYAngle) * cosf(camXAngle) * camDistance };
+	//float at[] = { 0.f, 0.f, 0.f };
+	//float up[] = { 0.f, 1.f, 0.f };
+
+	ImGuizmo::BeginFrame();
+
+
+	//static float ng = 0.f;
+	//ng += 0.01f;
+	//ng = 1.f;
+	//rotationY(ng, objectMatrix);
+	//objectMatrix[12] = 5.f;
+	// debug
+	ImGuizmo::Manipulate(cameraView, cameraProjection, ImGuizmo::TRANSLATE, ImGuizmo::WORLD,objectMatrix);
+	ImGuizmo::DrawCube(cameraView, cameraProjection, objectMatrix);
+	ImGuizmo::DrawGrid(cameraView, cameraProjection, identityMatrix, 10.f);
+
 }

@@ -35,7 +35,7 @@ public:
 
 	GameObject* LoadScene(const char* path);
 	GameObject* LoadNode(aiNode* n, const aiScene* scene, GameObject* parent);
-	ComponentMesh* LoadMesh(aiMesh* m);
+	ComponentMesh* LoadMesh(aiMesh* m, const char* name);
 	ComponentMaterial* LoadMat(aiMaterial* m);
 
 

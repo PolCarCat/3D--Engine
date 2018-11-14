@@ -114,14 +114,12 @@ GameObject* ImporterMesh::LoadNode(aiNode* n, const aiScene* scene, GameObject* 
 			for (uint i = 0; i < n->mNumMeshes; i++)
 			{
 				aiMesh* mesh = scene->mMeshes[n->mMeshes[i]];
-				ComponentMesh* meshobj = LoadMesh(mesh);
+				ComponentMesh* meshobj = LoadMesh(mesh, n->mName.C_Str());
 
 				if (meshobj != nullptr)
 				{
-					if (meshobj->mesh->GetName() == "")
-					{
-						meshobj->mesh->SetName(n->mName.C_Str());
-					}
+					
+					SaveMeshAsMeh(meshobj->mesh);
 
 					nodeobj->AddBox(meshobj->mesh->boundingBox);
 					nodeobj->AddComponent(meshobj);
@@ -150,136 +148,147 @@ GameObject* ImporterMesh::LoadNode(aiNode* n, const aiScene* scene, GameObject* 
 	return nodeobj;
 }
 
-ComponentMesh* ImporterMesh::LoadMesh(aiMesh* m)
+ComponentMesh* ImporterMesh::LoadMesh(aiMesh* m, const char* n)
 {
 
 	bool error = false;
+	ResMesh* mesh = nullptr;
+	std::string name;
+	//Check if has a name, if not it's added the node parent name
+	if (std::string(m->mName.C_Str()) == "")
+		name = n;
+	else
+		name = m->mName.C_Str();
 
-	
-	ResMesh* mesh = new ResMesh();
-	mesh->num_vertex = m->mNumVertices;
-	mesh->vertex = new float[mesh->num_vertex * 3];
-	memcpy(mesh->vertex, m->mVertices, sizeof(float) * mesh->num_vertex * 3);
+	Resource* res = App->resourceManager->GetResourceByName(name);
 
-
-	//Create AABB
-	float minx = mesh->vertex[0];
-	float maxx = mesh->vertex[0];
-	float miny = mesh->vertex[1];
-	float maxy = mesh->vertex[1];
-	float minz = mesh->vertex[2];
-	float maxz = mesh->vertex[2];
-
-	for (uint i = 0; i < mesh->num_vertex * 3; i += 3)
+	//Check if the resource exists
+	if (res != nullptr && res->GetType() == RESMESH)
 	{
-		if (mesh->vertex[i] < minx)
-			minx = mesh->vertex[i];
-		else if (mesh->vertex[i] > maxx)
-			maxx = mesh->vertex[i];
-
-		if (mesh->vertex[i + 1] < miny)
-			miny = mesh->vertex[i + 1];
-		else if (mesh->vertex[i + 1] > maxy)
-			maxy = mesh->vertex[i + 1];
-
-		if (mesh->vertex[i + 2] < minz)
-			minz = mesh->vertex[i + 2];
-		else if (mesh->vertex[i + 2] > maxz)
-			maxz = mesh->vertex[i + 2];
+		mesh = (ResMesh*)res;
+		mesh->AddInMemory();
 	}
-
-	mesh->boundingBox.maxPoint = { maxx, maxy, maxz };
-	mesh->boundingBox.minPoint = { minx, miny, minz };
-
-	//Load indices and faces
-	if (m->HasFaces())
+	else
 	{
-		mesh->num_indice = m->mNumFaces * 3;
-		mesh->indice = new uint[mesh->num_indice]; // assume each face is a triangle
+		//Load the New Resource
 
-		if (mesh->num_indice > INDICES_CAP)
+		mesh = new ResMesh();
+		mesh->num_vertex = m->mNumVertices;
+		mesh->vertex = new float[mesh->num_vertex * 3];
+		memcpy(mesh->vertex, m->mVertices, sizeof(float) * mesh->num_vertex * 3);
+
+
+		//Create AABB
+		float minx = mesh->vertex[0];
+		float maxx = mesh->vertex[0];
+		float miny = mesh->vertex[1];
+		float maxy = mesh->vertex[1];
+		float minz = mesh->vertex[2];
+		float maxz = mesh->vertex[2];
+
+		for (uint i = 0; i < mesh->num_vertex * 3; i += 3)
 		{
-			VSLOG("\nWARNING can not load a mesh with %d indices", mesh->num_indice);
-			error = true;
+			if (mesh->vertex[i] < minx)
+				minx = mesh->vertex[i];
+			else if (mesh->vertex[i] > maxx)
+				maxx = mesh->vertex[i];
+
+			if (mesh->vertex[i + 1] < miny)
+				miny = mesh->vertex[i + 1];
+			else if (mesh->vertex[i + 1] > maxy)
+				maxy = mesh->vertex[i + 1];
+
+			if (mesh->vertex[i + 2] < minz)
+				minz = mesh->vertex[i + 2];
+			else if (mesh->vertex[i + 2] > maxz)
+				maxz = mesh->vertex[i + 2];
 		}
 
-		for (uint i = 0; i < m->mNumFaces; ++i)
+		mesh->boundingBox.maxPoint = { maxx, maxy, maxz };
+		mesh->boundingBox.minPoint = { minx, miny, minz };
+
+		//Load indices and faces
+		if (m->HasFaces())
 		{
-			if (m->mFaces[i].mNumIndices != 3)
+			mesh->num_indice = m->mNumFaces * 3;
+			mesh->indice = new uint[mesh->num_indice]; // assume each face is a triangle
+
+			if (mesh->num_indice > INDICES_CAP)
 			{
-				VSLOG("\nWARNING, geometry face with != 3 indices!");
+				VSLOG("\nWARNING can not load a mesh with %d indices", mesh->num_indice);
 				error = true;
 			}
-			else
-				memcpy(&mesh->indice[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
 
+			for (uint i = 0; i < m->mNumFaces; ++i)
+			{
+				if (m->mFaces[i].mNumIndices != 3)
+				{
+					VSLOG("\nWARNING, geometry face with != 3 indices!");
+					error = true;
+				}
+				else
+					memcpy(&mesh->indice[i * 3], m->mFaces[i].mIndices, 3 * sizeof(uint));
+
+			}
 		}
-	}
 
-	if (m->HasNormals())
-	{
-		mesh->num_normals = m->mNumVertices * 3;
-		mesh->normals = new float[mesh->num_normals * 3];
-		memcpy(mesh->normals, m->mNormals, sizeof(float) * mesh->num_normals);
-	}
-
-	if (m->GetNumColorChannels() != 0)
-	{
-		mesh->num_colors = m->mNumVertices;
-		mesh->colors = new float[mesh->num_colors];
-		memcpy(mesh->colors, m->mColors, sizeof(float) * mesh->num_colors);
-	}
-
-	if (m->GetNumUVChannels() > 0)
-	{
-		mesh->num_textC = m->mNumVertices * 2;
-		mesh->textC = new float[mesh->num_textC];
-		
-		uint j = 0;
-		for (uint i = 0; i < mesh->num_textC; i += 2)
+		if (m->HasNormals())
 		{
-			mesh->textC[i] = m->mTextureCoords[0][j].x;
-			mesh->textC[i + 1] = m->mTextureCoords[0][j].y;
-			j++;
+			mesh->num_normals = m->mNumVertices * 3;
+			mesh->normals = new float[mesh->num_normals * 3];
+			memcpy(mesh->normals, m->mNormals, sizeof(float) * mesh->num_normals);
+		}
+
+		if (m->GetNumColorChannels() != 0)
+		{
+			mesh->num_colors = m->mNumVertices;
+			mesh->colors = new float[mesh->num_colors];
+			memcpy(mesh->colors, m->mColors, sizeof(float) * mesh->num_colors);
+		}
+
+		if (m->GetNumUVChannels() > 0)
+		{
+			mesh->num_textC = m->mNumVertices * 2;
+			mesh->textC = new float[mesh->num_textC];
+
+			uint j = 0;
+			for (uint i = 0; i < mesh->num_textC; i += 2)
+			{
+				mesh->textC[i] = m->mTextureCoords[0][j].x;
+				mesh->textC[i + 1] = m->mTextureCoords[0][j].y;
+				j++;
+			}
+		}
+
+
+		if (!error)
+		{
+			mesh->GenerateBuffer();
+			mesh->SetName(name);
+			App->resourceManager->AddResource(mesh);
+
+			VSLOG("\nAdded mesh with %d ", mesh->num_vertex);
+			VSLOG(" vertices, %d", mesh->num_indice);
+			VSLOG(" indices and %d", mesh->num_normals);
+			VSLOG(" normals");
+		}
+		else
+		{
+				mesh->CleanUp();
+				delete mesh;
 		}
 	}
 
-	//mesh->tex.id = 0;
-
-	if (m->mName.length > 0)
-	{
-
-		mesh->SetName(m->mName.C_Str());
-	}
-	else
-	{
-		mesh->SetName("New mesh");
-	}
-
-
+	//Generate the component
 	ComponentMesh* newcomp = nullptr;
+
 	if (!error)
-	{
-		mesh->GenerateBuffer();
-		mesh->SetName(m->mName.C_Str());
-		SaveMeshAsMeh(mesh);
-		App->resourceManager->AddResource(mesh);
+	newcomp = new ComponentMesh(mesh);
 
 
-		newcomp = new ComponentMesh(mesh);
 
-		VSLOG("\nAdded mesh with %d ", mesh->num_vertex);
-		VSLOG(" vertices, %d", mesh->num_indice);
-		VSLOG(" indices and %d", mesh->num_normals);
-		VSLOG(" normals");
-		
-	}
-	else
-	{
-		mesh->CleanUp();
-		delete mesh;
-	}
 
+	
 	return newcomp;
 }
 
@@ -383,68 +392,81 @@ void ImporterMesh::SaveMeshAsMeh(ResMesh* m)
 
 ResMesh* ImporterMesh::LoadMeh(const char* name, bool fullpath)
 {
-	ResMesh* mesh = new ResMesh();
+	ResMesh* mesh = nullptr;
 
-	mesh->SetName(name);
-	std::string str;
+	Resource* res = App->resourceManager->GetResourceByName(name);
 
-	if (fullpath)
-		str = name;
+	//Check if the resource exists
+	if (res != nullptr && res->GetType() == RESMESH)
+	{
+		mesh = (ResMesh*)res;
+		mesh->AddInMemory();
+	}
 	else
-		str = MESH_DIR + std::string(name) + MESH_EXTENSION;
-
-
-	char* data = nullptr;
-	App->fileSystem.LoadFile(str.c_str(), &data);
-	
-
-	if (data == nullptr )
 	{
-	VSLOG("Error Loading %s", str.c_str());
-	return nullptr;
-	}
+		mesh = new ResMesh();
+		mesh->SetName(name);
+		std::string str;
 
-	char* last = data;
-	uint ranges[3];
-	uint bytes = sizeof(ranges);
+		if (fullpath)
+			str = name;
+		else
+			str = MESH_DIR + std::string(name) + MESH_EXTENSION;
 
-	memcpy(ranges, last, bytes);
 
-	mesh->num_vertex = ranges[0];
-	mesh->num_indice = ranges[1];
-	mesh->num_textC = ranges[2];
+		//Check if file exists
+		char* data = nullptr;
+		App->fileSystem.LoadFile(str.c_str(), &data);
 
-	last += bytes;
-	bytes = sizeof(float)*mesh->num_vertex * 3;
 
-	mesh->vertex = new float[mesh->num_vertex * 3];
-	memcpy(mesh->vertex, last, bytes);
+		if (data == nullptr)
+		{
+			VSLOG("Error Loading %s", str.c_str());
+			return nullptr;
+		}
 
-	last += bytes;
-	bytes = sizeof(uint)*mesh->num_indice;
+		char* last = data;
+		uint ranges[3];
+		uint bytes = sizeof(ranges);
 
-	mesh->indice = new uint[mesh->num_indice];
-	memcpy(mesh->indice, last, bytes);
+		memcpy(ranges, last, bytes);
 
-	last += bytes;
-	bytes = sizeof(float)*mesh->num_vertex * 3;
+		mesh->num_vertex = ranges[0];
+		mesh->num_indice = ranges[1];
+		mesh->num_textC = ranges[2];
 
-	mesh->normals = new float[mesh->num_vertex * 3];
-	memcpy(mesh->normals, last, bytes);
-
-	if (mesh->num_textC > 0)
-	{
+		
 		last += bytes;
-		bytes = sizeof(float)*mesh->num_textC;
+		bytes = sizeof(float)*mesh->num_vertex * 3;
 
-		mesh->textC = new float[mesh->num_textC];
-		memcpy(mesh->textC, last, bytes);
+		mesh->vertex = new float[mesh->num_vertex * 3];
+		memcpy(mesh->vertex, last, bytes);
+
+		last += bytes;
+		bytes = sizeof(uint)*mesh->num_indice;
+
+		mesh->indice = new uint[mesh->num_indice];
+		memcpy(mesh->indice, last, bytes);
+
+		last += bytes;
+		bytes = sizeof(float)*mesh->num_vertex * 3;
+
+		mesh->normals = new float[mesh->num_vertex * 3];
+		memcpy(mesh->normals, last, bytes);
+
+		if (mesh->num_textC > 0)
+		{
+			last += bytes;
+			bytes = sizeof(float)*mesh->num_textC;
+
+			mesh->textC = new float[mesh->num_textC];
+			memcpy(mesh->textC, last, bytes);
+		}
+		mesh->GenerateBuffer();
+
+		delete[] data;
+		data = nullptr;
 	}
-	mesh->GenerateBuffer();
-
-	delete[] data;
-	data = nullptr;
-
 	return mesh;
 }
 
