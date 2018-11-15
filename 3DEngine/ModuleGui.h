@@ -1,5 +1,6 @@
 #pragma once
 #include "Module.h"
+#include "ModuleInput.h"
 #include "Globals.h"
 #include "WinBase.h"
 #include "WinConfig.h"
@@ -11,14 +12,15 @@
 #include "WinSceneLoader.h"
 #include "WinTimeManager.h"
 #include "WinAssets.h"
-#include <list>
-#include "ModuleInput.h"
+
+
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
 #include "ImGui/imgui_impl_opengl2.h"
 
+#include "ImGui/ImGuizmo.h"
 
-
+#include <list>
 
 class ModuleGui :
 	public Module
@@ -39,6 +41,8 @@ public:
 	void AddWindow(WinBase* win);
 	void ReadInput(SDL_Event * e) const;
 	void DrawGuizmo(GameObject* obj);
+	void ManageGuizmo(float4x4 mat, GameObject* obj);
+	void UpdateGuizmoInput();
 
 public:
 	WinConfig * config = nullptr;
@@ -66,4 +70,6 @@ private:
 	bool showdemo = false;
 	bool about = false;
 
+	ImGuizmo::MODE guizmoMode = ImGuizmo::WORLD;
+	ImGuizmo::OPERATION guizmoOperation = ImGuizmo::TRANSLATE;
 };

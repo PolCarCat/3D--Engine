@@ -485,10 +485,6 @@ float4x4 ImporterMesh::GetMatrix(aiMatrix4x4 m)
 	return newmat;
 }
 
-void ImporterMesh::SetMatrix(float4x4 m)
-{
-
-}
 
 void LogAssimp(const char* c1, char* c2)
 {

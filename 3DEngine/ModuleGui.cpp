@@ -3,7 +3,6 @@
 #include <gl/GL.h>
 #include "ImGui/imgui_internal.h"
 #include "SceneLoader.h"
-#include "ImGui/ImGuizmo.h"
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 
@@ -583,32 +582,60 @@ void ModuleGui::ReadInput(SDL_Event * e) const
 void ModuleGui::DrawGuizmo(GameObject * obj)
 {
 	if (obj == nullptr) return;
-	ImGuizmo::BeginFrame();
 
 
-	
-
-
-	static const float identityMatrix[16] =
-	{ 1.f, 0.f, 0.f, 0.f,
-		0.f, 1.f, 0.f, 0.f,
-		0.f, 0.f, 1.f, 0.f,
-		0.f, 0.f, 0.f, 1.f };
-
+	//Calculate Matrices
 	float4x4 cameraView, cameraProjection, objectMat;
 
-	glGetFloatv(GL_MODELVIEW_MATRIX, (float*)cameraView.v);
-	glGetFloatv(GL_PROJECTION_MATRIX, (float*)cameraProjection.v);
-	objectMat = obj->transform->localMartix;
+	cameraView = App->scene->GetCurCam()->GetViewMatrixF();
+	cameraProjection = App->scene->GetCurCam()->GetPerspMatrixF();
 
+	objectMat = obj->transform->globalMartix;
+	objectMat.Transpose();
 
-	ImGuizmo::Enable(true);
+	//Check Input
+	UpdateGuizmoInput();
+
+	//Set up Guizmo
+	ImGuizmo::BeginFrame();
+
 	ImGuiIO& io = ImGui::GetIO();
-	ImGuizmo::SetOrthographic(false);
 	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 
 
-	ImGuizmo::Manipulate(App->scene->GetGhostCam()->GetViewMatrix(), (float*)cameraProjection.v, ImGuizmo::TRANSLATE, ImGuizmo::WORLD, (float*)objectMat.v, NULL, NULL);
-	ImGuizmo::DrawCube(App->scene->GetGhostCam()->GetViewMatrix(), (float*)cameraProjection.v, (float*)objectMat.v);
-	ImGuizmo::DrawGrid(App->scene->GetGhostCam()->GetViewMatrix(), (float*)cameraProjection.v, (float*)float4x4::identity.v, 10.f);
+	ImGuizmo::Manipulate((float*)cameraView.v, (float*)cameraProjection.v, guizmoOperation, guizmoMode, (float*)objectMat.v, NULL, NULL);
+
+	float4x4 transform = obj->transform->globalMartix.Inverted() * objectMat.Transposed();
+
+	float3 trans;
+	float3 scale;
+	float3 rot;
+
+	obj->transform->localMartix = obj->transform->localMartix * transform;
+
+	obj->transform->CalcVectors();
+
+	//ManageGuizmo(objectMat, obj);
+}
+
+void ModuleGui::ManageGuizmo(float4x4 mat, GameObject* obj)
+{
+	float3 trans;
+	float3 scale;
+	float3 rot;
+
+	ImGuizmo::DecomposeMatrixToComponents((float*)mat.v, &trans[0], &rot[0], &scale[0]);
+
+	obj->transform->position = obj->transform->position.Mul(trans);
+
+
+}
+
+void ModuleGui::UpdateGuizmoInput()
+{
+	//Scan Inputs
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) guizmoOperation = ImGuizmo::TRANSLATE;
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) guizmoOperation = ImGuizmo::ROTATE;
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) guizmoOperation = ImGuizmo::SCALE;
+
 }

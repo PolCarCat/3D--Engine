@@ -68,6 +68,11 @@ void ComponentTransform::CalcMatrix()
 	localMartix.Set(float4x4::FromTRS(position, rotation, scale));
 }
 
+void ComponentTransform::CalcVectors()
+{
+	localMartix.Decompose(position, rotation, scale);
+}
+
 bool ComponentTransform::Save(JSON_Object* json, JsonDoc* doc)
 {
 	json_object_dotset_number(json, "Type", type);

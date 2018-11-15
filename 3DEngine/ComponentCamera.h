@@ -23,6 +23,8 @@ public:
 	void LookAt(const float3 &Spot);
 	float* GetViewMatrix();
 	float* GetPerspMatrix();
+	float4x4 GetViewMatrixF();
+	float4x4 GetPerspMatrixF();
 	void FocusMeshes();
 	float4x4 ResizePerspMatrix(int width, int heigth);
 	void RecalculateFrustrum(int width = 0, int height = 0);

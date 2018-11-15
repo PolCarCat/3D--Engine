@@ -15,7 +15,7 @@ public:
 	bool Save(JSON_Object* json, JsonDoc* doc);
 	bool Load(JSON_Object* json, JsonDoc* doc);
 	void CalcMatrix();
-
+	void CalcVectors();
 
 	float3 position = { 0, 0, 0 };
 	float3 scale = { 0, 0, 0 };
