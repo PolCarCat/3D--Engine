@@ -155,6 +155,12 @@ void GameObject::UpdateUI()
 
 	ImGui::NewLine();
 	ImGui::Separator();
+
+	if (ImGui::Button("Copy"))
+		Copy();
+
+	ImGui::SameLine();
+
 	if (ImGui::Button("Delete"))
 		Delete();
 }
@@ -243,16 +249,9 @@ void GameObject::AddComponent(Component* comp)
 
 void GameObject::AddGameObject(GameObject* obj)
 {
-	GameObject* prevparent = obj->GetParent();
-	if (prevparent != this)
-	{
-		if (prevparent != nullptr)
-		{
-			Utils::RemoveFromVector(obj, prevparent->objChilds);
-		}
-		objChilds.push_back(obj);
-		obj->SetParent(this);
-	}
+
+	obj->SetParent(this);
+	
 }
 
 GameObject* GameObject::GetParent()
@@ -614,4 +613,42 @@ void GameObject::Deselect()
 bool GameObject::IsSelected()
 {
 	return selected;
+}
+
+GameObject* GameObject::Copy()
+{
+
+	GameObject* copy = new GameObject();
+	copy->SetName(name + "(" + std::to_string(numCopies) + ")");
+	parent->AddGameObject(copy);
+
+	for (std::vector<Component*>::iterator item = compChilds.begin(); item != compChilds.end(); item++)
+	{
+		if ((*item)->GetType() == TRANSFORM)
+			copy->transform = new ComponentTransform(*transform);
+		else
+		{
+			switch ((*item)->GetType())
+			{
+				case MESH:
+					//ComponentMesh m = (ComponentMesh)(**item);
+					//copy->AddComponent(new ComponentMesh(m));
+				break;
+			}
+
+
+			copy->AddComponent(new Component(**item));
+		}
+	}
+
+	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end(); item++)
+	{
+		GameObject* newchild = (*item)->Copy();
+		newchild->SetParent(copy);
+
+	}
+
+	numCopies++;
+
+	return copy;
 }

@@ -46,6 +46,7 @@ public:
 	OBB GetOBB();
 	void Delete();
 	bool CheckDelete();
+
 	uint32_t GetUUID();
 	GameObject* GetObjByUUID(uint32_t id);
 	void IsPickedABB(LineSegment picking, std::vector<GameObject*> &vec);
@@ -59,6 +60,8 @@ public:
 	void Select();
 	void Deselect();
 	bool IsSelected();
+
+	GameObject* Copy();
 
 	std::vector<Component*> compChilds;
 	std::vector<GameObject*> objChilds;
@@ -75,8 +78,12 @@ private:
 	bool active = true;
 	bool staticobj = false;
 	bool toDelete = false;
+
 	std::string name;
+	uint32_t uuid = 0;
+
 	void UpdateNewComWindow();
 	void SetChildsActive(bool a);
-	uint32_t uuid = 0;
+
+	uint numCopies = 1;
 };
