@@ -145,9 +145,6 @@ void ComponentCamera::CheckInput(float dt)
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 		Pick((0, 0, 0));
 
-	if (linedraw)
-		idk.Render();
-
 	// Mouse motion ----------------
 
 	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
@@ -391,8 +388,6 @@ GameObject* ComponentCamera::Pick(float3* hit_point)
 			{
 				LineSegment localSeg(picking);
 				localSeg.Transform((*it)->transform->globalMartix.Inverted());
-				idk.Create(3.0f, localSeg.a.x, localSeg.a.y, localSeg.a.z, localSeg.b.x, localSeg.b.y, localSeg.b.z);
-				linedraw = true;
 				ResMesh* mesh = ((ComponentMesh*)*cit)->mesh;
 				Triangle tri;
 
@@ -400,17 +395,17 @@ GameObject* ComponentCamera::Pick(float3* hit_point)
 				{
 					if (mesh->num_indice - i > 9)
 					{
-						tri.a.x = mesh->vertex[mesh->indice[i++]];
-						tri.a.y = mesh->vertex[mesh->indice[i++]];
-						tri.a.z = mesh->vertex[mesh->indice[i++]];
+						tri.a.x = mesh->vertex[mesh->indice[i++]*3];
+						tri.a.y = mesh->vertex[mesh->indice[i]*3+1];
+						tri.a.z = mesh->vertex[mesh->indice[i]*3+2];
 
-						tri.b.x = mesh->vertex[mesh->indice[i++]];
-						tri.b.y = mesh->vertex[mesh->indice[i++]];
-						tri.b.z = mesh->vertex[mesh->indice[i++]];
+						tri.b.x = mesh->vertex[mesh->indice[i++]*3];
+						tri.b.y = mesh->vertex[mesh->indice[i]*3+1];
+						tri.b.z = mesh->vertex[mesh->indice[i]*3+2];
 
-						tri.c.x = mesh->vertex[mesh->indice[i++]];
-						tri.c.y = mesh->vertex[mesh->indice[i++]];
-						tri.c.z = mesh->vertex[mesh->indice[i++]];
+						tri.c.x = mesh->vertex[mesh->indice[i++]*3];
+						tri.c.y = mesh->vertex[mesh->indice[i]*3+1];
+						tri.c.z = mesh->vertex[mesh->indice[i]*3+2];
 
 						float distance;
 						float3 hit_point;

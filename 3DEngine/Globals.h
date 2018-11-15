@@ -40,7 +40,7 @@ enum update_status
 #define VSYNC true
 #define TITLE "Mehgine"
 // Far Plane Distance
-#define FPD 5000.0f
+#define FPD 50000.0f
 
 
 

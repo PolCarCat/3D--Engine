@@ -50,7 +50,5 @@ private:
 	float aspectRatio = 0;
 	float fovy = 60.0f;
 	bool lookingAt = false;
-	PLine idk;
-	bool linedraw = false;
 };
 
