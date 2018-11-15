@@ -160,7 +160,7 @@ update_status ModuleGui::PreUpdate(float dt)
 		AboutWindow();
 
 
-
+	DrawGuizmo(App->scene->selectedObj);
 
 	return UPDATE_CONTINUE;
 }
@@ -182,7 +182,7 @@ update_status ModuleGui::PostUpdate(float dt)
 			(*item)->PostUpdate();
 	}
 
-	DrawGuizmo(App->scene->selectedObj);
+
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());

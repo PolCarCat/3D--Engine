@@ -77,7 +77,7 @@ void SceneLoader::LoadScene(JsonDoc doc)
 
 			item = doc.GetArObj(objects, ++i);
 		}
-
+		App->scene->root.CalcGlobalTransform();
 		//doc.CleanUp();
 	}
 
@@ -149,6 +149,9 @@ JsonDoc SceneLoader::SerializeScene()
 }
 void SceneLoader::CleanScene()
 {
-	//Yeah just this
+	App->scene->selectedObj = nullptr;
+	App->scene->selectedMat = nullptr;
+	App->scene->SetCurCam(App->scene->GetGhostCam());
 	App->scene->root.CleanUp();
+
 }

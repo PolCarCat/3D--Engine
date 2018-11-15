@@ -162,6 +162,7 @@ void GameObject::UpdateUI()
 bool GameObject::CleanUp()
 {
 	parent = nullptr;
+	selected = false;
 	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end(); item++)
 	{
 			(*item)->CleanUp();
