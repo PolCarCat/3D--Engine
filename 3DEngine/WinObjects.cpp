@@ -44,7 +44,7 @@ bool WinObjects::PostUpdate()
 {
 	if (target != nullptr)
 	{
-		source->SetParent(target);
+		source->SetParent(target, true);
 		target = nullptr;
 		source = nullptr;
 	}
@@ -103,15 +103,24 @@ bool WinObjects::UpdateObj(GameObject* obj)
 			node_flags |= ImGuiTreeNodeFlags_Leaf;
 
 		bool open = false;
+
+		//Change color for selected item
+		if ((*item)->IsSelected())
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4( 1.0f, 1.0f, 0.0f, 1.0f ));
+
 		if (ImGui::TreeNodeEx((*item)->GetName(), node_flags))
 		{
 			open = true;
 		}
 
+		//Reset color
+		if ((*item)->IsSelected())
+			ImGui::PopStyleColor();
+
 
 		if (ImGui::IsItemClicked())
 		{
-			App->scene->selectedObj = (*item);
+			(*item)->Select();
 			ret = true;
 		}
 

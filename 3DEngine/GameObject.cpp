@@ -260,7 +260,7 @@ GameObject* GameObject::GetParent()
 }
 
 
-void GameObject::SetParent(GameObject* p)
+void GameObject::SetParent(GameObject* p, bool changeGlobal)
 {
 	if (!CheckIfContained(p))
 	{
@@ -271,6 +271,20 @@ void GameObject::SetParent(GameObject* p)
 
 		parent = p;
 		parent->objChilds.push_back(this);
+
+		if (changeGlobal == true)
+		{
+			////World Space
+			float4x4 newlocal = parent->transform->globalMartix.Inverted() * transform->localMartix;
+
+			//newlocal =  p->transform->localMartix * newlocal.Inverted();
+			//transform->localMartix = newlocal;
+			//transform->globalMartix = p->transform->localMartix;
+
+			transform->localMartix = newlocal;
+			CalcGlobalTransform();
+		}
+			
 	}
 	else
 	{
@@ -586,10 +600,18 @@ void GameObject::IsPickedABB(LineSegment picking, std::vector<GameObject*> &vec)
 void GameObject::Select()
 {
 	selected = true;
+	if (App->scene->selectedObj != nullptr)
+		App->scene->selectedObj->Deselect();
+
 	App->scene->selectedObj = this;
 }
 
 void GameObject::Deselect()
 {
 	selected = false;
+}
+
+bool GameObject::IsSelected()
+{
+	return selected;
 }

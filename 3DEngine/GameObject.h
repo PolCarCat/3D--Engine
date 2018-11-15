@@ -54,10 +54,11 @@ public:
 	bool Load(JSON_Object* json, JsonDoc* doc);
 
 	GameObject* GetParent();
-	void SetParent(GameObject* p);
+	void SetParent(GameObject* p, bool changeGlobal = false);
 	void CalcGlobalTransform();
 	void Select();
 	void Deselect();
+	bool IsSelected();
 
 	std::vector<Component*> compChilds;
 	std::vector<GameObject*> objChilds;

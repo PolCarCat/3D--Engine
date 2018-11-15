@@ -52,7 +52,11 @@ void ComponentTransform::UpdateUI()
 	
 
 	if (changed)
+	{
 		CalcMatrix();
+		parent->CalcGlobalTransform();
+	}
+
 
 }
 

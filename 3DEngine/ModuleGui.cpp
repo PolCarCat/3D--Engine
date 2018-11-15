@@ -589,6 +589,15 @@ void ModuleGui::DrawGuizmo(GameObject * obj)
 	if (obj == nullptr) return;
 
 
+	//Set up Guizmo
+	ImGuizmo::BeginFrame();
+
+	ImGuiIO& io = ImGui::GetIO();
+	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+
+	//Check Input
+	UpdateGuizmoInput();
+
 	//Calculate Matrices
 	float4x4 cameraView, cameraProjection, objectMat;
 
@@ -597,25 +606,19 @@ void ModuleGui::DrawGuizmo(GameObject * obj)
 
 	objectMat = obj->transform->globalMartix.Transposed();
 
-
-	//Check Input
-	UpdateGuizmoInput();
-
-
-	//Set up Guizmo
-	ImGuizmo::BeginFrame();
-
-	ImGuiIO& io = ImGui::GetIO();
-	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-
 	ImGuizmo::Manipulate((float*)cameraView.v, (float*)cameraProjection.v, guizmoOperation, guizmoMode, (float*)objectMat.v, NULL, guizmoSnap ? guizmoSnapSize : NULL);
 
 
+	if (ImGuizmo::IsUsing())
+	{
 	//Calculate the transformation in local space
 	float4x4 transform = obj->transform->globalMartix.Inverted() * objectMat.Transposed();
 
 	obj->transform->localMartix = obj->transform->localMartix * transform;
 	obj->transform->CalcVectors();
+	obj->CalcGlobalTransform();
+	}
+
 
 }
 

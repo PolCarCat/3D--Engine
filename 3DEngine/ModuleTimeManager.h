@@ -31,6 +31,7 @@ public:
 	bool GetPlaying();
 
 	void SetTimeScale(float ts);
+	void AddTimeScale(float ts);
 	void SetPlaying(bool p);
 
 private:

@@ -46,6 +46,7 @@ bool ModuleScene::Start()
 
 	App->renderer3D->OnResize(App->window->w, App->window->h);
 
+	App->loader->meshImporter.LoadScene("Assets/street/Street environment_V01.fbx");
 
 	root.Start();
 	root.SetName("root");
@@ -63,7 +64,7 @@ update_status ModuleScene::Update(float dt)
 		currentCam->CheckInput(dt);
 
 	ghostcam->Update();
-	root.CalcGlobalTransform();
+	//root.CalcGlobalTransform();
 	root.Update();
 	quadTree.Draw();
 

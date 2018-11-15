@@ -18,7 +18,7 @@ bool WinTimeManager::Update()
 	bool play = App->timeManager->GetPlaying();
 	float tsc = App->timeManager->GetTimeScale();
 
-	if (ImGui::Button(play ? "Stop" : "Play"))
+	if (ImGui::Button(play ? "Pause" : "Play"))
 	{
 		App->timeManager->SetPlaying(!play);
 	}
@@ -30,22 +30,15 @@ bool WinTimeManager::Update()
 	}
 	ImGui::SameLine();
 
-	if (ImGui::Button("Slow"))
-	{
-		App->timeManager->SetTimeScale(0.5f);
-	}
-	ImGui::SameLine();
 
-	if (ImGui::Button("Normal Speed"))
-	{
-		App->timeManager->SetTimeScale(1.0f);
-	}
-	ImGui::SameLine();
+	float ts = App->timeManager->GetTimeScale();
+	//ImGuiInputTextFlags_
 
-	if (ImGui::Button("Accelerate"))
-	{
-		App->timeManager->SetTimeScale(1.5f);
-	}
+	ImGui::PushItemWidth(ImGui::GetWindowContentRegionWidth() / 7 );
+	ImGui::InputFloat("Time Scale", &ts, 0.1f, 0.1f, "%.3f");
+	App->timeManager->SetTimeScale(ts);
+	ImGui::PopItemWidth();
+
 
 	ImGui::Separator();
 	ImGui::Text("Game Time: %.2f", App->timeManager->GetGameTime());

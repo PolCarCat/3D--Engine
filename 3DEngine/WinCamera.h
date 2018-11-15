@@ -10,9 +10,6 @@ public:
 	~WinCamera();
 
 	bool Update();
-	void BindImage();
-	void GenerateBuffer();
 
-	
 };
 

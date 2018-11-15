@@ -67,11 +67,14 @@ GameObject* ImporterMesh::LoadScene(const char* path)
 
 
 		GameObject* newobj = new GameObject();
+
 		newobj->SetName(App->loader->GetFileName(path));
 		App->scene->AddGameObject(newobj);
 
 		GameObject* child = LoadNode(scene->mRootNode, scene, newobj);
 
+
+		newobj->CalcGlobalTransform();
 		aiReleaseImport(scene);
 	}
 	else
@@ -82,6 +85,7 @@ GameObject* ImporterMesh::LoadScene(const char* path)
 	}
 
 	currentPath = "";
+
 	return newobj;
 }
 
@@ -106,8 +110,8 @@ GameObject* ImporterMesh::LoadNode(aiNode* n, const aiScene* scene, GameObject* 
 		nodeobj->transform->rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
 		nodeobj->transform->CalcMatrix();
 
-		nodeobj->transform->localMartix = nodeobj->transform->localMartix * GetMatrix(mat);
-		mat = aiMatrix4x4();
+		nodeobj->transform->localMartix = nodeobj->transform->localMartix /** GetMatrix(mat)*/;
+		//mat = aiMatrix4x4();
 
 		if (n->mNumMeshes != 0)
 		{
@@ -131,10 +135,10 @@ GameObject* ImporterMesh::LoadNode(aiNode* n, const aiScene* scene, GameObject* 
 			}
 		}
 	}
-	else
-	{
-		mat = mat * n->mTransformation;
-	}
+	//else
+	//{
+	//	//mat = mat * n->mTransformation;
+	//}
 
 	if (nodeobj == nullptr)
 		nodeobj = parent;

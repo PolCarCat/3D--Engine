@@ -102,6 +102,15 @@ bool ModuleTimeManager::GetPlaying()
 void ModuleTimeManager::SetTimeScale(float ts)
 {
 	timeScale = ts;
+
+	//Not the best stuff
+	if (timeScale < 0)
+		timeScale = 0;
+}
+
+void ModuleTimeManager::AddTimeScale(float ts)
+{
+	timeScale += ts;
 }
 
 void ModuleTimeManager::SetPlaying(bool p)
