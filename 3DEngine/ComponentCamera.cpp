@@ -407,7 +407,10 @@ GameObject* ComponentCamera::Pick(float3* hit_point)
 						if (localSeg.Intersects(tri, &distance, &hit_point))
 						{
 							if (min_distance == -1 || distance < min_distance)
+							{
+								min_distance = distance;
 								selection = (*it);
+							}
 						}
 					}
 					else

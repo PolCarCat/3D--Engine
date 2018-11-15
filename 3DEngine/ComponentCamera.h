@@ -8,7 +8,7 @@ class ComponentCamera :
 	public Component
 {
 public:
-	ComponentCamera(float _near = 0.5f, float _far = 512.0f, float fov = 60.0f);
+	ComponentCamera(float _near = 0.5f, float _far = FPD, float fov = 60.0f);
 	~ComponentCamera();
 
 	bool Start();
@@ -43,7 +43,7 @@ private:
 	float4x4 ViewMatrix, ViewMatrixInverse;
 	void CalculateViewMatrix();
 	float nearDistance = 0.5f;
-	float farDistance = 512.0f;
+	float farDistance = FPD;
 	math::Frustum frustum;
 	float aspectRatio = 0;
 	float fovy = 60.0f;

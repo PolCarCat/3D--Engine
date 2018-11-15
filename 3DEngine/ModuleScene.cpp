@@ -33,7 +33,7 @@ bool ModuleScene::Start()
 	//bk1->AddCompMesh(App->loader->meshImporter.LoadMeh("Untitled"));
 	//AddGameObject(bk1);
 
-	ghostcam = new ComponentCamera(0.5f, 512.0f, 50.0f);
+	ghostcam = new ComponentCamera(0.5f, FPD, 50.0f);
 	ghostcam->Start();
 	ghostcam->drawFrustum = false;
 	currentCam = ghostcam;
