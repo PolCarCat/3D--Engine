@@ -600,10 +600,9 @@ void GameObject::IsPickedABB(LineSegment picking, std::vector<GameObject*> &vec)
 
 void GameObject::Select()
 {
-	selected = true;
 	if (App->scene->selectedObj != nullptr)
 		App->scene->selectedObj->Deselect();
-
+	selected = true;
 	App->scene->selectedObj = this;
 }
 
