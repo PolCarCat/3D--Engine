@@ -62,6 +62,11 @@ bool ModuleGui::Start()
 	}
 
 
+	//Set Guizmo Snap size
+	guizmoSnapSize[0] = 1.0f;
+	guizmoSnapSize[1] = 1.0f;
+	guizmoSnapSize[2] = 1.0f;
+
 
 	return true;
 }
@@ -590,11 +595,12 @@ void ModuleGui::DrawGuizmo(GameObject * obj)
 	cameraView = App->scene->GetCurCam()->GetViewMatrixF();
 	cameraProjection = App->scene->GetCurCam()->GetPerspMatrixF();
 
-	objectMat = obj->transform->globalMartix;
-	objectMat.Transpose();
+	objectMat = obj->transform->globalMartix.Transposed();
+
 
 	//Check Input
 	UpdateGuizmoInput();
+
 
 	//Set up Guizmo
 	ImGuizmo::BeginFrame();
@@ -602,40 +608,29 @@ void ModuleGui::DrawGuizmo(GameObject * obj)
 	ImGuiIO& io = ImGui::GetIO();
 	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 
+	ImGuizmo::Manipulate((float*)cameraView.v, (float*)cameraProjection.v, guizmoOperation, guizmoMode, (float*)objectMat.v, NULL, guizmoSnap ? guizmoSnapSize : NULL);
 
-	ImGuizmo::Manipulate((float*)cameraView.v, (float*)cameraProjection.v, guizmoOperation, guizmoMode, (float*)objectMat.v, NULL, NULL);
 
+	//Calculate the transformation in local space
 	float4x4 transform = obj->transform->globalMartix.Inverted() * objectMat.Transposed();
 
-	float3 trans;
-	float3 scale;
-	float3 rot;
-
 	obj->transform->localMartix = obj->transform->localMartix * transform;
-
 	obj->transform->CalcVectors();
 
-	//ManageGuizmo(objectMat, obj);
 }
 
-void ModuleGui::ManageGuizmo(float4x4 mat, GameObject* obj)
-{
-	float3 trans;
-	float3 scale;
-	float3 rot;
-
-	ImGuizmo::DecomposeMatrixToComponents((float*)mat.v, &trans[0], &rot[0], &scale[0]);
-
-	obj->transform->position = obj->transform->position.Mul(trans);
-
-
-}
 
 void ModuleGui::UpdateGuizmoInput()
 {
+	guizmoSnap = false;
+
 	//Scan Inputs
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) guizmoOperation = ImGuizmo::TRANSLATE;
 	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) guizmoOperation = ImGuizmo::ROTATE;
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) guizmoOperation = ImGuizmo::SCALE;
 
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN) guizmoMode == ImGuizmo::WORLD ? guizmoMode = ImGuizmo::LOCAL : guizmoMode = ImGuizmo::WORLD;
+
+	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT) 
+		guizmoSnap = true;
 }

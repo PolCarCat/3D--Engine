@@ -41,7 +41,6 @@ public:
 	void AddWindow(WinBase* win);
 	void ReadInput(SDL_Event * e) const;
 	void DrawGuizmo(GameObject* obj);
-	void ManageGuizmo(float4x4 mat, GameObject* obj);
 	void UpdateGuizmoInput();
 
 public:
@@ -72,4 +71,7 @@ private:
 
 	ImGuizmo::MODE guizmoMode = ImGuizmo::WORLD;
 	ImGuizmo::OPERATION guizmoOperation = ImGuizmo::TRANSLATE;
+	float guizmoSnapSize[3];
+	bool guizmoSnap = false;
+
 };
