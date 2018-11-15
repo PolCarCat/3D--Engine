@@ -238,13 +238,13 @@ void ComponentCamera::LookAt(const float3 &Spot)
 // -----------------------------------------------------------------
 float* ComponentCamera::GetViewMatrix()
 {
-
-	return &ViewMatrix[0][0];
+	CalculateViewMatrix();
+	return (float*)ViewMatrix.v;
 }
 
 float * ComponentCamera::GetPerspMatrix()
 {
-	return &frustum.ProjectionMatrix()[0][0];
+	return (float*)frustum.ProjectionMatrix().v;
 }
 
 // -----------------------------------------------------------------

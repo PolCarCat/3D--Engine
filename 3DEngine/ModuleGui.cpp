@@ -156,7 +156,7 @@ update_status ModuleGui::PreUpdate(float dt)
 		AboutWindow();
 
 
-	DrawGuizmo(App->scene->selectedObj);
+
 
 	return UPDATE_CONTINUE;
 }
@@ -178,10 +178,12 @@ update_status ModuleGui::PostUpdate(float dt)
 			(*item)->PostUpdate();
 	}
 
-
+	DrawGuizmo(App->scene->selectedObj);
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+
+
 
 	if (quit)
 		status = UPDATE_STOP;
@@ -580,43 +582,12 @@ void ModuleGui::ReadInput(SDL_Event * e) const
 
 void ModuleGui::DrawGuizmo(GameObject * obj)
 {
-
-	//ImGuizmo::Enable(true);
-	//float4x4 view_matrix;
-	//float4x4 projection_matrix;
-	//glGetFloatv(GL_MODELVIEW_MATRIX, (float*)view_matrix.v);
-	//glGetFloatv(GL_PROJECTION_MATRIX, (float*)projection_matrix.v);
+	if (obj == nullptr) return;
+	ImGuizmo::BeginFrame();
 
 
+	
 
-	//ImGuiIO& io = ImGui::GetIO();
-	//ImGuizmo::SetOrthographic(false);
-	//ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-
-	//
-	//float4x4 localMat;
-
-	//if (obj != nullptr)
-	//	localMat = obj->transform->localMartix;
-	//else
-	//	localMat = float4x4::identity;
-
-	//ImGuizmo::BeginFrame();
-	//localMat.Transpose();
-	//ImGuizmo::Manipulate(App->scene->GetCurCam()->GetViewMatrix(), App->scene->GetCurCam()->GetPerspMatrix(), ImGuizmo::TRANSLATE, ImGuizmo::WORLD, (float*)localMat.v, NULL, NULL);
-
-	//ImGuizmo::DrawGrid(App->scene->GetCurCam()->GetViewMatrix(), App->scene->GetCurCam()->GetPerspMatrix(), (float*)localMat.v, 100);
-
-	//ImGuizmo::Manipulate((float*)view_matrix.v, (float*)projection_matrix.v, ImGuizmo::TRANSLATE, ImGuizmo::WORLD, (float*)localMat.v, NULL, NULL);
-
-	//ImGuizmo::DrawGrid((float*)view_matrix.v, (float*)projection_matrix.v, (float*)localMat.v, 10);
-
-
-	float objectMatrix[16] =
-	{ 1.f, 0.f, 0.f, 0.f,
-		0.f, 1.f, 0.f, 0.f,
-		0.f, 0.f, 1.f, 0.f,
-		0.f, 0.f, 0.f, 1.f };
 
 	static const float identityMatrix[16] =
 	{ 1.f, 0.f, 0.f, 0.f,
@@ -624,42 +595,20 @@ void ModuleGui::DrawGuizmo(GameObject * obj)
 		0.f, 0.f, 1.f, 0.f,
 		0.f, 0.f, 0.f, 1.f };
 
-	float cameraView[16];
+	float4x4 cameraView, cameraProjection, objectMat;
 
-	float cameraProjection[16];
-
-	glGetFloatv(GL_MODELVIEW_MATRIX, cameraView);
-	glGetFloatv(GL_PROJECTION_MATRIX, cameraProjection);
-
-
-	//// Camera projection
-	//bool isPerspective = false;
-	//float fov = 27.f;
-	//float viewWidth = 10.f; // for orthographic
-	//float camYAngle = 165.f / 180.f * 3.14159f;
-	//float camXAngle = 52.f / 180.f * 3.14159f;
-	//float camDistance = 8.f;
+	glGetFloatv(GL_MODELVIEW_MATRIX, (float*)cameraView.v);
+	glGetFloatv(GL_PROJECTION_MATRIX, (float*)cameraProjection.v);
+	objectMat = obj->transform->localMartix;
 
 
+	ImGuizmo::Enable(true);
+	ImGuiIO& io = ImGui::GetIO();
+	ImGuizmo::SetOrthographic(false);
+	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 
 
-	//ImGuizmo::SetOrthographic(!isPerspective);
-
-	//float eye[] = { cosf(camYAngle) * cosf(camXAngle) * camDistance, sinf(camXAngle) * camDistance, sinf(camYAngle) * cosf(camXAngle) * camDistance };
-	//float at[] = { 0.f, 0.f, 0.f };
-	//float up[] = { 0.f, 1.f, 0.f };
-
-	ImGuizmo::BeginFrame();
-
-
-	//static float ng = 0.f;
-	//ng += 0.01f;
-	//ng = 1.f;
-	//rotationY(ng, objectMatrix);
-	//objectMatrix[12] = 5.f;
-	// debug
-	ImGuizmo::Manipulate(cameraView, cameraProjection, ImGuizmo::TRANSLATE, ImGuizmo::WORLD,objectMatrix);
-	ImGuizmo::DrawCube(cameraView, cameraProjection, objectMatrix);
-	ImGuizmo::DrawGrid(cameraView, cameraProjection, identityMatrix, 10.f);
-
+	ImGuizmo::Manipulate(App->scene->GetGhostCam()->GetViewMatrix(), (float*)cameraProjection.v, ImGuizmo::TRANSLATE, ImGuizmo::WORLD, (float*)objectMat.v, NULL, NULL);
+	ImGuizmo::DrawCube(App->scene->GetGhostCam()->GetViewMatrix(), (float*)cameraProjection.v, (float*)objectMat.v);
+	ImGuizmo::DrawGrid(App->scene->GetGhostCam()->GetViewMatrix(), (float*)cameraProjection.v, (float*)float4x4::identity.v, 10.f);
 }
