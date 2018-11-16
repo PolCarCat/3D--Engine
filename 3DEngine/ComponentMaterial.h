@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __COMPONENT_MATERIAL_H__
+#define __COMPONENT_MATERIAL_H__
+
 #include "Component.h"
 #include "ResTexture.h"
 #include "Color.h"
@@ -32,3 +34,4 @@ private:
 	std::string name;
 };
 
+#endif //__COMPONENT_MATERIAL__

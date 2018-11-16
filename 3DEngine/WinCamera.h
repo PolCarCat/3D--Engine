@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __WINCAMERA_H__
+#define __WINCAMERA_H__
+
 #include "WinBase.h"
 #include "ResTexture.h"
 
@@ -13,3 +15,4 @@ public:
 
 };
 
+#endif //__WINCAMERA_H__

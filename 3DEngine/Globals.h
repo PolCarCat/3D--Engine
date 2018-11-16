@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __GLOBALS_H__
+#define __GLOBALS_H__
 
 // Warning disabled ---
 #pragma warning( disable : 4577 ) // Warning that exceptions are disabled
@@ -121,3 +122,5 @@ namespace Utils
 		return false;
 	}
 };
+
+#endif //__GLOBALS_H__

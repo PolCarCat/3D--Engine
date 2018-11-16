@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __COMPONENT_CAMERA_H__
+#define __COMPONENT_CAMERA_H__
+
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "ResMesh.h"
@@ -52,3 +54,4 @@ private:
 	bool lookingAt = false;
 };
 
+#endif //__COMPONENT_CAMERA_H__

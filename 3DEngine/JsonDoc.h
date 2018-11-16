@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __JSONDOC_H__
+#define __JSONDOC_H__
+
 #include "Parson/parson.h"
 #include <string>
 #include "Globals.h"
@@ -39,3 +41,4 @@ private:
 
 };
 
+#endif //__JSONDOC_H__

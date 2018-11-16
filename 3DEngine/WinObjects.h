@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __WINOBJECTS_H__
+#define __WINOBJECTS_H__
 #include "WinBase.h"
 
 class GameObject;
@@ -21,3 +22,4 @@ private:
 	GameObject* source = nullptr;
 };
 
+#endif //__WINOBJECTS_H__

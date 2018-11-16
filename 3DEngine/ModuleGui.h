@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __MODULEGUI_H__
+#define __MODULEGUI_H__
+
 #include "Module.h"
 #include "ModuleInput.h"
 #include "Globals.h"
@@ -75,3 +77,5 @@ private:
 	bool guizmoSnap = false;
 
 };
+
+#endif //__MODULEGUI_H__

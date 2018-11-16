@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __WINELEM_H__
+#define __WINELEM_H__
 #include "WinBase.h"
 
 class ResMesh;
@@ -17,3 +18,4 @@ public:
 
 };
 
+#endif //__WINELEM_H_

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __WINTIMEMANAGER_H__
+#define __WINTIMEMANAGER_H__
+
 #include "WinBase.h"
 class WinTimeManager :
 	public WinBase
@@ -11,3 +13,4 @@ public:
 
 };
 
+#endif //__WINTIMEMANAGER_H__

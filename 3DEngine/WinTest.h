@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __WINTEST_H__
+#define __WINTEST_H__
 #include "WinBase.h"
 
 #include "pcg-c-basic-0.9/pcg_basic.h"
@@ -19,3 +20,4 @@ private:
 	float random_f = 0;
 };
 
+#endif //__WINTEST_H__

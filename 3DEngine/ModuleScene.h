@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __MODULESCENE_H__
+#define __MODULESCENE_H__
+
 #include "Module.h"
 #include "GameObject.h"
 
@@ -44,3 +46,5 @@ private:
 	std::string name;
 
 };
+
+#endif // !__MODULESCENE_H__

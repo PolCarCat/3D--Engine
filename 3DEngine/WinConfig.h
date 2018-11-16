@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __WINCONFIG_H__
+#define __WINCONFIG_H__
 #include "WinBase.h"
 
 
@@ -12,10 +13,6 @@ public:
 
 	bool Update();
 
-
-private:
-
-
-
 };
 
+#endif //__WINCONFIG_H__

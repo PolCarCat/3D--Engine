@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __MODULEINPUT_H__
+#define __MODULEINPUT_H__
+
 #include "Module.h"
 #include "Globals.h"
 
@@ -71,3 +73,5 @@ private:
 public:
 	float Mx, My;
 };
+
+#endif //__MODULEINPUT_H__

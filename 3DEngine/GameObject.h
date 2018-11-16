@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __GAMEOBJECT_H__
+#define __GAMEOBJECT_H__
+
 #include <vector>
 #include "ResMesh.h"
 #include "QuadTree.h"
@@ -87,3 +89,4 @@ private:
 
 	uint numCopies = 1;
 };
+#endif //__GAMEOBJECT_H__

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __MODULELOADER_H__
+#define __MODULELOADER_H__
+
 #include "Module.h"
 #include "ImporterTexture.h"
 #include "ImporterMesh.h"
@@ -49,11 +51,11 @@ public:
 	ImporterMesh meshImporter;
 
 private:
+
 	char* droppedFile = nullptr;
 	Format dFformat = FNULL;
-
-
 
 };
 
 
+#endif //__MODULELOADER_H__

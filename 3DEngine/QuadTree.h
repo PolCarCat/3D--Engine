@@ -1,4 +1,7 @@
-#pragma once
+#ifndef __QUADTREE_H__
+#define __QUADTREE_H__
+
+
 #include "Globals.h"
 #include "MathGeoLib/MathGeoLib.h"
 #include <list>
@@ -58,3 +61,4 @@ private:
 
 };
 
+#endif // !__QUADTREE_H__

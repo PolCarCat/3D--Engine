@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __COMPONENT_TRANSFORM_H__
+#define __COMPONENT_TRANSFORM_H__
+
 #include "Component.h"
 #include "MathGeoLib/MathGeoLib.h"
 class ComponentTransform :
@@ -26,3 +28,4 @@ public:
 
 };
 
+#endif //__COMPONENT_TRANSFORM_H__

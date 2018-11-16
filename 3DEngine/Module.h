@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __MODULE_H__
+#define __MODULE_H__
+
 #include "Globals.h"
 #include "Parson/parson.h"
 #include "JsonDoc.h"
@@ -65,3 +67,5 @@ public:
 		return true;
 	}
 };
+
+#endif //__MODULE_H__

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __WINSCENELOADER_H__
+#define __WINSCENELOADER_H__
 #include "WinBase.h"
 #include <string>
 
@@ -21,3 +22,4 @@ public:
 	bool save = false;
 };
 
+#endif //__WINSCENELOADER_H__

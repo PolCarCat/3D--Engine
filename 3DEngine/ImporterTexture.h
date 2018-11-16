@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __IMPORTER_TEXTURE_H__
+#define __IMPORTER_TEXTURE_H__
+
 #include "Importer.h"
 #include "Globals.h"
 
@@ -27,3 +29,4 @@ public:
 
 };
 
+#endif //__IMPORTER_TEXTURE_H__

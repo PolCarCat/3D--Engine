@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __MODULERENDERER3D_H__
+#define __MODULERENDERER3D_H__
+
 #include "Module.h"
 #include "Globals.h"
 #include "Light.h"
@@ -95,3 +97,5 @@ private:
 	PCapsule	capsule;
 	PCylinder	cylinder;
 };
+
+#endif //__MODULERENDERER3D_H__

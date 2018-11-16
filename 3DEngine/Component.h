@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __COMPONENT_H__
+#define __COMPONENT_H__
+
 #include "JsonDoc.h"
 
 class GameObject;
@@ -68,3 +70,4 @@ protected:
 
 };
 
+#endif // !__COMPONENT_H__

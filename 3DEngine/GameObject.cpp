@@ -500,12 +500,27 @@ void GameObject::Save(JSON_Array* objects, JsonDoc* doc)
 
 	JSON_Object* obj = doc->SetObj(objects);
 
+	//Save Properties
 	json_object_dotset_number(obj, "UUID", uuid);
 	json_object_dotset_number(obj, "Parent UUID", parentUuid);
 	json_object_dotset_string(obj, "Name", name.c_str());
 	json_object_dotset_boolean(obj, "Active", active);
 	json_object_dotset_boolean(obj, "Static", staticobj);
 
+	//Save Local AABB
+	JSON_Array* local = doc->SetArray(obj, "AABB");
+
+	//Min
+	json_array_append_number(local, localABB.MinX());
+	json_array_append_number(local, localABB.MinY());
+	json_array_append_number(local, localABB.MinZ());
+
+	//Max
+	json_array_append_number(local, localABB.MaxX());
+	json_array_append_number(local, localABB.MaxY());
+	json_array_append_number(local, localABB.MaxZ());
+
+	//Save Components
 	JSON_Array* components = doc->SetArray(obj, "Components");
 	for (std::vector<Component*>::iterator item = compChilds.begin(); item != compChilds.end(); item++)
 	{
@@ -513,6 +528,7 @@ void GameObject::Save(JSON_Array* objects, JsonDoc* doc)
 		(*item)->Save(obj, doc);
 	}
 
+	//Save Object childs
 	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end(); item++)
 	{
 
@@ -552,6 +568,24 @@ bool GameObject::Load(JSON_Object* json, JsonDoc* doc)
 		
 	}
 
+
+	//Loading Local AABB
+	JSON_Array* local = doc->GetObjAr(json, "AABB");
+
+	//Min
+	float3 min;
+	min.x = json_array_get_number(local, 0);
+	min.z = json_array_get_number(local, 2);
+	min.y = json_array_get_number(local, 1);
+
+	//Max
+	float3 max;
+	max.x = json_array_get_number(local, 3);
+	max.y = json_array_get_number(local, 4);
+	max.z = json_array_get_number(local, 5);
+
+	localABB.minPoint = min;
+	localABB.maxPoint = max;
 
 	//Loading Components
 	JSON_Array* comp = doc->GetObjAr(json, "Components");
@@ -617,30 +651,33 @@ bool GameObject::IsSelected()
 
 GameObject* GameObject::Copy()
 {
-
+	//Copy the object
 	GameObject* copy = new GameObject();
 	copy->SetName(name + "(" + std::to_string(numCopies) + ")");
 	parent->AddGameObject(copy);
 
+
+	//Create New components
 	for (std::vector<Component*>::iterator item = compChilds.begin(); item != compChilds.end(); item++)
 	{
 		if ((*item)->GetType() == TRANSFORM)
 			copy->transform = new ComponentTransform(*transform);
-		else
+		else if ((*item)->GetType() == MESH)
 		{
-			switch ((*item)->GetType())
-			{
-				case MESH:
-					//ComponentMesh m = (ComponentMesh)(**item);
-					//copy->AddComponent(new ComponentMesh(m));
-				break;
-			}
-
-
-			copy->AddComponent(new Component(**item));
+			ComponentMesh * m = new ComponentMesh(*(ComponentMesh*)(*item));
+			m->SetParent(copy);
+			m->mesh->AddInMemory();
 		}
+		else if ((*item)->GetType() == CAMERA)
+		{					
+			ComponentCamera * c = new ComponentCamera(*(ComponentCamera*)(*item));
+			c->SetParent(copy);
+		}
+
+		
 	}
 
+	//Copy object childs
 	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end(); item++)
 	{
 		GameObject* newchild = (*item)->Copy();
