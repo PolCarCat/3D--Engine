@@ -88,14 +88,14 @@ private:
 	bool wireframe = false;
 	bool useGhostCam = true;
 
-	PLine		line;
-	PAxis		axis;
-	PCube		cube;
+	//PLine		line;
+	//PAxis		axis;
+	//PCube		cube;
 	PPlane		plane;
-	PArrow		arrow;
-	PSphere		sphere;
-	PCapsule	capsule;
-	PCylinder	cylinder;
+	//PArrow		arrow;
+	//PSphere		sphere;
+	//PCapsule	capsule;
+	//PCylinder	cylinder;
 };
 
 #endif //__MODULERENDERER3D_H__

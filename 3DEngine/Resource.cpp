@@ -1,6 +1,8 @@
 #include "Resource.h"
 #include "pcg-c-basic-0.9/pcg_basic.h"
 
+#include "mmgr/mmgr.h"
+
 Resource::Resource(uint32_t UUID, ResType _type)
 {
 	if (UUID == 0)

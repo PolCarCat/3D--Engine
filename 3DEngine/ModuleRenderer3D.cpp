@@ -13,6 +13,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+#include "mmgr/mmgr.h"
 
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
@@ -132,14 +133,14 @@ bool ModuleRenderer3D::Init()
 
 	// Create Primitives
 
-	cube.Create();
+	//cube.Create();
 	plane.Create();
-	axis.Create();
-	line.Create(3.0f);
-	arrow.Create(3.0f);
-	sphere.Create();
-	cylinder.Create();
-	capsule.Create();
+	//axis.Create();
+	//line.Create(3.0f);
+	//arrow.Create(3.0f);
+	//sphere.Create();
+	//cylinder.Create();
+	//capsule.Create();
 
 	return ret;
 }
@@ -168,25 +169,25 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glMatrixMode(GL_MODELVIEW);
 	//glLoadMatrixf(cam->GetOpenGLViewMatrix());
-	if (drawCube)
-		cube.Render();
-	if (drawLine)
-	{
-		line.Create(3.0f, 15, 0, 0, xx, yy, zz);
-		line.Render();
-	}
-	if (drawArrow)
-		arrow.Render();
-	if (drawAxis)
-		axis.Render();
+	//if (drawCube)
+	//	cube.Render();
+	//if (drawLine)
+	//{
+	//	line.Create(3.0f, 15, 0, 0, xx, yy, zz);
+	//	line.Render();
+	//}
+	//if (drawArrow)
+	//	arrow.Render();
+	//if (drawAxis)
+	//	axis.Render();
 	if (drawPlane)
 		plane.Render();
-	if (drawSphere)
-		sphere.Render();
-	if (drawCylinder)
-		cylinder.Render();
-	if (drawCapsule)
-		capsule.Render();
+	//if (drawSphere)
+	//	sphere.Render();
+	//if (drawCylinder)
+	//	cylinder.Render();
+	//if (drawCapsule)
+	//	capsule.Render();
 
 
 
@@ -211,6 +212,8 @@ bool ModuleRenderer3D::CleanUp()
 
 	SDL_GL_DeleteContext(context);
 
+	glDeleteBuffers(1, (GLuint*) &(plane.my_id));
+	
 	return true;
 }
 

@@ -7,7 +7,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
-
+#include "mmgr/mmgr.h"
 
 ResMesh::ResMesh(uint32_t UUID): Resource(UUID, RESMESH)
 {
@@ -131,6 +131,8 @@ void ResMesh::CleanUp()
 
 void ResMesh::Init()
 {
+
+	//Reloading mesh and copying the data
 	ResMesh m = App->loader->meshImporter.ReloadMesh(exportedFile.c_str());
 	
 	id_indice = m.id_indice; 

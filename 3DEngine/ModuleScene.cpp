@@ -85,7 +85,7 @@ update_status ModuleScene::PostUpdate(float dt)
 bool ModuleScene::CleanUp()
 {
 	VSLOG("Unloading scene");
-	root.CleanUp();
+	SceneLoader::CleanScene();
 
 	ghostcam->CleanUp();
 	if (currentCam != ghostcam)

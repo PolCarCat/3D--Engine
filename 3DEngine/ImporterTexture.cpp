@@ -189,19 +189,15 @@ ResTexture* ImporterTexture::LoadTex(const char* path, bool isfullpath)
 ResTexture ImporterTexture::ReloadTex(const char * path)
 {
 
-
+	//Load image
 	ResTexture ret;
-
-
 
 	ILuint imageID;
 	GLuint textureID;
 	ILboolean success = false;
 	ILenum error;
 
-	//Load image
-
-
+	//Generate Buffer
 	ilGenImages(1, &imageID);
 	ilBindImage(imageID);
 	success = ilLoadImage((ILconst_string)path);
@@ -295,10 +291,8 @@ void ImporterTexture::SaveTex(const char* path, bool isfullpath)
 void ImporterTexture::SaveTex(ResTexture tex)
 {
 	std::string path = std::string(TEXT_DIR) + tex.GetName() + TEXT_EXTENSION;
-	std::string path2 = path;
-	App->fileSystem.InvertBars(path2);
 
-	if (App->fileSystem.fileExists(path2.c_str()))
+	if (App->fileSystem.fileExists(path.c_str()))
 		return;
 
 	ILuint image_name;

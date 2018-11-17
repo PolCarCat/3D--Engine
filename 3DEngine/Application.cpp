@@ -41,11 +41,11 @@ Application::Application()
 
 Application::~Application()
 {
-	for (list<Module*>::reverse_iterator it = list_modules.rbegin(); !list_modules.empty() && it != list_modules.rend(); ++it)
+	for (list<Module*>::reverse_iterator it = list_modules.rbegin(); !list_modules.empty() && it != list_modules.rend(); it++)
 		delete (*it);
 	
-
-
+	config.CleanUp();
+	
 	list_modules.clear();
 }
 
@@ -129,7 +129,7 @@ bool Application::CleanUp()
 	for (list<Module*>::reverse_iterator it = list_modules.rbegin(); !list_modules.empty() && it != list_modules.rend(); ++it)
 	{
 		ret = (*it)->CleanUp();
-		*it = nullptr;
+		
 	}
 
 

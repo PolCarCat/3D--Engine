@@ -197,11 +197,11 @@ update_status ModuleGui::PostUpdate(float dt)
 
 bool ModuleGui::CleanUp()
 {
-	//ImGui_ImplSdl_Shutdown();
 
 	VSLOG("Cleaning UP IMGUI Module")
 
 	App->logAvaliable = false;
+	
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
