@@ -186,6 +186,68 @@ ResTexture* ImporterTexture::LoadTex(const char* path, bool isfullpath)
 	return ret;
 }
 
+ResTexture ImporterTexture::ReloadTex(const char * path)
+{
+
+
+	ResTexture ret;
+
+
+
+	ILuint imageID;
+	GLuint textureID;
+	ILboolean success = false;
+	ILenum error;
+
+	//Load image
+
+
+	ilGenImages(1, &imageID);
+	ilBindImage(imageID);
+	success = ilLoadImage((ILconst_string)path);
+
+
+	if (success)
+	{
+		ILinfo ImageInfo;
+		iluGetImageInfo(&ImageInfo);
+		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+		{
+			iluFlipImage();
+		}
+
+		if (!success)
+		{
+			error = ilGetError();
+			VSLOG("\nImage fliping error %d", error);
+		}
+
+
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glGenTextures(1, &textureID);
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+		ret.width = ilGetInteger(IL_IMAGE_WIDTH);
+		ret.heigth = ilGetInteger(IL_IMAGE_HEIGHT);
+		ret.id = textureID;
+
+
+		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ret.width, ret.heigth, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+		VSLOG("\nTexture creation successful, image id %d", textureID);
+
+		ilDeleteImages(1, &imageID);
+
+	}
+	
+	return ret;
+}
+
 void ImporterTexture::SaveTex(const char* path, bool isfullpath)
 {
 	std::string oldPath = path;

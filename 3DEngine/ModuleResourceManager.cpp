@@ -195,7 +195,6 @@ void ModuleResourceManager::AddResource(Resource * res)
 
 	resources[res->GetUUID()] = res;
 
-	res->AddInMemory();
 }
 
 void ModuleResourceManager::LoadAssets()

@@ -1,4 +1,5 @@
 #include "ResTexture.h"
+#include "Application.h"
 
 #include "MathGeoLib/MathGeoLib.h"
 #include "Glew/include/glew.h"
@@ -14,6 +15,15 @@ ResTexture::ResTexture(uint32_t UUID) : Resource(UUID, RESTEXTURE)
 
 ResTexture::~ResTexture()
 {
+}
+
+void ResTexture::Init()
+{
+	ResTexture tex = App->loader->texImporter.ReloadTex(exportedFile.c_str());
+	id = tex.id;
+	width = tex.width;
+	heigth = tex.heigth;
+
 }
 
 void ResTexture::CleanUp()

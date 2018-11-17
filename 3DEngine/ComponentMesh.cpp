@@ -129,7 +129,7 @@ bool ComponentMesh::CleanUp()
 	//	material = nullptr;
 	//}
 
-
+	mesh->SubstractInMemory();
 	mesh = nullptr;
 	return true;
 }

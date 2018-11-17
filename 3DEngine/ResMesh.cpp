@@ -1,6 +1,6 @@
 #include "ResMesh.h"
 #include "MathGeoLib/MathGeoLib.h"
-
+#include "Application.h"
 
 #include "Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
@@ -126,5 +126,30 @@ void ResMesh::CleanUp()
 
 	delete[] textC;
 	textC = nullptr;
+
+}
+
+void ResMesh::Init()
+{
+	ResMesh m = App->loader->meshImporter.ReloadMesh(exportedFile.c_str());
+	
+	id_indice = m.id_indice; 
+	num_indice = m.num_indice;
+	indice = m.indice;
+
+	id_vertex = m.id_vertex;
+	num_vertex = m.num_vertex;
+	vertex = m.vertex;
+
+	num_normals = m.num_normals;
+	normals = m.normals;
+
+	id_colors = m.id_colors;
+	num_colors = m.num_colors;
+	colors = m.colors;
+
+	id_textC = m.id_textC;
+	num_textC = m.num_textC;
+	textC = m.textC;
 
 }

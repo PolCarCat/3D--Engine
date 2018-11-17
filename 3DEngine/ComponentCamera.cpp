@@ -190,9 +190,16 @@ void ComponentCamera::CheckInput(float dt)
 
 
 	}
+	if (parent != nullptr)
+	{
+		parent->transform->position = transform.position;
+		parent->transform->scale = transform.scale;
+		parent->transform->rotation = transform.rotation;
 
+		parent->transform->CalcMatrix();
 
-
+	}
+	
 }
 
 

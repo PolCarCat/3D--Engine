@@ -42,7 +42,7 @@ bool ModuleScene::Start()
 	camobj->SetName("Camera");
 
 	camobj->AddCompCam();
-	//AddGameObject(camobj);
+	AddGameObject(camobj);
 
 	App->renderer3D->OnResize(App->window->w, App->window->h);
 

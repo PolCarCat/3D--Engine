@@ -41,7 +41,7 @@ public:
 
 	void SaveMeshAsMeh(ResMesh* m);
 	ResMesh* LoadMeh(const char* name, bool fullpath = false, uint32_t uuid = 0);
-
+	ResMesh ReloadMesh(const char* name);
 
 private:
 	std::string currentPath;

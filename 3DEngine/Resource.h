@@ -17,12 +17,17 @@ public:
 	Resource(uint32_t UUID = 0, ResType _type = RESNULL);
 	virtual ~Resource();
 	virtual void CleanUp();
+	virtual void Init();
 
 	uint32_t GetUUID() const;
 	const char* GetName() const;
 	void SetName(const char* n);
 	void SetName(std::string n);
 	void SetUuid(uint32_t d);
+	void SetFile(const char* file);
+	void SetFile(std::string f);
+	void SetExportedFile(const char* f);
+	void SetExportedFile(std::string f);
 	ResType GetType() const;
 	const char* GetFile() const;
 	const char* GetExportedFile() const;

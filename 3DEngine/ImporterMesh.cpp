@@ -269,6 +269,7 @@ ComponentMesh* ImporterMesh::LoadMesh(aiMesh* m, const char* n)
 		{
 			mesh->GenerateBuffer();
 			mesh->SetName(name);
+			mesh->SetExportedFile(std::string(MESH_DIR) + name + MESH_EXTENSION);
 			App->resourceManager->AddResource(mesh);
 
 			VSLOG("\nAdded mesh with %d ", mesh->num_vertex);
@@ -417,6 +418,8 @@ ResMesh* ImporterMesh::LoadMeh(const char* name, bool fullpath, uint32_t uid)
 		else
 			str = MESH_DIR + std::string(name) + MESH_EXTENSION;
 
+		mesh->SetExportedFile(str);
+
 
 		//Check if file exists
 		char* data = nullptr;
@@ -471,6 +474,67 @@ ResMesh* ImporterMesh::LoadMeh(const char* name, bool fullpath, uint32_t uid)
 		delete[] data;
 		data = nullptr;
 	}
+	return mesh;
+}
+
+ResMesh ImporterMesh::ReloadMesh(const char * path)
+{
+	ResMesh mesh;
+
+	char* data = nullptr;
+	App->fileSystem.LoadFile(path, &data);
+
+	if (data == nullptr)
+	{
+		VSLOG("Error Loading %s", path);
+	}
+	else
+	{
+		char* last = data;
+		uint ranges[3];
+		uint bytes = sizeof(ranges);
+
+		memcpy(ranges, last, bytes);
+
+		mesh.num_vertex = ranges[0];
+		mesh.num_indice = ranges[1];
+		mesh.num_textC = ranges[2];
+
+
+		last += bytes;
+		bytes = sizeof(float)*mesh.num_vertex * 3;
+
+		mesh.vertex = new float[mesh.num_vertex * 3];
+		memcpy(mesh.vertex, last, bytes);
+
+		last += bytes;
+		bytes = sizeof(uint)*mesh.num_indice;
+
+		mesh.indice = new uint[mesh.num_indice];
+		memcpy(mesh.indice, last, bytes);
+
+		last += bytes;
+		bytes = sizeof(float)*mesh.num_vertex * 3;
+
+		mesh.normals = new float[mesh.num_vertex * 3];
+		memcpy(mesh.normals, last, bytes);
+
+		if (mesh.num_textC > 0)
+		{
+			last += bytes;
+			bytes = sizeof(float)*mesh.num_textC;
+
+			mesh.textC = new float[mesh.num_textC];
+			memcpy(mesh.textC, last, bytes);
+		}
+		mesh.GenerateBuffer();
+
+		delete[] data;
+		data = nullptr;
+
+	
+	}
+
 	return mesh;
 }
 

@@ -17,7 +17,7 @@ public:
 	float2 scale = { 1,1 };
 	float angle = 0;
 
-
+	void Init();
 	void CleanUp();
 };
 

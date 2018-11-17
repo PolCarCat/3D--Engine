@@ -33,6 +33,7 @@ public:
 	void Draw();
 	void DrawNormals();
 	void CleanUp();
+	void Init();
 	AABB boundingBox;
 };
 

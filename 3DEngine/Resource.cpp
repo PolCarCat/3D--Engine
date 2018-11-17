@@ -9,6 +9,9 @@ Resource::Resource(uint32_t UUID, ResType _type)
 		uuid = UUID;
 
 	type = _type;
+
+	//It's initializes as 1 because it's avoided doing Init() just in the creation
+	inMemory = 1;
 }
 
 Resource::~Resource()
@@ -16,6 +19,10 @@ Resource::~Resource()
 }
 
 void Resource::CleanUp()
+{
+}
+
+void Resource::Init()
 {
 }
 
@@ -44,6 +51,26 @@ void Resource::SetUuid(uint32_t d)
 	uuid = d;
 }
 
+void Resource::SetFile(const char* f)
+{
+	file = f;
+}
+
+void Resource::SetFile(std::string f)
+{
+	file = f;
+}
+
+void Resource::SetExportedFile(const char * f)
+{
+	exportedFile = file;
+}
+
+void Resource::SetExportedFile(std::string f)
+{
+	exportedFile = f;
+}
+
 ResType Resource::GetType() const
 {
 	return type;
@@ -67,9 +94,17 @@ uint Resource::InMemory() const
 void Resource::AddInMemory()
 {
 	inMemory++;
+
+	//If is the first element uisng it we reload the resource
+	if (inMemory == 1)
+		Init();
 }
 
 void Resource::SubstractInMemory()
 {
 	inMemory--;
+
+	//If there isn't a element that uses this resource it's deleted form memory
+	if (inMemory == 0)
+		CleanUp();
 }

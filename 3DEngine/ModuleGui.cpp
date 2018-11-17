@@ -601,8 +601,8 @@ void ModuleGui::DrawGuizmo(GameObject * obj)
 	//Calculate Matrices
 	float4x4 cameraView, cameraProjection, objectMat;
 
-	cameraView = App->scene->GetCurCam()->GetViewMatrixF();
-	cameraProjection = App->scene->GetCurCam()->GetPerspMatrixF();
+	cameraView = App->scene->GetGhostCam()->GetViewMatrixF();
+	cameraProjection = App->scene->GetGhostCam()->GetPerspMatrixF();
 
 	objectMat = obj->transform->globalMartix.Transposed();
 
