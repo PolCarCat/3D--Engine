@@ -394,7 +394,7 @@ void ImporterMesh::SaveMeshAsMeh(ResMesh* m)
 	last = nullptr;
 }
 
-ResMesh* ImporterMesh::LoadMeh(const char* name, bool fullpath)
+ResMesh* ImporterMesh::LoadMeh(const char* name, bool fullpath, uint32_t uid)
 {
 	ResMesh* mesh = nullptr;
 
@@ -408,7 +408,7 @@ ResMesh* ImporterMesh::LoadMeh(const char* name, bool fullpath)
 	}
 	else
 	{
-		mesh = new ResMesh();
+		mesh = new ResMesh(uid);
 		mesh->SetName(name);
 		std::string str;
 

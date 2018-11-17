@@ -54,13 +54,13 @@ public:
 		return true;
 	}
 
-	Type GetType();
-	GameObject* GetParent();
+	Type GetType() const;
+	GameObject* GetParent() const;
 	void SetParent(GameObject* p);
 	void SetActive(bool a);
-	bool GetActive();
+	bool GetActive() const;
 	void Delete();
-	bool CheckDelete();
+	bool CheckDelete() const;
 	bool toDelete = false;
 
 protected:

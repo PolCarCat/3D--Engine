@@ -23,11 +23,10 @@ public:
 
 	void Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference = false);
 	void LookAt(const float3 &Spot);
-	float* GetViewMatrix();
-	float* GetPerspMatrix();
-	float4x4 GetViewMatrixF();
-	float4x4 GetPerspMatrixF();
-	void FocusMeshes();
+	float* GetViewMatrix() const;
+	float* GetPerspMatrix() const;
+	float4x4 GetViewMatrixF() const;
+	float4x4 GetPerspMatrixF() const;
 	float4x4 ResizePerspMatrix(int width, int heigth);
 	void RecalculateFrustrum(int width = 0, int height = 0);
 	void CheckInput(float dt);

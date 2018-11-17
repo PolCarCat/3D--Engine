@@ -106,7 +106,7 @@ void ComponentCamera::UpdateUI()
 void ComponentCamera::CheckInput(float dt)
 {
 
-	if (ImGui::IsMouseHoveringAnyWindow())
+	if (ImGui::IsMouseHoveringAnyWindow() && ImGuizmo::IsOver() && ImGuizmo::IsUsing())
 		return;
 
 	float3 newPos(0, 0, 0);
@@ -114,8 +114,6 @@ void ComponentCamera::CheckInput(float dt)
 	float speed = 8.0f * dt;
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		speed = 50.0f * dt;
-
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) FocusMeshes();
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos.z -= speed;
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos.z += speed;
@@ -157,9 +155,13 @@ void ComponentCamera::CheckInput(float dt)
 
 		if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
 		{
-			//Reference = center
 
-			Reference = { 1,1,1 };
+
+			if (App->scene->selectedObj != nullptr)
+				Reference = App->scene->selectedObj->GetGlobalABB().CenterPoint();
+			else
+				Reference = { 0,0,0 };
+
 			if (!lookingAt)
 			{
 				LookAt(Reference);
@@ -233,23 +235,23 @@ void ComponentCamera::LookAt(const float3 &Spot)
 
 
 // -----------------------------------------------------------------
-float* ComponentCamera::GetViewMatrix()
+float* ComponentCamera::GetViewMatrix() const
 {
 
 	return (float*)ViewMatrix.v;
 }
 
-float * ComponentCamera::GetPerspMatrix()
+float * ComponentCamera::GetPerspMatrix() const
 {
 	return (float*)frustum.ProjectionMatrix().v;
 }
 
-float4x4 ComponentCamera::GetViewMatrixF()
+float4x4 ComponentCamera::GetViewMatrixF() const
 {
 	return ViewMatrix;
 }
 
-float4x4 ComponentCamera::GetPerspMatrixF()
+float4x4 ComponentCamera::GetPerspMatrixF() const
 {
 	return frustum.ProjectionMatrix();
 }
@@ -262,23 +264,7 @@ void ComponentCamera::CalculateViewMatrix()
 }
 
 
-void ComponentCamera::FocusMeshes()
-{
-	//if (App->renderer3D->meshes.size() == 0)
-	//	return;
 
-	//float3 centerf = App->renderer3D->GetMeshesCenter();
-	//AABB gAABB = App->renderer3D->GetMeshesAABB();
-	//float3 centerv = { centerf.x, centerf.y, centerf.z };
-
-
-	//transform.position.z = centerv.z;
-	//transform.position.x = gAABB.MaxX() - (gAABB.MinX() * 2);
-	//transform.position.y = gAABB.MaxY() - (gAABB.MinY() * 2);
-
-	//LookAt(centerv);
-
-}
 
 float4x4 ComponentCamera::ResizePerspMatrix(int width, int height)
 {

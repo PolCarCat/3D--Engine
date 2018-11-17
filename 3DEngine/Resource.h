@@ -22,6 +22,7 @@ public:
 	const char* GetName() const;
 	void SetName(const char* n);
 	void SetName(std::string n);
+	void SetUuid(uint32_t d);
 	ResType GetType() const;
 	const char* GetFile() const;
 	const char* GetExportedFile() const;

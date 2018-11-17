@@ -206,17 +206,17 @@ bool ComponentMesh::Load(JSON_Object* json, JsonDoc* doc)
 	}
 
 
-	Resource* m  = App->resourceManager->GetResource(meshuuid);
+	Resource* m  = App->resourceManager->GetResourceByName(name);
 
 	if (m == nullptr)
 	{
-		ResMesh* mes = App->loader->meshImporter.LoadMeh(name.c_str());
-	
+		ResMesh* mes = App->loader->meshImporter.LoadMeh(name.c_str(), false, meshuuid);
+		
 		
 		if (mes != nullptr)
 		{
 			mesh = mes;
-			App->resourceManager->AddResource(mes);
+ 			App->resourceManager->AddResource(mes);
 		}
 		else
 		{

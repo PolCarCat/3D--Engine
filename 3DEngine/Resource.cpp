@@ -3,7 +3,7 @@
 
 Resource::Resource(uint32_t UUID, ResType _type)
 {
-	if (uuid == 0)
+	if (UUID == 0)
 		uuid = pcg32_random();
 	else
 		uuid = UUID;
@@ -37,6 +37,11 @@ void Resource::SetName(const char * n)
 void Resource::SetName(std::string n)
 {
 	name = n;
+}
+
+void Resource::SetUuid(uint32_t d)
+{
+	uuid = d;
 }
 
 ResType Resource::GetType() const

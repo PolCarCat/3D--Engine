@@ -12,12 +12,12 @@ Component::~Component()
 }
 
 
-Type Component::GetType()
+Type Component::GetType() const
 { 
 	return type;
 }
 
-GameObject* Component::GetParent() 
+GameObject* Component::GetParent() const
 { 
 	return parent; 
 }
@@ -27,7 +27,7 @@ void Component::SetActive(bool a)
 	active = a; 
 }
 
-bool Component::GetActive() 
+bool Component::GetActive() const
 { 
 	return active; 
 }
@@ -51,7 +51,7 @@ void Component::Delete()
 	toDelete = true;
 }
 
-bool Component::CheckDelete()
+bool Component::CheckDelete() const
 {
 	return toDelete;
 }
