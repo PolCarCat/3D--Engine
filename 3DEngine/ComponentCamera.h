@@ -31,6 +31,7 @@ public:
 	void RecalculateFrustrum(int width = 0, int height = 0);
 	void CheckInput(float dt);
 	bool CheckInside(const ResMesh m);
+	void UpdateTransform();
 
 
 	float3  Reference;

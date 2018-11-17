@@ -50,7 +50,7 @@ bool ComponentMesh::Update()
 	
 	glPopMatrix();
 
-	if (drawBB)
+	if (parent->GetDrawBB())
 	{
 		App->renderer3D->DrawAABB(parent->GetGlobalABB());
 		App->renderer3D->DrawOBB(parent->GetOBB(), { 1.0f, 0.0f, 1.0f, 1.0f });
@@ -75,7 +75,7 @@ void ComponentMesh::UpdateUI()
 		ImGui::NewLine();
 
 		if (ImGui::Checkbox("Draw Normals", &drawNormals));
-		if (ImGui::Checkbox("Draw Bounding Box", &drawBB));
+		
 
 		ImGui::NewLine();
 

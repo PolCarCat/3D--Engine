@@ -22,8 +22,8 @@ void SceneLoader::LoadScene(const char* path, GameObject* root)
 		JSON_Object* mainobj = doc.GetObj("Properties");
 		App->scene->SetName(json_object_dotget_string(mainobj, "Name"));
 
-		JSON_Object* ghostcamobj = doc.GetObj("Ghost Cam");
-		App->scene->GetGhostCam()->Load(ghostcamobj, &doc);
+		//JSON_Object* ghostcamobj = doc.GetObjObj(mainobj, "Ghost Cam");
+		//App->scene->GetGhostCam()->Load(ghostcamobj, &doc);
 
 		JSON_Array* objects = doc.GetAr("Objects");
 		uint i = 0;
@@ -60,8 +60,8 @@ void SceneLoader::LoadScene(JsonDoc doc)
 		JSON_Object* mainobj = doc.GetObj("Properties");
 		App->scene->SetName(json_object_dotget_string(mainobj, "Name"));
 
-		JSON_Object* ghostcamobj = doc.GetObj("Ghost Cam");
-		App->scene->GetGhostCam()->Load(ghostcamobj, &doc);
+		//JSON_Object* ghostcamobj = doc.GetObjObj(mainobj, "Ghost Cam");
+		//App->scene->GetGhostCam()->Load(ghostcamobj, &doc);
 
 		JSON_Array* objects = doc.GetAr("Objects");
 		uint i = 0;

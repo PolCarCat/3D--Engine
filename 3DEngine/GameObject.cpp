@@ -63,8 +63,6 @@ bool GameObject::Update()
 		(*item)->Update();
 	}
 
-	if (selected)
-		App->renderer3D->DrawAABB(globalABB);
 	
 	return true;
 }
@@ -127,6 +125,7 @@ void GameObject::UpdateUI()
 	if (s != staticobj)
 		SetStatic(staticobj);
 
+	if (ImGui::Checkbox("Draw Bounding Box", &drawBB));
 
 
 	ImGui::NewLine();
@@ -204,6 +203,11 @@ void GameObject::Delete()
 bool GameObject::CheckDelete() const
 {
 	return toDelete;
+}
+
+bool GameObject::GetDrawBB() const
+{
+	return drawBB;
 }
 
 bool GameObject::GetActive() const
@@ -637,11 +641,14 @@ void GameObject::Select()
 		App->scene->selectedObj->Deselect();
 	selected = true;
 	App->scene->selectedObj = this;
+	drawBB = true;
+	
 }
 
 void GameObject::Deselect()
 {
 	selected = false;
+	drawBB = false;
 }
 
 bool GameObject::IsSelected() const

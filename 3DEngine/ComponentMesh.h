@@ -22,7 +22,6 @@ public:
 	bool Load(JSON_Object* json, JsonDoc* doc);
 
 	bool draw = true;
-	bool drawBB = false;
 	bool drawNormals = false;
 	ResMesh* mesh;
 	ComponentMaterial* material = nullptr;

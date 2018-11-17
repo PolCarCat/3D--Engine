@@ -64,7 +64,7 @@ bool ComponentCamera::CleanUp()
 // -----------------------------------------------------------------
 bool ComponentCamera::Update()
 {
-
+	UpdateTransform();
 
 	// Recalculate matrix -------------
 	if (drawFrustum)
@@ -338,13 +338,26 @@ bool ComponentCamera::CheckInside(const ResMesh m)
 	return false;
 }
 
+void ComponentCamera::UpdateTransform()
+{
+	if (parent == nullptr) return;
+	transform.position = parent->transform->position;
+	transform.rotation = parent->transform->rotation;
+	
+	frustum.pos = transform.position;
+
+	frustum.front = transform.rotation.Mul({ 1,0,0 });
+	frustum.up = (transform.rotation.Mul({ 0,1,0 }));
+
+}
+
 bool ComponentCamera::Save(JSON_Object* json, JsonDoc* doc)
 {
 	json_object_dotset_number(json, "Type", type);
 	json_object_dotset_boolean(json, "Active", active);
-	json_object_dotset_number(json, "Near Plane", nearDistance);
-	json_object_dotset_number(json, "Far Plane", farDistance);
-	json_object_dotset_number(json, "FOV", fovy);
+	json_object_dotset_number(json, "Near Plane", frustum.nearPlaneDistance);
+	json_object_dotset_number(json, "Far Plane", frustum.farPlaneDistance);
+	json_object_dotset_number(json, "FOV", frustum.verticalFov);
 	
 	return true;
 }
@@ -353,8 +366,12 @@ bool ComponentCamera::Load(JSON_Object* json, JsonDoc* doc)
 {
 	active = json_object_dotget_boolean(json, "Active");
 	nearDistance = json_object_dotget_number(json, "Near Plane");
-	farDistance = json_object_dotget_number(json, "Far Plane");
-	active = json_object_dotget_number(json, "FOV");
+ 	farDistance = json_object_dotget_number(json, "Far Plane");
+	fovy = json_object_dotget_number(json, "FOV");
+
+	frustum.nearPlaneDistance = nearDistance;
+	frustum.farPlaneDistance = farDistance;
+	frustum.verticalFov = fovy;
 	return true;
 }
 

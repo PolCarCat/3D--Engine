@@ -60,9 +60,8 @@ bool ModuleScene::Start()
 update_status ModuleScene::Update(float dt)
 {
 
-	if (!currentCam->locked)
-		currentCam->CheckInput(dt);
 
+	ghostcam->CheckInput(dt);
 	ghostcam->Update();
 	//root.CalcGlobalTransform();
 	root.Update();

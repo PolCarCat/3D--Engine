@@ -48,6 +48,7 @@ public:
 	OBB GetOBB() const;
 	void Delete();
 	bool CheckDelete() const;
+	bool GetDrawBB() const;
 
 	uint32_t GetUUID() const;
 	GameObject* GetObjByUUID(uint32_t id);
@@ -80,6 +81,7 @@ private:
 	bool active = true;
 	bool staticobj = false;
 	bool toDelete = false;
+	bool drawBB = false;
 
 	std::string name;
 	uint32_t uuid = 0;
