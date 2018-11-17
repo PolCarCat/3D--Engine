@@ -201,12 +201,12 @@ void GameObject::Delete()
 	toDelete = true;
 }
 
-bool GameObject::CheckDelete()
+bool GameObject::CheckDelete() const
 {
 	return toDelete;
 }
 
-bool GameObject::GetActive()
+bool GameObject::GetActive() const
 {
 	return active;
 }
@@ -216,7 +216,7 @@ void GameObject::SetActive(bool b)
 	active = b;
 }
 
-const char* GameObject::GetName()
+const char* GameObject::GetName() const
 {
 	return name.c_str();
 }
@@ -254,7 +254,7 @@ void GameObject::AddGameObject(GameObject* obj)
 	
 }
 
-GameObject* GameObject::GetParent()
+GameObject* GameObject::GetParent() const
 {
 	return parent;
 }
@@ -385,7 +385,7 @@ void GameObject::AddBox(AABB b)
 		localABB.Enclose(b);
 }
 
-bool GameObject::GetStatic()
+bool GameObject::GetStatic() const
 {
 	return staticobj;
 }
@@ -400,17 +400,17 @@ void GameObject::SetStatic(bool b)
 		App->scene->quadTree.RemoveObject(this);
 }
 
-AABB GameObject::GetLocalABB()
+AABB GameObject::GetLocalABB() const
 {
 	return localABB;
 }
 
-AABB GameObject::GetGlobalABB()
+AABB GameObject::GetGlobalABB() const
 {
 	return globalABB;
 }
 
-OBB GameObject::GetOBB()
+OBB GameObject::GetOBB() const
 {
 	return oBB;
 }
@@ -444,7 +444,7 @@ void GameObject::UpdateNewComWindow()
 
 
 
-uint32_t GameObject::GetUUID()
+uint32_t GameObject::GetUUID() const
 {
 	return uuid;
 }
@@ -644,7 +644,7 @@ void GameObject::Deselect()
 	selected = false;
 }
 
-bool GameObject::IsSelected()
+bool GameObject::IsSelected() const
 {
 	return selected;
 }

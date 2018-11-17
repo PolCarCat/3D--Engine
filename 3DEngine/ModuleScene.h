@@ -24,11 +24,11 @@ public:
 	void DeleteGameObject(GameObject* obj);
 	void SetCurCam(ComponentCamera* cam);
 	void CreateMaterial();
-	ComponentCamera* GetCurCam();
-	ComponentCamera* GetGhostCam();
+	ComponentCamera* GetCurCam() const;
+	ComponentCamera* GetGhostCam() const;
 	ComponentMaterial* CheckMaterial(const char* name);
 
-	const char* GetName();
+	const char* GetName() const;
 	void SetName(const char* n);
 
 	GameObject* selectedObj = nullptr;

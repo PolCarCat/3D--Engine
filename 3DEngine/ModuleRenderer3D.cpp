@@ -215,6 +215,11 @@ bool ModuleRenderer3D::CleanUp()
 }
 
 
+void ModuleRenderer3D::SetUseGhostCam(bool s)
+{
+	useGhostCam = s;
+}
+
 void ModuleRenderer3D::OnResize(int width, int height)
 {
 	ComponentCamera* cam;

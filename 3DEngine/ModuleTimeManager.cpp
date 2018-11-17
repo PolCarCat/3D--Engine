@@ -1,4 +1,4 @@
-//#include "Application.h"
+#include "Application.h"
 #include "ModuleTimeManager.h"
 #include "SceneLoader.h"
 
@@ -52,7 +52,9 @@ void ModuleTimeManager::StartGame()
 	realTime.Start();
 	gameTime = 0;
 	playing = true;
+	
 
+	App->renderer3D->SetUseGhostCam(false);
 	serializedScene = SceneLoader::SerializeScene();
 }
 
@@ -62,10 +64,12 @@ void ModuleTimeManager::Reset()
 	playing = false;
 	realTime.SetZero();
 
+
+	App->renderer3D->SetUseGhostCam(true);
 	SceneLoader::LoadScene(serializedScene);
 }
 
-float ModuleTimeManager::GetRealTime()
+float ModuleTimeManager::GetRealTime() const
 {
 	float rt = realTime.ReadSec();
 
@@ -75,26 +79,26 @@ float ModuleTimeManager::GetRealTime()
 	return rt;
 }
 
-float ModuleTimeManager::GetGameTime()
+float ModuleTimeManager::GetGameTime() const
 {
 	return gameTime;
 }
-float ModuleTimeManager::GetTimeScale()
+float ModuleTimeManager::GetTimeScale() const
 {
 	return timeScale;
 }
 
-float ModuleTimeManager::GetDeltaTime()
+float ModuleTimeManager::GetDeltaTime() const
 {
 	return deltaTime;
 }
 
-float ModuleTimeManager::GetRealDeltaTime()
+float ModuleTimeManager::GetRealDeltaTime() const
 {
 	return realDeltaTime;
 }
 
-bool ModuleTimeManager::GetPlaying()
+bool ModuleTimeManager::GetPlaying() const
 {
 	return playing;
 }

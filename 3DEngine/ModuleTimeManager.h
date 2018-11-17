@@ -23,12 +23,12 @@ public:
 	void StartGame();
 	void Reset();
 
-	float GetRealTime();
-	float GetGameTime();
-	float GetTimeScale();
-	float GetDeltaTime();
-	float GetRealDeltaTime();
-	bool GetPlaying();
+	float GetRealTime() const;
+	float GetGameTime() const;
+	float GetTimeScale() const;
+	float GetDeltaTime() const;
+	float GetRealDeltaTime() const;
+	bool GetPlaying() const;
 
 	void SetTimeScale(float ts);
 	void AddTimeScale(float ts);

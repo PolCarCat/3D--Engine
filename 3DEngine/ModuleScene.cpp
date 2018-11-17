@@ -139,12 +139,12 @@ ComponentMaterial* ModuleScene::CheckMaterial(const char* name)
 	return nullptr;
 }
 
-ComponentCamera* ModuleScene::GetCurCam()
+ComponentCamera* ModuleScene::GetCurCam() const
 {
 	return currentCam;
 }
 
-ComponentCamera* ModuleScene::GetGhostCam()
+ComponentCamera* ModuleScene::GetGhostCam() const
 {
 	return ghostcam;
 }
@@ -159,7 +159,7 @@ void ModuleScene::SetCurCam(ComponentCamera* cam)
 }
 
 
-const char*  ModuleScene::GetName()
+const char*  ModuleScene::GetName() const
 {
 	return name.c_str();
 }

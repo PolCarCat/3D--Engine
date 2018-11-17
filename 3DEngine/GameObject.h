@@ -35,33 +35,33 @@ public:
 	bool CheckIfContained(GameObject* obj);
 
 	//Self Properties
-	bool GetActive();
+	bool GetActive() const;
 	void SetActive(bool b);
-	const char* GetName();
+	const char* GetName() const;
 	void SetName(const char* n);
 	void SetName(std::string n);
 	void AddBox(AABB b);
-	bool GetStatic();
+	bool GetStatic() const;
 	void SetStatic(bool b);
-	AABB GetLocalABB();
-	AABB GetGlobalABB();
-	OBB GetOBB();
+	AABB GetLocalABB() const;
+	AABB GetGlobalABB() const;
+	OBB GetOBB() const;
 	void Delete();
-	bool CheckDelete();
+	bool CheckDelete() const;
 
-	uint32_t GetUUID();
+	uint32_t GetUUID() const;
 	GameObject* GetObjByUUID(uint32_t id);
 	void IsPickedABB(LineSegment picking, std::vector<GameObject*> &vec);
 
 	void Save(JSON_Array* objects, JsonDoc* doc);
 	bool Load(JSON_Object* json, JsonDoc* doc);
 
-	GameObject* GetParent();
+	GameObject* GetParent() const;
 	void SetParent(GameObject* p, bool changeGlobal = false);
 	void CalcGlobalTransform();
 	void Select();
 	void Deselect();
-	bool IsSelected();
+	bool IsSelected() const;
 
 	GameObject* Copy();
 

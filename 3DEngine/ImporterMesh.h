@@ -42,7 +42,6 @@ public:
 	void SaveMeshAsMeh(ResMesh* m);
 	ResMesh* LoadMeh(const char* name, bool fullpath = false, uint32_t uuid = 0);
 
-	float4x4 GetMatrix(aiMatrix4x4 m);
 
 private:
 	std::string currentPath;

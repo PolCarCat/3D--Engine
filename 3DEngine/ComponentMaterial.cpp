@@ -36,13 +36,13 @@ void ComponentMaterial::SetName(std::string n)
 	name = n;
 }
 
-const char* ComponentMaterial::GetName()
+const char* ComponentMaterial::GetName() const
 {
 	return name.c_str();
 }
 
 
-ResTexture* ComponentMaterial::GetTexture()
+ResTexture* ComponentMaterial::GetTexture() const
 {
 	return tex;
 }

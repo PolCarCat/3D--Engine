@@ -474,20 +474,6 @@ ResMesh* ImporterMesh::LoadMeh(const char* name, bool fullpath, uint32_t uid)
 	return mesh;
 }
 
-float4x4 ImporterMesh::GetMatrix(aiMatrix4x4 m)
-{
-	float values[16] =
-	{
-		m.a1, m.a2, m.a3, m.a4,
-		m.b1, m.b2, m.b3, m.b4,
-		m.c1, m.c2, m.c3, m.c4,
-		m.d1, m.d2, m.d3, m.d4
-	};
-
-	float4x4 newmat;
-	newmat.Set(values);
-	return newmat;
-}
 
 
 void LogAssimp(const char* c1, char* c2)

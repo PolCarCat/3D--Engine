@@ -22,8 +22,8 @@ public:
 
 	void SetName(const char* n);
 	void SetName(std::string n);
-	const char* GetName();
-	ResTexture* GetTexture();
+	const char* GetName() const;
+	ResTexture* GetTexture() const;
 	void SetTexture(ResTexture* tex);
 	bool texEnabled = true;
 	Color color;
