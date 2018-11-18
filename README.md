@@ -19,8 +19,10 @@ Instructions:
 	-Windows:
 		·Configuration:	Framerate, window and renderer management. Hardware and memory management information.
 		·Console:	Information about loading objects, textures... and errors.
-		·Element:	Information about loaaded element and texture transformation.
+		·Element:	Information about Selected Game Object.
 		·Objects:	List of loaded objects.
+		·Materials:	Edit the selected Material
+		·Time Manager:	Enters in game mode.
 		·Test Window:	Random Number Generator. Show/Hide primitives.
 
 	-Help:
@@ -34,12 +36,24 @@ Instructions:
 		·Mouse wheel:	Zoom in/out.
 		·F:		Focus camera on geometry.
 		·Right click:	Orbitate camera (Hold Alt to orbitate around object).
+		·LCNTRL + S : 	Save Scene
+		·LCNTRL + L :	Load Scene
+		·LCNTRL + X :	Clear Scene
+		·LCNTRL + D :	Duplicate Selected Game Object
+		·DELETE	:	Delete Selected Game Object
 
 ----------------------------
-Innovation:
-
-	-Texture transformation.
-	-Window Docking.
+Tasks:
+·Game Objects & Hierarcy:Pol
+·Components:		Pol
+·Binary Format:		Pol
+·Camera:		Pol
+·QuadTree:		Genís
+·Scene Serialization:	Pol
+·Mouse Picking:		Genís
+·Time Manager:		Pol
+·Resource Manager:	Pol
+·Guizmo			Pol
 
 ----------------------------
 MIT License
