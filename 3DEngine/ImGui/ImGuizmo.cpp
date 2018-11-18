@@ -1693,7 +1693,7 @@ namespace ImGuizmo
          else
          {
             float scaleDelta = (io.MousePos.x - gContext.mSaveMousePosx)  * 0.01f;
-            gContext.mScale.Set(max(1.f + scaleDelta, 0.001f));
+            gContext.mScale.Set(max(1.f + scaleDelta, 0.01f));
          }
 
          // snap

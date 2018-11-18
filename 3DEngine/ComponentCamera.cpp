@@ -106,8 +106,8 @@ void ComponentCamera::UpdateUI()
 void ComponentCamera::CheckInput(float dt)
 {
 
-	if (ImGui::IsMouseHoveringAnyWindow() && ImGuizmo::IsOver() && ImGuizmo::IsUsing())
-		return;
+	if (ImGui::IsMouseHoveringAnyWindow()) return;
+	if (ImGuizmo::IsOver()) return;
 
 	float3 newPos(0, 0, 0);
 
