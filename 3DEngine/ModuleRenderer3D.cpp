@@ -6,7 +6,7 @@
 #include "ResMesh.h"
 #include "ComponentMesh.h"
 #include "ComponentCamera.h"
-
+#include "QuadTree.h"
 
 #include "Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
@@ -141,6 +141,9 @@ bool ModuleRenderer3D::Init()
 	//sphere.Create();
 	//cylinder.Create();
 	//capsule.Create();
+
+	// Fill static list
+	//for (vector<GameObject*>::iterator it = App->scene->root.objChilds.begin(); it != App->scene->root.objChilds.end(); ++it)
 
 	return ret;
 }

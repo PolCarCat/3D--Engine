@@ -78,6 +78,8 @@ public:
 	float xx = 0;
 	float yy = 0;
 	float zz = 0;
+	std::vector<GameObject*> staticobjs;
+
 private:
 	bool vsync = false;
 	bool depthTest = true;
