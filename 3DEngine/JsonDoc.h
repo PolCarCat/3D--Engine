@@ -36,8 +36,8 @@ public:
 
 private:
 	std::string		path;
-	json_value_t*	root;
-	json_object_t*	rootObj;
+	json_value_t*	root = nullptr;
+	json_object_t*	rootObj = nullptr;
 
 };
 

@@ -229,6 +229,7 @@ bool ComponentMesh::Load(JSON_Object* json, JsonDoc* doc)
 	{
 		VSLOG("\nUsing repeated mesh with id %d", (int)m->GetUUID())
 		mesh = (ResMesh*)m;
+		mesh->AddInMemory();
 	}
 	else
 		VSLOG("Found resource that should be mesh but it isn't");

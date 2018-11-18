@@ -28,7 +28,7 @@ bool JsonDoc::Init(const char* _path)
 	
 	}
 
-
+	
 	root = json_value_init_object();
 	root = json_parse_file(_path);
 	if (root == nullptr)
@@ -66,6 +66,8 @@ void JsonDoc::CleanUp()
 {
 	json_value_free(root);
 	path.clear();
+	root = nullptr;
+	rootObj = nullptr;
 }
 
 void JsonDoc::Save()

@@ -66,7 +66,10 @@ void ModuleTimeManager::Reset()
 
 
 	App->renderer3D->SetUseGhostCam(true);
+
+	SceneLoader::CleanScene();
 	SceneLoader::LoadScene(serializedScene);
+	serializedScene.CleanUp();
 }
 
 float ModuleTimeManager::GetRealTime() const
