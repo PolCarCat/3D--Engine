@@ -105,19 +105,34 @@ void QuadtreeNode::GenerateChildren()
 
 }
 
+
+void QuadtreeNode::CollectIntersections(std::vector<GameObject*> &objects, math::Frustum frustum)
+{
+	if (frustum.Intersects(bBox))
+	{
+		for (std::list<GameObject*>::const_iterator it = this->objects.begin(); it != this->objects.end(); ++it)
+		{
+			if (frustum.Intersects((*it)->GetGlobalABB()))
+				objects.push_back(*it);
+		}
+		for (int i = 0; i < 4; ++i)
+			if (childs[i] != nullptr) childs[i]->CollectIntersections(objects, frustum);
+	}
+}
+
 void QuadtreeNode::DistributeNode(uint buckedSize)
 {
 	for (std::list<GameObject*>::iterator item = objects.begin(); item != objects.end();)
 	{
 
-		if (!CheckIfChildNeeded(*item) && objects.size() <= buckedSize)
+		if (objects.size() <= buckedSize)
 			++item;
 		else
 		{
 			GenerateChildren();
 			for (int i = 0; i < 4; ++i)
 			{
-				if (childs[i]->bBox.Intersects((*item)->GetLocalABB()))
+				if (childs[i]->bBox.Intersects((*item)->GetGlobalABB()))
 					childs[i]->Insert((*item), buckedSize);
 			}
 			item = objects.erase(item);
