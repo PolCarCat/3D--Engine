@@ -357,7 +357,7 @@ bool ComponentCamera::Save(JSON_Object* json, JsonDoc* doc)
 	json_object_dotset_boolean(json, "Active", active);
 	json_object_dotset_number(json, "Near Plane", frustum.nearPlaneDistance);
 	json_object_dotset_number(json, "Far Plane", frustum.farPlaneDistance);
-	json_object_dotset_number(json, "FOV", frustum.verticalFov);
+	json_object_dotset_number(json, "FOV", fovy);
 	
 	return true;
 }
@@ -371,7 +371,9 @@ bool ComponentCamera::Load(JSON_Object* json, JsonDoc* doc)
 
 	frustum.nearPlaneDistance = nearDistance;
 	frustum.farPlaneDistance = farDistance;
-	frustum.verticalFov = fovy;
+
+
+	RecalculateFrustrum();
 	return true;
 }
 

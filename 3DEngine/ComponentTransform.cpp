@@ -11,6 +11,7 @@ ComponentTransform::ComponentTransform()
 	globalMartix = float4x4::identity;
 	position.Set(0, 0, 0);
 	scale.Set(1, 1, 1);
+	rotation = Quat::identity;
 }
 
 

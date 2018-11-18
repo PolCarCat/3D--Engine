@@ -164,15 +164,15 @@ void PPlane::Create(float x, float y, float z, float d)
 
 void PPlane::Render() const
 {
-	glLineWidth(1.0f);
+	glLineWidth(0.5f);
 	glBegin(GL_LINES);
 
 	for (float i = -depth; i <= depth; i += 1.0f)
 	{
-		glVertex3f(i, 0.0f, -depth);
-		glVertex3f(i, 0.0f, depth);
-		glVertex3f(-depth, 0.0f, i);
-		glVertex3f(depth, 0.0f, i);
+		glVertex3f(i, -0.1f, -depth);
+		glVertex3f(i, -0.1f, depth);
+		glVertex3f(-depth, -0.1f, i);
+		glVertex3f(depth, -0.1f, i);
 	}
 
 	glEnd();

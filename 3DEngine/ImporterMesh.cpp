@@ -111,6 +111,7 @@ GameObject* ImporterMesh::LoadNode(aiNode* n, const aiScene* scene, GameObject* 
 		nodeobj->transform->CalcMatrix();
 
 		nodeobj->transform->localMartix = nodeobj->transform->localMartix * GetMatrix(mat);
+		nodeobj->transform->CalcVectors();
 		mat = aiMatrix4x4();
 
 		if (n->mNumMeshes != 0)

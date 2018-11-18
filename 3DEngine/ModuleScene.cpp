@@ -187,7 +187,7 @@ void ModuleScene::UpdateShorcuts()
 			App->imgui->scene->enabled = true;
 			App->imgui->scene->save = false;
 		}
-		if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
 			SceneLoader::CleanScene();
 
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)

@@ -134,7 +134,7 @@ bool ModuleRenderer3D::Init()
 	// Create Primitives
 
 	//cube.Create();
-	plane.Create();
+	plane.Create(0.0f, 0.0f, 0.0f, 100.0f);
 	//axis.Create();
 	//line.Create(3.0f);
 	//arrow.Create(3.0f);
