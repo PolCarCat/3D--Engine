@@ -307,7 +307,8 @@ ComponentMaterial* ImporterMesh::LoadMat(aiMaterial* m)
 
 	if (error == aiReturn::aiReturn_SUCCESS)
 	{
-		ComponentMaterial* usedMat = App->scene->CheckMaterial(path.C_Str());
+		std::string name = App->loader->GetFileName(path.C_Str());
+		ComponentMaterial* usedMat = App->scene->CheckMaterial(name.c_str());
 		if (usedMat != nullptr)
 		{
 			mat = usedMat;
@@ -316,7 +317,7 @@ ComponentMaterial* ImporterMesh::LoadMat(aiMaterial* m)
 		{
 			mat = new ComponentMaterial();
 			mat->SetTexture(App->loader->texImporter.LoadTex(fullpath.c_str()));
-			std::string name = App->loader->GetFileName(path.C_Str());
+	
 			mat->SetName(name);
 			App->scene->materials.push_back(mat);
 		}

@@ -79,19 +79,24 @@ void ComponentMaterial::UpdateUI()
 
 
 			ImGui::Columns(1);
-			ImGui::NewLine();
-			ImGui::Text("Transformation");
-			ImGui::Separator();
-			ImGui::SliderFloat("Position X", &tex->position.x, 0, 1);
-			ImGui::SliderFloat("Position Y", &tex->position.y, 0, 1);
-			ImGui::SliderFloat("Scale X", &tex->scale.x, 0, 10);
-			ImGui::SliderFloat("Scale Y", &tex->scale.y, 0, 10);
+			//ImGui::NewLine();
+			//ImGui::Text("Transformation");
+			//ImGui::Separator();
+			//ImGui::SliderFloat("Position X", &tex->position.x, 0, 1);
+			//ImGui::SliderFloat("Position Y", &tex->position.y, 0, 1);
+			//ImGui::SliderFloat("Scale X", &tex->scale.x, 0, 10);
+			//ImGui::SliderFloat("Scale Y", &tex->scale.y, 0, 10);
 			ImGui::SliderFloat("Angle", &tex->angle, 0, 360);
 			uint margin = -20;
 		}
-	
-		float s = ImGui::GetWindowContentRegionWidth() - 20;
-		ImGui::Image((void*)tex->id, ImVec2(s, s), ImVec2(0, 1), ImVec2(1, 0));
+		
+		float s = ImGui::GetWindowContentRegionWidth();
+		if (!texEnabled)
+			ImGui::Image((void*)tex->id, ImVec2(80, 80), ImVec2(0, 1), ImVec2(1, 0));
+		
+		else
+			ImGui::Image((void*)tex->id, ImVec2(s - 20, s - 20), ImVec2(0, 1), ImVec2(1, 0));
+
 	}
 
 	if (!texEnabled)
