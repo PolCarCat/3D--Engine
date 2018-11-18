@@ -21,18 +21,11 @@ ModuleScene::~ModuleScene()
 // Load assets
 bool ModuleScene::Start()
 {
-	//VLOG("Loading scene assets");
+
 	bool ret = true;
 	
 
-
-	//currentTex = App->loader->LoadTex("Assets/Baker_house.png");
-	//App->loader->LoadFBX("Assets/BakerHouse.fbx");
-
-	//GameObject* bk1 = new GameObject();
-	//bk1->AddCompMesh(App->loader->meshImporter.LoadMeh("Untitled"));
-	//AddGameObject(bk1);
-
+	//Generate Ghost Cam
 	ghostcam = new ComponentCamera(0.5f, FPD, 50.0f);
 	ghostcam->Start();
 	ghostcam->drawFrustum = false;
@@ -40,6 +33,7 @@ bool ModuleScene::Start()
 
 	GameObject* camobj = new GameObject();
 	camobj->SetName("Camera");
+	
 
 	camobj->AddCompCam();
 	AddGameObject(camobj);
@@ -63,7 +57,8 @@ update_status ModuleScene::Update(float dt)
 
 	ghostcam->CheckInput(dt);
 	ghostcam->Update();
-	//root.CalcGlobalTransform();
+
+
 	root.Update();
 	quadTree.Draw();
 
@@ -95,6 +90,8 @@ bool ModuleScene::CleanUp()
 
 	delete ghostcam;
 	ghostcam = nullptr;
+
+	quadTree.CleanUp();
 
 	return true;
 }
@@ -177,22 +174,30 @@ void ModuleScene::UpdateShorcuts()
 
 	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
 	{
+		//Save
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 		{
 			App->imgui->scene->enabled = true;
 			App->imgui->scene->save = true;
 		}
+
+		//Load
 		if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		{
 			App->imgui->scene->enabled = true;
 			App->imgui->scene->save = false;
 		}
+
+		//Clean
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
 			SceneLoader::CleanScene();
 
+		//Copy
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
 			selectedObj->Copy();
 	}
+
+	//Delete
 	if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
 		selectedObj->Delete();
 }

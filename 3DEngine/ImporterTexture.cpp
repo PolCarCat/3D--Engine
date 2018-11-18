@@ -55,6 +55,7 @@ bool ImporterTexture::Save()
 
 uint ImporterTexture::LoadChekerTex()
 {
+	//Generate checker texture
 
 	GLubyte checkImage[CHECKERS_SIZE][CHECKERS_SIZE][4];
 	for (int i = 0; i < CHECKERS_SIZE; i++) {
@@ -292,6 +293,7 @@ void ImporterTexture::SaveTex(ResTexture tex)
 {
 	std::string path = std::string(TEXT_DIR) + tex.GetName() + TEXT_EXTENSION;
 
+	//Check if the files exist
 	if (App->fileSystem.fileExists(path.c_str()))
 		return;
 

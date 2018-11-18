@@ -8,6 +8,7 @@
 #include "ResMesh.h"
 #include "ResTexture.h"
 #include "ComponentMesh.h"
+#include "SceneLoader.h"
 
 #include "Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
@@ -81,8 +82,10 @@ update_status ModuleLoader::PostUpdate(float dt)
 			break;
 		case PNG:
 		case DDS:
-			//App->imgui->element->curMesh->tex.CleanUp();
 			App->loader->texImporter.LoadTex(droppedFile);
+			break;
+		case JSON:
+			SceneLoader::LoadScene(droppedFile, &App->scene->root);
 			break;
 		case FNULL:
 		default:

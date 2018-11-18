@@ -237,6 +237,7 @@ ComponentMesh* ImporterMesh::LoadMesh(aiMesh* m, const char* n)
 			}
 		}
 
+		//Load Normals
 		if (m->HasNormals())
 		{
 			mesh->num_normals = m->mNumVertices * 3;
@@ -244,6 +245,7 @@ ComponentMesh* ImporterMesh::LoadMesh(aiMesh* m, const char* n)
 			memcpy(mesh->normals, m->mNormals, sizeof(float) * mesh->num_normals);
 		}
 
+		//Load Color Channels
 		if (m->GetNumColorChannels() != 0)
 		{
 			mesh->num_colors = m->mNumVertices;
@@ -251,6 +253,7 @@ ComponentMesh* ImporterMesh::LoadMesh(aiMesh* m, const char* n)
 			memcpy(mesh->colors, m->mColors, sizeof(float) * mesh->num_colors);
 		}
 
+		//Load UV Channels
 		if (m->GetNumUVChannels() > 0)
 		{
 			mesh->num_textC = m->mNumVertices * 2;
@@ -280,8 +283,9 @@ ComponentMesh* ImporterMesh::LoadMesh(aiMesh* m, const char* n)
 		}
 		else
 		{
-				mesh->CleanUp();
-				delete mesh;
+			VSLOG("Error loading mesh %s", name.c_str());
+			mesh->CleanUp();
+			delete mesh;
 		}
 	}
 
@@ -307,14 +311,18 @@ ComponentMaterial* ImporterMesh::LoadMat(aiMaterial* m)
 
 	if (error == aiReturn::aiReturn_SUCCESS)
 	{
+		//Has Texture 
+
 		std::string name = App->loader->GetFileName(path.C_Str());
 		ComponentMaterial* usedMat = App->scene->CheckMaterial(name.c_str());
 		if (usedMat != nullptr)
 		{
+			//The material already exist
 			mat = usedMat;
 		}
 		else
 		{
+			//Create new material
 			mat = new ComponentMaterial();
 			mat->SetTexture(App->loader->texImporter.LoadTex(fullpath.c_str()));
 	
@@ -325,6 +333,7 @@ ComponentMaterial* ImporterMesh::LoadMat(aiMaterial* m)
 	}
 	else 
 	{
+		//Doesn't have materail but we load the color
 		mat = new ComponentMaterial();
 		mat->SetName(path.C_Str());
 		App->scene->materials.push_back(mat);
@@ -342,6 +351,8 @@ ComponentMaterial* ImporterMesh::LoadMat(aiMaterial* m)
 
 float4x4 ImporterMesh::GetMatrix(aiMatrix4x4 m)
 {
+	//aiMatrix to float4x4
+
 	float values[16] =
 	{
 		m.a1, m.a2, m.a3, m.a4,
@@ -373,18 +384,21 @@ void ImporterMesh::SaveMeshAsMeh(ResMesh* m)
 	last += bytes;
 	count += bytes;
 
+	//Vertex
 	bytes = sizeof(float)*m->num_vertex * 3;
 	memcpy(last, m->vertex, bytes);
 
 	last += bytes;
 	count += bytes;
 
+	//Indices
 	bytes = sizeof(uint)*m->num_indice;
 	memcpy(last, m->indice, bytes);
 
 	last += bytes;
 	count += bytes;
 
+	//Normals
 	bytes = sizeof(float)*m->num_vertex * 3;
 	memcpy(last, m->normals, bytes);
 
@@ -393,6 +407,7 @@ void ImporterMesh::SaveMeshAsMeh(ResMesh* m)
 		last += bytes;
 		count += bytes;
 
+		//Texture Coords
 		bytes = sizeof(float)*m->num_textC;
 		memcpy(last, m->textC, bytes);
 
@@ -463,18 +478,21 @@ ResMesh* ImporterMesh::LoadMeh(const char* name, bool fullpath, uint32_t uid)
 		last += bytes;
 		bytes = sizeof(float)*mesh->num_vertex * 3;
 
+		//Vertex
 		mesh->vertex = new float[mesh->num_vertex * 3];
 		memcpy(mesh->vertex, last, bytes);
 
 		last += bytes;
 		bytes = sizeof(uint)*mesh->num_indice;
 
+		//Indices
 		mesh->indice = new uint[mesh->num_indice];
 		memcpy(mesh->indice, last, bytes);
 
 		last += bytes;
 		bytes = sizeof(float)*mesh->num_vertex * 3;
 
+		//Normals
 		mesh->normals = new float[mesh->num_vertex * 3];
 		memcpy(mesh->normals, last, bytes);
 
@@ -483,6 +501,7 @@ ResMesh* ImporterMesh::LoadMeh(const char* name, bool fullpath, uint32_t uid)
 			last += bytes;
 			bytes = sizeof(float)*mesh->num_textC;
 
+			//Texture Coordinates
 			mesh->textC = new float[mesh->num_textC];
 			memcpy(mesh->textC, last, bytes);
 		}
@@ -521,18 +540,21 @@ ResMesh ImporterMesh::ReloadMesh(const char * path)
 		last += bytes;
 		bytes = sizeof(float)*mesh.num_vertex * 3;
 
+		//Vertex
 		mesh.vertex = new float[mesh.num_vertex * 3];
 		memcpy(mesh.vertex, last, bytes);
 
 		last += bytes;
 		bytes = sizeof(uint)*mesh.num_indice;
 
+		//Indices
 		mesh.indice = new uint[mesh.num_indice];
 		memcpy(mesh.indice, last, bytes);
 
 		last += bytes;
 		bytes = sizeof(float)*mesh.num_vertex * 3;
 
+		//Normals
 		mesh.normals = new float[mesh.num_vertex * 3];
 		memcpy(mesh.normals, last, bytes);
 
@@ -541,6 +563,7 @@ ResMesh ImporterMesh::ReloadMesh(const char * path)
 			last += bytes;
 			bytes = sizeof(float)*mesh.num_textC;
 
+			//Texture Coords
 			mesh.textC = new float[mesh.num_textC];
 			memcpy(mesh.textC, last, bytes);
 		}
