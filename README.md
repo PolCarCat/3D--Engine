@@ -43,17 +43,25 @@ Instructions:
 		·DELETE	:	Delete Selected Game Object
 
 ----------------------------
+Errors:
+
+-Selecting an item from the UI will raycast the mouse pick and pick behind the window. But if the window is empty will prevent the raycast.
+
+-Scaling with the guizmo resets the rotation.
+
+----------------------------
 Tasks:
-·Game Objects & Hierarcy:Pol
-·Components:		Pol
-·Binary Format:		Pol
-·Camera:		Pol
-·QuadTree:		Genís
-·Scene Serialization:	Pol
-·Mouse Picking:		Genís
-·Time Manager:		Pol
-·Resource Manager:	Pol
-·Guizmo			Pol
+
+	-Game Objects & Hierarcy:Pol
+	-Components:		Pol
+	-Binary Format:		Pol
+	-Camera:		Pol
+	-QuadTree:		Genís
+	-Scene Serialization:	Pol
+	-Mouse Picking:		Genís
+	-Time Manager:		Pol
+	-Resource Manager:	Pol
+	-Guizmo			Pol
 
 ----------------------------
 MIT License
