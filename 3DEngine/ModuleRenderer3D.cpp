@@ -142,9 +142,6 @@ bool ModuleRenderer3D::Init()
 	//cylinder.Create();
 	//capsule.Create();
 
-	// Fill static list
-	//for (vector<GameObject*>::iterator it = App->scene->root.objChilds.begin(); it != App->scene->root.objChilds.end(); ++it)
-
 	return ret;
 }
 
@@ -193,6 +190,23 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	//	capsule.Render();
 
 
+	// Fill objets to draw list
+	if (App->scene->quadTree.GetRoot() != nullptr)
+	{
+		App->scene->quadTree.GetRoot()->CollectIntersections(objsInQT, cam->GetFrustum());
+	}
+
+	for (vector<GameObject*>::iterator it = objsInQT.begin(); it != objsInQT.end(); ++it)
+	{
+		if (cam->CheckInside((*it)->GetGlobalABB()))
+			objsToDraw.push_back((*it));
+	}
+
+	for (vector<GameObject*>::iterator it = App->scene->root.objChilds.begin(); it != App->scene->root.objChilds.end(); ++it)
+	{
+		if (!(*it)->GetStatic() && cam->CheckInside((*it)->GetGlobalABB()))
+			objsToDraw.push_back((*it));
+	}
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -303,6 +317,17 @@ void ModuleRenderer3D::EnableWireframe(bool enable)
 {
 	wireframe = enable;
 	wireframe == true ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+bool ModuleRenderer3D::IsContained(GameObject* obj)
+{
+	for (vector<GameObject*>::iterator it = objsToDraw.begin(); it != objsToDraw.end(); ++it)
+	{
+		if ((*it) == obj)
+			return true;
+	}
+
+	return false;
 }
 
 

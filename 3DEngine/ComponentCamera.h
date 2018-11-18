@@ -25,6 +25,7 @@ public:
 	void LookAt(const float3 &Spot);
 	float* GetViewMatrix() const;
 	float* GetPerspMatrix() const;
+	math::Frustum GetFrustum() const;
 	float4x4 GetViewMatrixF() const;
 	float4x4 GetPerspMatrixF() const;
 	float4x4 ResizePerspMatrix(int width, int heigth);

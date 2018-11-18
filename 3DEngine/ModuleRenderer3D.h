@@ -54,6 +54,7 @@ public:
 	bool GetColorMat() { return colorMaterial; };
 	bool GetTexture2D() { return texture2D; };
 	bool GetWireFrame() { return wireframe; };
+	bool IsContained(GameObject* obj);
 
 
 public:
@@ -78,9 +79,10 @@ public:
 	float xx = 0;
 	float yy = 0;
 	float zz = 0;
-	std::vector<GameObject*> staticobjs;
+	std::vector<GameObject*> objsToDraw;
 
 private:
+	std::vector<GameObject*> objsInQT;
 	bool vsync = false;
 	bool depthTest = true;
 	bool cullface = true;

@@ -49,7 +49,7 @@ public:
 	void GenerateTestChildren();
 	void CleanUp();
 	void Reset();
-	
+	QuadtreeNode* GetRoot();
 
 private:
 	uint bucketSize = 1;

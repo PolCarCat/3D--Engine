@@ -263,6 +263,11 @@ float4x4 ComponentCamera::GetPerspMatrixF() const
 	return frustum.ProjectionMatrix();
 }
 
+math::Frustum ComponentCamera::GetFrustum() const
+{
+	return frustum;
+}
+
 // -----------------------------------------------------------------
 void ComponentCamera::CalculateViewMatrix()
 {
@@ -294,9 +299,6 @@ void ComponentCamera::RecalculateFrustrum(int width, int height)
 
 bool ComponentCamera::CheckInside(const AABB m)
 {
-	//THIS function should check BB not the mesh
-	//------------------------------
-
 	math::Sphere sphere;
 	sphere.pos = frustum.CenterPoint();
 	float3 point[8];

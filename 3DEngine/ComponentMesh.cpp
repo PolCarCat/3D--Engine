@@ -37,8 +37,8 @@ bool ComponentMesh::Start()
 
 bool ComponentMesh::Update()
 {
-
-	Draw();
+	if (App->renderer3D->IsContained(this->parent))
+		Draw();
 
 	return true;
 }

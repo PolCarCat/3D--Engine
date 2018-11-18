@@ -267,6 +267,11 @@ void Quadtree::Reset()
 	root->DistributeNode(bucketSize, cap);
 }
 
+QuadtreeNode * Quadtree::GetRoot()
+{
+	return root;
+}
+
 void Quadtree::DistributeTree()
 {
 	root->DistributeNode(bucketSize, cap);
