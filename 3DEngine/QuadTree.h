@@ -5,6 +5,7 @@
 #include "Globals.h"
 #include "MathGeoLib/MathGeoLib.h"
 #include <list>
+#define MAXIUMDIVISIONS 20
 
 class GameObject;
 
@@ -21,10 +22,11 @@ public:
 	void Draw();
 	void GenerateChildren();
 	void CollectIntersections(std::vector<GameObject*> &objects, math::Frustum frustum);
-	void DistributeNode(uint buckedSize);
-	void Insert(GameObject* obj, uint buckedSize);
+	void DistributeNode(uint buckedSize, uint& cap);
+	void Insert(GameObject* obj, uint buckedSize, uint& cap);
 	void GenerateTestChildren();
 	bool CheckIfChildNeeded(GameObject* obj);
+	void CleanUp();
 
 private:
 	QuadtreeNode * childs[4] = { nullptr };
@@ -45,20 +47,15 @@ public:
 	void Draw();
 	void DistributeTree();
 	void GenerateTestChildren();
-	void TEST() 
-	{
-		AABB b;
-		b.minPoint = { -5, 0, -5 };
-		b.maxPoint = { 5, 5, 5 };
-		root->SetBB(b);
-	}
+	void CleanUp();
+	void Reset();
 	
 
 private:
-	uint bucketSize = 0;
+	uint bucketSize = 1;
 	QuadtreeNode* root = nullptr;
 	uint cap = 0;
-
+	std::list<GameObject*> objects;
 };
 
 #endif // !__QUADTREE_H__

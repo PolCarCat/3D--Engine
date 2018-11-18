@@ -138,6 +138,16 @@ bool WinConfig::Update()
 		ImGui::Text("x = %0.f", App->input->Mx);
 		ImGui::Text("y = %0.f", App->input->My);
 	}
+	if (ImGui::CollapsingHeader("QuadTree"))
+	{
+		if (ImGui::Button("Distribute Tree"))
+			App->scene->quadTree.DistributeTree();
+
+		if (ImGui::Button("Reset Tree"))
+			App->scene->quadTree.Reset();
+		
+	}
+
 	ImGui::End();
 
 	return true;

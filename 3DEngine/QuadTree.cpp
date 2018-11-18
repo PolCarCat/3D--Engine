@@ -12,6 +12,7 @@ QuadtreeNode::QuadtreeNode(QuadtreeNode* _parent)
 	
 	parent = _parent;
 
+
 }
 
 QuadtreeNode::~QuadtreeNode()
@@ -25,9 +26,9 @@ void QuadtreeNode::AddObject(GameObject* o)
 
 
 	if (bBox.minPoint.Equals(0, 0, 0) && bBox.maxPoint.Equals(0, 0, 0))
-		bBox = o->GetLocalABB();
+		bBox = o->GetGlobalABB();
 	else
-		bBox.Enclose(o->GetLocalABB());
+		bBox.Enclose(o->GetGlobalABB());
 	objects.push_back(o);
 
 }
@@ -120,7 +121,7 @@ void QuadtreeNode::CollectIntersections(std::vector<GameObject*> &objects, math:
 	}
 }
 
-void QuadtreeNode::DistributeNode(uint buckedSize)
+void QuadtreeNode::DistributeNode(uint buckedSize, uint& cap)
 {
 	for (std::list<GameObject*>::iterator item = objects.begin(); item != objects.end();)
 	{
@@ -130,20 +131,25 @@ void QuadtreeNode::DistributeNode(uint buckedSize)
 		else
 		{
 			GenerateChildren();
+			cap++;
 			for (int i = 0; i < 4; ++i)
 			{
 				if (childs[i]->bBox.Intersects((*item)->GetGlobalABB()))
-					childs[i]->Insert((*item), buckedSize);
+					childs[i]->Insert((*item), buckedSize, cap);
 			}
 			item = objects.erase(item);
 		}
 	}
 }
 
-void QuadtreeNode::Insert(GameObject* obj, uint buckedSize)
+void QuadtreeNode::Insert(GameObject* obj, uint buckedSize, uint& cap)
 {
+	if (cap < MAXIUMDIVISIONS)
+	{
 		objects.push_back(obj);
-		DistributeNode(buckedSize);			
+		DistributeNode(buckedSize, cap);
+	}
+		
 }
 
 void QuadtreeNode::GenerateTestChildren()
@@ -187,6 +193,22 @@ bool QuadtreeNode::CheckIfChildNeeded(GameObject* obj)
 	return !(checkers[0].Intersects(obj->GetLocalABB()) && checkers[1].Intersects(obj->GetLocalABB()) && checkers[2].Intersects(obj->GetLocalABB()) && checkers[3].Intersects(obj->GetLocalABB()));
 }
 
+void QuadtreeNode::CleanUp()
+{
+	objects.clear();
+	parent = nullptr;
+
+	if (childs[0] != nullptr)
+	{
+		for (uint i = 0; i < 4; i++)
+		{
+			childs[i]->CleanUp();
+			delete childs[i];
+			childs[i] = nullptr;
+		}
+	}
+}
+
 void QuadtreeNode::SetBB(AABB b)
 {
 	bBox = b;
@@ -208,7 +230,7 @@ Quadtree::~Quadtree()
 void Quadtree::AddObject(GameObject* o)
 {
 	root->AddObject(o);
-
+	objects.push_back(o);
 }
 
 void Quadtree::RemoveObject(GameObject* o)
@@ -226,8 +248,27 @@ void Quadtree::GenerateTestChildren()
 	root->GenerateTestChildren();
 }
 
+
+void Quadtree::CleanUp()
+{
+	cap = 0;
+	root->CleanUp();
+	objects.clear();
+}
+
+void Quadtree::Reset()
+{
+	root->CleanUp();
+
+	for (std::list<GameObject*>::iterator item = objects.begin(); item != objects.end(); item++)
+	{
+		root->AddObject(*item);
+	}
+	root->DistributeNode(bucketSize, cap);
+}
+
 void Quadtree::DistributeTree()
 {
-	root->DistributeNode(bucketSize);
+	root->DistributeNode(bucketSize, cap);
 
 }
