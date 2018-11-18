@@ -18,6 +18,7 @@ public:
 	bool Update();
 	void UpdateUI();
 	bool CleanUp();
+	void Draw();
 	bool Save(JSON_Object* json, JsonDoc* doc);
 	bool Load(JSON_Object* json, JsonDoc* doc);
 

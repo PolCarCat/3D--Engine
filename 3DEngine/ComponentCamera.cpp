@@ -292,7 +292,7 @@ void ComponentCamera::RecalculateFrustrum(int width, int height)
 
 }
 
-bool ComponentCamera::CheckInside(const ResMesh m)
+bool ComponentCamera::CheckInside(const AABB m)
 {
 	//THIS function should check BB not the mesh
 	//------------------------------
@@ -310,10 +310,10 @@ bool ComponentCamera::CheckInside(const ResMesh m)
 	}
 	sphere.r = radius.Length();
 
-	if (sphere.Contains(m.boundingBox))
+	if (sphere.Contains(m))
 	{
 		float3 corners[8];
-		m.boundingBox.GetCornerPoints(corners);
+		m.GetCornerPoints(corners);
 		math::Plane planes[6];
 		frustum.GetPlanes(planes);
 		uint in = 8;

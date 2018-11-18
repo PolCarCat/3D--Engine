@@ -37,25 +37,8 @@ bool ComponentMesh::Start()
 
 bool ComponentMesh::Update()
 {
-	if (material != nullptr)
-	App->renderer3D->SetUpMat(material);
 
-	glPushMatrix();
-	glMultMatrixf(parent->transform->globalMartix.Transposed().ptr());
-	
-	mesh->Draw();
-
-	if (drawNormals)
-		mesh->DrawNormals();
-	
-	glPopMatrix();
-
-	if (parent->GetDrawBB())
-	{
-		App->renderer3D->DrawAABB(parent->GetGlobalABB());
-		App->renderer3D->DrawOBB(parent->GetOBB(), { 1.0f, 0.0f, 1.0f, 1.0f });
-	}
-
+	Draw();
 
 	return true;
 }
@@ -132,6 +115,29 @@ bool ComponentMesh::CleanUp()
 	mesh->SubstractInMemory();
 	mesh = nullptr;
 	return true;
+}
+
+void ComponentMesh::Draw()
+{
+	if (material != nullptr)
+		App->renderer3D->SetUpMat(material);
+
+	glPushMatrix();
+	glMultMatrixf(parent->transform->globalMartix.Transposed().ptr());
+
+	mesh->Draw();
+
+	if (drawNormals)
+		mesh->DrawNormals();
+
+	glPopMatrix();
+
+	if (parent->GetDrawBB())
+	{
+		App->renderer3D->DrawAABB(parent->GetGlobalABB());
+		App->renderer3D->DrawOBB(parent->GetOBB(), { 1.0f, 0.0f, 1.0f, 1.0f });
+	}
+
 }
 
 void ComponentMesh::UpdateMatWin()

@@ -30,7 +30,7 @@ public:
 	float4x4 ResizePerspMatrix(int width, int heigth);
 	void RecalculateFrustrum(int width = 0, int height = 0);
 	void CheckInput(float dt);
-	bool CheckInside(const ResMesh m);
+	bool CheckInside(const AABB bb);
 	void UpdateTransform();
 
 
