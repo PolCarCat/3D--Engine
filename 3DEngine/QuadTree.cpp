@@ -259,6 +259,7 @@ void Quadtree::CleanUp()
 void Quadtree::Reset()
 {
 	root->CleanUp();
+	cap = 0;
 
 	for (std::list<GameObject*>::iterator item = objects.begin(); item != objects.end(); item++)
 	{

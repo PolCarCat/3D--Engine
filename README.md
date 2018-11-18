@@ -18,6 +18,7 @@ Instructions:
 
 	-Windows:
 		·Configuration:	Framerate, window and renderer management. Hardware and memory management information.
+				& Quadtree
 		·Console:	Information about loading objects, textures... and errors.
 		·Element:	Information about Selected Game Object.
 		·Objects:	List of loaded objects.
@@ -48,6 +49,12 @@ Errors:
 -Selecting an item from the UI will raycast the mouse pick and pick behind the window. But if the window is empty will prevent the raycast.
 
 -Scaling with the guizmo resets the rotation.
+
+----------------------------
+Inovation:
+
+-Sphere checking before frustum culling
+-Mouse picking static objects optimization through quadTree
 
 ----------------------------
 Tasks:
