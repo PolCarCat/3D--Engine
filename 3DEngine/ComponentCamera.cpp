@@ -107,7 +107,7 @@ void ComponentCamera::CheckInput(float dt)
 {
 
 	if (ImGui::IsMouseHoveringAnyWindow()) return;
-	if (ImGuizmo::IsOver()) return;
+	
 
 	float3 newPos(0, 0, 0);
 
@@ -140,7 +140,7 @@ void ComponentCamera::CheckInput(float dt)
 
 	Reference -= newPos;
 
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && !ImGuizmo::IsOver())
 		Pick((0, 0, 0));
 
 	// Mouse motion ----------------

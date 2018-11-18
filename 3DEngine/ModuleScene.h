@@ -30,6 +30,7 @@ public:
 
 	const char* GetName() const;
 	void SetName(const char* n);
+	void UpdateShorcuts();
 
 	GameObject* selectedObj = nullptr;
 	ComponentMaterial* selectedMat = nullptr;

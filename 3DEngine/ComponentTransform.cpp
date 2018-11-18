@@ -36,16 +36,17 @@ void ComponentTransform::UpdateUI()
 
 	bool changed = false;
 
-	if (ImGui::DragFloat3("Positon", (float*)&position, 0.25f, -100, 100))
+	if (ImGui::DragFloat3("Positon", (float*)&position, 0.25f))
 		changed = true;
 
 	if (ImGui::DragFloat3("Scale", (float*)&scale, 0.25f, -100, 100))
 		changed = true;
 
 
-	float3 rot = rotation.ToEulerXYZ();
-	if (ImGui::DragFloat3("Rotation", (float*)&rot, 0.25f, -100, 100))
+	float3 rot = rotation.ToEulerXYZ() * RADTODEG;
+	if (ImGui::DragFloat3("Rotation", (float*)&rot, 0.25f))
 	{
+		rot *= DEGTORAD;
 		rotation = rotation.FromEulerXYZ(rot.x , rot.y , rot.z);
 		changed = true;
 	}

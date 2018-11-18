@@ -694,5 +694,6 @@ GameObject* GameObject::Copy()
 
 	numCopies++;
 
+	VSLOG("\nCopied Game Object %s", name.c_str());
 	return copy;
 }

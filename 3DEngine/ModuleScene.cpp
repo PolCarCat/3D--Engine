@@ -46,7 +46,7 @@ bool ModuleScene::Start()
 
 	App->renderer3D->OnResize(App->window->w, App->window->h);
 
-	//App->loader->meshImporter.LoadScene("Assets/street/Street environment_V01.fbx");
+	App->loader->meshImporter.LoadScene("Assets/street/Street environment_V01.fbx");
 
 	root.Start();
 	root.SetName("root");
@@ -68,6 +68,9 @@ update_status ModuleScene::Update(float dt)
 	quadTree.Draw();
 
 	App->renderer3D->OnResize(App->window->w, App->window->h);
+
+	UpdateShorcuts();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -166,4 +169,30 @@ const char*  ModuleScene::GetName() const
 void  ModuleScene::SetName(const char* n)
 {
 	name = n;
+}
+
+void ModuleScene::UpdateShorcuts()
+{
+	//Scene Main Shortcuts
+
+	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+		{
+			App->imgui->scene->enabled = true;
+			App->imgui->scene->save = true;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+		{
+			App->imgui->scene->enabled = true;
+			App->imgui->scene->save = false;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+			SceneLoader::CleanScene();
+
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
+			selectedObj->Copy();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
+		selectedObj->Delete();
 }

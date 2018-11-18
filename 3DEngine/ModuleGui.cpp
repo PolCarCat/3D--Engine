@@ -611,25 +611,27 @@ void ModuleGui::DrawGuizmo(GameObject * obj)
 
 	if (ImGuizmo::IsUsing())
 	{
-	//Caping the minimum scale because one error from the guizmo
-	float3 pos;
-	float3 sc;
-	Quat r;
-	objectMat.Decompose(pos, r, sc);
-
-	if (sc.Length() == 0)
-	{
-		sc.Set(0.01f, 0.01f, 0.01f);
-		objectMat.FromTRS(pos, r, sc);
-	}
-
 
 	//Calculate the transformation in local space
 	float4x4 transform = obj->transform->globalMartix.Inverted() * objectMat.Transposed();
 
-	obj->transform->localMartix = obj->transform->localMartix * transform;
+	//Check if the guizmo cap didn't worked
+	float4x4 checkMat = obj->transform->localMartix * transform;
+	if (checkMat.GetScale().Equals(float3::zero))
+	{
+		checkMat.RemoveScale();
+		VSLOG("\nError scaling with guizmo, the scale has been reset");
+	}
+
+
+	//Apply tranfromation
+	obj->transform->localMartix = checkMat;
 	obj->transform->CalcVectors();
 	obj->CalcGlobalTransform();
+	
+	
+
+
 	}
 
 

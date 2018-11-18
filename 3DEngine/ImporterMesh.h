@@ -43,6 +43,7 @@ public:
 	ResMesh* LoadMeh(const char* name, bool fullpath = false, uint32_t uuid = 0);
 	ResMesh ReloadMesh(const char* name);
 
+	float4x4 GetMatrix(aiMatrix4x4 m);
 private:
 	std::string currentPath;
 	aiMatrix4x4 mat;
