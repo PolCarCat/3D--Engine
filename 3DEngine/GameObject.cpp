@@ -656,6 +656,16 @@ bool GameObject::IsSelected() const
 	return selected;
 }
 
+bool GameObject::IsInQT() const
+{
+	return inQT;
+}
+
+void GameObject::SetInQT(bool b)
+{
+	inQT = b;
+}
+
 GameObject* GameObject::Copy()
 {
 	//Copy the object

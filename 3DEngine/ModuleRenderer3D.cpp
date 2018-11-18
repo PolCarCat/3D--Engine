@@ -192,21 +192,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	// Fill objets to draw list
 	if (App->scene->quadTree.GetRoot() != nullptr)
-	{
-		App->scene->quadTree.GetRoot()->CollectIntersections(objsInQT, cam->GetFrustum());
-	}
-
-	for (vector<GameObject*>::iterator it = objsInQT.begin(); it != objsInQT.end(); ++it)
-	{
-		if (cam->CheckInside((*it)->GetGlobalABB()))
-			objsToDraw.push_back((*it));
-	}
-
-	for (vector<GameObject*>::iterator it = App->scene->root.objChilds.begin(); it != App->scene->root.objChilds.end(); ++it)
-	{
-		if (!(*it)->GetStatic() && cam->CheckInside((*it)->GetGlobalABB()))
-			objsToDraw.push_back((*it));
-	}
+		App->scene->quadTree.GetRoot()->CollectIntersections(cam->GetFrustum());
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -319,20 +305,10 @@ void ModuleRenderer3D::EnableWireframe(bool enable)
 	wireframe == true ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
-bool ModuleRenderer3D::IsContained(GameObject* obj)
+bool ModuleRenderer3D::IsUsingGhostCam() const
 {
-	for (vector<GameObject*>::iterator it = objsToDraw.begin(); it != objsToDraw.end(); ++it)
-	{
-		if ((*it) == obj)
-			return true;
-	}
-
-	return false;
+	return useGhostCam;
 }
-
-
-
-
 
 void ModuleRenderer3D::SetUpMat(ComponentMaterial* mat)
 {

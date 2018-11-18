@@ -107,17 +107,17 @@ void QuadtreeNode::GenerateChildren()
 }
 
 
-void QuadtreeNode::CollectIntersections(std::vector<GameObject*> &objects, math::Frustum frustum)
+void QuadtreeNode::CollectIntersections(math::Frustum frustum)
 {
 	if (frustum.Intersects(bBox))
 	{
 		for (std::list<GameObject*>::const_iterator it = this->objects.begin(); it != this->objects.end(); ++it)
 		{
 			if (frustum.Intersects((*it)->GetGlobalABB()))
-				objects.push_back(*it);
+				(*it)->SetInQT(true);
 		}
 		for (int i = 0; i < 4; ++i)
-			if (childs[i] != nullptr) childs[i]->CollectIntersections(objects, frustum);
+			if (childs[i] != nullptr) childs[i]->CollectIntersections(frustum);
 	}
 }
 

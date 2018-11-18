@@ -6,6 +6,7 @@
 #include "ImporterMesh.h"
 #include "GameObject.h"
 #include "ResMesh.h"
+#include "ComponentCamera.h"
 
 #include "Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
@@ -37,8 +38,18 @@ bool ComponentMesh::Start()
 
 bool ComponentMesh::Update()
 {
-	if (App->renderer3D->IsContained(this->parent))
-		Draw();
+	ComponentCamera* cam;
+
+	if (App->renderer3D->IsUsingGhostCam())
+		cam = App->scene->GetGhostCam();
+	else
+		cam = App->scene->GetCurCam();
+
+	if (!this->parent->GetStatic() || this->parent->IsInQT())
+	{
+		if (cam->CheckInside(this->parent->GetGlobalABB()))
+			Draw();
+	}
 
 	return true;
 }

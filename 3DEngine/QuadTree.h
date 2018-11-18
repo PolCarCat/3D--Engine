@@ -21,7 +21,7 @@ public:
 	void SetBB(AABB b);
 	void Draw();
 	void GenerateChildren();
-	void CollectIntersections(std::vector<GameObject*> &objects, math::Frustum frustum);
+	void CollectIntersections(math::Frustum frustum);
 	void DistributeNode(uint buckedSize, uint& cap);
 	void Insert(GameObject* obj, uint buckedSize, uint& cap);
 	void GenerateTestChildren();

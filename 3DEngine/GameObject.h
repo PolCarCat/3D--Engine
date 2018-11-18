@@ -63,6 +63,8 @@ public:
 	void Select();
 	void Deselect();
 	bool IsSelected() const;
+	bool IsInQT() const;
+	void SetInQT(bool b);
 
 	GameObject* Copy();
 
@@ -82,6 +84,7 @@ private:
 	bool staticobj = false;
 	bool toDelete = false;
 	bool drawBB = false;
+	bool inQT = false;
 
 	std::string name;
 	uint32_t uuid = 0;
