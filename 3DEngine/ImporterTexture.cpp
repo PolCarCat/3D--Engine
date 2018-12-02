@@ -161,8 +161,10 @@ ResTexture* ImporterTexture::LoadTex(const char* path, bool isfullpath)
 			ret->id = textureID;
 			ret->SetName(name);
 
+			GLint format = ilGetInteger(IL_IMAGE_FORMAT);
 
-			glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ret->width, ret->heigth, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+
+			glTexImage2D(GL_TEXTURE_2D, 0, format, ret->width, ret->heigth, 0, format, GL_UNSIGNED_BYTE, ilGetData());
 
 			glBindTexture(GL_TEXTURE_2D, 0);
 			VSLOG("\nTexture creation successful, image id %d", textureID);
