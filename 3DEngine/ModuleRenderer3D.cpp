@@ -313,8 +313,8 @@ bool ModuleRenderer3D::IsUsingGhostCam() const
 void ModuleRenderer3D::SetUpMat(ComponentMaterial* mat)
 {
 	
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 0.5f);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	if (mat->texEnabled)
 		glBindTexture(GL_TEXTURE_2D, mat->GetTexture()->id);

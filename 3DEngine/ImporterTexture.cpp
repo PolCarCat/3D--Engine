@@ -130,6 +130,7 @@ ResTexture* ImporterTexture::LoadTex(const char* path, bool isfullpath)
 		ilGenImages(1, &imageID);
 		ilBindImage(imageID);
 		success = ilLoadImage((ILconst_string)newPath.c_str());
+		
 
 
 		if (success)
@@ -141,12 +142,12 @@ ResTexture* ImporterTexture::LoadTex(const char* path, bool isfullpath)
 				iluFlipImage();
 			}
 
+
 			if (!success)
 			{
 				error = ilGetError();
 				VSLOG("\nImage fliping error %d", error);
 			}
-
 
 			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 			glGenTextures(1, &textureID);
@@ -156,12 +157,21 @@ ResTexture* ImporterTexture::LoadTex(const char* path, bool isfullpath)
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-			ret->width = ilGetInteger(IL_IMAGE_WIDTH);
-			ret->heigth = ilGetInteger(IL_IMAGE_HEIGHT);
+			ret->width = ImageInfo.Width;
+			ret->heigth = ImageInfo.Height;
 			ret->id = textureID;
 			ret->SetName(name);
 
-			GLint format = ilGetInteger(IL_IMAGE_FORMAT);
+			//Not sure if it's the proper way to get the alpha but works
+			ILubyte* a = ilGetAlpha(ImageInfo.Type);
+			char* str = (char*)a;
+
+			if (std::string(str) == "")
+				ret->transparent = true;
+			else
+				ret->transparent = false;
+
+			GLint format = ImageInfo.Format;
 
 
 			glTexImage2D(GL_TEXTURE_2D, 0, format, ret->width, ret->heigth, 0, format, GL_UNSIGNED_BYTE, ilGetData());
