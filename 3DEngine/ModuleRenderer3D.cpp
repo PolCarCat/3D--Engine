@@ -169,30 +169,19 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glMatrixMode(GL_MODELVIEW);
 	//glLoadMatrixf(cam->GetOpenGLViewMatrix());
-	//if (drawCube)
-	//	cube.Render();
-	//if (drawLine)
-	//{
-	//	line.Create(3.0f, 15, 0, 0, xx, yy, zz);
-	//	line.Render();
-	//}
-	//if (drawArrow)
-	//	arrow.Render();
-	//if (drawAxis)
-	//	axis.Render();
+
 	if (drawPlane)
 		plane.Render();
-	//if (drawSphere)
-	//	sphere.Render();
-	//if (drawCylinder)
-	//	cylinder.Render();
-	//if (drawCapsule)
-	//	capsule.Render();
 
 
 	// Fill objets to draw list
 	if (App->scene->quadTree.GetRoot() != nullptr)
 		App->scene->quadTree.GetRoot()->CollectIntersections(cam->GetFrustum());
+
+
+	//Draw Meshes queue
+	DrawQueue(opaqueMeshes);
+	DrawQueue(transparentMeshes);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -308,6 +297,30 @@ void ModuleRenderer3D::EnableWireframe(bool enable)
 bool ModuleRenderer3D::IsUsingGhostCam() const
 {
 	return useGhostCam;
+}
+
+void ModuleRenderer3D::ToDraw(ComponentMesh * mesh)
+{
+	ResTexture* tex = mesh->material->GetTexture();
+
+	//Check if the material is transparent
+
+	if (tex != nullptr && tex->transparent)
+		transparentMeshes.push(mesh);
+	
+	else
+		opaqueMeshes.push(mesh);
+}
+
+void ModuleRenderer3D::DrawQueue(std::priority_queue<ComponentMesh*, std::vector<ComponentMesh*>, MeshPriority>& queue)
+{
+	while (queue.empty() == false)
+	{
+		ComponentMesh* first = queue.top();
+
+		first->Draw();
+		queue.pop();
+	}
 }
 
 void ModuleRenderer3D::SetUpMat(ComponentMaterial* mat)

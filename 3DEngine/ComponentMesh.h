@@ -21,6 +21,8 @@ public:
 	void Draw();
 	bool Save(JSON_Object* json, JsonDoc* doc);
 	bool Load(JSON_Object* json, JsonDoc* doc);
+	
+	float DistanceToCamera() const;
 
 	bool draw = true;
 	bool drawNormals = false;

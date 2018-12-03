@@ -7,6 +7,9 @@
 #include "Primitive.h"
 #include "SDL/include/SDL.h"
 #include "ResTexture.h"
+#include "ComponentMesh.h"
+
+#include <queue>
 
 
 #include <list>
@@ -16,7 +19,27 @@
 #define MAX_LIGHTS 8
 
 
-class ComponentMesh;
+//class ComponentMesh;
+
+
+
+struct MeshPriority
+{
+	bool operator()(const ComponentMesh* mesh1, const ComponentMesh* mesh2)const
+	{
+		bool ret = false;
+		if (mesh1->material->GetTexture()->transparent)
+		{
+			ret = mesh1->DistanceToCamera() < mesh2->DistanceToCamera();
+		}
+		else
+		{
+			ret = mesh1->DistanceToCamera() > mesh2->DistanceToCamera();
+		}
+
+		return ret;
+	}
+};
 
 
 class ModuleRenderer3D : public Module
@@ -56,6 +79,10 @@ public:
 	bool GetWireFrame() { return wireframe; };
 	bool IsUsingGhostCam() const;
 
+	//Draw Meshes
+	void ToDraw(ComponentMesh* entity);
+	void DrawQueue(std::priority_queue<ComponentMesh*, std::vector<ComponentMesh*>, MeshPriority>& queue);
+
 public:
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
@@ -65,16 +92,9 @@ public:
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
 public:
-	bool drawCube = false;
-	bool drawLine = false;
-	bool drawArrow = false;
+
 	bool drawPlane = true;
-	bool drawSphere = false;
-	bool drawNormals = false;
-	bool drawBBox = false;
-	bool drawAxis = true;
-	bool drawCylinder = false;
-	bool drawCapsule = false;
+
 	float xx = 0;
 	float yy = 0;
 	float zz = 0;
@@ -89,14 +109,11 @@ private:
 	bool wireframe = false;
 	bool useGhostCam = true;
 
-	//PLine		line;
-	//PAxis		axis;
-	//PCube		cube;
 	PPlane		plane;
-	//PArrow		arrow;
-	//PSphere		sphere;
-	//PCapsule	capsule;
-	//PCylinder	cylinder;
+
+	std::priority_queue<ComponentMesh*, std::vector<ComponentMesh*>, MeshPriority> transparentMeshes;
+	std::priority_queue<ComponentMesh*, std::vector<ComponentMesh*>, MeshPriority> opaqueMeshes;
+
 };
 
 #endif //__MODULERENDERER3D_H__

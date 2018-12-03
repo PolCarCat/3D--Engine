@@ -48,7 +48,7 @@ bool ComponentMesh::Update()
 	if (!this->parent->GetStatic() || this->parent->IsInQT())
 	{
 		if (cam->CheckInside(this->parent->GetGlobalABB()))
-			Draw();
+			App->renderer3D->ToDraw(this);
 	}
 
 	return true;
@@ -254,4 +254,16 @@ bool ComponentMesh::Load(JSON_Object* json, JsonDoc* doc)
 
 	parent->transform->CalcMatrix();
 	return true;
+}
+
+float ComponentMesh::DistanceToCamera() const 
+{
+	ComponentCamera* cam;
+
+	if (App->renderer3D->IsUsingGhostCam())
+		cam = App->scene->GetGhostCam();
+	else
+		cam = App->scene->GetCurCam();
+
+	return parent->transform->position.Distance(cam->transform.position);
 }

@@ -50,13 +50,6 @@ bool WinTest::Update()
 		ImGui::SliderFloat("y", &App->renderer3D->yy, -3, 6);
 		ImGui::SliderFloat("z", &App->renderer3D->zz, -3, 6);
 		ImGui::Checkbox("Grid", &App->renderer3D->drawPlane);
-		ImGui::Checkbox("Axis", &App->renderer3D->drawAxis);
-		ImGui::Checkbox("Cube", &App->renderer3D->drawCube);
-		ImGui::Checkbox("Line", &App->renderer3D->drawLine);
-		ImGui::Checkbox("Arrow", &App->renderer3D->drawArrow);
-		ImGui::Checkbox("Sphere", &App->renderer3D->drawSphere);
-		ImGui::Checkbox("Cylinder", &App->renderer3D->drawCylinder);
-		ImGui::Checkbox("Capsule", &App->renderer3D->drawCapsule);
 	}
 
 	ImGui::End();

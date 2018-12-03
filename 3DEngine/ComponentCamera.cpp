@@ -188,6 +188,7 @@ void ComponentCamera::CheckInput(float dt)
 		frustum.front = transform.rotation.Mul(frustum.front);
 		frustum.up = transform.rotation.Mul(frustum.up);
 
+		transform.position = frustum.pos;
 
 	}
 	if (parent != nullptr)
