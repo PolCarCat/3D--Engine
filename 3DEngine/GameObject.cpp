@@ -666,22 +666,41 @@ void GameObject::SetInQT(bool b)
 	inQT = b;
 }
 
-GameObject* GameObject::Copy()
+GameObject* GameObject::Copy(GameObject* p)
 {
+	//Specifies the parent
+
 	//Copy the object
 	GameObject* copy = new GameObject();
 	copy->SetName(name + "(" + std::to_string(numCopies) + ")");
-	parent->AddGameObject(copy);
 
+
+	if (p == nullptr)
+		copy->SetParent(parent);
+
+	else
+		copy->SetParent(p);
+
+	//Set up BB's
+	copy->localABB = localABB;
+	copy->CalcGlobalTransform();
 
 	//Create New components
 	for (std::vector<Component*>::iterator item = compChilds.begin(); item != compChilds.end(); item++)
 	{
 		if ((*item)->GetType() == TRANSFORM)
+		{
 			copy->transform = new ComponentTransform(*transform);
+			copy->transform->ForceParent(copy);
+
+		}		
 		else if ((*item)->GetType() == MESH)
 		{
-			ComponentMesh * m = new ComponentMesh(*(ComponentMesh*)(*item));
+			ComponentMesh * m = new ComponentMesh();
+
+			m->material = ((ComponentMesh*)(*item))->material;
+			m->mesh = ((ComponentMesh*)(*item))->mesh;
+
 			m->SetParent(copy);
 			m->mesh->AddInMemory();
 		}
@@ -697,8 +716,7 @@ GameObject* GameObject::Copy()
 	//Copy object childs
 	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end(); item++)
 	{
-		GameObject* newchild = (*item)->Copy();
-		newchild->SetParent(copy);
+		GameObject* newchild = (*item)->Copy(copy);
 
 	}
 

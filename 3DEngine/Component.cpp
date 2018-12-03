@@ -43,7 +43,11 @@ void Component::SetParent(GameObject* p)
 	parent->compChilds.push_back(this);
 
 
-	//UNFINISHED Set this to parent childs
+}
+
+void Component::ForceParent(GameObject * p)
+{
+	parent = p;
 }
 
 void Component::Delete()

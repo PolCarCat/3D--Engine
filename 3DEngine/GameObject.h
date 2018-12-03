@@ -66,7 +66,7 @@ public:
 	bool IsInQT() const;
 	void SetInQT(bool b);
 
-	GameObject* Copy();
+	GameObject* Copy(GameObject* p = nullptr);
 
 	std::vector<Component*> compChilds;
 	std::vector<GameObject*> objChilds;

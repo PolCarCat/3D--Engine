@@ -57,6 +57,7 @@ public:
 	Type GetType() const;
 	GameObject* GetParent() const;
 	void SetParent(GameObject* p);
+	void ForceParent(GameObject* p);
 	void SetActive(bool a);
 	bool GetActive() const;
 	void Delete();
