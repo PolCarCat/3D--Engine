@@ -305,6 +305,7 @@ void ModuleRenderer3D::ToDraw(ComponentMesh * mesh)
 
 	//Check if the material is transparent
 
+
 	if (tex != nullptr && tex->transparent)
 		transparentMeshes.push(mesh);
 	

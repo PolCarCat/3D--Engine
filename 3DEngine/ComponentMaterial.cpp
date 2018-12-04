@@ -7,7 +7,7 @@
 ComponentMaterial::ComponentMaterial()
 {
 	type = MATERIAL;
-	
+
 }
 
 

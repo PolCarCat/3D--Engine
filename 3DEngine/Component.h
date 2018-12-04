@@ -11,6 +11,7 @@ enum Type {
 	TRANSFORM,
 	CAMERA,
 	MATERIAL,
+	BILLBOARD,
 	NULLCOMP
 };
 

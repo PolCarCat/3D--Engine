@@ -4,6 +4,7 @@
 #include "ResMesh.h"
 #include "ComponentMesh.h"
 #include "ComponentCamera.h"
+#include "ComponentBillboard.h"
 #include "Application.h"
 #include "QuadTree.h"
 #include "pcg-c-basic-0.9/pcg_basic.h"
@@ -359,6 +360,14 @@ Component* GameObject::AddCompCam(float _near , float _far, float fov)
 	return newcomp;
 }
 
+Component * GameObject::AddCompBillboard()
+{
+	Component* newcomp = new ComponentBillboard();
+	newcomp->SetParent(this);
+
+	return newcomp;
+}
+
 Component* GameObject::AddComponent(Type t)
 {
 	Component* newcomp = nullptr;
@@ -369,6 +378,9 @@ Component* GameObject::AddComponent(Type t)
 		break;
 	case CAMERA:
 		newcomp = AddCompCam();
+		break;
+	case BILLBOARD:
+		newcomp = AddCompBillboard();
 		break;
 	default:
 		break;
@@ -439,6 +451,13 @@ void GameObject::UpdateNewComWindow()
 	if (ImGui::IsItemClicked())
 	{
 		t = MESH;
+		add = true;
+	}
+
+	ImGui::TreeNodeEx("Billboard", node_flags);
+	if (ImGui::IsItemClicked())
+	{
+		t = BILLBOARD;
 		add = true;
 	}
 

@@ -29,6 +29,7 @@ public:
 	Component* AddCompMesh();
 	Component* AddCompMesh(ResMesh* m);
 	Component* AddCompCam(float _near = 0.5f, float _far = FPD, float fov = 60.0f);
+	Component* AddCompBillboard();
 	void AddGameObject(GameObject* obj);
 	void DeleteComp(Component* comp);
 	void DeleteGameObj(GameObject* obj);

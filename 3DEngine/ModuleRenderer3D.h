@@ -28,7 +28,7 @@ struct MeshPriority
 	bool operator()(const ComponentMesh* mesh1, const ComponentMesh* mesh2)const
 	{
 		bool ret = false;
-		if (mesh1->material->GetTexture()->transparent)
+		if (mesh1->material->GetTexture() != nullptr && mesh1->material->GetTexture()->transparent)
 		{
 			ret = mesh1->DistanceToCamera() < mesh2->DistanceToCamera();
 		}

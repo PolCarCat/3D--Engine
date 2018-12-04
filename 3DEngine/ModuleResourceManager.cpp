@@ -206,6 +206,8 @@ ResMesh * ModuleResourceManager::GetBillboard() const
 
 void ModuleResourceManager::GenerateBillboard()
 {
+
+
 	static const float vertex[] = {
 		-0.5f, -0.5f, 0.0f,
 		0.5f, -0.5f, 0.0f,
@@ -216,25 +218,34 @@ void ModuleResourceManager::GenerateBillboard()
 	billboard = new ResMesh();
 
 	//Vertex
-	billboard->num_vertex = 6;
+	billboard->num_vertex = 4;
 	billboard->vertex = new float[billboard->num_vertex * 3];
 	memcpy(billboard->vertex, vertex, sizeof(vertex));
 
 
 	//Indices
-	//billboard->indice = new uint[mesh->num_indice];
-	//memcpy(billboard->indice, last, bytes);
+	static const uint indices[] = {
+		0,1,2,1,3,2
+	};
+	billboard->num_indice = 6;
+	billboard->indice = new uint[billboard->num_indice];
+	memcpy(billboard->indice, indices, sizeof(indices));
 
 	//Normals
 	//billboard->normals = new float[mesh->num_vertex * 3];
 	//memcpy(billboard->normals, last, bytes);
 
 
-	////Texture Coordinates
-	//mesh->textC = new float[mesh->num_textC];
-	//memcpy(mesh->textC, last, bytes);
-	
+	//Texture Coordinates
+	static const float tex[] = {
+	0,0,0
+	};
 
+	billboard->num_textC = billboard->num_vertex * 2;
+	billboard->textC = new float[billboard->num_textC];
+	memcpy(billboard->textC, tex, sizeof(tex));
+	
+	billboard->GenerateBuffer();
 }
 
 void ModuleResourceManager::LoadAssets()

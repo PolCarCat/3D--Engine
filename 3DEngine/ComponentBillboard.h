@@ -1,10 +1,10 @@
 #ifndef __COMPONENTBILLBOARD_H__
 #define __COMPONENTBILLBOARD_H__
 
-#include "Component.h"
+#include "ComponentMesh.h"
 
+class ComponentMaterial;
 class ResMesh;
-class ResTexture;
 class ComponentCamera;
 class ComponentTransform;
 
@@ -15,10 +15,10 @@ enum Alignment {
 };
 
 class ComponentBillboard :
-	public Component
+	public ComponentMesh
 {
 public:
-	ComponentBillboard();
+	ComponentBillboard(ComponentMaterial* mat = nullptr);
 	~ComponentBillboard();
 
 	bool Start();
@@ -27,15 +27,18 @@ public:
 	bool CleanUp();
 	void FaceCamera();
 
-	void SetTexture(ResTexture* t);
+	void SetTexture(ComponentMaterial* t);
 
 	Alignment alignment = SCREEN_ALIGN;
 	ComponentTransform* transform = nullptr;
 
 private:
 
-	ResMesh* mesh = nullptr;
-	ResTexture* tex = nullptr;
+	void WorldAlign();
+	void ScreenAlign();
+	void AxialAlign();
+
+	ComponentCamera* reference = nullptr;
 
 };
 
