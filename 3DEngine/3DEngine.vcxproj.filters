@@ -393,6 +393,7 @@
     <ClInclude Include="ComponentBillboard.h">
       <Filter>Sources\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Particle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -638,6 +639,7 @@
     <ClCompile Include="ComponentBillboard.cpp">
       <Filter>Sources\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Particle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\Matrix.inl">
