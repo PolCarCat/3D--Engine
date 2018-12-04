@@ -27,6 +27,8 @@ bool ModuleResourceManager::Init()
 bool ModuleResourceManager::Start()
 {
 	//LoadDirectory("Assets/");
+	GenerateBillboard();
+
 	return true;
 }
 
@@ -194,6 +196,44 @@ void ModuleResourceManager::AddResource(Resource * res)
 		VSLOG("\nMemory overriden in resource map");
 
 	resources[res->GetUUID()] = res;
+
+}
+
+ResMesh * ModuleResourceManager::GetBillboard() const
+{
+	return billboard;
+}
+
+void ModuleResourceManager::GenerateBillboard()
+{
+	static const float vertex[] = {
+		-0.5f, -0.5f, 0.0f,
+		0.5f, -0.5f, 0.0f,
+		-0.5f, 0.5f, 0.0f,
+		0.5f, 0.5f, 0.0f,
+	};
+
+	billboard = new ResMesh();
+
+	//Vertex
+	billboard->num_vertex = 6;
+	billboard->vertex = new float[billboard->num_vertex * 3];
+	memcpy(billboard->vertex, vertex, sizeof(vertex));
+
+
+	//Indices
+	//billboard->indice = new uint[mesh->num_indice];
+	//memcpy(billboard->indice, last, bytes);
+
+	//Normals
+	//billboard->normals = new float[mesh->num_vertex * 3];
+	//memcpy(billboard->normals, last, bytes);
+
+
+	////Texture Coordinates
+	//mesh->textC = new float[mesh->num_textC];
+	//memcpy(mesh->textC, last, bytes);
+	
 
 }
 

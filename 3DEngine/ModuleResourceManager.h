@@ -30,15 +30,19 @@ public:
 	Resource* CreateNewResource(ResType t, uint32_t id = 0);
 	void AddResource(Resource* res);
 
+	ResMesh* GetBillboard() const;
+	void GenerateBillboard();
 
 	void LoadAssets();
 	void LoadDirectory(std::string dir);
+
 	//Should be private
 	std::map<uint32_t, Resource*> resources;
 
 private:
 
-
+	ResMesh * billboard = nullptr;
+	
 };
 
 
