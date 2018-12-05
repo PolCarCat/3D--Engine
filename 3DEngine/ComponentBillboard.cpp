@@ -108,9 +108,10 @@ void ComponentBillboard::WorldAlign()
 	float3 normal = (reference->transform.position - transform->position).Normalized();
 	float3 up = reference->GetFrustum().up;
 	float3 right = normal.Cross(up);
+	float3 upF = normal.Cross(right);
 
 	float3x3 mat = float3x3::identity;
-	mat.Set(right.x, right.y, right.z, up.x, up.y, up.z, normal.x, normal.y, normal.z);
+	mat.Set(right.x, right.y, right.z, upF.x, upF.y, upF.z, normal.x, normal.y, normal.z);
 
 	transform->rotation = mat.Inverted().ToQuat();
 
