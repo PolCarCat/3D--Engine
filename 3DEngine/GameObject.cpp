@@ -5,6 +5,7 @@
 #include "ComponentMesh.h"
 #include "ComponentCamera.h"
 #include "ComponentBillboard.h"
+#include "ComponentParticleEmitter.h"
 #include "Application.h"
 #include "QuadTree.h"
 #include "pcg-c-basic-0.9/pcg_basic.h"
@@ -368,6 +369,14 @@ Component * GameObject::AddCompBillboard()
 	return newcomp;
 }
 
+Component * GameObject::AddCompParticleEmitter()
+{
+	Component* newcomp = new ComponentParticleEmitter();
+	newcomp->SetParent(this);
+
+	return newcomp;
+}
+
 Component* GameObject::AddComponent(Type t)
 {
 	Component* newcomp = nullptr;
@@ -381,6 +390,9 @@ Component* GameObject::AddComponent(Type t)
 		break;
 	case BILLBOARD:
 		newcomp = AddCompBillboard();
+		break;
+	case PARTICLE_EMITTER:
+		newcomp = AddCompParticleEmitter();
 		break;
 	default:
 		break;
@@ -458,6 +470,13 @@ void GameObject::UpdateNewComWindow()
 	if (ImGui::IsItemClicked())
 	{
 		t = BILLBOARD;
+		add = true;
+	}
+
+	ImGui::TreeNodeEx("Particle Emitter", node_flags);
+	if (ImGui::IsItemClicked())
+	{
+		t = PARTICLE_EMITTER;
 		add = true;
 	}
 

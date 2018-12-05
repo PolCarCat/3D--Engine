@@ -393,7 +393,12 @@
     <ClInclude Include="ComponentBillboard.h">
       <Filter>Sources\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Particle.h" />
+    <ClInclude Include="Particle.h">
+      <Filter>Sources\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentParticleEmitter.h">
+      <Filter>Sources\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -639,7 +644,12 @@
     <ClCompile Include="ComponentBillboard.cpp">
       <Filter>Sources\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="Particle.cpp">
+      <Filter>Sources\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentParticleEmitter.cpp">
+      <Filter>Sources\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\Matrix.inl">

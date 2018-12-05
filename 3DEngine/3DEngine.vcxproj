@@ -81,6 +81,7 @@
     <ClInclude Include="ComponentCamera.h" />
     <ClInclude Include="ComponentMaterial.h" />
     <ClInclude Include="ComponentMesh.h" />
+    <ClInclude Include="ComponentParticleEmitter.h" />
     <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="GameObject.h" />
@@ -198,6 +199,7 @@
     <ClCompile Include="ComponentCamera.cpp" />
     <ClCompile Include="ComponentMaterial.cpp" />
     <ClCompile Include="ComponentMesh.cpp" />
+    <ClCompile Include="ComponentParticleEmitter.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="GameObject.cpp" />

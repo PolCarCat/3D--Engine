@@ -6,57 +6,62 @@
 class ComponentBillboard;
 
 
-//All values are a random number between MIN and MAX
-template <class T>
-struct range 
-{
-	T min = 0;
-	T max = 0;
-};
 
 class ParticleInfo
 {
+public:
 	ComponentBillboard * billboard = nullptr;
 
-	range<float> speed;
+	float speed;
 
-	range<int> lifetime;
+	uint lifetime;
 
-	range<float> startSize;
-	range<float> endSize;
+	float startSize;
+	float endSize;
 
-	range<float> startSpin;
-	range<float> endSpin;
+	float startSpin;
+	float endSpin;
 
-	range<float3> position;
+	float3 direction;
 
 	Color startColor;
 	Color endColor;
+
+	void Set(float sSize = 0, float eSize = 0, float sSpin = 0, float eSpin = 0, float3 dir = float3::zero, Color sColor = White, Color eColor = White);
 };
 
 
 class Particle
 {
 public:
-	Particle();
+	Particle(ParticleInfo i);
 	~Particle();
 
 	void Start();
-	void Update();
+	void Update(float dt);
+	void Draw();
 	void CleanUp();
+	bool Delete();
 
 private:
+
+	float Ratio(float max, float  min);
+	Color Ratio(Color max, Color  min);
 
 	ParticleInfo info;
 
 	float speed = 0;
-	int lifetime = 0;
+	int lifeTime = 0;
 	float size = 0;
-	float spin;
+	float spin = 0;
 
 	float3 position;
 	Color color;
 	
+	uint framesLeft = 0;
+	float lifetimeRatio = 1;
+
+	bool toDelete = false;
 };
 
 #endif // !__PARTICLE_H__
