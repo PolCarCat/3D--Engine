@@ -130,5 +130,16 @@ void ComponentBillboard::ScreenAlign()
 
 void ComponentBillboard::AxialAlign()
 {
+	float3 normal = (reference->transform.position - transform->position).Normalized();
+	float3 up;
+	up.Set(0.0f, 1.0f, 0.0f);
+	float3 right = normal.Cross(up);
 
+	float3x3 mat = float3x3::identity;
+	mat.Set(right.x, right.y, right.z, 0.0f, 0.0f, 0.0f, normal.x, normal.y, normal.z);
+
+	transform->rotation = mat.Inverted().ToQuat();
+	transform->globalMartix.Set(1, 2, 0.0f);
+	transform->globalMartix.Set(2, 2, 1.0f);
+	transform->globalMartix.Set(3, 2, 0.0f);
 }
