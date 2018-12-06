@@ -9,13 +9,14 @@
 Particle::Particle(ParticleInfo i)
 {
 	info = i;
-	position = { 0,0,0 };
 
+	position = info.startPosition;
 	lifeTime = info.lifetime;
 	size = info.startSize;
 	spin = info.startSpin;
 	speed = info.speed;
 	framesLeft = lifeTime;
+	color = info.startColor;
 	
 }
 
@@ -37,14 +38,14 @@ void Particle::Update(float dt)
 
 	lifetimeRatio = float(framesLeft) / float(lifeTime);
 
-	size = Ratio(info.startSize, info.endSize);
-	spin = Ratio(info.startSpin, info.endSpin);
-	color = Ratio(info.startColor, info.endColor);
+	size = Ratio(info.endSize, info.startSize);
+	spin = Ratio(info.endSpin, info.startSpin);
+	color = Ratio(info.endColor, info.startColor);
 
 	position += info.direction * speed * dt;
 
-	glColor4f(0.2f, 0.2f, 1.0f, 1.0f);
-	glPointSize(8);
+	glColor4f(color.r, color.g, color.b, color.a);
+	glPointSize(size);
 	glBegin(GL_POINTS);
 	glVertex3f(position.x, position.y, position.z);
 	glEnd();
@@ -82,13 +83,20 @@ Color Particle::Ratio(Color max, Color min)
 	return c;
 }
 
-void ParticleInfo::Set(float sSize, float eSize, float sSpin, float eSpin, float3 dir, Color sColor, Color eColor)
+void ParticleInfo::Set(float sSize, float eSize, float sSpin, float eSpin, float spd, uint life, float3 pos, float3 dir, Color sColor, Color eColor)
 {
 	startSize = sSize;
 	endSize = eSize;
+
 	startSpin = sSpin;
 	endSpin = eSpin;
+
+	speed = spd;
+	lifetime = life;
+
+	startPosition = pos;
 	direction = dir;
+
 	startColor = sColor;
 	endColor = eColor;
 }

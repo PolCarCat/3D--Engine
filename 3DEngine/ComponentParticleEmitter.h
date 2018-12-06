@@ -50,10 +50,13 @@ private:
 	range <float> endSize;
 	range <float> startSpin;
 	range <float> endSpin;
-	range <float3> direction;
+
 	range <Color> startColor;
 	range <Color> endColor;
 	
+	float3 direction;
+	float dirVartiation = 0;
+
 	std::list<Particle*> particles;
 };
 

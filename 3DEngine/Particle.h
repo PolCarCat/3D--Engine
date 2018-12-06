@@ -10,7 +10,6 @@ class ComponentBillboard;
 class ParticleInfo
 {
 public:
-	ComponentBillboard * billboard = nullptr;
 
 	float speed;
 
@@ -23,11 +22,15 @@ public:
 	float endSpin;
 
 	float3 direction;
+	float3 startPosition;
 
 	Color startColor;
 	Color endColor;
 
-	void Set(float sSize = 0, float eSize = 0, float sSpin = 0, float eSpin = 0, float3 dir = float3::zero, Color sColor = White, Color eColor = White);
+
+	ComponentBillboard * billboard = nullptr;
+
+	void Set(float sSize = 0, float eSize = 0, float sSpin = 0, float eSpin = 0, float spd = 0, uint life = 0,float3 pos = float3::zero, float3 dir = float3::zero, Color sColor = White, Color eColor = White);
 };
 
 
