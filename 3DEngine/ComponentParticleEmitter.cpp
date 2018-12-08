@@ -30,7 +30,7 @@ ComponentParticleEmitter::ComponentParticleEmitter()
 	endSpin.min = 0;
 
 	direction = { 0,1,0 };
-	dirVartiation = 20;
+	dirVartiation = 180;
 
 	startColor.max = { 1.0f, 0.0f, 0.0f, 1.0f };
 	endColor.max = { 0.0f, 0.0f, 1.0f, 1.0f };
@@ -65,7 +65,13 @@ bool ComponentParticleEmitter::Update()
 
 void ComponentParticleEmitter::UpdateUI()
 {
+	if (ImGui::CollapsingHeader("Particle Emitter"))
+	{
 
+		ImGui::DragFloat3("Direction", (float*)&direction, 0.25f);
+		ImGui::SliderFloat("Direction Variation", &dirVartiation, 0, 180);
+
+	}
 }
 
 bool ComponentParticleEmitter::CleanUp()
@@ -87,23 +93,19 @@ bool ComponentParticleEmitter::CleanUp()
 
 void ComponentParticleEmitter::CreateParticle()
 {
-	//Direction and color should be random
+
+	//Pick a random direction from the base direction with a the angle vartiation
+	LCG lcg;
+	float3 randomInSphere = float3::RandomSphere(lcg, { 0,0,0 }, 1);
+	float3 vartiation = randomInSphere.Normalized();
+	vartiation.x = vartiation.x * dirVartiation * DEGTORAD; 
+	vartiation.y = vartiation.y * dirVartiation * DEGTORAD;
+	vartiation.z = vartiation.z * dirVartiation * DEGTORAD;
 
 
-	float radius = direction.Length() * Atan(dirVartiation * DEGTORAD);
+	float3 dir = direction.Normalized() + vartiation;
 
-	float random = ldexp(pcg32_random(), -32);
-	double a = random * 2 * pi;
-
-	random = ldexp(pcg32_random(), -32);
-	float r = radius * sqrt(random);
-
-	float x = r * cos(a);
-	float y = r * sin(a);
-
-	float3 dir = { x + direction.x, direction.y, y + direction.z };
-
-	baseParticle.Set(GetRandom(startSize), GetRandom(endSize), GetRandom(startSpin), GetRandom(endSpin), GetRandom(speed), GetRandom(lifetime) ,parent->transform->position, dir, startColor.max, endColor.max);
+	baseParticle.Set(GetRandom(startSize), GetRandom(endSize), GetRandom(startSpin), GetRandom(endSpin), GetRandom(speed), GetRandom(lifetime) ,parent->transform->position, dir.Normalized(), startColor.max, endColor.max);
 
 
 	Particle* newParticle = new Particle(baseParticle);
