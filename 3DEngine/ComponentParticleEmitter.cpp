@@ -32,6 +32,7 @@ ComponentParticleEmitter::ComponentParticleEmitter()
 	endSpin.min = 0;
 
 	direction = { 0,1,0 };
+	gravity = { 1, 0, 0 };
 	dirVartiation = 180;
 
 	startColor.max = { 1.0f, 0.0f, 0.0f, 1.0f };
@@ -83,9 +84,11 @@ void ComponentParticleEmitter::UpdateUI()
 		ImGui::Separator();
 
 		if (ImGui::SliderFloat("LifeTime", &emitterLifetime, -1, 100))
-		{
 			time = 0;
-		}
+		
+
+		if (ImGui::Button("Reset"))
+			time = 0;
 
 		ImGui::Text("LifeTime: %.2f", emitterLifetime - time);
 
@@ -95,6 +98,7 @@ void ComponentParticleEmitter::UpdateUI()
 
 		ImGui::DragFloat3("Direction", (float*)&direction, 0.25f);
 		ImGui::SliderFloat("Direction Variation", &dirVartiation, 0, 180);
+		ImGui::DragFloat3("Gravity", (float*)&gravity, 0.25f);
 
 		int minlife = particleLifetime.min;
 		int maxlife = particleLifetime.max;
@@ -210,7 +214,7 @@ void ComponentParticleEmitter::CreateParticle()
 
 	float3 dir = direction.Normalized() + vartiation;
 
-	baseParticle.Set(GetRandom(startSize), GetRandom(endSize), GetRandom(startSpin), GetRandom(endSpin), GetRandom(speed), GetRandom(particleLifetime) ,parent->transform->position, dir.Normalized(), GetRandom(startColor), GetRandom(endColor));
+	baseParticle.Set(GetRandom(startSize), GetRandom(endSize), GetRandom(startSpin), GetRandom(endSpin), GetRandom(speed), GetRandom(particleLifetime) ,parent->transform->position, dir.Normalized(), gravity, GetRandom(startColor), GetRandom(endColor));
 
 
 	//Create New Particle

@@ -23,6 +23,7 @@ public:
 
 	float3 direction;
 	float3 startPosition;
+	float3 gravity;
 
 	Color startColor;
 	Color endColor;
@@ -30,7 +31,7 @@ public:
 
 	ComponentBillboard * billboard = nullptr;
 
-	void Set(float sSize = 0, float eSize = 0, float sSpin = 0, float eSpin = 0, float spd = 0, uint life = 0,float3 pos = float3::zero, float3 dir = float3::zero, Color sColor = White, Color eColor = White);
+	void Set(float sSize = 0, float eSize = 0, float sSpin = 0, float eSpin = 0, float spd = 0, uint life = 0,float3 pos = float3::zero, float3 dir = float3::zero, float3 gravity = float3::zero, Color sColor = White, Color eColor = White);
 };
 
 
@@ -58,6 +59,7 @@ private:
 	float size = 0;
 	float spin = 0;
 
+	float3 direction;
 	float3 position;
 	Color color;
 	

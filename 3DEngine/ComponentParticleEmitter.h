@@ -55,6 +55,7 @@ private:
 	range <Color> startColor;
 	range <Color> endColor;
 	
+	float3 gravity;
 	float3 direction;
 	float dirVartiation = 0;
 
