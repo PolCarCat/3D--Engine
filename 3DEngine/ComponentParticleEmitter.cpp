@@ -71,6 +71,81 @@ void ComponentParticleEmitter::UpdateUI()
 		ImGui::DragFloat3("Direction", (float*)&direction, 0.25f);
 		ImGui::SliderFloat("Direction Variation", &dirVartiation, 0, 180);
 
+		int minlife = lifetime.min;
+		int maxlife = lifetime.max;
+
+		//LifeTime
+		ImGui::PushID("LT");
+
+		ImGui::Text("Life Time");
+		if (ImGui::SliderInt("Min", &minlife, 0, 180))
+			lifetime.min = minlife;
+
+		if (ImGui::SliderInt("Max", &maxlife, 0, 180))
+			lifetime.max = maxlife;
+
+		ImGui::PopID();
+
+
+		//Start Size
+		ImGui::PushID("SSize");
+
+		ImGui::Text("Start Size");
+		ImGui::SliderFloat("Min", &startSize.min, 0, 180);
+		ImGui::SliderFloat("Max", &startSize.max, 0, 180);
+
+		ImGui::PopID();
+
+		//End Size
+
+		ImGui::PushID("ESize");
+
+		ImGui::Text("End Size");
+		ImGui::SliderFloat("Min", &endSize.min, 0, 180);
+		ImGui::SliderFloat("Max", &endSize.max, 0, 180);
+
+		ImGui::PopID();
+
+		//Start Spin
+
+		ImGui::PushID("SSpin");
+
+		ImGui::Text("Start Spin");
+		ImGui::SliderFloat("Min", &startSpin.min, 0, 180);
+		ImGui::SliderFloat("Max", &startSpin.max, 0, 180);
+
+		ImGui::PopID();
+
+		//End Spin
+
+		ImGui::PushID("ESpin");
+
+		ImGui::Text("End Spin");
+		ImGui::SliderFloat("Min", &endSpin.min, 0, 180);
+		ImGui::SliderFloat("Max", &endSpin.max, 0, 180);
+
+		ImGui::PopID();
+
+
+		ImGui::PushID("SColor");
+
+		ImGui::Text("StartColor");
+
+		ImGui::ColorEdit4("Min", (float*)&startColor.min);
+		ImGui::ColorEdit4("Max", (float*)&startColor.max);
+
+		ImGui::PopID();
+
+		ImGui::PushID("EColor");
+
+		ImGui::Text("EndColor");
+
+		ImGui::ColorEdit4("Min", (float*)&endColor.min);
+		ImGui::ColorEdit4("Max", (float*)&endColor.max);
+
+		ImGui::PopID();
+
+
 	}
 }
 
@@ -105,9 +180,10 @@ void ComponentParticleEmitter::CreateParticle()
 
 	float3 dir = direction.Normalized() + vartiation;
 
-	baseParticle.Set(GetRandom(startSize), GetRandom(endSize), GetRandom(startSpin), GetRandom(endSpin), GetRandom(speed), GetRandom(lifetime) ,parent->transform->position, dir.Normalized(), startColor.max, endColor.max);
+	baseParticle.Set(GetRandom(startSize), GetRandom(endSize), GetRandom(startSpin), GetRandom(endSpin), GetRandom(speed), GetRandom(lifetime) ,parent->transform->position, dir.Normalized(), GetRandom(startColor), GetRandom(endColor));
 
 
+	//Create New Particle
 	Particle* newParticle = new Particle(baseParticle);
 	particles.push_back(newParticle);
 
@@ -152,4 +228,15 @@ float ComponentParticleEmitter::GetRandom(range<float> r)
 uint ComponentParticleEmitter::GetRandom(range<uint> r)
 {
 	return (ldexp(pcg32_random(), -32) * (r.max - r.min)) + r.min;
+}
+
+Color ComponentParticleEmitter::GetRandom(range<Color> r)
+{
+	Color c;
+	c.r = (ldexp(pcg32_random(), -32) * (r.max.r - r.min.r)) + r.min.r;
+	c.g = (ldexp(pcg32_random(), -32) * (r.max.g - r.min.g)) + r.min.g;
+	c.b = (ldexp(pcg32_random(), -32) * (r.max.b - r.min.b)) + r.min.b;
+	c.a = (ldexp(pcg32_random(), -32) * (r.max.a - r.min.a)) + r.min.a;
+
+	return c;
 }
