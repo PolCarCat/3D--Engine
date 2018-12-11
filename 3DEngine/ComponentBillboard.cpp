@@ -51,12 +51,11 @@ bool ComponentBillboard::Update()
 	//	if (reference->CheckInside(this->parent->GetGlobalABB()))
 	//		App->renderer3D->ToDraw(this);
 	//}
-
+	transform->position = parent->transform->position;
 	transform->CalcMatrix();
 
 	glPushMatrix();
-	glMultMatrixf((parent->transform->globalMartix.Transposed() * transform->globalMartix.Transposed()).ptr());
-	glMultMatrixf(transform->localMartix.Transposed().ptr());
+	glMultMatrixf((parent->transform->globalMartix.Transposed() * transform->localMartix.Transposed()).ptr());
 	mesh->Draw();
 
 	glPopMatrix();
