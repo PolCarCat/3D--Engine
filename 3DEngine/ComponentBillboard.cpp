@@ -53,10 +53,10 @@ bool ComponentBillboard::Update()
 	//}
 
 	transform->CalcMatrix();
-	
-	glPushMatrix();
-	glMultMatrixf(transform->localMartix.Transposed().ptr());
 
+	glPushMatrix();
+	glMultMatrixf((parent->transform->globalMartix.Transposed() * transform->globalMartix.Transposed()).ptr());
+	glMultMatrixf(transform->localMartix.Transposed().ptr());
 	mesh->Draw();
 
 	glPopMatrix();
