@@ -9,8 +9,8 @@
 template <class T>
 struct range
 {
-	T min; //Start
-	T max; //Final
+	T min; 
+	T max; 
 };
 
 class ComponentParticleEmitter :
@@ -25,6 +25,7 @@ public:
 	void UpdateUI();
 	bool CleanUp();
 	void CreateParticle();
+	void SpawnParticles(float dt);
 	void UpdateParticles(float dt);
 
 	float GetRandom(range<float> r);
@@ -45,7 +46,7 @@ private:
 
 	
 	range <float> speed;
-	range <uint> lifetime;
+	range <uint> particleLifetime;
 	range <float> startSize;
 	range <float> endSize;
 	range <float> startSpin;
@@ -58,6 +59,9 @@ private:
 	float dirVartiation = 0;
 
 	std::list<Particle*> particles;
+
+	float emitterLifetime = 0;
+	float time = 0;
 };
 
 #endif // !__COMPONENTEMITTER_H__

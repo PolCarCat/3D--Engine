@@ -9,13 +9,15 @@ ComponentParticleEmitter::ComponentParticleEmitter()
 {
 	type = PARTICLE_EMITTER;
 
+	emitterLifetime = 10;
+
 
 	//ONLY FOR TESTING
 	speed.max = 5;
 	speed.min = 0;
 
-	lifetime.max = 100;
-	lifetime.min = 50;
+	particleLifetime.max = 100;
+	particleLifetime.min = 50;
 
 	startSize.max = 10;
 	startSize.min = 9;
@@ -58,7 +60,16 @@ bool ComponentParticleEmitter::Start()
 
 bool ComponentParticleEmitter::Update()
 {
-	UpdateParticles(App->timeManager->GetRealDeltaTime());
+	float dt = App->timeManager->GetRealDeltaTime();
+
+	if (time <= emitterLifetime || emitterLifetime < 0)
+	{
+		SpawnParticles(dt);
+		time += dt;
+
+	}
+		
+	UpdateParticles(dt);
 
 	return true;
 }
@@ -68,61 +79,80 @@ void ComponentParticleEmitter::UpdateUI()
 	if (ImGui::CollapsingHeader("Particle Emitter"))
 	{
 
+		ImGui::Text("Emitter");
+		ImGui::Separator();
+
+		if (ImGui::SliderFloat("LifeTime", &emitterLifetime, -1, 100))
+		{
+			time = 0;
+		}
+
+		ImGui::Text("LifeTime: %.2f", emitterLifetime - time);
+
+
+		ImGui::Text("Paticle");
+		ImGui::Separator();
+
 		ImGui::DragFloat3("Direction", (float*)&direction, 0.25f);
 		ImGui::SliderFloat("Direction Variation", &dirVartiation, 0, 180);
 
-		int minlife = lifetime.min;
-		int maxlife = lifetime.max;
+		int minlife = particleLifetime.min;
+		int maxlife = particleLifetime.max;
 
 		//LifeTime
 		ImGui::PushID("LT");
 
-		ImGui::Text("Life Time");
-		if (ImGui::SliderInt("Min", &minlife, 0, 180))
-			lifetime.min = minlife;
+		ImGui::Text("Particle Life Time");
+		if (ImGui::SliderInt("Min", &minlife, 0, maxlife))
+			particleLifetime.min = minlife;
 
-		if (ImGui::SliderInt("Max", &maxlife, 0, 180))
-			lifetime.max = maxlife;
+		if (ImGui::SliderInt("Max", &maxlife, minlife, 100))
+			particleLifetime.max = maxlife;
 
 		ImGui::PopID();
 
+		//Speed
+		ImGui::PushID("Speed");
+
+		ImGui::Text("Speed");
+		ImGui::SliderFloat("Min", &speed.min, 0, speed.max);
+		ImGui::SliderFloat("Max", &speed.max, speed.min, 100);
+
+		ImGui::PopID();
 
 		//Start Size
 		ImGui::PushID("SSize");
 
 		ImGui::Text("Start Size");
-		ImGui::SliderFloat("Min", &startSize.min, 0, 180);
-		ImGui::SliderFloat("Max", &startSize.max, 0, 180);
+		ImGui::SliderFloat("Min", &startSize.min, 0, startSize.max);
+		ImGui::SliderFloat("Max", &startSize.max, startSize.min, 100);
 
 		ImGui::PopID();
 
 		//End Size
-
 		ImGui::PushID("ESize");
 
 		ImGui::Text("End Size");
-		ImGui::SliderFloat("Min", &endSize.min, 0, 180);
-		ImGui::SliderFloat("Max", &endSize.max, 0, 180);
+		ImGui::SliderFloat("Min", &endSize.min, 0, endSize.max);
+		ImGui::SliderFloat("Max", &endSize.max, endSize.min, 100);
 
 		ImGui::PopID();
 
 		//Start Spin
-
 		ImGui::PushID("SSpin");
 
 		ImGui::Text("Start Spin");
-		ImGui::SliderFloat("Min", &startSpin.min, 0, 180);
-		ImGui::SliderFloat("Max", &startSpin.max, 0, 180);
+		ImGui::SliderFloat("Min", &startSpin.min, 0, startSpin.max);
+		ImGui::SliderFloat("Max", &startSpin.max, startSpin.min, 100);
 
 		ImGui::PopID();
 
 		//End Spin
-
 		ImGui::PushID("ESpin");
 
 		ImGui::Text("End Spin");
-		ImGui::SliderFloat("Min", &endSpin.min, 0, 180);
-		ImGui::SliderFloat("Max", &endSpin.max, 0, 180);
+		ImGui::SliderFloat("Min", &endSpin.min, 0, endSpin.max);
+		ImGui::SliderFloat("Max", &endSpin.max, endSpin.min, 100);
 
 		ImGui::PopID();
 
@@ -180,7 +210,7 @@ void ComponentParticleEmitter::CreateParticle()
 
 	float3 dir = direction.Normalized() + vartiation;
 
-	baseParticle.Set(GetRandom(startSize), GetRandom(endSize), GetRandom(startSpin), GetRandom(endSpin), GetRandom(speed), GetRandom(lifetime) ,parent->transform->position, dir.Normalized(), GetRandom(startColor), GetRandom(endColor));
+	baseParticle.Set(GetRandom(startSize), GetRandom(endSize), GetRandom(startSpin), GetRandom(endSpin), GetRandom(speed), GetRandom(particleLifetime) ,parent->transform->position, dir.Normalized(), GetRandom(startColor), GetRandom(endColor));
 
 
 	//Create New Particle
@@ -191,13 +221,17 @@ void ComponentParticleEmitter::CreateParticle()
 	emisionTimer.Start();
 }
 
-void ComponentParticleEmitter::UpdateParticles(float dt)
+void ComponentParticleEmitter::SpawnParticles(float dt)
 {
-	if (emisionTimer.Read() * dt >= period) 
+	if (emisionTimer.Read() * dt >= period)
 	{
 		CreateParticle();
 		current_emissions++;
 	}
+}
+
+void ComponentParticleEmitter::UpdateParticles(float dt)
+{
 
 	for (std::list<Particle*>::iterator item = particles.begin(); item != particles.end();)
 	{
