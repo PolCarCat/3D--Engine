@@ -9,10 +9,9 @@ ComponentParticleEmitter::ComponentParticleEmitter()
 {
 	type = PARTICLE_EMITTER;
 
-	emitterLifetime = 10;
+	emitterLifetime = -1;
 
-
-	//ONLY FOR TESTING
+	//Default Values
 	speed.max = 5;
 	speed.min = 0;
 
@@ -44,6 +43,7 @@ ComponentParticleEmitter::ComponentParticleEmitter()
 
 	max_emissions = 100;
 
+
 }
 
 
@@ -54,8 +54,16 @@ ComponentParticleEmitter::~ComponentParticleEmitter()
 bool ComponentParticleEmitter::Start()
 {
 
-
 	//baseParticle.billboard = App->resourceManager->GetBillboard();
+	sphere.r = 1;
+	sphere.pos = parent->transform->position;
+
+	aabb.minPoint.Set( -0.5, -0.5, -0.5 );
+	aabb.maxPoint.Set( 0.5, 0.5, 0.5 );
+
+
+	areaType = AAB;
+
 	return true;
 }
 
@@ -66,11 +74,15 @@ bool ComponentParticleEmitter::Update()
 	if (time <= emitterLifetime || emitterLifetime < 0)
 	{
 		SpawnParticles(dt);
-		time += dt;
+
+		if (emitterLifetime > 0)
+			time += dt;
 
 	}
 		
 	UpdateParticles(dt);
+	DrawSpawnArea();
+	UpdateSpawnAreaPos();
 
 	return true;
 }
@@ -79,10 +91,12 @@ void ComponentParticleEmitter::UpdateUI()
 {
 	if (ImGui::CollapsingHeader("Particle Emitter"))
 	{
-
+		ImGui::NewLine();
 		ImGui::Text("Emitter");
 		ImGui::Separator();
 
+		//Emitter Lifetime
+		ImGui::Text("Set to -1 for infinite lifetime");
 		if (ImGui::SliderFloat("LifeTime", &emitterLifetime, -1, 100))
 			time = 0;
 		
@@ -93,92 +107,118 @@ void ComponentParticleEmitter::UpdateUI()
 		ImGui::Text("LifeTime: %.2f", emitterLifetime - time);
 
 
-		ImGui::Text("Paticle");
-		ImGui::Separator();
+		//Area of spawn
 
-		ImGui::DragFloat3("Direction", (float*)&direction, 0.25f);
-		ImGui::SliderFloat("Direction Variation", &dirVartiation, 0, 180);
-		ImGui::DragFloat3("Gravity", (float*)&gravity, 0.25f);
+		if (ImGui::CollapsingHeader("Spawn Area"))
+		{
 
-		int minlife = particleLifetime.min;
-		int maxlife = particleLifetime.max;
+			if (ImGui::Selectable("AABB", areaType == AAB))
+			{
+				areaType = AAB;
+			}
+			if (ImGui::Selectable("Sphere", areaType == SPHERE))
+			{
+				areaType = SPHERE;
+			}
+			if (ImGui::Selectable("Point", areaType == NONE))
+			{
+				areaType = NONE;
+			}
 
-		//LifeTime
-		ImGui::PushID("LT");
-
-		ImGui::Text("Particle Life Time");
-		if (ImGui::SliderInt("Min", &minlife, 0, maxlife))
-			particleLifetime.min = minlife;
-
-		if (ImGui::SliderInt("Max", &maxlife, minlife, 100))
-			particleLifetime.max = maxlife;
-
-		ImGui::PopID();
-
-		//Speed
-		ImGui::PushID("Speed");
-
-		ImGui::Text("Speed");
-		ImGui::SliderFloat("Min", &speed.min, 0, speed.max);
-		ImGui::SliderFloat("Max", &speed.max, speed.min, 100);
-
-		ImGui::PopID();
-
-		//Start Size
-		ImGui::PushID("SSize");
-
-		ImGui::Text("Start Size");
-		ImGui::SliderFloat("Min", &startSize.min, 0, startSize.max);
-		ImGui::SliderFloat("Max", &startSize.max, startSize.min, 100);
-
-		ImGui::PopID();
-
-		//End Size
-		ImGui::PushID("ESize");
-
-		ImGui::Text("End Size");
-		ImGui::SliderFloat("Min", &endSize.min, 0, endSize.max);
-		ImGui::SliderFloat("Max", &endSize.max, endSize.min, 100);
-
-		ImGui::PopID();
-
-		//Start Spin
-		ImGui::PushID("SSpin");
-
-		ImGui::Text("Start Spin");
-		ImGui::SliderFloat("Min", &startSpin.min, 0, startSpin.max);
-		ImGui::SliderFloat("Max", &startSpin.max, startSpin.min, 100);
-
-		ImGui::PopID();
-
-		//End Spin
-		ImGui::PushID("ESpin");
-
-		ImGui::Text("End Spin");
-		ImGui::SliderFloat("Min", &endSpin.min, 0, endSpin.max);
-		ImGui::SliderFloat("Max", &endSpin.max, endSpin.min, 100);
-
-		ImGui::PopID();
+			ImGui::Separator();
+			UpdateSpawnUI();
+		}
 
 
-		ImGui::PushID("SColor");
+		if (ImGui::CollapsingHeader("Particle"))
+		{
 
-		ImGui::Text("StartColor");
+			//Direction
+			ImGui::DragFloat3("Direction", (float*)&direction, 0.25f);
+			ImGui::SliderFloat("Direction Variation", &dirVartiation, 0, 180);
+			ImGui::DragFloat3("Gravity", (float*)&gravity, 0.25f);
 
-		ImGui::ColorEdit4("Min", (float*)&startColor.min);
-		ImGui::ColorEdit4("Max", (float*)&startColor.max);
 
-		ImGui::PopID();
+			//LifeTime
+			int minlife = particleLifetime.min;
+			int maxlife = particleLifetime.max;
 
-		ImGui::PushID("EColor");
+			ImGui::PushID("LT");
 
-		ImGui::Text("EndColor");
+			ImGui::Text("Particle Life Time");
+			if (ImGui::SliderInt("Min", &minlife, 0, maxlife))
+				particleLifetime.min = minlife;
 
-		ImGui::ColorEdit4("Min", (float*)&endColor.min);
-		ImGui::ColorEdit4("Max", (float*)&endColor.max);
+			if (ImGui::SliderInt("Max", &maxlife, minlife, 100))
+				particleLifetime.max = maxlife;
 
-		ImGui::PopID();
+			ImGui::PopID();
 
+			//Speed
+			ImGui::PushID("Speed");
+
+			ImGui::Text("Speed");
+			ImGui::SliderFloat("Min", &speed.min, 0, speed.max);
+			ImGui::SliderFloat("Max", &speed.max, speed.min, 100);
+
+			ImGui::PopID();
+
+			//Start Size
+			ImGui::PushID("SSize");
+
+			ImGui::Text("Start Size");
+			ImGui::SliderFloat("Min", &startSize.min, 0, startSize.max);
+			ImGui::SliderFloat("Max", &startSize.max, startSize.min, 100);
+
+			ImGui::PopID();
+
+			//End Size
+			ImGui::PushID("ESize");
+
+			ImGui::Text("End Size");
+			ImGui::SliderFloat("Min", &endSize.min, 0, endSize.max);
+			ImGui::SliderFloat("Max", &endSize.max, endSize.min, 100);
+
+			ImGui::PopID();
+
+			//Start Spin
+			ImGui::PushID("SSpin");
+
+			ImGui::Text("Start Spin");
+			ImGui::SliderFloat("Min", &startSpin.min, 0, startSpin.max);
+			ImGui::SliderFloat("Max", &startSpin.max, startSpin.min, 100);
+
+			ImGui::PopID();
+
+			//End Spin
+			ImGui::PushID("ESpin");
+
+			ImGui::Text("End Spin");
+			ImGui::SliderFloat("Min", &endSpin.min, 0, endSpin.max);
+			ImGui::SliderFloat("Max", &endSpin.max, endSpin.min, 100);
+
+			ImGui::PopID();
+
+			//Start Color
+			ImGui::PushID("SColor");
+
+			ImGui::Text("StartColor");
+
+			ImGui::ColorEdit4("Min", (float*)&startColor.min);
+			ImGui::ColorEdit4("Max", (float*)&startColor.max);
+
+			ImGui::PopID();
+
+			//End Color
+			ImGui::PushID("EColor");
+
+			ImGui::Text("EndColor");
+
+			ImGui::ColorEdit4("Min", (float*)&endColor.min);
+			ImGui::ColorEdit4("Max", (float*)&endColor.max);
+
+			ImGui::PopID();
+		}
 
 	}
 }
@@ -204,7 +244,6 @@ void ComponentParticleEmitter::CreateParticle()
 {
 
 	//Pick a random direction from the base direction with a the angle vartiation
-	LCG lcg;
 	float3 randomInSphere = float3::RandomSphere(lcg, { 0,0,0 }, 1);
 	float3 vartiation = randomInSphere.Normalized();
 	vartiation.x = vartiation.x * dirVartiation * DEGTORAD; 
@@ -214,7 +253,7 @@ void ComponentParticleEmitter::CreateParticle()
 
 	float3 dir = direction.Normalized() + vartiation;
 
-	baseParticle.Set(GetRandom(startSize), GetRandom(endSize), GetRandom(startSpin), GetRandom(endSpin), GetRandom(speed), GetRandom(particleLifetime) ,parent->transform->position, dir.Normalized(), gravity, GetRandom(startColor), GetRandom(endColor));
+	baseParticle.Set(GetRandom(startSize), GetRandom(endSize), GetRandom(startSpin), GetRandom(endSpin), GetRandom(speed), GetRandom(particleLifetime) , GetRandomPosition(), dir.Normalized(), gravity, GetRandom(startColor), GetRandom(endColor));
 
 
 	//Create New Particle
@@ -278,3 +317,83 @@ Color ComponentParticleEmitter::GetRandom(range<Color> r)
 
 	return c;
 }
+
+float3 ComponentParticleEmitter::GetRandomPosition()
+{
+	float3 ret = float3::zero;
+
+	switch (areaType)
+	{
+	case SPHERE:
+		ret = sphere.RandomPointInside(lcg);
+		break;
+	case AAB:
+		ret = aabb.RandomPointInside(lcg);
+		break;
+	case NONE:
+		ret = parent->transform->position;
+		break;
+	default:
+		break;
+	}
+
+	return ret;
+}
+
+void ComponentParticleEmitter::DrawSpawnArea()
+{
+	switch (areaType)
+	{
+	case SPHERE:
+		App->renderer3D->DrawSphere(sphere);
+		break;
+	case AAB:
+		App->renderer3D->DrawAABB(aabb);
+		break;
+	case NONE:
+	default:
+		break;
+	}
+}
+
+void ComponentParticleEmitter::UpdateSpawnAreaPos()
+{
+	switch (areaType)
+	{
+	case SPHERE:
+		sphere.pos = parent->transform->position;
+		break;
+	case AAB:
+		aabb.SetFromCenterAndSize(parent->transform->position, aabb.Size());
+		break;
+	case NONE:
+	default:
+		break;
+	}
+
+}
+
+void ComponentParticleEmitter::UpdateSpawnUI()
+{
+	switch (areaType)
+	{
+	case SPHERE:
+
+		ImGui::DragFloat("Radius", &sphere.r, 0.1f);
+		break;
+	case AAB:
+	{
+		float3 size = aabb.Size();
+		if (ImGui::DragFloat3("Size", (float*)&size, 0.1f))
+		{
+			aabb.SetFromCenterAndSize(aabb.CenterPoint(), size);
+		}
+	}
+		break;
+	case NONE:
+	default:
+		break;
+	}
+}
+
+

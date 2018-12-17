@@ -60,6 +60,7 @@ public:
 	void DrawFrustum(math::Frustum f);
 	void DrawAABB(math::AABB a, Color c = { 0.2f, 0.2f, 1.0f, 1.0f });
 	void DrawOBB(math::OBB a, Color c = { 0.2f, 0.2f, 1.0f, 1.0f });
+	void DrawSphere(math::Sphere sphere, Color c = { 0.2f, 0.2f, 1.0f, 1.0f });
 
 	void SetUseGhostCam(bool s);
 	void OnResize(int width, int height);

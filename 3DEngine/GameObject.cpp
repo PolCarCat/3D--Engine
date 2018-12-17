@@ -398,6 +398,8 @@ Component* GameObject::AddComponent(Type t)
 		break;
 	}
 
+	newcomp->Start();
+
 	return newcomp;
 }
 

@@ -5,12 +5,20 @@
 #include "Particle.h"
 #include "Timer.h"
 #include <list>
+#include "MathGeoLib/MathGeoLib.h"
 
 template <class T>
 struct range
 {
 	T min; 
 	T max; 
+};
+
+enum AreaType 
+{
+	SPHERE,
+	AAB,
+	NONE
 };
 
 class ComponentParticleEmitter :
@@ -32,6 +40,13 @@ public:
 	uint GetRandom(range<uint> r);
 	float3 GetRandom(range<float3> r);
 	Color GetRandom(range<Color> r);
+
+	//Area of spawn
+	float3 GetRandomPosition();
+	void DrawSpawnArea();
+	void UpdateSpawnAreaPos();
+	void UpdateSpawnUI();
+
 
 private:
 
@@ -63,6 +78,15 @@ private:
 
 	float emitterLifetime = 0;
 	float time = 0;
+	
+	LCG lcg;
+
+	//Area of spawn
+	AreaType areaType;
+	math::Sphere sphere;
+	AABB aabb;
+	
+
 };
 
 #endif // !__COMPONENTEMITTER_H__

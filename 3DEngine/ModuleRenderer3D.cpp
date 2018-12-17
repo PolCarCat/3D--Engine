@@ -12,6 +12,8 @@
 #include "SDL\include\SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
+#include "glut/glut.h"
+
 
 #include "mmgr/mmgr.h"
 
@@ -19,6 +21,7 @@
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 #pragma comment (lib, "Glew/libx86/glew32.lib")  
+#pragma comment (lib, "glut/glut32.lib")
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -494,3 +497,17 @@ void ModuleRenderer3D::DrawOBB(math::OBB a, Color c)
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	glLineWidth(1);
 }
+
+void ModuleRenderer3D::DrawSphere(math::Sphere sphere, Color c)
+{
+	int division = 10;
+
+	glColor4f(c.r, c.g, c.b, c.a);
+	glPushMatrix();
+	glTranslatef(sphere.pos.x, sphere.pos.y, sphere.pos.z);
+	glutWireSphere(sphere.r, division, division);
+	glPopMatrix();
+
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+}
+
