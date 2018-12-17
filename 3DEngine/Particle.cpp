@@ -1,6 +1,5 @@
 #include "Particle.h"
 
-
 #include "Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
 #include <gl/GL.h>
@@ -18,6 +17,8 @@ Particle::Particle(ParticleInfo i)
 	framesLeft = lifeTime;
 	color = info.startColor;
 	direction = info.direction;
+	info.billboard = new ComponentBillboard();
+	info.billboard->Start();
 }
 
 
@@ -46,6 +47,16 @@ void Particle::Update(float dt)
 
 	position += displacement * dt;
 
+	if (info.billboard != nullptr)
+	{
+		info.billboard->Update();
+		direction.x *= info.billboard->transform->rotation.x;
+		direction.y *= info.billboard->transform->rotation.y;
+		direction.z *= info.billboard->transform->rotation.z;
+
+		UpdateBillboardPos();
+	}
+
 	glColor4f(color.r, color.g, color.b, color.a);
 	glPointSize(size);
 	glBegin(GL_POINTS);
@@ -61,7 +72,7 @@ void Particle::Draw()
 
 void Particle::CleanUp()
 {
-
+	delete info.billboard;
 }
 
 bool Particle::Delete()
@@ -83,6 +94,16 @@ Color Particle::Ratio(Color max, Color min)
 	c.a = Ratio(info.endColor.a, info.startColor.a);
 
 	return c;
+}
+
+void Particle::UpdateBillboardPos()
+{
+	if (info.billboard != nullptr)
+	{
+		info.billboard->transform->position.x = position.x;
+		info.billboard->transform->position.y = position.y;
+		info.billboard->transform->position.z = position.z;
+	}
 }
 
 void ParticleInfo::Set(float sSize, float eSize, float sSpin, float eSpin, float spd, uint life, float3 pos, float3 dir, float3 grav, Color sColor, Color eColor)

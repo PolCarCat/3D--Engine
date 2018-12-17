@@ -26,7 +26,7 @@ ComponentBillboard::ComponentBillboard(ComponentMaterial* mat)
 		material = mat;
 
 	alignment = WORLD_ALIGN;
-
+	draw = false;
 }
 
 
@@ -51,12 +51,20 @@ bool ComponentBillboard::Update()
 	//	if (reference->CheckInside(this->parent->GetGlobalABB()))
 	//		App->renderer3D->ToDraw(this);
 	//}
-	transform->position = parent->transform->position;
+
 	transform->CalcMatrix();
 
 	glPushMatrix();
-	glMultMatrixf((parent->transform->globalMartix.Transposed() * transform->localMartix.Transposed()).ptr());
-	mesh->Draw();
+	if (parent != nullptr)
+	{
+		transform->position = parent->transform->position;
+		glMultMatrixf((parent->transform->globalMartix.Transposed() * transform->localMartix.Transposed()).ptr());
+	}
+	else
+		glMultMatrixf(transform->localMartix.Transposed().ptr());
+	
+	if (draw)
+		mesh->Draw();
 
 	glPopMatrix();
 

@@ -3,7 +3,7 @@
 
 #include "Color.h"
 #include "ComponentTransform.h"
-class ComponentBillboard;
+#include "ComponentBillboard.h"
 
 
 
@@ -29,7 +29,7 @@ public:
 	Color endColor;
 
 
-	ComponentBillboard * billboard = nullptr;
+	ComponentBillboard* billboard = nullptr;
 
 	void Set(float sSize = 0, float eSize = 0, float sSpin = 0, float eSpin = 0, float spd = 0, uint life = 0,float3 pos = float3::zero, float3 dir = float3::zero, float3 gravity = float3::zero, Color sColor = White, Color eColor = White);
 };
@@ -48,6 +48,8 @@ public:
 	bool Delete();
 
 private:
+
+	void UpdateBillboardPos();
 
 	float Ratio(float max, float  min);
 	Color Ratio(Color max, Color  min);
