@@ -1,6 +1,5 @@
 #include "Particle.h"
 
-
 #include "Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
 #include <gl/GL.h>
@@ -15,7 +14,7 @@ Particle::Particle(ParticleInfo i)
 	size = info.startSize;
 	spin = info.startSpin;
 	speed = info.speed;
-	framesLeft = lifeTime;
+	lifeLeft = lifeTime;
 	color = info.startColor;
 	direction = info.direction;
 }
@@ -31,12 +30,12 @@ void Particle::Start()
 
 void Particle::Update(float dt)
 {
-	framesLeft -=  dt;
+	lifeLeft -=  dt;
 
-	if (framesLeft <= 0)
+	if (lifeLeft <= 0)
 		toDelete = true;
 
-	lifetimeRatio = float(framesLeft) / float(lifeTime);
+	lifetimeRatio = lifeLeft / lifeTime;
 
 	size = Ratio(info.endSize, info.startSize);
 	spin = Ratio(info.endSpin, info.startSpin);
@@ -61,13 +60,13 @@ void Particle::Draw()
 
 void Particle::CleanUp()
 {
-
 }
 
 bool Particle::Delete()
 {
 	return toDelete;
 }
+
 
 float Particle::Ratio(float max, float min)
 {

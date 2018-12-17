@@ -3,8 +3,8 @@
 
 #include "Color.h"
 #include "ComponentTransform.h"
-class ComponentBillboard;
 
+class ComponentBillboard;
 
 
 class ParticleInfo
@@ -55,7 +55,7 @@ private:
 	ParticleInfo info;
 
 	float speed = 0;
-	int lifeTime = 0;
+	float lifeTime = 0;
 	float size = 0;
 	float spin = 0;
 
@@ -63,7 +63,7 @@ private:
 	float3 position;
 	Color color;
 	
-	uint framesLeft = 0;
+	float lifeLeft = 0;
 	float lifetimeRatio = 1;
 
 	bool toDelete = false;
