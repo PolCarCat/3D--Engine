@@ -56,12 +56,12 @@ private:
 	float period = 0;
 	float frequency = 0;
 
-	int max_emissions = 0;
-	int current_emissions = 0;
+	uint maxParicles = 0;
+	uint currentParticles = 0;
 
 	
 	range <float> speed;
-	range <uint> particleLifetime;
+	range <float> particleLifetime;
 	range <float> startSize;
 	range <float> endSize;
 	range <float> startSpin;
@@ -78,6 +78,7 @@ private:
 
 	float emitterLifetime = 0;
 	float time = 0;
+
 	
 	LCG lcg;
 

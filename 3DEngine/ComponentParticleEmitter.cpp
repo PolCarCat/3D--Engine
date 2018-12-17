@@ -15,8 +15,8 @@ ComponentParticleEmitter::ComponentParticleEmitter()
 	speed.max = 5;
 	speed.min = 0;
 
-	particleLifetime.max = 100;
-	particleLifetime.min = 50;
+	particleLifetime.max = 5;
+	particleLifetime.min = 1;
 
 	startSize.max = 10;
 	startSize.min = 9;
@@ -37,11 +37,9 @@ ComponentParticleEmitter::ComponentParticleEmitter()
 	startColor.max = { 1.0f, 0.0f, 0.0f, 1.0f };
 	endColor.max = { 0.0f, 0.0f, 1.0f, 1.0f };
 
-
 	period = 0.1f;
-	frequency = 20;
 
-	max_emissions = 100;
+	maxParicles = 100;
 
 
 }
@@ -73,7 +71,8 @@ bool ComponentParticleEmitter::Update()
 
 	if (time <= emitterLifetime || emitterLifetime < 0)
 	{
-		SpawnParticles(dt);
+		if (currentParticles <= maxParicles || maxParicles == 0)
+			SpawnParticles(dt);
 
 		if (emitterLifetime > 0)
 			time += dt;
@@ -105,6 +104,16 @@ void ComponentParticleEmitter::UpdateUI()
 			time = 0;
 
 		ImGui::Text("LifeTime: %.2f", emitterLifetime - time);
+
+		ImGui::NewLine();
+		int particles = maxParicles;
+
+		ImGui::Text("Set to 0 for uncapped particles");
+		if (ImGui::SliderInt("Max particles", &particles, 0, 1000))
+			maxParicles = particles;
+
+
+		ImGui::SliderFloat("Period", &period, 0, 10);
 
 
 		//Area of spawn
@@ -140,17 +149,15 @@ void ComponentParticleEmitter::UpdateUI()
 
 
 			//LifeTime
-			int minlife = particleLifetime.min;
-			int maxlife = particleLifetime.max;
+			float minlife = particleLifetime.min;
+			float maxlife = particleLifetime.max;
 
 			ImGui::PushID("LT");
 
 			ImGui::Text("Particle Life Time");
-			if (ImGui::SliderInt("Min", &minlife, 0, maxlife))
-				particleLifetime.min = minlife;
+			ImGui::SliderFloat("Min", &particleLifetime.min, 0, particleLifetime.max);
+			ImGui::SliderFloat("Max", &particleLifetime.max, particleLifetime.min, 100);
 
-			if (ImGui::SliderInt("Max", &maxlife, minlife, 100))
-				particleLifetime.max = maxlife;
 
 			ImGui::PopID();
 
@@ -221,6 +228,7 @@ void ComponentParticleEmitter::UpdateUI()
 		}
 
 	}
+	ImGui::Separator();
 }
 
 bool ComponentParticleEmitter::CleanUp()
@@ -269,7 +277,7 @@ void ComponentParticleEmitter::SpawnParticles(float dt)
 	if (emisionTimer.Read() * dt >= period)
 	{
 		CreateParticle();
-		current_emissions++;
+		currentParticles++;
 	}
 }
 
@@ -285,6 +293,7 @@ void ComponentParticleEmitter::UpdateParticles(float dt)
 		}
 		else
 		{
+			currentParticles--;
 			(*item)->CleanUp();
 			if (*item != nullptr)
 			{

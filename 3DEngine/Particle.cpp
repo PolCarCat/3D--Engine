@@ -14,7 +14,7 @@ Particle::Particle(ParticleInfo i)
 	size = info.startSize;
 	spin = info.startSpin;
 	speed = info.speed;
-	framesLeft = lifeTime;
+	lifeLeft = lifeTime;
 	color = info.startColor;
 	direction = info.direction;
 	info.billboard = new ComponentBillboard();
@@ -32,12 +32,12 @@ void Particle::Start()
 
 void Particle::Update(float dt)
 {
-	framesLeft -=  dt;
+	lifeLeft -=  dt;
 
-	if (framesLeft <= 0)
+	if (lifeLeft <= 0)
 		toDelete = true;
 
-	lifetimeRatio = float(framesLeft) / float(lifeTime);
+	lifetimeRatio = lifeLeft / lifeTime;
 
 	size = Ratio(info.endSize, info.startSize);
 	spin = Ratio(info.endSpin, info.startSpin);
@@ -79,6 +79,7 @@ bool Particle::Delete()
 {
 	return toDelete;
 }
+
 
 float Particle::Ratio(float max, float min)
 {
