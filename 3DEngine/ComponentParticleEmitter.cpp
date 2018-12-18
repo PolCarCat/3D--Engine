@@ -41,7 +41,10 @@ ComponentParticleEmitter::ComponentParticleEmitter()
 
 	maxParicles = 100;
 
+	area.sphere.r = 1;
 
+	area.aabb.minPoint.Set(-0.5, -0.5, -0.5);
+	area.aabb.maxPoint.Set(0.5, 0.5, 0.5);
 }
 
 
@@ -53,15 +56,10 @@ bool ComponentParticleEmitter::Start()
 {
 
 	//baseParticle.billboard = App->resourceManager->GetBillboard();
-	area.sphere.r = 1;
-	area.sphere.pos = parent->transform->position;
 
-	area.aabb.minPoint.Set( -0.5, -0.5, -0.5 );
-	area.aabb.maxPoint.Set( 0.5, 0.5, 0.5 );
 
 	baseParticle.billboard = new ComponentBillboard();
 
-	area.areaType = AAB;
 
 	return true;
 }
@@ -122,17 +120,17 @@ void ComponentParticleEmitter::UpdateUI()
 		if (ImGui::CollapsingHeader("Spawn Area"))
 		{
 
-			if (ImGui::Selectable("AABB", area.areaType == AAB))
+			if (ImGui::Selectable("AABB", area.type == AAB))
 			{
-				area.areaType = AAB;
+				area.type = AAB;
 			}
-			if (ImGui::Selectable("Sphere", area.areaType == SPHERE))
+			if (ImGui::Selectable("Sphere", area.type == SPHERE))
 			{
-				area.areaType = SPHERE;
+				area.type = SPHERE;
 			}
-			if (ImGui::Selectable("Point", area.areaType == NONE))
+			if (ImGui::Selectable("Point", area.type == NONE))
 			{
-				area.areaType = NONE;
+				area.type = NONE;
 			}
 
 			ImGui::Separator();
@@ -251,7 +249,6 @@ bool ComponentParticleEmitter::CleanUp()
 
 bool ComponentParticleEmitter::Save(JSON_Object * json, JsonDoc * doc)
 {
-	//transform.Save(json, doc);
 	json_object_dotset_number(json, "Type", type);
 	json_object_dotset_boolean(json, "Active", active);
 
@@ -282,13 +279,27 @@ bool ComponentParticleEmitter::Save(JSON_Object * json, JsonDoc * doc)
 
 	json_object_dotset_number(json, "DirVariation", dirVartiation);
 
-	return false;
+	//Area of Spawn
+	json_object_dotset_number(json, "AreaType", area.type);
+
+	doc->SaveFloat3(json, "AABBSize", area.aabb.Size());
+	json_object_dotset_number(json, "SphereSize", area.sphere.r);
+	
+
+	return true;
 }
 
 bool ComponentParticleEmitter::Load(JSON_Object * json, JsonDoc * doc)
 {
 	active = json_object_dotget_boolean(json, "Active");
 
+	//Emitter Info
+	emisionTime = json_object_dotget_number(json, "Emision Time");
+	period = json_object_dotget_number(json, "Period");
+	maxParicles = json_object_dotget_number(json, "Max Particles");
+
+
+	//Particle Info
 	speed = doc->LoadRange(json, "Speed");
 	particleLifetime = doc->LoadRange(json, "Life");
 	startSize = doc->LoadRange(json, "StartSize");
@@ -308,7 +319,17 @@ bool ComponentParticleEmitter::Load(JSON_Object * json, JsonDoc * doc)
 
 	dirVartiation = json_object_dotget_number(json, "DirVariation");
 
-	return false;
+
+	//Area of Spawn
+	uint type = json_object_dotget_number(json, "AreaType");
+	area.type = (AreaType)type;
+
+	float3 size = doc->LoadFloat3(json, "AABBSize");
+	area.aabb.SetFromCenterAndSize(parent->transform->position, size);
+
+	area.sphere.r = json_object_dotget_number(json, "SphereSize");
+
+	return true;
 }
 
 void ComponentParticleEmitter::CreateParticle()
@@ -394,7 +415,7 @@ float3 ComponentParticleEmitter::GetRandomPosition()
 {
 	float3 ret = float3::zero;
 
-	switch (area.areaType)
+	switch (area.type)
 	{
 	case SPHERE:
 		ret = area.sphere.RandomPointInside(lcg);
@@ -414,7 +435,7 @@ float3 ComponentParticleEmitter::GetRandomPosition()
 
 void ComponentParticleEmitter::DrawSpawnArea()
 {
-	switch (area.areaType)
+	switch (area.type)
 	{
 	case SPHERE:
 		App->renderer3D->DrawSphere(area.sphere);
@@ -430,7 +451,7 @@ void ComponentParticleEmitter::DrawSpawnArea()
 
 void ComponentParticleEmitter::UpdateSpawnAreaPos()
 {
-	switch (area.areaType)
+	switch (area.type)
 	{
 	case SPHERE:
 		area.sphere.pos = parent->transform->position;
@@ -447,7 +468,7 @@ void ComponentParticleEmitter::UpdateSpawnAreaPos()
 
 void ComponentParticleEmitter::UpdateSpawnUI()
 {
-	switch (area.areaType)
+	switch (area.type)
 	{
 	case SPHERE:
 

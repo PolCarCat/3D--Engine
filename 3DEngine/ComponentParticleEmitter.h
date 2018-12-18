@@ -20,7 +20,7 @@ struct shape
 {
 	shape() {};
 
-	AreaType areaType = AAB;
+	AreaType type = AAB;
 	union
 	{
 		math::Sphere sphere;
