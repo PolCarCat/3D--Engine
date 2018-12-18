@@ -50,6 +50,7 @@ void Particle::Update(float dt)
 	gravity += gravity * dt;
 	position += displacement * dt;
 
+
 	//if (info.billboard != nullptr)
 	//{
 	//	info.billboard->Update();
@@ -59,13 +60,11 @@ void Particle::Update(float dt)
 
 	//	UpdateBillboardPos();
 	//}
-
 	glColor4f(color.r, color.g, color.b, color.a);
 	glPointSize(size);
 	glBegin(GL_POINTS);
 	glVertex3f(position.x, position.y, position.z);
 	glEnd();
-
 }
 
 void Particle::Draw()

@@ -26,7 +26,7 @@ ComponentBillboard::ComponentBillboard(ComponentMaterial* mat)
 		material = mat;
 
 	alignment = WORLD_ALIGN;
-	draw = false;
+
 }
 
 

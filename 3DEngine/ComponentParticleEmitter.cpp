@@ -248,6 +248,60 @@ bool ComponentParticleEmitter::CleanUp()
 	return false;
 }
 
+bool ComponentParticleEmitter::Save(JSON_Object * json, JsonDoc * doc)
+{
+	//transform.Save(json, doc);
+	json_object_dotset_number(json, "Type", type);
+	json_object_dotset_boolean(json, "Active", active);
+
+	//Emitter Info
+	json_object_dotset_number(json, "Emmision Time",emisionTime);
+	json_object_dotset_number(json, "Period", period);
+	json_object_dotset_number(json, "Max Particles", maxParicles);
+
+	//Particle Info
+	doc->SaveRange(json, "Speed", speed);
+
+	doc->SaveRange(json, "Life", particleLifetime);
+
+	doc->SaveRange(json, "StartSize", startSize);
+	doc->SaveRange(json, "EndSize", endSize);
+
+	doc->SaveRange(json, "StartSpin", startSpin);
+	doc->SaveRange(json, "EndSpin", endSpin);
+	
+	doc->SaveColor(json, "StartColorMin", startColor.min);
+	doc->SaveColor(json, "StartColorMax", startColor.max);
+
+	doc->SaveColor(json, "EndColorMin", endColor.min);
+	doc->SaveColor(json, "EndColorMax", endColor.max);
+
+
+	return false;
+}
+
+bool ComponentParticleEmitter::Load(JSON_Object * json, JsonDoc * doc)
+{
+	active = json_object_dotget_boolean(json, "Active");
+
+	speed = doc->LoadRange(json, "Speed");
+	particleLifetime = doc->LoadRange(json, "Life");
+	startSize = doc->LoadRange(json, "StartSize");
+	endSize = doc->LoadRange(json, "EndSize");
+
+	startSpin = doc->LoadRange(json, "StartSpin");
+	endSpin = doc->LoadRange(json, "EndSpin");
+
+	startColor.min = doc->LoadColor(json, "StartColorMin");
+	startColor.max = doc->LoadColor(json, "StartColorMax");
+
+	endColor.min = doc->LoadColor(json, "EndColorMin");
+	endColor.max = doc->LoadColor(json, "EndColorMax");
+
+
+	return false;
+}
+
 void ComponentParticleEmitter::CreateParticle()
 {
 

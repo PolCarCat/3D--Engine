@@ -4,6 +4,7 @@
 #include "Parson/parson.h"
 #include <string>
 #include "Globals.h"
+#include "Color.h"
 
 class JsonDoc
 {
@@ -32,7 +33,12 @@ public:
 	const char* GetObjValueString(json_object_t* _obj, const char* _name);
 	bool GetObjValueBool(json_object_t* _obj, const char* _name);
 
+	void SaveRange(JSON_Object * json,const char* name,  range<float> range);
+	void SaveRange(JSON_Object * json, const char* name, range<int> range);
+	void SaveColor(JSON_Object * json, const char* name, Color color);
 
+	range<float> LoadRange(JSON_Object * json, const char* name);
+	Color LoadColor(JSON_Object * json, const char* name);
 
 private:
 	std::string		path;

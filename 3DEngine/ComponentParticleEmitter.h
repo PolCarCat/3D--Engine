@@ -7,12 +7,7 @@
 #include <list>
 #include "MathGeoLib/MathGeoLib.h"
 
-template <class T>
-struct range
-{
-	T min; 
-	T max; 
-};
+
 
 enum AreaType 
 {
@@ -32,6 +27,10 @@ public:
 	bool Update();
 	void UpdateUI();
 	bool CleanUp();
+	bool Save(JSON_Object* json, JsonDoc* doc);
+	bool Load(JSON_Object* json, JsonDoc* doc);
+
+
 	void CreateParticle();
 	void SpawnParticles(float dt);
 	void UpdateParticles(float dt);
@@ -50,11 +49,12 @@ public:
 
 private:
 
+
 	ParticleInfo baseParticle;
 	Timer emisionTimer;
 	float emisionTime = 0;
 	float period = 0;
-	float frequency = 0;
+
 
 	uint maxParicles = 0;
 	uint currentParticles = 0;

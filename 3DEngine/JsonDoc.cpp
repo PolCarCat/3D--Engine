@@ -2,6 +2,7 @@
 #include "Application.h"
 #include <fstream>
 
+
 #include "mmgr/mmgr.h"
 
 
@@ -171,6 +172,69 @@ bool JsonDoc::GetObjValueBool(json_object_t* _obj, const char* _name)
 	}
 
 	return i;
+}
+
+void JsonDoc::SaveRange(JSON_Object * json, const char* name, range<float> range)
+{
+	std::string min = name;
+	min += "Min";
+
+	std::string max = name;
+	max += "Max";
+
+	json_object_dotset_number(json, min.c_str(), range.min);
+	json_object_dotset_number(json, max.c_str(), range.max);
+}
+
+void JsonDoc::SaveRange(JSON_Object * json, const char* name, range<int> range)
+{
+	std::string min = name;
+	min += "Min";
+
+	std::string max = name;
+	max += "Max";
+
+	json_object_dotset_number(json, min.c_str(), range.min);
+	json_object_dotset_number(json, max.c_str(), range.max);
+}
+
+void JsonDoc::SaveColor(JSON_Object * json, const char* name, Color color)
+{
+
+	JSON_Array* col = SetArray(json, name);
+	json_array_append_number(col, color.r);
+	json_array_append_number(col, color.g);
+	json_array_append_number(col, color.b);
+	json_array_append_number(col, color.a);
+}
+
+range<float> JsonDoc::LoadRange(JSON_Object * json, const char* name)
+{
+	range<float> ret;
+	std::string min = name;
+	min += "Min";
+
+	std::string max = name;
+	max += "Max";
+
+	ret.min = json_object_dotget_number(json, min.c_str());
+	ret.max = json_object_dotget_number(json, max.c_str());
+	
+	return ret;
+}
+
+Color JsonDoc::LoadColor(JSON_Object * json, const char* name)
+{
+	Color ret;
+
+
+	JSON_Array* pos = GetObjAr(json, name);
+	ret.r = json_array_get_number(pos, 0);
+	ret.g = json_array_get_number(pos, 1);
+	ret.b = json_array_get_number(pos, 2);
+	ret.a = json_array_get_number(pos, 3);
+
+	return ret;
 }
 
 

@@ -43,7 +43,12 @@ enum update_status
 // Far Plane Distance
 #define FPD 50000.0f
 
-
+template <class T>
+struct range
+{
+	T min;
+	T max;
+};
 
 namespace Utils 
 {
