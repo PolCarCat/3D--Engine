@@ -26,7 +26,7 @@ public:
 	void UpdateUI();
 	bool CleanUp();
 	void FaceCamera();
-
+	void UpdateFromParticle(float3 pos, float scale = 1, float3 color = float3(1.0, 1.0, 1.0));
 	void SetTexture(ComponentMaterial* t);
 
 	Alignment alignment = SCREEN_ALIGN;

@@ -26,7 +26,7 @@ ComponentBillboard::ComponentBillboard(ComponentMaterial* mat)
 		material = mat;
 
 	alignment = WORLD_ALIGN;
-
+	draw = false;
 }
 
 
@@ -62,9 +62,9 @@ bool ComponentBillboard::Update()
 	}
 	else
 		glMultMatrixf(transform->localMartix.Transposed().ptr());
-	
-	if (draw)
-		mesh->Draw();
+
+	//UpdateFromParticle();
+	mesh->Draw();
 
 	glPopMatrix();
 
@@ -133,6 +133,11 @@ void ComponentBillboard::ScreenAlign()
 	mat.Set(-right.x, -right.y, -right.z, up.x, up.y, up.z, normal.x, normal.y, normal.z);
 
 	transform->rotation = mat.Inverted().ToQuat();
+}
+
+void ComponentBillboard::UpdateFromParticle(float3 pos, float scale, float3 color)
+{
+	transform->position = pos;
 }
 
 void ComponentBillboard::AxialAlign()

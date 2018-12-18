@@ -48,8 +48,6 @@ public:
 
 private:
 
-	void UpdateBillboardPos();
-
 	float Ratio(float max, float  min);
 	Color Ratio(Color max, Color  min);
 

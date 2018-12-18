@@ -59,6 +59,7 @@ bool ComponentParticleEmitter::Start()
 	aabb.minPoint.Set( -0.5, -0.5, -0.5 );
 	aabb.maxPoint.Set( 0.5, 0.5, 0.5 );
 
+	baseParticle.billboard = new ComponentBillboard();
 
 	areaType = AAB;
 
@@ -78,7 +79,7 @@ bool ComponentParticleEmitter::Update()
 			time += dt;
 
 	}
-		
+	
 	UpdateParticles(dt);
 	DrawSpawnArea();
 	UpdateSpawnAreaPos();
