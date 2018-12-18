@@ -16,6 +16,18 @@ enum AreaType
 	NONE
 };
 
+struct shape
+{
+	shape() {};
+
+	AreaType areaType = AAB;
+	union
+	{
+		math::Sphere sphere;
+		AABB aabb;
+	};
+};
+
 class ComponentParticleEmitter :
 	public Component
 {
@@ -83,9 +95,7 @@ private:
 	LCG lcg;
 
 	//Area of spawn
-	AreaType areaType;
-	math::Sphere sphere;
-	AABB aabb;
+	shape area;
 	
 
 };
