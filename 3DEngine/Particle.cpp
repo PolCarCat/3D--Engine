@@ -17,6 +17,8 @@ Particle::Particle(ParticleInfo i)
 	lifeLeft = lifeTime;
 	color = info.startColor;
 	direction = info.direction;
+	gravity = info.gravity;
+
 	info.billboard = new ComponentBillboard();
 	info.billboard->Start();
 }
@@ -43,19 +45,20 @@ void Particle::Update(float dt)
 	spin = Ratio(info.endSpin, info.startSpin);
 	color = Ratio(info.endColor, info.startColor);
 
-	float3 displacement = (direction + (info.gravity * lifetimeRatio)) * speed;
+	float3 displacement = (direction + gravity) * speed;
 
+	gravity += gravity * dt;
 	position += displacement * dt;
 
-	if (info.billboard != nullptr)
-	{
-		info.billboard->Update();
-		direction.x *= info.billboard->transform->rotation.x;
-		direction.y *= info.billboard->transform->rotation.y;
-		direction.z *= info.billboard->transform->rotation.z;
+	//if (info.billboard != nullptr)
+	//{
+	//	info.billboard->Update();
+	//	direction.x *= info.billboard->transform->rotation.x;
+	//	direction.y *= info.billboard->transform->rotation.y;
+	//	direction.z *= info.billboard->transform->rotation.z;
 
-		UpdateBillboardPos();
-	}
+	//	UpdateBillboardPos();
+	//}
 
 	glColor4f(color.r, color.g, color.b, color.a);
 	glPointSize(size);

@@ -61,6 +61,7 @@ private:
 	float spin = 0;
 
 	float3 direction;
+	float3 gravity;
 	float3 position;
 	Color color;
 	

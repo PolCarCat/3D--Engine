@@ -143,9 +143,9 @@ void ComponentParticleEmitter::UpdateUI()
 		{
 
 			//Direction
-			ImGui::DragFloat3("Direction", (float*)&direction, 0.25f);
+			ImGui::DragFloat3("Direction", (float*)&direction, 0.1f);
 			ImGui::SliderFloat("Direction Variation", &dirVartiation, 0, 180);
-			ImGui::DragFloat3("Gravity", (float*)&gravity, 0.25f);
+			ImGui::DragFloat3("Gravity", (float*)&gravity, 0.1f);
 
 
 			//LifeTime
@@ -162,7 +162,7 @@ void ComponentParticleEmitter::UpdateUI()
 			ImGui::PopID();
 
 			//Speed
-			ImGui::PushID("Speed");
+			ImGui::PushID("Speed Variation");
 
 			ImGui::Text("Speed");
 			ImGui::SliderFloat("Min", &speed.min, 0, speed.max);
@@ -259,9 +259,9 @@ void ComponentParticleEmitter::CreateParticle()
 	vartiation.z = vartiation.z * dirVartiation * DEGTORAD;
 
 
-	float3 dir = direction.Normalized() + vartiation;
+	float3 dir = direction + vartiation;
 
-	baseParticle.Set(GetRandom(startSize), GetRandom(endSize), GetRandom(startSpin), GetRandom(endSpin), GetRandom(speed), GetRandom(particleLifetime) , GetRandomPosition(), dir.Normalized(), gravity, GetRandom(startColor), GetRandom(endColor));
+	baseParticle.Set(GetRandom(startSize), GetRandom(endSize), GetRandom(startSpin), GetRandom(endSpin), GetRandom(speed), GetRandom(particleLifetime) , GetRandomPosition(), dir, gravity, GetRandom(startColor), GetRandom(endColor));
 
 
 	//Create New Particle
