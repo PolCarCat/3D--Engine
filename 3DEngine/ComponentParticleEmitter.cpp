@@ -53,14 +53,14 @@ bool ComponentParticleEmitter::Start()
 {
 
 	//baseParticle.billboard = App->resourceManager->GetBillboard();
-	sphere.r = 1;
-	sphere.pos = parent->transform->position;
+	area.sphere.r = 1;
+	area.sphere.pos = parent->transform->position;
 
-	aabb.minPoint.Set( -0.5, -0.5, -0.5 );
-	aabb.maxPoint.Set( 0.5, 0.5, 0.5 );
+	area.aabb.minPoint.Set( -0.5, -0.5, -0.5 );
+	area.aabb.maxPoint.Set( 0.5, 0.5, 0.5 );
 
 
-	areaType = AAB;
+	area.areaType = AAB;
 
 	return true;
 }
@@ -121,17 +121,17 @@ void ComponentParticleEmitter::UpdateUI()
 		if (ImGui::CollapsingHeader("Spawn Area"))
 		{
 
-			if (ImGui::Selectable("AABB", areaType == AAB))
+			if (ImGui::Selectable("AABB", area.areaType == AAB))
 			{
-				areaType = AAB;
+				area.areaType = AAB;
 			}
-			if (ImGui::Selectable("Sphere", areaType == SPHERE))
+			if (ImGui::Selectable("Sphere", area.areaType == SPHERE))
 			{
-				areaType = SPHERE;
+				area.areaType = SPHERE;
 			}
-			if (ImGui::Selectable("Point", areaType == NONE))
+			if (ImGui::Selectable("Point", area.areaType == NONE))
 			{
-				areaType = NONE;
+				area.areaType = NONE;
 			}
 
 			ImGui::Separator();
@@ -385,13 +385,13 @@ float3 ComponentParticleEmitter::GetRandomPosition()
 {
 	float3 ret = float3::zero;
 
-	switch (areaType)
+	switch (area.areaType)
 	{
 	case SPHERE:
-		ret = sphere.RandomPointInside(lcg);
+		ret = area.sphere.RandomPointInside(lcg);
 		break;
 	case AAB:
-		ret = aabb.RandomPointInside(lcg);
+		ret = area.aabb.RandomPointInside(lcg);
 		break;
 	case NONE:
 		ret = parent->transform->position;
@@ -405,13 +405,13 @@ float3 ComponentParticleEmitter::GetRandomPosition()
 
 void ComponentParticleEmitter::DrawSpawnArea()
 {
-	switch (areaType)
+	switch (area.areaType)
 	{
 	case SPHERE:
-		App->renderer3D->DrawSphere(sphere);
+		App->renderer3D->DrawSphere(area.sphere);
 		break;
 	case AAB:
-		App->renderer3D->DrawAABB(aabb);
+		App->renderer3D->DrawAABB(area.aabb);
 		break;
 	case NONE:
 	default:
@@ -421,13 +421,13 @@ void ComponentParticleEmitter::DrawSpawnArea()
 
 void ComponentParticleEmitter::UpdateSpawnAreaPos()
 {
-	switch (areaType)
+	switch (area.areaType)
 	{
 	case SPHERE:
-		sphere.pos = parent->transform->position;
+		area.sphere.pos = parent->transform->position;
 		break;
 	case AAB:
-		aabb.SetFromCenterAndSize(parent->transform->position, aabb.Size());
+		area.aabb.SetFromCenterAndSize(parent->transform->position, area.aabb.Size());
 		break;
 	case NONE:
 	default:
@@ -438,18 +438,18 @@ void ComponentParticleEmitter::UpdateSpawnAreaPos()
 
 void ComponentParticleEmitter::UpdateSpawnUI()
 {
-	switch (areaType)
+	switch (area.areaType)
 	{
 	case SPHERE:
 
-		ImGui::DragFloat("Radius", &sphere.r, 0.1f);
+		ImGui::DragFloat("Radius", &area.sphere.r, 0.1f);
 		break;
 	case AAB:
 	{
-		float3 size = aabb.Size();
+		float3 size = area.aabb.Size();
 		if (ImGui::DragFloat3("Size", (float*)&size, 0.1f))
 		{
-			aabb.SetFromCenterAndSize(aabb.CenterPoint(), size);
+			area.aabb.SetFromCenterAndSize(area.aabb.CenterPoint(), size);
 		}
 	}
 		break;
