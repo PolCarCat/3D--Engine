@@ -208,6 +208,15 @@ void JsonDoc::SaveColor(JSON_Object * json, const char* name, Color color)
 	json_array_append_number(col, color.a);
 }
 
+void JsonDoc::SaveFloat3(JSON_Object * json, const char * name, float3 vect)
+{
+	JSON_Array* array = SetArray(json, name);
+	json_array_append_number(array, vect.x);
+	json_array_append_number(array, vect.y);
+	json_array_append_number(array, vect.z);
+
+}
+
 range<float> JsonDoc::LoadRange(JSON_Object * json, const char* name)
 {
 	range<float> ret;
@@ -233,6 +242,18 @@ Color JsonDoc::LoadColor(JSON_Object * json, const char* name)
 	ret.g = json_array_get_number(pos, 1);
 	ret.b = json_array_get_number(pos, 2);
 	ret.a = json_array_get_number(pos, 3);
+
+	return ret;
+}
+
+float3 JsonDoc::LoadFloat3(JSON_Object * json, const char * name)
+{
+	float3 ret;
+
+	JSON_Array* pos = GetObjAr(json, name);
+	ret.x = json_array_get_number(pos, 0);
+	ret.y = json_array_get_number(pos, 1);
+	ret.z = json_array_get_number(pos, 2);
 
 	return ret;
 }

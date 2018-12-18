@@ -646,6 +646,7 @@ bool GameObject::Load(JSON_Object* json, JsonDoc* doc)
 		{
 			Component* newcomp = AddComponent((Type)type);
 			newcomp->Load(item, doc);
+			newcomp->Start();
 		}
 
 		item = doc->GetArObj(comp, ++i);

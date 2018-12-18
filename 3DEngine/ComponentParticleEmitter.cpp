@@ -277,6 +277,10 @@ bool ComponentParticleEmitter::Save(JSON_Object * json, JsonDoc * doc)
 	doc->SaveColor(json, "EndColorMin", endColor.min);
 	doc->SaveColor(json, "EndColorMax", endColor.max);
 
+	doc->SaveFloat3(json, "Gravity", gravity);
+	doc->SaveFloat3(json, "Direction", direction);
+
+	json_object_dotset_number(json, "DirVariation", dirVartiation);
 
 	return false;
 }
@@ -299,6 +303,10 @@ bool ComponentParticleEmitter::Load(JSON_Object * json, JsonDoc * doc)
 	endColor.min = doc->LoadColor(json, "EndColorMin");
 	endColor.max = doc->LoadColor(json, "EndColorMax");
 
+	gravity = doc->LoadFloat3(json, "Gravity");
+	direction = doc->LoadFloat3(json, "Direction");
+
+	dirVartiation = json_object_dotget_number(json, "DirVariation");
 
 	return false;
 }

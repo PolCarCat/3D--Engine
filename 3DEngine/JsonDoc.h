@@ -5,6 +5,7 @@
 #include <string>
 #include "Globals.h"
 #include "Color.h"
+#include "MathGeoLib/MathGeoLib.h"
 
 class JsonDoc
 {
@@ -36,9 +37,11 @@ public:
 	void SaveRange(JSON_Object * json,const char* name,  range<float> range);
 	void SaveRange(JSON_Object * json, const char* name, range<int> range);
 	void SaveColor(JSON_Object * json, const char* name, Color color);
+	void SaveFloat3(JSON_Object * json, const char* name, float3 vect);
 
 	range<float> LoadRange(JSON_Object * json, const char* name);
 	Color LoadColor(JSON_Object * json, const char* name);
+	float3 LoadFloat3(JSON_Object* json, const char* name);
 
 private:
 	std::string		path;
