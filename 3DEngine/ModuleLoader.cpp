@@ -82,7 +82,7 @@ update_status ModuleLoader::PostUpdate(float dt)
 			break;
 		case PNG:
 		case DDS:
-			App->loader->texImporter.LoadTex(droppedFile);
+			App->scene->CreateMaterial(App->loader->texImporter.LoadTex(droppedFile));
 			break;
 		case JSON:
 			SceneLoader::LoadScene(droppedFile, &App->scene->root);

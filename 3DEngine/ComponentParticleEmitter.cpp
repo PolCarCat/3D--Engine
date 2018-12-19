@@ -226,6 +226,7 @@ void ComponentParticleEmitter::UpdateUI()
 			ImGui::PopID();
 		}
 
+		baseParticle.billboard->UpdateUI();
 	}
 	ImGui::Separator();
 }

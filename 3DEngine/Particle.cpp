@@ -49,11 +49,11 @@ void Particle::Update(float dt)
 	position += displacement * dt;
 
 
-	glColor4f(color.r, color.g, color.b, color.a);
-	glPointSize(size);
-	glBegin(GL_POINTS);
-	glVertex3f(position.x, position.y, position.z);
-	glEnd();
+	//glColor4f(color.r, color.g, color.b, color.a);
+	//glPointSize(size);
+	//glBegin(GL_POINTS);
+	//glVertex3f(position.x, position.y, position.z);
+	//glEnd();
 
 	if (info.billboard != nullptr)
 		info.billboard->UpdateFromParticle(position);

@@ -115,10 +115,21 @@ void ModuleScene::CreateEmptyObj()
 	obj->SetParent(&root);
 }
 
-void ModuleScene::CreateMaterial()
+
+void ModuleScene::CreateMaterial(ResTexture * tex)
 {
 	ComponentMaterial* mat = new ComponentMaterial();
-	mat->SetName("New Material");
+	if (tex != nullptr)
+	{
+		mat->SetName(tex->GetName());
+		mat->SetTexture(tex);
+		mat->texEnabled = true;
+	}
+	else
+	{
+		mat->SetName("New Material");
+	}
+
 	materials.push_back(mat);
 }
 

@@ -333,7 +333,7 @@ void ModuleRenderer3D::SetUpMat(ComponentMaterial* mat)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	if (mat->texEnabled)
+	if (mat->GetTexture() != nullptr && mat->texEnabled)
 		glBindTexture(GL_TEXTURE_2D, mat->GetTexture()->id);
 	else
 		glColor4f(mat->color.r, mat->color.g, mat->color.b, mat->color.a);

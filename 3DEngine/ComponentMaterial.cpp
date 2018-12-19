@@ -99,6 +99,7 @@ void ComponentMaterial::UpdateUI()
 
 	}
 
+
 	if (!texEnabled)
 	{
 		ImVec4 colorImGui = ImVec4(color.r, color.g, color.b, color.a);

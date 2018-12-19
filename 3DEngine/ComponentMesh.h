@@ -29,7 +29,7 @@ public:
 	ResMesh* mesh;
 	ComponentMaterial* material = nullptr;
 
-private:
+protected:
 	void UpdateMatWin();
 };
 

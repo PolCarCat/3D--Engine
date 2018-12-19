@@ -8,6 +8,7 @@
 
 class ComponentCamera;
 class ComponentMaterial;
+class ResTexture;
 
 class ModuleScene : public Module
 {
@@ -23,7 +24,7 @@ public:
 	void CreateEmptyObj();
 	void DeleteGameObject(GameObject* obj);
 	void SetCurCam(ComponentCamera* cam);
-	void CreateMaterial();
+	void CreateMaterial(ResTexture* tex = nullptr);
 	ComponentCamera* GetCurCam() const;
 	ComponentCamera* GetGhostCam() const;
 	ComponentMaterial* CheckMaterial(const char* name);

@@ -26,7 +26,7 @@ ComponentBillboard::ComponentBillboard(ComponentMaterial* mat)
 		material = mat;
 
 	alignment = WORLD_ALIGN;
-	draw = false;
+
 }
 
 
@@ -54,6 +54,9 @@ bool ComponentBillboard::Update()
 
 	transform->CalcMatrix();
 
+	if (material != nullptr)
+		App->renderer3D->SetUpMat(material);
+
 	glPushMatrix();
 	if (parent != nullptr)
 	{
@@ -66,6 +69,7 @@ bool ComponentBillboard::Update()
 	//UpdateFromParticle();
 	mesh->Draw();
 
+
 	glPopMatrix();
 
 	return true;
@@ -73,6 +77,43 @@ bool ComponentBillboard::Update()
 
 void ComponentBillboard::UpdateUI()
 {
+	if (ImGui::CollapsingHeader("Billboard"))
+	{
+
+		ImGui::NewLine();
+
+		if (material == nullptr)
+		{
+			if (ImGui::Button("Add Material"))
+				ImGui::OpenPopup("select");
+
+			if (ImGui::BeginPopup("select"))
+			{
+				UpdateMatWin();
+				ImGui::EndPopup();
+			}
+		}
+		else
+		{
+			ImGui::NewLine();
+			material->UpdateUI();
+		}
+
+		if (ImGui::Button("Change Material"))
+			ImGui::OpenPopup("ChangeMaterial");
+
+		if (ImGui::BeginPopup("ChangeMaterial"))
+		{
+			UpdateMatWin();
+			ImGui::EndPopup();
+		}
+		
+
+		ImGui::NewLine();
+		ImGui::Separator();
+		if (ImGui::Button("Delete"))
+			Delete();
+	}
 }
 
 bool ComponentBillboard::CleanUp()
@@ -137,6 +178,7 @@ void ComponentBillboard::ScreenAlign()
 
 void ComponentBillboard::UpdateFromParticle(float3 pos, float scale, float3 color)
 {
+	Update();
 	transform->position = pos;
 }
 

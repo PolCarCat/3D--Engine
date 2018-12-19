@@ -238,7 +238,7 @@ void ModuleResourceManager::GenerateBillboard()
 
 	//Texture Coordinates
 	static const float tex[] = {
-	0,0,0
+	1,1,0,1,1,0,0,0
 	};
 
 	billboard->num_textC = billboard->num_vertex * 2;
