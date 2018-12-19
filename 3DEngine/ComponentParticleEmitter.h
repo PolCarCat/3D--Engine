@@ -5,6 +5,8 @@
 #include "Particle.h"
 #include "Timer.h"
 #include <list>
+#include <queue>
+
 #include "MathGeoLib/MathGeoLib.h"
 
 #define MINSPAWNRATE 0.01f
@@ -14,6 +16,15 @@ enum AreaType
 	SPHERE,
 	AAB,
 	NONE
+};
+
+struct ParticlePriority
+{
+	bool operator()(const Particle* particle1, const Particle* particle2)const
+	{
+
+		return  particle1->DistanceToCamera() < particle2->DistanceToCamera();
+	}
 };
 
 struct shape
@@ -46,6 +57,7 @@ public:
 	void CreateParticle();
 	void SpawnParticles(float dt);
 	void UpdateParticles(float dt);
+	void DrawParticles();
 
 	float GetRandom(range<float> r);
 	uint GetRandom(range<uint> r);
@@ -87,6 +99,7 @@ private:
 	float dirVartiation = 0;
 
 	std::list<Particle*> particles;
+	std::priority_queue<Particle*, std::vector<Particle*>, ParticlePriority> orderedParticles;
 
 	float emitterLifetime = 0;
 	float time = 0;

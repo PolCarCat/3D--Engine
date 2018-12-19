@@ -1,4 +1,6 @@
 #include "Particle.h"
+#include "Application.h"
+#include "ComponentCamera.h"
 
 #include "Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
@@ -28,6 +30,11 @@ Particle::~Particle()
 
 void Particle::Start()
 {
+	if (App->renderer3D->IsUsingGhostCam())
+		reference = App->scene->GetGhostCam();
+	else
+		reference = App->scene->GetCurCam();
+
 }
 
 void Particle::Update(float dt)
@@ -48,20 +55,12 @@ void Particle::Update(float dt)
 	gravity += gravity * dt;
 	position += displacement * dt;
 
-
-	//glColor4f(color.r, color.g, color.b, color.a);
-	//glPointSize(size);
-	//glBegin(GL_POINTS);
-	//glVertex3f(position.x, position.y, position.z);
-	//glEnd();
-
-	if (info.billboard != nullptr)
-		info.billboard->UpdateFromParticle(position);
 }
 
 void Particle::Draw()
 {
-
+	if (info.billboard != nullptr)
+		info.billboard->UpdateFromParticle(position, size, color);
 }
 
 void Particle::CleanUp()
@@ -72,6 +71,12 @@ void Particle::CleanUp()
 bool Particle::Delete()
 {
 	return toDelete;
+}
+
+float Particle::DistanceToCamera() const
+{
+	
+	return position.Distance(reference->transform.position);
 }
 
 

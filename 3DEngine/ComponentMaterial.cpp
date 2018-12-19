@@ -86,7 +86,7 @@ void ComponentMaterial::UpdateUI()
 			//ImGui::SliderFloat("Position Y", &tex->position.y, 0, 1);
 			//ImGui::SliderFloat("Scale X", &tex->scale.x, 0, 10);
 			//ImGui::SliderFloat("Scale Y", &tex->scale.y, 0, 10);
-			ImGui::SliderFloat("Angle", &tex->angle, 0, 360);
+			//ImGui::SliderFloat("Angle", &tex->angle, 0, 360);
 			uint margin = -20;
 		}
 		

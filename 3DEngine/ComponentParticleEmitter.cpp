@@ -351,6 +351,7 @@ void ComponentParticleEmitter::CreateParticle()
 
 	//Create New Particle
 	Particle* newParticle = new Particle(baseParticle);
+	newParticle->Start();
 	particles.push_back(newParticle);
 
 
@@ -385,6 +386,7 @@ void ComponentParticleEmitter::UpdateParticles(float dt)
 		if (!(*item)->Delete())
 		{
 			(*item)->Update(dt);
+			orderedParticles.push(*item);
 			item++;
 		}
 		else
@@ -399,7 +401,24 @@ void ComponentParticleEmitter::UpdateParticles(float dt)
 
 			item = particles.erase(item);
 		}
+
+
 	}
+
+	DrawParticles();
+}
+
+void ComponentParticleEmitter::DrawParticles()
+{
+
+	while (orderedParticles.empty() == false)
+	{
+		Particle* first = orderedParticles.top();
+
+		first->Draw();
+		orderedParticles.pop();
+	}
+
 }
 
 float ComponentParticleEmitter::GetRandom(range<float> r)

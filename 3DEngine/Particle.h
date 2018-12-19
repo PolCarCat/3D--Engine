@@ -46,6 +46,8 @@ public:
 	void CleanUp();
 	bool Delete();
 
+	float DistanceToCamera() const;
+
 private:
 
 	float Ratio(float max, float  min);
@@ -67,6 +69,8 @@ private:
 	float lifetimeRatio = 1;
 
 	bool toDelete = false;
+
+	ComponentCamera* reference = nullptr;
 };
 
 #endif // !__PARTICLE_H__

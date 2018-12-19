@@ -45,14 +45,10 @@ bool ComponentBillboard::Update()
 
 	FaceCamera();
 
-
-	//if (!this->parent->GetStatic() || this->parent->IsInQT())
-	//{
-	//	if (reference->CheckInside(this->parent->GetGlobalABB()))
-	//		App->renderer3D->ToDraw(this);
-	//}
-
 	transform->CalcMatrix();
+
+	if (useColor)
+		glColor4f(material->color.r, material->color.g, material->color.b, material->color.a);
 
 	if (material != nullptr)
 		App->renderer3D->SetUpMat(material);
@@ -98,6 +94,8 @@ void ComponentBillboard::UpdateUI()
 			ImGui::NewLine();
 			material->UpdateUI();
 		}
+
+		ImGui::Checkbox("Use Color", &useColor);
 
 		if (ImGui::Button("Change Material"))
 			ImGui::OpenPopup("ChangeMaterial");
@@ -176,10 +174,12 @@ void ComponentBillboard::ScreenAlign()
 	transform->rotation = mat.Inverted().ToQuat();
 }
 
-void ComponentBillboard::UpdateFromParticle(float3 pos, float scale, float3 color)
+void ComponentBillboard::UpdateFromParticle(float3 pos, float scale, Color color)
 {
 	Update();
 	transform->position = pos;
+	transform->scale = float3(scale);
+	material->color = color;
 }
 
 void ComponentBillboard::AxialAlign()

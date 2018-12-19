@@ -318,6 +318,7 @@ void ModuleRenderer3D::ToDraw(ComponentMesh * mesh)
 
 void ModuleRenderer3D::DrawQueue(std::priority_queue<ComponentMesh*, std::vector<ComponentMesh*>, MeshPriority>& queue)
 {
+
 	while (queue.empty() == false)
 	{
 		ComponentMesh* first = queue.top();

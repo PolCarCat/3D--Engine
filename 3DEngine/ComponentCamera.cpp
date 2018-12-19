@@ -47,7 +47,7 @@ bool ComponentCamera::Start()
 	VSLOG("Setting up the camera");
 	bool ret = true;
 
-	frustum.pos = float3(0.0f, 1.0f, 10.0f);
+	frustum.pos = transform.position = float3(0.0f, 1.0f, 10.0f);
 
 	return ret;
 }
