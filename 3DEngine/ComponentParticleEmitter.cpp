@@ -112,7 +112,7 @@ void ComponentParticleEmitter::UpdateUI()
 			maxParicles = particles;
 
 
-		ImGui::SliderFloat("Period", &period, 0, 10);
+		ImGui::SliderFloat("Period", &period, MINSPAWNRATE, 10);
 
 
 		//Area of spawn
@@ -354,15 +354,26 @@ void ComponentParticleEmitter::CreateParticle()
 	particles.push_back(newParticle);
 
 
-	emisionTimer.Start();
 }
 
 void ComponentParticleEmitter::SpawnParticles(float dt)
 {
+	uint particlesToSpawn = 1;
+
+	if (period < dt)
+	{
+		particlesToSpawn = dt / period;
+	}
+
 	if (emisionTimer.Read() * dt >= period)
 	{
-		CreateParticle();
-		currentParticles++;
+		for (uint i = 0; i < particlesToSpawn; i++)
+		{
+			CreateParticle();
+			currentParticles++;
+		}
+
+		emisionTimer.Start();
 	}
 }
 

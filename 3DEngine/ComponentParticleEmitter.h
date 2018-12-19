@@ -7,7 +7,7 @@
 #include <list>
 #include "MathGeoLib/MathGeoLib.h"
 
-
+#define MINSPAWNRATE 0.01f
 
 enum AreaType 
 {
