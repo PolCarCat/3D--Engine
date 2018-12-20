@@ -119,6 +119,42 @@ bool ComponentBillboard::CleanUp()
 	return true;
 }
 
+bool ComponentBillboard::Save(JSON_Object * json, JsonDoc * doc)
+{
+
+	if (material != nullptr)
+	{
+		JSON_Object* mat = doc->SetObj(json, "Material");
+
+		material->Save(mat, doc);
+	}
+
+	return true;
+}
+
+bool ComponentBillboard::Load(JSON_Object * json, JsonDoc * doc)
+{
+
+	JSON_Object* mat = doc->GetObjObj(json, "Material");
+
+	if (mat != nullptr)
+	{
+		std::string matName = json_object_dotget_string(mat, "Name");
+		ComponentMaterial* usedMat = App->scene->CheckMaterial(matName.c_str());
+
+		if (usedMat == nullptr)
+		{
+			material = new ComponentMaterial();
+			material->Load(mat, doc);
+		}
+		else
+			material = usedMat;
+	}
+
+
+	return true;
+}
+
 void ComponentBillboard::FaceCamera()
 {
 

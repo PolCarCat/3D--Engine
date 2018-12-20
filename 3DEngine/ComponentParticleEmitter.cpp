@@ -286,6 +286,13 @@ bool ComponentParticleEmitter::Save(JSON_Object * json, JsonDoc * doc)
 	doc->SaveFloat3(json, "AABBSize", area.aabb.Size());
 	json_object_dotset_number(json, "SphereSize", area.sphere.r);
 	
+	//Billboard
+	if (baseParticle.billboard != nullptr)
+	{
+		JSON_Object* bill = doc->SetObj(json, "Billboard");
+
+		baseParticle.billboard->Save(bill, doc);
+	}
 
 	return true;
 }
@@ -329,6 +336,14 @@ bool ComponentParticleEmitter::Load(JSON_Object * json, JsonDoc * doc)
 	area.aabb.SetFromCenterAndSize(parent->transform->position, size);
 
 	area.sphere.r = json_object_dotget_number(json, "SphereSize");
+
+	//Billboard
+	JSON_Object* bill = doc->GetObjObj(json, "Billboard");
+
+	if (bill != nullptr)	
+		baseParticle.billboard->Load(bill, doc);
+
+	
 
 	return true;
 }

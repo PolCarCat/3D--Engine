@@ -24,17 +24,17 @@ Firework::~Firework()
 
 bool Firework::Start()
 {
-
+	return true;
 }
 
 bool Firework::Update()
 {
-
+	return true;
 }
 
 bool Firework::CleanUp()
 {
-
+	return true;
 }
 
 float3 Firework::GetRandom(range<float3> r)

@@ -25,6 +25,10 @@ public:
 	bool Update();
 	void UpdateUI();
 	bool CleanUp();
+	bool Save(JSON_Object* json, JsonDoc* doc);
+	bool Load(JSON_Object* json, JsonDoc* doc);
+
+
 	void FaceCamera();
 	void UpdateFromParticle(float3 pos, float scale = 1, Color color = White);
 	void SetTexture(ComponentMaterial* t);
