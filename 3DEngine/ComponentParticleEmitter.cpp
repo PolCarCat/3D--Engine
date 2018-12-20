@@ -45,6 +45,8 @@ ComponentParticleEmitter::ComponentParticleEmitter()
 
 	area.aabb.minPoint.Set(-0.5, -0.5, -0.5);
 	area.aabb.maxPoint.Set(0.5, 0.5, 0.5);
+
+	baseParticle.billboard = new ComponentBillboard();
 }
 
 
@@ -58,7 +60,7 @@ bool ComponentParticleEmitter::Start()
 	//baseParticle.billboard = App->resourceManager->GetBillboard();
 
 
-	baseParticle.billboard = new ComponentBillboard();
+
 
 
 	return true;
@@ -400,8 +402,8 @@ void ComponentParticleEmitter::UpdateParticles(float dt)
 	{
 		if (!(*item)->Delete())
 		{
-			(*item)->Update(dt);
 			orderedParticles.push(*item);
+			(*item)->Update(dt);
 			item++;
 		}
 		else
@@ -426,13 +428,16 @@ void ComponentParticleEmitter::UpdateParticles(float dt)
 void ComponentParticleEmitter::DrawParticles()
 {
 
-	while (orderedParticles.empty() == false)
+	while (orderedParticles.size() != 0)
 	{
 		Particle* first = orderedParticles.top();
 
-		first->Draw();
+		if (!first->Delete())
+			first->Draw();
+
 		orderedParticles.pop();
 	}
+
 
 }
 

@@ -30,10 +30,7 @@ Particle::~Particle()
 
 void Particle::Start()
 {
-	if (App->renderer3D->IsUsingGhostCam())
-		reference = App->scene->GetGhostCam();
-	else
-		reference = App->scene->GetCurCam();
+
 
 }
 
@@ -76,7 +73,7 @@ bool Particle::Delete()
 float Particle::DistanceToCamera() const
 {
 	
-	return position.Distance(reference->transform.position);
+	return position.Distance(App->renderer3D->GetCameraPos());
 }
 
 

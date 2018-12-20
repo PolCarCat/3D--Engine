@@ -220,12 +220,12 @@ void ModuleRenderer3D::SetUseGhostCam(bool s)
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
-	ComponentCamera* cam;
+
 
 	if (useGhostCam)
-		cam = App->scene->GetGhostCam();
+		renderedCam = App->scene->GetGhostCam();
 	else
-		cam = App->scene->GetCurCam();
+		renderedCam = App->scene->GetCurCam();
 	
 	glViewport(0, 0, width, height);
 
@@ -233,7 +233,7 @@ void ModuleRenderer3D::OnResize(int width, int height)
 	glLoadIdentity();
 	App->window->w = width;
 	App->window->h = height;
-	ProjectionMatrix = cam->ResizePerspMatrix(width, height);
+	ProjectionMatrix = renderedCam->ResizePerspMatrix(width, height);
 	glLoadMatrixf(&ProjectionMatrix[0][0]);
 
 	glMatrixMode(GL_MODELVIEW);
@@ -326,6 +326,12 @@ void ModuleRenderer3D::DrawQueue(std::priority_queue<ComponentMesh*, std::vector
 		first->Draw();
 		queue.pop();
 	}
+}
+
+float3 ModuleRenderer3D::GetCameraPos() const
+{
+
+	return renderedCam->transform.position;
 }
 
 void ModuleRenderer3D::SetUpMat(ComponentMaterial* mat)

@@ -70,7 +70,6 @@ private:
 
 	bool toDelete = false;
 
-	ComponentCamera* reference = nullptr;
 };
 
 #endif // !__PARTICLE_H__

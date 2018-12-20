@@ -84,6 +84,7 @@ public:
 	void ToDraw(ComponentMesh* entity);
 	void DrawQueue(std::priority_queue<ComponentMesh*, std::vector<ComponentMesh*>, MeshPriority>& queue);
 
+	float3 GetCameraPos() const;
 public:
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
@@ -109,6 +110,8 @@ private:
 	bool texture2D = true;
 	bool wireframe = false;
 	bool useGhostCam = true;
+
+	ComponentCamera* renderedCam = nullptr;
 
 	PPlane		plane;
 
