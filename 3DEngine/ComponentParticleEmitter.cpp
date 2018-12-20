@@ -418,8 +418,6 @@ void ComponentParticleEmitter::UpdateParticles(float dt)
 
 			item = particles.erase(item);
 		}
-
-
 	}
 
 	DrawParticles();
@@ -427,7 +425,7 @@ void ComponentParticleEmitter::UpdateParticles(float dt)
 
 void ComponentParticleEmitter::DrawParticles()
 {
-
+	
 	while (orderedParticles.size() != 0)
 	{
 		Particle* first = orderedParticles.top();

@@ -72,7 +72,7 @@ bool Particle::Delete()
 
 float Particle::DistanceToCamera() const
 {
-	
+
 	return position.Distance(App->renderer3D->GetCameraPos());
 }
 

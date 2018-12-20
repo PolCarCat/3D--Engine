@@ -200,7 +200,7 @@ void ComponentCamera::CheckInput(float dt)
 		parent->transform->CalcMatrix();
 
 	}
-	
+	transform.position = frustum.pos;
 }
 
 

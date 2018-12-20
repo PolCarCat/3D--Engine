@@ -27,6 +27,7 @@ struct ParticlePriority
 	}
 };
 
+
 struct shape
 {
 	shape() {};
