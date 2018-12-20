@@ -399,6 +399,9 @@
     <ClInclude Include="ComponentParticleEmitter.h">
       <Filter>Sources\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Firework.h">
+      <Filter>Sources\Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -649,6 +652,9 @@
     </ClCompile>
     <ClCompile Include="ComponentParticleEmitter.cpp">
       <Filter>Sources\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Firework.cpp">
+      <Filter>Sources\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

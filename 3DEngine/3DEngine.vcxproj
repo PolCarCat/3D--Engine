@@ -84,6 +84,7 @@
     <ClInclude Include="ComponentParticleEmitter.h" />
     <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="FileSystem.h" />
+    <ClInclude Include="Firework.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="ImGui\imconfig.h" />
@@ -202,6 +203,7 @@
     <ClCompile Include="ComponentParticleEmitter.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="FileSystem.cpp" />
+    <ClCompile Include="Firework.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\ImGuizmo.cpp" />
