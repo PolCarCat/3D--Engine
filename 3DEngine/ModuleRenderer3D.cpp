@@ -331,7 +331,7 @@ void ModuleRenderer3D::DrawQueue(std::priority_queue<ComponentMesh*, std::vector
 float3 ModuleRenderer3D::GetCameraPos() const
 {
 
-	return renderedCam->transform.position;
+	return renderedCam->GetFrustum().pos;
 }
 
 void ModuleRenderer3D::SetUpMat(ComponentMaterial* mat)

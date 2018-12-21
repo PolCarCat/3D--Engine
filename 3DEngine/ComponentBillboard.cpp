@@ -212,10 +212,11 @@ void ComponentBillboard::ScreenAlign()
 
 void ComponentBillboard::UpdateFromParticle(float3 pos, float scale, Color color)
 {
-	Update();
+
 	transform->position = pos;
 	transform->scale = float3(scale);
 	material->color = color;
+	Update();
 }
 
 void ComponentBillboard::AxialAlign()

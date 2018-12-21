@@ -402,8 +402,8 @@ void ComponentParticleEmitter::UpdateParticles(float dt)
 	{
 		if (!(*item)->Delete())
 		{
-			orderedParticles.push(*item);
 			(*item)->Update(dt);
+			orderedParticles.push(*item);
 			item++;
 		}
 		else
@@ -425,13 +425,14 @@ void ComponentParticleEmitter::UpdateParticles(float dt)
 
 void ComponentParticleEmitter::DrawParticles()
 {
-	
+
 	while (orderedParticles.size() != 0)
 	{
 		Particle* first = orderedParticles.top();
 
-		if (!first->Delete())
-			first->Draw();
+		float distance = first->DistanceToCamera();
+
+		first->Draw();
 
 		orderedParticles.pop();
 	}

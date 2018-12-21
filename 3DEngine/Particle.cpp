@@ -26,6 +26,15 @@ Particle::Particle(ParticleInfo i)
 
 Particle::~Particle()
 {
+	position = float3::zero;
+	lifeTime = 0;
+	size = 0;
+	spin = 0;
+	speed = 0;
+	lifeLeft = 0;
+	color = White;
+	direction = float3::zero;
+	gravity = float3::zero;
 }
 
 void Particle::Start()
@@ -42,6 +51,8 @@ void Particle::Update(float dt)
 		toDelete = true;
 
 	lifetimeRatio = lifeLeft / lifeTime;
+	if (lifetimeRatio < 0)
+		lifetimeRatio = 0;
 
 	size = Ratio(info.endSize, info.startSize);
 	spin = Ratio(info.endSpin, info.startSpin);
@@ -73,7 +84,7 @@ bool Particle::Delete()
 float Particle::DistanceToCamera() const
 {
 
-	return position.Distance(App->renderer3D->GetCameraPos());
+	return position.DistanceSq(App->renderer3D->GetCameraPos());
 }
 
 
