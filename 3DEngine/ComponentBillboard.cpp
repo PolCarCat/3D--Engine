@@ -116,6 +116,8 @@ void ComponentBillboard::UpdateUI()
 
 bool ComponentBillboard::CleanUp()
 {
+	reference = nullptr;
+
 	return true;
 }
 

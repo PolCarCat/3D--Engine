@@ -117,6 +117,9 @@ void ComponentMaterial::UpdateUI()
 
 bool ComponentMaterial::CleanUp()
 {
+	if (tex != nullptr)
+		tex->SubstractInMemory();
+
 	parent = nullptr;
 	tex = nullptr;
 	name.clear();

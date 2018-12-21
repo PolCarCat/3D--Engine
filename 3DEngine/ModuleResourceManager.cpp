@@ -62,6 +62,8 @@ bool ModuleResourceManager::CleanUp()
 	
 	resources.clear();
 
+	billboard->CleanUp();
+	delete billboard;
 	return true;
 }
 

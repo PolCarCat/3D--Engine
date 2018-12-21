@@ -53,16 +53,49 @@ bool GameObject::Start()
 
 bool GameObject::Update()
 {
-	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end(); item++)
+	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end();)
 	{
-		if ((*item)->GetActive())
-			(*item)->Update();
+
+		if (!(*item)->CheckDelete())
+		{
+			if ((*item)->GetActive())
+				(*item)->Update();
+
+			item++;
+		}
+		else
+		{
+			(*item)->CleanUp();
+			if (*item != nullptr)
+			{
+				delete *item;
+				*item = nullptr;
+			}
+
+			item = objChilds.erase(item);
+		}
 	}
 
-	for (std::vector<Component*>::iterator item = compChilds.begin(); item != compChilds.end(); item++)
+	for (std::vector<Component*>::iterator item = compChilds.begin(); item != compChilds.end();)
 	{
-		if ((*item)->GetActive())
-		(*item)->Update();
+		if (!(*item)->CheckDelete())
+		{
+			if ((*item)->GetActive())
+				(*item)->Update();
+
+			item++;
+		}
+		else
+		{
+			(*item)->CleanUp();
+			if (*item != nullptr)
+			{
+				delete *item;
+				*item = nullptr;
+			}
+
+			item = compChilds.erase(item);
+		}
 	}
 
 	
@@ -75,29 +108,7 @@ bool GameObject::PostUpdate()
 	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end();)
 	{
 		
-		if ((*item)->CheckDelete())
-		{
-			(*item)->CleanUp();
-			item = objChilds.erase(item);
-			//delete *item;
-		}
-		else
-		{
 			(*item)->PostUpdate();
-			item++;
-		}
-
-	}
-
-	for (std::vector<Component*>::iterator item = compChilds.begin(); item != compChilds.end();)
-	{
-		if ((*item)->toDelete)
-		{
-			(*item)->CleanUp();
-			item = compChilds.erase(item);
-			//delete *item;
-		}
-		else
 			item++;
 		
 	}
@@ -169,7 +180,12 @@ void GameObject::UpdateUI()
 bool GameObject::CleanUp()
 {
 	parent = nullptr;
-	selected = false;
+	
+	if (selected)
+	{
+		App->scene->selectedObj = nullptr;
+	}
+
 	for (std::vector<GameObject*>::iterator item = objChilds.begin(); item != objChilds.end(); item++)
 	{
 			(*item)->CleanUp();
@@ -729,13 +745,13 @@ GameObject* GameObject::Copy(GameObject* p)
 	//Create New components
 	for (std::vector<Component*>::iterator item = compChilds.begin(); item != compChilds.end(); item++)
 	{
-		if ((*item)->GetType() == TRANSFORM)
+		switch ((*item)->GetType())
 		{
+		case TRANSFORM:
 			copy->transform = new ComponentTransform(*transform);
 			copy->transform->ForceParent(copy);
-
-		}		
-		else if ((*item)->GetType() == MESH)
+			break;
+		case MESH:
 		{
 			ComponentMesh * m = new ComponentMesh();
 
@@ -745,12 +761,21 @@ GameObject* GameObject::Copy(GameObject* p)
 			m->SetParent(copy);
 			m->mesh->AddInMemory();
 		}
-		else if ((*item)->GetType() == CAMERA)
-		{					
+			break;
+		case CAMERA:
+		{
 			ComponentCamera * c = new ComponentCamera(*(ComponentCamera*)(*item));
 			c->SetParent(copy);
 		}
-
+			break;
+		case PARTICLE_EMITTER:
+		{
+			ComponentParticleEmitter * e = new ComponentParticleEmitter();
+			((ComponentParticleEmitter*)(*item))->CopyStats(e);
+			e->SetParent(copy);
+		}
+		}
+	
 		
 	}
 

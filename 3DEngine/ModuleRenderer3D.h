@@ -83,6 +83,7 @@ public:
 	//Draw Meshes
 	void ToDraw(ComponentMesh* entity);
 	void DrawQueue(std::priority_queue<ComponentMesh*, std::vector<ComponentMesh*>, MeshPriority>& queue);
+	void ClearQueues();
 
 	float3 GetCameraPos() const;
 public:

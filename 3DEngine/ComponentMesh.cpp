@@ -38,14 +38,14 @@ bool ComponentMesh::Start()
 
 bool ComponentMesh::Update()
 {
-	ComponentCamera* cam;
+	ComponentCamera* cam = nullptr;
 
 	if (App->renderer3D->IsUsingGhostCam())
 		cam = App->scene->GetGhostCam();
 	else
 		cam = App->scene->GetCurCam();
 
-	if (!this->parent->GetStatic() || this->parent->IsInQT())
+	if (!toDelete && (!this->parent->GetStatic() || this->parent->IsInQT()))
 	{
 		if (cam->CheckInside(this->parent->GetGlobalABB()))
 			App->renderer3D->ToDraw(this);
@@ -119,8 +119,6 @@ bool ComponentMesh::CleanUp()
 	//if (material != nullptr)
 	//{
 	//	material->CleanUp();
-	//	delete material;
-	//	material = nullptr;
 	//}
 
 	mesh->SubstractInMemory();

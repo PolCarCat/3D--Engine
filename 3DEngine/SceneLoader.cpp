@@ -161,5 +161,5 @@ void SceneLoader::CleanScene()
 		}
 	}
 	App->scene->materials.clear();
-
+	App->renderer3D->ClearQueues();
 }

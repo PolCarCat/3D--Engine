@@ -247,6 +247,11 @@ bool ComponentParticleEmitter::CleanUp()
 		item = particles.erase(item);
 		
 	}
+
+	baseParticle.billboard->CleanUp();
+	delete baseParticle.billboard;
+
+
 	return false;
 }
 
@@ -348,6 +353,33 @@ bool ComponentParticleEmitter::Load(JSON_Object * json, JsonDoc * doc)
 	
 
 	return true;
+}
+
+void ComponentParticleEmitter::CopyStats(ComponentParticleEmitter * emitter)
+{
+	emitter->active = active;
+	emitter->emisionTime = emisionTime;
+	emitter->period = period;
+	emitter->maxParicles = maxParicles;
+
+	emitter->speed = speed;
+	emitter->emitterLifetime = emitterLifetime;
+	emitter->startSize = startSize;
+	emitter->endSize = endSize;
+
+	emitter->startSpin = startSpin;
+	emitter->endSpin = endSpin;
+	emitter->startColor = startColor;
+	emitter->endColor = endColor;
+	
+	emitter->gravity = gravity;
+	emitter->direction = direction;
+	emitter->dirVartiation = dirVartiation;
+
+	emitter->area = area;
+
+	*emitter->baseParticle.billboard = *baseParticle.billboard;
+
 }
 
 void ComponentParticleEmitter::CreateParticle()

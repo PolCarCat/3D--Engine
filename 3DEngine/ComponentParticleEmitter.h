@@ -54,6 +54,7 @@ public:
 	bool Save(JSON_Object* json, JsonDoc* doc);
 	bool Load(JSON_Object* json, JsonDoc* doc);
 
+	void CopyStats(ComponentParticleEmitter* emitter);
 
 	void CreateParticle();
 	void SpawnParticles(float dt);

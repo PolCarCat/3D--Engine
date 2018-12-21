@@ -48,6 +48,12 @@ struct range
 {
 	T min;
 	T max;
+
+	//operator =(range<T> t)
+	//{
+	//	min = t.min;
+	//	max = t.max;
+	//}
 };
 
 namespace Utils 

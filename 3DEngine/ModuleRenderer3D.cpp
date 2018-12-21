@@ -319,14 +319,28 @@ void ModuleRenderer3D::ToDraw(ComponentMesh * mesh)
 void ModuleRenderer3D::DrawQueue(std::priority_queue<ComponentMesh*, std::vector<ComponentMesh*>, MeshPriority>& queue)
 {
 
-	while (queue.empty() == false)
+	while (!queue.empty())
 	{
 		ComponentMesh* first = queue.top();
 
 		first->Draw();
+
 		queue.pop();
 	}
 }
+
+void ModuleRenderer3D::ClearQueues()
+{
+
+	//while (!opaqueMeshes.empty())
+	//	opaqueMeshes.pop();
+
+	//while (!transparentMeshes.empty())
+	//	transparentMeshes.pop();
+	
+}
+
+
 
 float3 ModuleRenderer3D::GetCameraPos() const
 {

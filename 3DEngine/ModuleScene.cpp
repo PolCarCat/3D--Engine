@@ -93,6 +93,18 @@ bool ModuleScene::CleanUp()
 
 	quadTree.CleanUp();
 
+	for (std::list<ComponentMaterial*>::iterator item = materials.begin(); item != materials.end(); item++)
+	{
+	(*item)->CleanUp();
+	if (*item != nullptr)
+	{
+		delete *item;
+		*item = nullptr;
+	}
+
+	item = materials.erase(item);
+	}
+
 	return true;
 }
 

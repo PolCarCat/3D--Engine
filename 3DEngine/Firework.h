@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "ComponentParticleEmitter.h"
 #include "ModuleScene.h"
+#include "pcg-c-basic-0.9/pcg_basic.h"
 
 class Firework
 {
