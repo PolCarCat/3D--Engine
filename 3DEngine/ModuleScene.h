@@ -33,6 +33,7 @@ public:
 	void SetName(const char* n);
 	void UpdateShorcuts();
 
+
 	GameObject* selectedObj = nullptr;
 	ComponentMaterial* selectedMat = nullptr;
 	GameObject root;
@@ -46,6 +47,8 @@ private:
 	ComponentCamera* ghostcam = nullptr;
 	ComponentCamera* currentCam = nullptr;
 	std::string name;
+
+	bool clear = false;
 
 };
 

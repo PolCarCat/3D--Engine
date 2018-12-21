@@ -122,11 +122,19 @@ void ModuleTimeManager::AddTimeScale(float ts)
 
 void ModuleTimeManager::SetPlaying(bool p)
 {
-	playing = p;
 
-	if (playing && gameTime == 0)
+	if (gameTime == 0)
 	{
+		playing = true;
 		StartGame();
 	}
+
+	if (p)
+	{
+		timeScale = 1.0f;
+	}
+	else
+		timeScale = 0.0f;
+
 
 }

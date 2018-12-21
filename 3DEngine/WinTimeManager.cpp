@@ -18,9 +18,10 @@ bool WinTimeManager::Update()
 	bool play = App->timeManager->GetPlaying();
 	float tsc = App->timeManager->GetTimeScale();
 
-	if (ImGui::Button(play ? "Pause" : "Play"))
+	if (ImGui::Button(paused ? "Pause" : "Play"))
 	{
-		App->timeManager->SetPlaying(!play);
+		App->timeManager->SetPlaying(!paused);
+		paused = !paused;
 	}
 	ImGui::SameLine();
 

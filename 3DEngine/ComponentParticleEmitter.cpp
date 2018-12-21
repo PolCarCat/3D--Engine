@@ -70,6 +70,9 @@ bool ComponentParticleEmitter::Update()
 {
 	float dt = App->timeManager->GetRealDeltaTime();
 
+	if (App->timeManager->GetPlaying())
+		dt = App->timeManager->GetDeltaTime();
+
 	if (time <= emitterLifetime || emitterLifetime < 0)
 	{
 		if (currentParticles <= maxParicles || maxParicles == 0)

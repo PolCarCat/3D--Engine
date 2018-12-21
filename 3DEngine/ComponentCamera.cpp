@@ -361,6 +361,7 @@ bool ComponentCamera::Save(JSON_Object* json, JsonDoc* doc)
 	json_object_dotset_number(json, "Near Plane", frustum.nearPlaneDistance);
 	json_object_dotset_number(json, "Far Plane", frustum.farPlaneDistance);
 	json_object_dotset_number(json, "FOV", fovy);
+	json_object_dotset_boolean(json, "isCurCam", isCurCam);
 	
 	return true;
 }
@@ -372,9 +373,13 @@ bool ComponentCamera::Load(JSON_Object* json, JsonDoc* doc)
  	farDistance = json_object_dotget_number(json, "Far Plane");
 	fovy = json_object_dotget_number(json, "FOV");
 
+	isCurCam = json_object_dotget_boolean(json, "isCurCam");
+
 	frustum.nearPlaneDistance = nearDistance;
 	frustum.farPlaneDistance = farDistance;
 
+	if (isCurCam)
+		App->scene->SetCurCam(this);
 
 	RecalculateFrustrum();
 	return true;

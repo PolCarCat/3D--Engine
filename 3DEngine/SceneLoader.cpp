@@ -151,15 +151,15 @@ void SceneLoader::CleanScene()
 	App->scene->root.CleanUp();
 
 	//Cleaning materials
-	for (std::list<ComponentMaterial*>::iterator item = App->scene->materials.begin(); item != App->scene->materials.end(); item++)
-	{
-		(*item)->CleanUp();
-		if (*item != nullptr)
-		{
-			delete *item;
-			*item = nullptr;
-		}
-	}
+	//for (std::list<ComponentMaterial*>::iterator item = App->scene->materials.begin(); item != App->scene->materials.end(); item++)
+	//{
+	//	(*item)->CleanUp();
+	//	if (*item != nullptr)
+	//	{
+	//		delete *item;
+	//		*item = nullptr;
+	//	}
+	//}
 	App->scene->materials.clear();
 	App->renderer3D->ClearQueues();
 }

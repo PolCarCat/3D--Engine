@@ -120,6 +120,7 @@ bool ComponentMesh::CleanUp()
 	//{
 	//	material->CleanUp();
 	//}
+	material = nullptr;
 
 	mesh->SubstractInMemory();
 	mesh = nullptr;

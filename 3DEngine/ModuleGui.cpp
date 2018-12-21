@@ -81,10 +81,7 @@ update_status ModuleGui::PreUpdate(float dt)
 
 	UpdateDockSpace();
 
-	for (std::list<WinBase*>::iterator item = windows.begin(); item != windows.end(); item++) {
-		if ((*item)->GetEnable())
-		(*item)->Update();
-	}
+
 
 	if (ImGui::BeginMainMenuBar())
 	{
@@ -160,7 +157,8 @@ update_status ModuleGui::PreUpdate(float dt)
 		AboutWindow();
 
 
-	DrawGuizmo(App->scene->selectedObj);
+	if (!App->timeManager->GetPlaying() && App->renderer3D->IsUsingGhostCam())
+		DrawGuizmo(App->scene->selectedObj);
 
 	return UPDATE_CONTINUE;
 }
@@ -169,6 +167,10 @@ update_status ModuleGui::PreUpdate(float dt)
 
 update_status ModuleGui::Update(float dt)
 {
+	for (std::list<WinBase*>::iterator item = windows.begin(); item != windows.end(); item++) {
+		if ((*item)->GetEnable())
+			(*item)->Update();
+	}
 	return UPDATE_CONTINUE;
 }
 

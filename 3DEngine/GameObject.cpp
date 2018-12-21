@@ -374,6 +374,9 @@ Component* GameObject::AddCompCam(float _near , float _far, float fov)
 	Component* newcomp = new ComponentCamera(_near, _far, fov);
 	newcomp->SetParent(this);
 
+	if (App->scene->GetCurCam() == nullptr)
+		App->scene->SetCurCam((ComponentCamera*)newcomp);
+
 	return newcomp;
 }
 

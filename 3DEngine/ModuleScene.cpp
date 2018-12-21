@@ -29,7 +29,7 @@ bool ModuleScene::Start()
 	ghostcam = new ComponentCamera(0.5f, FPD, 50.0f);
 	ghostcam->Start();
 	ghostcam->drawFrustum = false;
-	currentCam = ghostcam;
+	//currentCam = ghostcam;
 
 	GameObject* camobj = new GameObject();
 	camobj->SetName("Camera");
@@ -54,6 +54,8 @@ bool ModuleScene::Start()
 update_status ModuleScene::Update(float dt)
 {
 
+	UpdateShorcuts();
+
 
 	ghostcam->CheckInput(dt);
 	ghostcam->Update();
@@ -64,7 +66,7 @@ update_status ModuleScene::Update(float dt)
 
 	App->renderer3D->OnResize(App->window->w, App->window->h);
 
-	UpdateShorcuts();
+
 
 	return UPDATE_CONTINUE;
 }
@@ -224,3 +226,5 @@ void ModuleScene::UpdateShorcuts()
 	if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
 		selectedObj->Delete();
 }
+
+

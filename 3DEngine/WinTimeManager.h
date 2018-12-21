@@ -11,6 +11,9 @@ public:
 
 	bool Update();
 
+private:
+	bool paused = false;
+
 };
 
 #endif //__WINTIMEMANAGER_H__
