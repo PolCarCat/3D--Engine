@@ -15,16 +15,13 @@ public:
 	bool Update();
 	bool CleanUp();
 
-	float3 GetRandom(range<float3> f);
-
 private:
 	GameObject *	body;
+	float			life;
+	float			speed;
+	float			acceleration;
 	float3			direction;
-	float3			speed;
-	float3			acceleration;
-	range<float3>	dirRange;
-	range<float3>	speedRange;
-	range<float3>	accRange;
+	pcg32_random_t rng;
 
 };
 
