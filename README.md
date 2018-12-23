@@ -7,6 +7,8 @@ Project: https://github.com/PolCarCat/3D--Engine/
 
 WebSite: https://polcarcat.github.io/3D--Engine/
 
+Latest build: https://github.com/PolCarCat/3D--Engine/releases/tag/Assignment3.0
+
 Pol Carrera: https://github.com/PolCarCat/
 
 Genís Bayó: https://github.com/retsnom9/
