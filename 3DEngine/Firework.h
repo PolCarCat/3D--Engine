@@ -17,6 +17,9 @@ public:
 	float			minLife;
 	float3			direction;
 	pcg32_random_t	rng;
+	bool			active = false;
+	Timer			sec;
+	int				index;
 };
 
 class Firework
@@ -27,12 +30,12 @@ public:
 
 	void Set();
 	bool Update();
-	bool CleanUp();
-	void Explode();
+	bool CleanUp(int index = 0);
+	void Explode(int index = 0);
 
 private:
-	FW		firework;
-	Timer	sec;
+	FW fireworks[30];
+	int index = 0;
 };
 
 #endif //__FIREWORK_H__

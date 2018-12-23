@@ -188,13 +188,10 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
 
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && !fwdk)
-	{
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 		fw.Set();
-		fwdk = true;
-	}
-	if (fwdk)
-		fw.Update();
+
+	fw.Update();
 
 	return UPDATE_CONTINUE;
 }

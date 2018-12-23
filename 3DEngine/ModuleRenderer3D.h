@@ -103,7 +103,6 @@ public:
 	float yy = 0;
 	float zz = 0;
 	Firework fw;
-	bool fwdk = false;
 
 private:
 	bool vsync = false;
