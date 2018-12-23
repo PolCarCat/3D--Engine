@@ -12,10 +12,13 @@ public:
 
 	GameObject *	body;
 	float			life;
+	float			lifeExp;
 	float			speed;
 	float			minLife;
+	float			minLifeExp;
 	float3			direction;
 	bool			active = false;
+	bool			exploded = false;
 	Timer			sec;
 };
 

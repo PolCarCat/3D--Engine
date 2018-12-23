@@ -29,27 +29,20 @@ void Firework::Set()
 	{
 		FW firework;
 
-		firework.minLife = 2.0f;
+		firework.minLife = 1.0f;
+		firework.minLifeExp = 1.0f;
 		firework.body = new GameObject();
 		firework.body->SetName("Firework");
 		if (App->scene->quadTree.GetRoot() != nullptr)
 			firework.body->SetParent(&App->scene->root);
 
-		float norm_x = -(1.0f - (float(App->input->Mx) * 2.0f) / (float)App->window->w);
-		float norm_y = 1.0f - (float(App->input->My) * 2.0f) / (float)App->window->h;
-		float3 dir = float3::zero;
-		if (App->scene->quadTree.GetRoot() != nullptr)
-		{
-			LineSegment mouseDir = App->scene->GetGhostCam()->GetFrustum().UnProjectLineSegment(norm_x, norm_y);
-			dir = float3(mouseDir.a.x, mouseDir.a.y, mouseDir.a.z + 10.0f);
-		}
+		float rand = ldexp(pcg32_random_r(&rng), -32);
 
-		float rand = ldexp(pcg32_random_r(&rng), -32) * 2;
-
-		firework.body->transform->position = dir;
+		firework.body->transform->position = float3::zero;
 		firework.life = rand + firework.minLife;
-		firework.speed = rand * 2.0f;
-		firework.direction = dir * 0.2f * firework.speed;
+		firework.lifeExp = rand * 2.0f + firework.minLifeExp;
+		firework.speed = 0.1f + rand * 0.3f;
+		firework.direction = float3(rand, rand, rand) * 2.0f * firework.speed;
 		firework.direction.x = 0.0f;
 		firework.direction.z = 0.0f;
 
@@ -59,9 +52,10 @@ void Firework::Set()
 		{
 			if ((*item)->GetType() == PARTICLE_EMITTER)
 			{
-				((ComponentParticleEmitter*)*item)->Set(0.1f, 0.1f, 1.0f, 2.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, Red, Red, Green, Green, 0.2f);
+				((ComponentParticleEmitter*)*item)->Set(0.1f, 0.1f, 1.0f, 2.0f, 0.6f, 0.8, 0.1f, 0.3f, 0.1f, 0.1f, 0.1f, 0.1f, White, Black, White, Black, 0.2f);
+				((ComponentParticleEmitter*)*item)->SetArea(NONE);
+				((ComponentParticleEmitter*)*item)->GetBaseParticle().billboard->SetTexture(App->scene->CheckMaterial("fire"));
 			}
-			((ComponentParticleEmitter*)*item)->SetArea(NONE);
 		}
 
 		firework.active = true;
@@ -82,7 +76,23 @@ bool Firework::Update()
 			{
 				fireworks[i].body->transform->position.x = 0.0f;
 				fireworks[i].body->transform->position.z = 0.0f;
+				if (fireworks[i].direction.y < 0)
+					fireworks[i].direction.y = -fireworks[i].direction.y;
 				fireworks[i].body->transform->position += fireworks[i].direction;
+			}
+			else if (fireworks[i].sec.ReadSec() < (fireworks[i].life + fireworks[i].lifeExp))
+			{
+				if (!fireworks[i].exploded)
+				{
+					for (std::vector<Component*>::iterator item = fireworks[index].body->compChilds.begin(); item != fireworks[index].body->compChilds.end(); item++)
+					{
+						if ((*item)->GetType() == PARTICLE_EMITTER)
+						{
+							((ComponentParticleEmitter*)*item)->Set(10.0f, 20.0f, 0.5f, 1.0f, 0.4f, 0.8f, 0.1f, 0.3f, 0.8f, 2.0f, 2.0f, 3.0f, White, Black, White, Black, 20.0f, float3(30.0f, -15.0f, 30.0f), float3(0.0f, 8.0f, 0.0f));
+						}
+					}
+					fireworks[i].exploded = true;
+				}
 			}
 			else
 				Explode(i);
