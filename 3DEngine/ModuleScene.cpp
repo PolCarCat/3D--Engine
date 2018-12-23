@@ -44,6 +44,10 @@ bool ModuleScene::Start()
 
 	root.Start();
 	root.SetName("root");
+
+	SceneLoader::LoadScene("Libraries/Scenes/ParticleStreet.json", &root);
+
+	App->scene->CreateMaterial(App->loader->texImporter.LoadTex("Assets/Particles/fire.png"));
 	//quadTree.TEST();
 	return ret;
 }
