@@ -9,7 +9,7 @@ Firework::Firework()
 
 Firework::~Firework()
 {
-	CleanUp();
+	//CleanUp();
 }
 
 void Firework::Set()
@@ -30,7 +30,7 @@ void Firework::Set()
 		FW firework;
 
 		firework.minLife = 1.0f;
-		firework.minLifeExp = 1.0f;
+		firework.minLifeExp = 0.4f;
 		firework.body = new GameObject();
 		firework.body->SetName("Firework");
 		if (App->scene->quadTree.GetRoot() != nullptr)
@@ -40,8 +40,8 @@ void Firework::Set()
 
 		firework.body->transform->position = float3::zero;
 		firework.life = rand + firework.minLife;
-		firework.lifeExp = rand * 2.0f + firework.minLifeExp;
-		firework.speed = 0.1f + rand * 0.3f;
+		firework.lifeExp = (rand * firework.minLifeExp) + firework.minLifeExp;
+		firework.speed = 0.3f + rand * 0.3f;
 		firework.direction = float3(rand, rand, rand) * 2.0f * firework.speed;
 		firework.direction.x = 0.0f;
 		firework.direction.z = 0.0f;
@@ -88,7 +88,7 @@ bool Firework::Update()
 					{
 						if ((*item)->GetType() == PARTICLE_EMITTER)
 						{
-							((ComponentParticleEmitter*)*item)->Set(10.0f, 20.0f, 0.5f, 1.0f, 0.4f, 0.8f, 0.1f, 0.3f, 0.8f, 2.0f, 2.0f, 3.0f, White, Black, White, Black, 20.0f, float3(30.0f, -15.0f, 30.0f), float3(0.0f, 8.0f, 0.0f));
+							((ComponentParticleEmitter*)*item)->Set(5.0f, 10.0f, 1.0f, 1.5f, 0.6f, 1.2f, 0.1f, 0.3f, 0.8f, 2.0f, 2.0f, 3.0f, White, Black, White, Black, 180.0f, float3(30.0f, -15.0f, 30.0f));
 						}
 					}
 					fireworks[i].exploded = true;

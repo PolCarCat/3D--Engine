@@ -497,7 +497,7 @@ void ComponentParticleEmitter::Set(float minSpeed, float maxSpeed, float minLife
 
 	gravity;
 	direction;
-	dirVartiation = 0;
+	dirVartiation = dirVartiation;
 }
 
 float ComponentParticleEmitter::GetRandom(range<float> r)
