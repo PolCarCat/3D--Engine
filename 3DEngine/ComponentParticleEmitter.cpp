@@ -192,21 +192,21 @@ void ComponentParticleEmitter::UpdateUI()
 
 			ImGui::PopID();
 
-			//Start Spin
-			ImGui::PushID("SSpin");
+			////Start Spin
+			//ImGui::PushID("SSpin");
 
-			ImGui::Text("Start Spin");
-			ImGui::SliderFloat("Min", &startSpin.min, 0, startSpin.max);
-			ImGui::SliderFloat("Max", &startSpin.max, startSpin.min, 100);
+			//ImGui::Text("Start Spin");
+			//ImGui::SliderFloat("Min", &startSpin.min, 0, startSpin.max);
+			//ImGui::SliderFloat("Max", &startSpin.max, startSpin.min, 100);
 
-			ImGui::PopID();
+			//ImGui::PopID();
 
-			//End Spin
-			ImGui::PushID("ESpin");
+			////End Spin
+			//ImGui::PushID("ESpin");
 
-			ImGui::Text("End Spin");
-			ImGui::SliderFloat("Min", &endSpin.min, 0, endSpin.max);
-			ImGui::SliderFloat("Max", &endSpin.max, endSpin.min, 100);
+			//ImGui::Text("End Spin");
+			//ImGui::SliderFloat("Min", &endSpin.min, 0, endSpin.max);
+			//ImGui::SliderFloat("Max", &endSpin.max, endSpin.min, 100);
 
 			ImGui::PopID();
 

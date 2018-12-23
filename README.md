@@ -1,4 +1,4 @@
-﻿---Mehgine---
+﻿#---Mehgine---
 
 3D Engine made by Pol Carrera and Genís Bayó
  for the 3D engines subject during the 3rd year of Game Design and Game Development degree at CITM.
@@ -9,7 +9,7 @@ Pol Carrera: https://github.com/PolCarCat/
 Genís Bayó: https://github.com/retsnom9/
 
 ----------------------------
-Instructions:
+##Instructions:
 
 	-File:
 		·Save:		Saves configuration.
@@ -42,33 +42,29 @@ Instructions:
 		·LCNTRL + X :	Clear Scene
 		·LCNTRL + D :	Duplicate Selected Game Object
 		·DELETE	:	Delete Selected Game Object
+		·1:		Create firework
 
 ----------------------------
-Errors:
-
--Selecting an item from the UI will raycast the mouse pick and pick behind the window. But if the window is empty will prevent the raycast.
-
--Scaling with the guizmo resets the rotation.
-
-----------------------------
-Inovation:
-
--Sphere checking before frustum culling
--Mouse picking static objects optimization through quadTree
+##Particle System:
+The particle system is a part of the engine that allows the creation of 2D elements in a 3D enviroment. This system its divided in two parts:
+-Billboarding:
+The billboards are components that are a plane that is always facing the camera, this planes are used when the geometry is too complex and requires too much time to render.
+-Particle & Particle Emitter: The particles are elements that manages the behaviour of a billboard, and the particle emitter is the one that spawns the particles.
 
 ----------------------------
-Tasks:
+##Tasks:
 
-	-Game Objects & Hierarcy:Pol
-	-Components:		Pol
-	-Binary Format:		Pol
-	-Camera:		Pol
-	-QuadTree:		Genís
-	-Scene Serialization:	Pol
-	-Mouse Picking:		Genís
-	-Time Manager:		Pol
-	-Resource Manager:	Pol
-	-Guizmo			Pol
+###Billboarding
+	-Face Camera: Genís 
+	-Save & Load: Pol
+###Particle
+	-Management: Pol
+	-Billboard in particle: Genís
+###Particle Emitter
+	-Management: Pol
+	-Save & Load: Pol
+###Firework
+	-Management: Genís
 
 ----------------------------
 MIT License

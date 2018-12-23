@@ -168,13 +168,13 @@ void GameObject::UpdateUI()
 	ImGui::NewLine();
 	ImGui::Separator();
 
-	if (ImGui::Button("Copy"))
-		Copy();
+	//if (ImGui::Button("Copy"))
+	//	Copy();
 
-	ImGui::SameLine();
+	//ImGui::SameLine();
 
-	if (ImGui::Button("Delete"))
-		Delete();
+	//if (ImGui::Button("Delete"))
+	//	Delete();
 }
 
 bool GameObject::CleanUp()
