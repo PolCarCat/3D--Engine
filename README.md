@@ -50,14 +50,24 @@ Genís Bayó: https://github.com/retsnom9/
 ----------------------------
 ## Subsystems:
 -Game Object Hierarcy: Game Objects can have childs which inheritate their transformations.
+
 -Components: Each Game Object can have certain components such as transform, mesh, particle emitters...
+
 -Own Binary Format: In order to speed up the document loading process, the engine converts .fbx files into its own format.
--Camera management: The camera has an invisible frustum that checks which objects are in the field of view of the camera so that the engine can avoid drawing unnecessary gemoetry.
+
+-Camera management: The camera has an invisible frustum that checks which objects are in the field of view of the camera so that the
+engine can avoid drawing unnecessary gemoetry.
+
 -QuadTree: QuadTree checks where static elements are placed and organizes them in a way we can know if they are irrelevant for some calculations, speeding up a lot of iteration processes.
+
 -Scene Serialization: The engine converts the scene parameters into .json files.
+
 -Mouse Picking: Mouse Picking allows the user to select objects in the scene.
+
 -Time Manager: The time manager is used to check how logic would look in-game, and test it by increasing or decreasing the logical time.
--Resource Manager: 
+
+-Resource Manager: Keeps track of all the used files and loads and unloads the data from the files. 
+
 -Guizmo: Gizmo can be used to transform 3D elements (their position, scale and rotation).
 
 ## Particle System:
@@ -71,8 +81,14 @@ The billboards are plane components that always face the camera, these planes ar
 -Particle Customization: There is a set of parameters with which users are able to modify the behavior of the particles spawned by the emitter. They can modify the size, color, direction, speed...
 
 ----------------------------
+## Video
+https://www.youtube.com/watch?v=Nee9pyfw8is&t=10s
+
+![gif1](https://github.com/PolCarCat/3D--Engine/blob/master/Game/Webpage/gif1.gif?raw=true)
+![gif2](https://github.com/PolCarCat/3D--Engine/blob/master/Game/Webpage/gif2.gif?raw=true)
+----------------------------
 ## Team:
-![alt text](https://github.com/PolCarCat/3D--Engine/blob/d0d0efd659dba1474639bd1039323a4be60f5354/Game/Webpage/Teamfoto.jpeg)
+![alt text](https://github.com/PolCarCat/3D--Engine/blob/master/Game/Webpage/Teamfoto.jpeg)
 
 ### Billboarding
 
