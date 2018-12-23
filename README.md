@@ -57,7 +57,8 @@ The billboards are components that are a plane that is always facing the camera,
 -Particle & Particle Emitter: The particles are elements that manages the behaviour of a billboard, and the particle emitter is the one that spawns the particles.
 
 ----------------------------
-## Tasks:
+## Team:
+![alt text](https://github.com/PolCarCat/3D--Engine/blob/d0d0efd659dba1474639bd1039323a4be60f5354/Game/Webpage/Teamfoto.jpeg)
 
 ### Billboarding
 	-Face Camera: Genís 
