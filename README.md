@@ -48,28 +48,49 @@ Genís Bayó: https://github.com/retsnom9/
 		·1:		Create firework
 
 ----------------------------
+## Subsystems:
+-Game Object Hierarcy: Game Objects can have childs which inheritate their transformations.
+-Components: Each Game Object can have certain components such as transform, mesh, particle emitters...
+-Own Binary Format: In order to speed up the document loading process, the engine converts .fbx files into its own format.
+-Camera management: The camera has an invisible frustum that checks which objects are in the field of view of the camera so that the engine can avoid drawing unnecessary gemoetry.
+-QuadTree: QuadTree checks where static elements are placed and organizes them in a way we can know if they are irrelevant for some calculations, speeding up a lot of iteration processes.
+-Scene Serialization: The engine converts the scene parameters into .json files.
+-Mouse Picking: Mouse Picking allows the user to select objects in the scene.
+-Time Manager: The time manager is used to check how logic would look in-game, and test it by increasing or decreasing the logical time.
+-Resource Manager: 
+-Guizmo: Gizmo can be used to transform 3D elements (their position, scale and rotation).
+
 ## Particle System:
 The particle system is a part of the engine that allows the creation of 2D elements in a 3D enviroment. This system its divided in two parts:
 
 -Billboarding:
-The billboards are components that are a plane that is always facing the camera, this planes are used when the geometry is too complex and requires too much time to render.
+The billboards are plane components that always face the camera, these planes are used when the geometry is too complex and requires too much time to render.
 
--Particle & Particle Emitter: The particles are elements that manages the behaviour of a billboard, and the particle emitter is the one that spawns the particles.
+-Particle & Particle Emitter: The particles are elements that manage the behaviour of a billboard, and the particle emitter is the compoenent that spawns them.
+
+-Particle Customization: There is a set of parameters with which users are able to modify the behavior of the particles spawned by the emitter. They can modify the size, color, direction, speed...
 
 ----------------------------
 ## Team:
 ![alt text](https://github.com/PolCarCat/3D--Engine/blob/d0d0efd659dba1474639bd1039323a4be60f5354/Game/Webpage/Teamfoto.jpeg)
 
 ### Billboarding
+
 	-Face Camera: Genís 
 	-Save & Load: Pol
+	
 ### Particle
+
 	-Management: Pol
 	-Billboard in particle: Genís
+	
 ### Particle Emitter
+
 	-Management: Pol
 	-Save & Load: Pol
+	
 ### Firework
+
 	-Management: Genís
 
 ----------------------------
