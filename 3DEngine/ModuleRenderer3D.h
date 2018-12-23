@@ -8,6 +8,7 @@
 #include "SDL/include/SDL.h"
 #include "ResTexture.h"
 #include "ComponentMesh.h"
+#include "Firework.h"
 
 #include <queue>
 
@@ -101,6 +102,8 @@ public:
 	float xx = 0;
 	float yy = 0;
 	float zz = 0;
+	Firework fw;
+	bool fwdk = false;
 
 private:
 	bool vsync = false;

@@ -6,24 +6,33 @@
 #include "ModuleScene.h"
 #include "pcg-c-basic-0.9/pcg_basic.h"
 
+class FW
+{
+public:
+
+	GameObject *	body;
+	float			life;
+	float			speed;
+	float			acceleration;
+	float			minLife;
+	float3			direction;
+	pcg32_random_t	rng;
+};
+
 class Firework
 {
 public:
 	Firework();
 	~Firework();
 
-	bool Start();
+	void Set();
 	bool Update();
 	bool CleanUp();
+	void Explode();
 
 private:
-	GameObject *	body;
-	float			life;
-	float			speed;
-	float			acceleration;
-	float3			direction;
-	pcg32_random_t rng;
-
+	FW		firework;
+	Timer	sec;
 };
 
 #endif //__FIREWORK_H__

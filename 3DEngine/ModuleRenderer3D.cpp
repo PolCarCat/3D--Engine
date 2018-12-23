@@ -144,7 +144,6 @@ bool ModuleRenderer3D::Init()
 	//sphere.Create();
 	//cylinder.Create();
 	//capsule.Create();
-
 	return ret;
 }
 
@@ -188,6 +187,14 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
+
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && !fwdk)
+	{
+		fw.Set();
+		fwdk = true;
+	}
+	if (fwdk)
+		fw.Update();
 
 	return UPDATE_CONTINUE;
 }
