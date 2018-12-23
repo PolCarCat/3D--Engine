@@ -26,7 +26,7 @@ private:
 
 	bool	running = false;
 	bool	reset = false;
-	Uint32	started_at;
+	Uint32	started_at = 0;
 	Uint32	stopped_at;
 };
 

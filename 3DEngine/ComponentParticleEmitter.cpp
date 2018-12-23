@@ -475,6 +475,31 @@ void ComponentParticleEmitter::DrawParticles()
 
 }
 
+void ComponentParticleEmitter::Set(float minSpeed, float maxSpeed, float minLife, float maxLife, float minSSize, float maxSSize, float minESize, float maxESize, float minSSpin, float maxSSpin, float minESpin, float maxESpin, Color sColorMin, Color sColorMax, Color eColorMin, Color eColorMax, float variation, float3 direction, float3 gravity)
+{
+	speed.min = minSpeed;
+	speed.max = maxSpeed;
+	particleLifetime.min = minLife;
+	particleLifetime.max = maxLife;
+	startSize.min = minSSize;
+	startSize.max = maxSSize;
+	endSize.min = minESize;
+	endSize.max = maxESize;
+	startSpin.min = minSSpin;
+	startSpin.max = maxSSpin;
+	endSpin.min = minESpin;
+	endSpin.max = maxESpin;
+
+	startColor.min = sColorMin;
+	startColor.max = sColorMax;
+	endColor.min = eColorMin;
+	endColor.max = eColorMax;
+
+	gravity;
+	direction;
+	dirVartiation = 0;
+}
+
 float ComponentParticleEmitter::GetRandom(range<float> r)
 {
 	return (ldexp(pcg32_random(), -32) * (r.max - r.min)) + r.min;
@@ -574,4 +599,12 @@ void ComponentParticleEmitter::UpdateSpawnUI()
 	}
 }
 
+ParticleInfo ComponentParticleEmitter::GetBaseParticle()
+{
+	return baseParticle;
+}
 
+void ComponentParticleEmitter::SetArea(AreaType type)
+{
+	area.type = type;
+}

@@ -41,20 +41,28 @@ void Firework::Set()
 		if (App->scene->quadTree.GetRoot() != nullptr)
 		{
 			LineSegment mouseDir = App->scene->GetGhostCam()->GetFrustum().UnProjectLineSegment(norm_x, norm_y);
-			dir = float3(mouseDir.a.x, mouseDir.a.y, mouseDir.a.z);
+			dir = float3(mouseDir.a.x, mouseDir.a.y, mouseDir.a.z + 10.0f);
 		}
 
-		float rand = ldexp(pcg32_random_r(&rng), -32) * 2 + firework.minLife;
+		float rand = ldexp(pcg32_random_r(&rng), -32) * 2;
 
 		firework.body->transform->position = dir;
-		firework.life = rand;
-		firework.speed = rand * 1.5f;
-		firework.direction = dir * 5.0f * firework.speed;
-
-		if (dir.y <= 0.0f)
-			dir.y = 3.0f;
+		firework.life = rand + firework.minLife;
+		firework.speed = rand * 2.0f;
+		firework.direction = dir * 0.2f * firework.speed;
+		firework.direction.x = 0.0f;
+		firework.direction.z = 0.0f;
 
 		firework.body->AddComponent(PARTICLE_EMITTER);
+
+		for (std::vector<Component*>::iterator item = firework.body->compChilds.begin(); item != firework.body->compChilds.end(); item++)
+		{
+			if ((*item)->GetType() == PARTICLE_EMITTER)
+			{
+				((ComponentParticleEmitter*)*item)->Set(0.1f, 0.1f, 1.0f, 2.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, Red, Red, Green, Green, 0.2f);
+			}
+			((ComponentParticleEmitter*)*item)->SetArea(NONE);
+		}
 
 		firework.active = true;
 		fireworks[index] = firework;
@@ -72,7 +80,9 @@ bool Firework::Update()
 
 			if (fireworks[i].sec.ReadSec() < fireworks[i].life)
 			{
-				fireworks[i].body->transform->position += (fireworks[i].direction - fireworks[i].direction);
+				fireworks[i].body->transform->position.x = 0.0f;
+				fireworks[i].body->transform->position.z = 0.0f;
+				fireworks[i].body->transform->position += fireworks[i].direction;
 			}
 			else
 				Explode(i);
@@ -90,6 +100,7 @@ bool Firework::CleanUp(int index)
 
 void Firework::Explode(int index)
 {
+	fireworks[index].sec.SetZero();
 	fireworks[index].active = false;
 	CleanUp(index);
 }
