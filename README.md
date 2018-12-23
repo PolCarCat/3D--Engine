@@ -1,15 +1,18 @@
-﻿#---Mehgine---
+﻿# ---Mehgine---
 
 3D Engine made by Pol Carrera and Genís Bayó
  for the 3D engines subject during the 3rd year of Game Design and Game Development degree at CITM.
 
 Project: https://github.com/PolCarCat/3D--Engine/
 
+WebSite: https://polcarcat.github.io/3D--Engine/
+
 Pol Carrera: https://github.com/PolCarCat/
+
 Genís Bayó: https://github.com/retsnom9/
 
 ----------------------------
-##Instructions:
+## Instructions:
 
 	-File:
 		·Save:		Saves configuration.
@@ -45,29 +48,31 @@ Genís Bayó: https://github.com/retsnom9/
 		·1:		Create firework
 
 ----------------------------
-##Particle System:
+## Particle System:
 The particle system is a part of the engine that allows the creation of 2D elements in a 3D enviroment. This system its divided in two parts:
+
 -Billboarding:
 The billboards are components that are a plane that is always facing the camera, this planes are used when the geometry is too complex and requires too much time to render.
+
 -Particle & Particle Emitter: The particles are elements that manages the behaviour of a billboard, and the particle emitter is the one that spawns the particles.
 
 ----------------------------
-##Tasks:
+## Tasks:
 
-###Billboarding
+### Billboarding
 	-Face Camera: Genís 
 	-Save & Load: Pol
-###Particle
+### Particle
 	-Management: Pol
 	-Billboard in particle: Genís
-###Particle Emitter
+### Particle Emitter
 	-Management: Pol
 	-Save & Load: Pol
-###Firework
+### Firework
 	-Management: Genís
 
 ----------------------------
-MIT License
+## MIT License
 
 Copyright (c) 2018 Genís Bayó, Pol Carrera
 
