@@ -140,7 +140,7 @@ void ComponentCamera::CheckInput(float dt)
 
 	Reference -= newPos;
 
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && !ImGuizmo::IsOver())
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && !App->imgui->InWindow())
 		Pick((0, 0, 0));
 
 	// Mouse motion ----------------

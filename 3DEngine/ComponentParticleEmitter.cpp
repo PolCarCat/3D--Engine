@@ -208,7 +208,7 @@ void ComponentParticleEmitter::UpdateUI()
 			//ImGui::SliderFloat("Min", &endSpin.min, 0, endSpin.max);
 			//ImGui::SliderFloat("Max", &endSpin.max, endSpin.min, 100);
 
-			ImGui::PopID();
+			//ImGui::PopID();
 
 			//Start Color
 			ImGui::PushID("SColor");

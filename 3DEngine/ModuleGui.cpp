@@ -81,7 +81,8 @@ update_status ModuleGui::PreUpdate(float dt)
 
 	UpdateDockSpace();
 
-
+	if (ImGui::IsMouseHoveringAnyWindow)
+		inWindow = true;
 
 	if (ImGui::BeginMainMenuBar())
 	{
@@ -185,6 +186,9 @@ update_status ModuleGui::PostUpdate(float dt)
 	}
 
 
+
+	if (!ImGui::IsMouseHoveringAnyWindow)
+		inWindow = false;
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
@@ -354,4 +358,9 @@ void ModuleGui::UpdateGuizmoInput()
 
 	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT) 
 		guizmoSnap = true;
+}
+
+bool ModuleGui::InWindow() const
+{
+	return inWindow;
 }

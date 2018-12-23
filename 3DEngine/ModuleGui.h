@@ -45,6 +45,8 @@ public:
 	void DrawGuizmo(GameObject* obj);
 	void UpdateGuizmoInput();
 
+	bool InWindow() const;
+
 public:
 	WinConfig * config = nullptr;
 	WinConsole* console = nullptr;
@@ -75,6 +77,7 @@ private:
 	ImGuizmo::OPERATION guizmoOperation = ImGuizmo::TRANSLATE;
 	float guizmoSnapSize[3];
 	bool guizmoSnap = false;
+	bool inWindow = false;
 
 };
 
