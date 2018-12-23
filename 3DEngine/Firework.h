@@ -13,13 +13,10 @@ public:
 	GameObject *	body;
 	float			life;
 	float			speed;
-	float			acceleration;
 	float			minLife;
 	float3			direction;
-	pcg32_random_t	rng;
 	bool			active = false;
 	Timer			sec;
-	int				index;
 };
 
 class Firework
@@ -34,8 +31,9 @@ public:
 	void Explode(int index = 0);
 
 private:
-	FW fireworks[30];
-	int index = 0;
+	FW					fireworks[30];
+	int					index = 0;
+	pcg32_random_t		rng;
 };
 
 #endif //__FIREWORK_H__

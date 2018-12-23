@@ -29,7 +29,7 @@ void Firework::Set()
 	{
 		FW firework;
 
-		firework.minLife = 0.5;
+		firework.minLife = 2.0f;
 		firework.body = new GameObject();
 		firework.body->SetName("Firework");
 		if (App->scene->quadTree.GetRoot() != nullptr)
@@ -37,29 +37,26 @@ void Firework::Set()
 
 		float norm_x = -(1.0f - (float(App->input->Mx) * 2.0f) / (float)App->window->w);
 		float norm_y = 1.0f - (float(App->input->My) * 2.0f) / (float)App->window->h;
+		float3 dir = float3::zero;
 		if (App->scene->quadTree.GetRoot() != nullptr)
-			LineSegment mouseDir = App->scene->GetCurCam()->GetFrustum().UnProjectLineSegment(norm_x, norm_y);
+		{
+			LineSegment mouseDir = App->scene->GetGhostCam()->GetFrustum().UnProjectLineSegment(norm_x, norm_y);
+			dir = float3(mouseDir.a.x, mouseDir.a.y, mouseDir.a.z);
+		}
 
-		float3 dir = float3(norm_x, norm_y, 0);
-		float rand = ldexp(pcg32_random_r(&firework.rng), -32) + firework.minLife;
+		float rand = ldexp(pcg32_random_r(&rng), -32) * 2 + firework.minLife;
 
 		firework.body->transform->position = dir;
 		firework.life = rand;
-		firework.speed = rand * 2.0f;
-		firework.direction = dir * rand * 5.0f * firework.speed;
+		firework.speed = rand * 1.5f;
+		firework.direction = dir * 5.0f * firework.speed;
 
 		if (dir.y <= 0.0f)
-			dir.y = 1.0f;
-
-		if (rand >= 1.0f)
-			firework.acceleration = rand / 2.0f;
-		else
-			firework.acceleration = rand / -2.0f;
+			dir.y = 3.0f;
 
 		firework.body->AddComponent(PARTICLE_EMITTER);
 
 		firework.active = true;
-		firework.index = index;
 		fireworks[index] = firework;
 	}
 }
@@ -75,8 +72,7 @@ bool Firework::Update()
 
 			if (fireworks[i].sec.ReadSec() < fireworks[i].life)
 			{
-				fireworks[i].body->transform->position += (fireworks[i].direction - fireworks[i].direction * fireworks[i].acceleration);
-				fireworks[i].acceleration *= 1.2;
+				fireworks[i].body->transform->position += (fireworks[i].direction - fireworks[i].direction);
 			}
 			else
 				Explode(i);
